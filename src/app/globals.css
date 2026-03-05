@@ -1,26 +1,46 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Primary Colors */
+  --seu-dark: #0c1829;
+  --seu-darker: #060d16;
+  --seu-gold: #c9a962;
+  --seu-gold-light: #d4b872;
+  --seu-cream: #e8dcc8;
+  --seu-cream-light: #f5efe6;
+  --seu-teal: #0d2e2e;
+  --seu-teal-light: #1a3a3a;
+  --seu-white: #ffffff;
+  --seu-gray: #6b7280;
+  --seu-light-gray: #9ca3af;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-seu-dark: var(--seu-dark);
+  --color-seu-darker: var(--seu-darker);
+  --color-seu-gold: var(--seu-gold);
+  --color-seu-gold-light: var(--seu-gold-light);
+  --color-seu-cream: var(--seu-cream);
+  --color-seu-cream-light: var(--seu-cream-light);
+  --color-seu-teal: var(--seu-teal);
+  --color-seu-teal-light: var(--seu-teal-light);
+  --color-seu-white: var(--seu-white);
+  --color-seu-gray: var(--seu-gray);
+  --color-seu-light-gray: var(--seu-light-gray);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--seu-dark);
+  color: var(--seu-white);
   font-family: Arial, Helvetica, sans-serif;
 }
