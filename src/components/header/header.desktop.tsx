@@ -1,34 +1,44 @@
 import Link from "next/link";
 import Image from "next/image";
+import {cn} from "@/lib/utils";
+import {Button} from "@/components/ui/button";
 
 type HeaderLinkProps = {
-    label: string;
     href: string;
     className?: string;
     children?: React.ReactNode;
 }
 
-const HeaderLink = ({label, href, className, children}: HeaderLinkProps) => {
+const HeaderLink = ({href, className, children}: HeaderLinkProps) => {
 
-    return <Link href={href} className={"font-[18px]"}>{label}</Link>
+    return <Link href={href} className={cn("font-[18px]", className)}>{children}</Link>
 }
 
+const CenterSeuLink = () => {
+    return (
+        <div className={"flex flex-col text-center items-center"}>
+            <Image src={"/common/seu-minimalistic.png"} alt={"dwad"} width={40} height={92}/>
+            <p className={"text-[18px]"}>SEU</p>
+            <p className={"text-[12px]"}>Developlment</p>
+        </div>
+    )
+}
 
 export const HeaderDesktop = () => {
     return (
-        <header className="fixed top-0 left-0 right-0 z-50 bg-[#0c1829]/95 backdrop-blur-sm">
-            <div className="mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex items-center justify-between h-16">
-                    <Link href="/racxa">Visual Search</Link>
-                    <Link href="/racxa">Search Apartment</Link>
-                    <Link href="/racxa">SEU CARD</Link>
-                    <Link href="/racxa">
-                        <Image src={"/common/seu-minimalistic.png"} alt={"dwad"} width={20} height={46}/>
-                    </Link>
-                    <Link href="/racxa">NEWS</Link>
-                    <Link href="/racxa">About</Link>
-                    <Link href="/racxa">Contact Us</Link>
-                </div>
+        <header className="sticky top-0 z-50 bg-[#0c1829]/95 backdrop-blur-sm">
+            <div className="flex items-center justify-between h-24 p-8">
+                <HeaderLink href="/racxa">Visual Search</HeaderLink>
+                <HeaderLink href="/racxa">Search Apartment</HeaderLink>
+                <HeaderLink href="/racxa">SEU CARD</HeaderLink>
+                <CenterSeuLink/>
+                <HeaderLink href="/racxa">NEWS</HeaderLink>
+                <HeaderLink href="/racxa">About</HeaderLink>
+                <HeaderLink href="/racxa">
+                    <Button variant={"secondary"}>
+                        Contact Us
+                    </Button>
+                </HeaderLink>
             </div>
         </header>
     );
