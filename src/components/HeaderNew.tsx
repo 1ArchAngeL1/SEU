@@ -1,27 +1,32 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 const leftLinks = [
-  { label: "Search Apartment", href: "#" },
-  { label: "Visual Search", href: "#" },
-  { label: "SEU CARD", href: "#" },
+  { label: "Search Apartment", href: "/search" },
+  { label: "Visual Search", href: "/visual-search" },
+  { label: "SEU CARD", href: "/card" },
 ];
 
 const rightLinks = [
-  { label: "NEWS", href: "#" },
-  { label: "About", href: "#" },
+  { label: "NEWS", href: "/news" },
+  { label: "About", href: "/about" },
 ];
 
 export default function HeaderNew() {
+  const pathname = usePathname();
+
   return (
-    <header className="w-full grid grid-cols-[1fr_auto_1fr] items-center px-20 py-4">
+    <header className="w-full grid grid-cols-[1fr_auto_1fr] items-center px-20 py-4 bg-dark-green">
       {/* Left Links */}
       <nav className="flex items-center justify-between">
         {leftLinks.map((link) => (
           <Link
             key={link.label}
             href={link.href}
-            className="font-montserrat font-medium text-lg leading-5.5 tracking-[0.056rem] text-pale-gray hover:text-white transition-colors"
+            className={`font-montserrat font-medium text-lg leading-5.5 tracking-[0.056rem] text-pale-gray hover:text-white transition-colors ${pathname === link.href ? "underline underline-offset-4" : ""}`}
           >
             {link.label}
           </Link>
@@ -29,7 +34,7 @@ export default function HeaderNew() {
       </nav>
 
       {/* Center Logo */}
-      <div className="flex flex-col items-center justify-self-center px-48">
+      <Link href="/" className="flex flex-col items-center justify-self-center px-48">
         <Image
           src="/common/svgs/Group 169.svg"
           alt="SEU Development Logo"
@@ -43,7 +48,7 @@ export default function HeaderNew() {
         <p className="font-montserrat font-normal text-xs tracking-wide text-pale-gray">
           Development
         </p>
-      </div>
+      </Link>
 
       {/* Right Links + Contact + Language */}
       <div className="flex items-center justify-between">
@@ -51,7 +56,7 @@ export default function HeaderNew() {
           <Link
             key={link.label}
             href={link.href}
-            className="font-montserrat font-medium text-lg leading-5.5 tracking-[0.056rem] text-pale-gray hover:text-white transition-colors"
+            className={`font-montserrat font-medium text-lg leading-5.5 tracking-[0.056rem] text-pale-gray hover:text-white transition-colors ${pathname === link.href ? "underline underline-offset-4" : ""}`}
           >
             {link.label}
           </Link>
