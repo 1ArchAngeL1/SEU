@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="10" height="16" viewBox="0 0 10 16">
+  <g id="chevron-compact-left" transform="translate(10 16) rotate(180)">
+    <g id="Group_185" data-name="Group 185" transform="translate(0 0)">
+      <path id="Path_111" data-name="Path 111" d="M66.7,18.069c-.616.152-.865.521-.557.825L73.365,26l-7.22,7.109c-.309.3-.06.674.557.826a2,2,0,0,0,1.678-.274l7.5-7.385a.353.353,0,0,0,0-.551l-7.5-7.385A2,2,0,0,0,66.7,18.069Z" transform="translate(-66.012 -18.004)" fill="#a19c92" fill-rule="evenodd"/>
+    </g>
+  </g>
+</svg>
