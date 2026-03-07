@@ -1,7 +1,5 @@
 import HeaderNew from "@/components/HeaderNew";
 import React from "react";
-import FooterUpper from "@/components/FooterUpper";
-import FooterLower from "@/components/FooterLower";
 
 interface ContactLayoutProps {
     children: React.ReactNode;

@@ -14,7 +14,7 @@ const rightLinks = [
 
 export default function HeaderNew() {
   return (
-    <header className="w-full grid grid-cols-[1fr_auto_1fr] items-center px-20 py-4">
+    <header className="w-full grid grid-cols-[1fr_auto_1fr] items-center px-20 py-4 bg-[#0D141D]">
       {/* Left Links */}
       <nav className="flex items-center justify-between">
         {leftLinks.map((link) => (
