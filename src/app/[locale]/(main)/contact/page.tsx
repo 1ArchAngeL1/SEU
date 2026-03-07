@@ -21,11 +21,11 @@ const ContactPage = () => {
       {/*Content layer */}
       <div className="relative z-10 h-full flex">
         {/* Left: ContactForm on dark area */}
-        <div className="flex-1 flex items-start justify-start pt-16 pl-8 md:pl-16 lg:pl-20">
+        <div className="flex-1 flex items-start justify-start pt-16 pl-8 md:pl-10 lg:pl-12">
           <ContactForm className="max-w-xl lg:max-w-2xl" />
         </div>
         {/* Right: ContactPanel on light area */}
-        <div className="flex-1 flex items-end justify-end pb-16 pr-8 md:pr-16 lg:pr-20">
+        <div className="flex-1 flex items-end justify-end pb-16 pr-8 md:pr-10 lg:pr-12">
           <ContactPanel
             className="max-w-xl lg:max-w-2xl"
             headerClassName="text-dark-green"

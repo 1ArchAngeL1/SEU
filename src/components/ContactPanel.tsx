@@ -14,7 +14,7 @@ export default function ContactPanel({
     <div className={cn('w-full', className)}>
       <h2
         className={cn(
-          'font-[--font-bodoni] font-normal text-seu-heading-lg leading-tight mb-8',
+          'font-[--font-bodoni] font-normal text-seu-heading-lg leading-12 text-white mb-10',
           headerClassName
         )}
       >
