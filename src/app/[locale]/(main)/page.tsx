@@ -16,12 +16,6 @@ export default function Home() {
       <SeuPartners />
       <LandingAbout />
       <LandingContactSection />
-      {/*<AboutCompany />*/}
-      {/*<Ongoing />*/}
-      {/*<SeuVajaLight />*/}
-      {/*<SeuVajaDark />*/}
-      {/*<Upcoming />*/}
-      {/*<Partners />*/}
     </main>
   );
 }

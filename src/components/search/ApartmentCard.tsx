@@ -1,26 +1,17 @@
 'use client';
 
 import { cn } from '@/lib/utils';
+import { ApartmentData } from '@/components/search/ApartmentCardGridView';
 
 export type ApartmentCardProps = {
   className?: string;
-  name: string;
-  complex?: string;
-  block?: string;
-  rooms?: number;
-  size?: number;
-  status?: 'available' | 'sold' | 'reserved';
+  data: ApartmentData;
   onClick?: () => void;
 };
 
 export default function ApartmentCard({
   className,
-  name,
-  complex = 'Varketili',
-  block = 'A',
-  rooms = 2,
-  size = 85,
-  status = 'available',
+  data,
   onClick,
 }: ApartmentCardProps) {
   const statusColors = {
@@ -39,14 +30,14 @@ export default function ApartmentCard({
     <div
       onClick={onClick}
       className={cn(
-        'relative w-full h-[499px] bg-[#FFFFFF1F] border border-pale-gray rounded-md overflow-hidden cursor-pointer transition-all hover:border-primary-green',
+        'relative w-full] h-[499px] bg-[#FFFFFF1F] border border-pale-gray rounded-md overflow-hidden cursor-pointer transition-all hover:border-primary-green hover:scale-105',
         className
       )}
     >
       {/* Apartment Name */}
       <div className="absolute top-6 left-6">
         <span className="font-montserrat font-medium text-seu-body text-white uppercase tracking-wide">
-          {name}
+          {data.name}
         </span>
       </div>
 
@@ -54,32 +45,32 @@ export default function ApartmentCard({
       <div className="absolute bottom-6 left-6 right-6 flex flex-wrap gap-2">
         {/* Complex Name */}
         <span className="px-3 py-1.5 bg-pale-gray/10 border border-secondary-grey rounded-lg font-montserrat text-seu-caption text-pale-gray uppercase">
-          {complex}
+          {data.complex}
         </span>
 
         {/* Block */}
         <span className="px-3 py-1.5 bg-pale-gray/10 border border-secondary-grey rounded-lg font-montserrat text-seu-caption text-pale-gray">
-          Block {block}
+          Block {data.block}
         </span>
 
         {/* Rooms */}
         <span className="px-3 py-1.5 bg-pale-gray/10 border border-secondary-grey rounded-lg font-montserrat text-seu-caption text-pale-gray">
-          {rooms} {rooms === 1 ? 'Room' : 'Rooms'}
+          {data.rooms} {data.rooms === 1 ? 'Room' : 'Rooms'}
         </span>
 
         {/* Size */}
         <span className="px-3 py-1.5 bg-pale-gray/10 border border-secondary-grey rounded-lg font-montserrat text-seu-caption text-pale-gray">
-          {size} m²
+          {data.size} m²
         </span>
 
         {/* Status */}
         <span
           className={cn(
             'px-3 py-1.5 rounded-lg font-montserrat text-seu-caption text-white',
-            statusColors[status]
+            // statusColors[status]
           )}
         >
-          {statusLabels[status]}
+          {/*{statusLabels[status]}*/}
         </span>
       </div>
     </div>
