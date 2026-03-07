@@ -1,5 +1,5 @@
-import { Link } from "@/i18n/navigation";
-import Image from "next/image";
+import { Link } from '@/i18n/navigation';
+import Image from 'next/image';
 
 export default function FooterLower() {
   return (
@@ -7,13 +7,28 @@ export default function FooterLower() {
       {/* Social Icons */}
       <div className="flex items-center gap-18 justify-self-start">
         <Link href="#" className="hover:opacity-80 transition-opacity">
-          <Image src="/common/svgs/facebook-icon.svg" alt="Facebook" width={48} height={48} />
+          <Image
+            src="/common/svgs/facebook-icon.svg"
+            alt="Facebook"
+            width={48}
+            height={48}
+          />
         </Link>
         <Link href="#" className="hover:opacity-80 transition-opacity">
-          <Image src="/common/svgs/linkedin-icon.svg" alt="LinkedIn" width={48} height={48} />
+          <Image
+            src="/common/svgs/linkedin-icon.svg"
+            alt="LinkedIn"
+            width={48}
+            height={48}
+          />
         </Link>
         <Link href="#" className="hover:opacity-80 transition-opacity">
-          <Image src="/common/svgs/youtube-icon.svg" alt="YouTube" width={48} height={48} />
+          <Image
+            src="/common/svgs/youtube-icon.svg"
+            alt="YouTube"
+            width={48}
+            height={48}
+          />
         </Link>
       </div>
 

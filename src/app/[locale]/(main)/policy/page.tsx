@@ -1,8 +1,8 @@
 const paragraphs = [
-  "SEU Development has been operating in the real estate market since 2014.",
-  "The company\u2019s team, consisting of experienced professionals who care about continuous development, implements high construction standards and uses innovative and modern approaches that meet European standards.",
-  "Successfully completed projects by SEU Development include the old and new buildings of the Georgian National University, which house modern educational and exhibition facilities, as well as a business center in the suburbs of Tbilisi. All SEU Development construction projects are fully funded at an early stage, which ensures they are completed on time. The company\u2019s social responsibility ensures that it only uses energy efficient building materials for its projects.",
-  "SEU Development aims to create a multifunctional residential complex that meets the needs and wishes of each client and ensures that such projects are accessible to every member of society.",
+  'SEU Development has been operating in the real estate market since 2014.',
+  'The company\u2019s team, consisting of experienced professionals who care about continuous development, implements high construction standards and uses innovative and modern approaches that meet European standards.',
+  'Successfully completed projects by SEU Development include the old and new buildings of the Georgian National University, which house modern educational and exhibition facilities, as well as a business center in the suburbs of Tbilisi. All SEU Development construction projects are fully funded at an early stage, which ensures they are completed on time. The company\u2019s social responsibility ensures that it only uses energy efficient building materials for its projects.',
+  'SEU Development aims to create a multifunctional residential complex that meets the needs and wishes of each client and ensures that such projects are accessible to every member of society.',
 ];
 
 export default function PolicyPage() {

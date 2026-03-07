@@ -1,19 +1,19 @@
-import Image from "next/image";
-import { Link } from "@/i18n/navigation";
+import Image from 'next/image';
+import { Link } from '@/i18n/navigation';
 
 export default function Upcoming() {
   const upcomingProjects = [
     {
       id: 1,
-      title: "SEU VARKETILI",
-      image: "/upcoming-1.jpg",
-      status: "Coming Soon",
+      title: 'SEU VARKETILI',
+      image: '/upcoming-1.jpg',
+      status: 'Coming Soon',
     },
     {
       id: 2,
-      title: "SEU VARKETILI",
-      image: "/upcoming-2.jpg",
-      status: "Coming Soon",
+      title: 'SEU VARKETILI',
+      image: '/upcoming-2.jpg',
+      status: 'Coming Soon',
     },
   ];
 
@@ -60,8 +60,18 @@ export default function Upcoming() {
 
                 {/* Arrow Button */}
                 <div className="w-12 h-12 border border-[#c9a962]/30 rounded-full flex items-center justify-center group-hover:bg-[#c9a962]/20 transition-colors">
-                  <svg className="w-5 h-5 text-[#c9a962]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  <svg
+                    className="w-5 h-5 text-[#c9a962]"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M14 5l7 7m0 0l-7 7m7-7H3"
+                    />
                   </svg>
                 </div>
               </div>

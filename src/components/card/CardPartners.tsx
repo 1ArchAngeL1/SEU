@@ -1,9 +1,9 @@
-import PartnerCard from "./PartnerCard";
+import PartnerCard from './PartnerCard';
 
 const partners = Array.from({ length: 15 }, (_, i) => ({
   id: i + 1,
   description:
-    "SEU Development has been operating in the real estate market since 2014. SEU Development has been operating in the real estate market since 2014. SEU Development has been operating in the real estate market since 2014.",
+    'SEU Development has been operating in the real estate market since 2014. SEU Development has been operating in the real estate market since 2014. SEU Development has been operating in the real estate market since 2014.',
 }));
 
 export default function CardPartners() {
@@ -16,10 +16,7 @@ export default function CardPartners() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {partners.map((partner) => (
-            <PartnerCard
-              key={partner.id}
-              description={partner.description}
-            />
+            <PartnerCard key={partner.id} description={partner.description} />
           ))}
         </div>
       </div>

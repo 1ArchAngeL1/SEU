@@ -1,0 +1,11 @@
+import ContactForm from '@/components/ContactForm';
+import ContactPanel from '@/components/ContactPanel';
+
+export const LandingContactSection = () => {
+  return (
+    <div className={'bg-dark-green w-full py-40 px-10 flex justify-between'}>
+      <ContactForm className={'max-w-2xl'} />
+      <ContactPanel className={'max-w-2xl'} />
+    </div>
+  );
+};

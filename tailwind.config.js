@@ -88,19 +88,19 @@ module.exports = {
                 bodoni: ["Bodoni MT", "Bodoni 72", "Didot", "GFS Didot", "serif"],
             },
             fontSize: {
-                "seu-caption-sm": "0.75rem",
-                "seu-caption": "0.875rem",
+                "seu-caption-sm": "0.75rem", // 12px
+                "seu-caption": "0.875rem", // 14px
                 "seu-body-sm": "1rem", // 16px
                 "seu-body": "1.125rem", // 18px
                 "seu-body-lg": "1.25rem", // 20px
-                "seu-body-xl": "1.375rem",
-                "seu-subheading": "1.5rem",
-                "seu-subheading-lg": "1.625rem",
-                "seu-heading": "2rem",
-                "seu-heading-lg": "2.5rem",
-                "seu-title": "3rem",
-                "seu-title-lg": "3.5rem",
-                "seu-title-xl": "4rem",
+                "seu-body-xl": "1.375rem", // 22px
+                "seu-subheading": "1.5rem", // 24px
+                "seu-subheading-lg": "1.625rem", // 26px
+                "seu-heading": "2rem", // 32px
+                "seu-heading-lg": "2.5rem", // 40px
+                "seu-title": "3rem", // 48px
+                "seu-title-lg": "3.5rem", // 56px
+                "seu-title-xl": "4rem", // 64px
             },
             borderRadius: {
                 sm: "calc(var(--radius) - 4px)",
@@ -110,6 +110,15 @@ module.exports = {
                 "2xl": "calc(var(--radius) + 8px)",
                 "3xl": "calc(var(--radius) + 12px)",
                 "4xl": "calc(var(--radius) + 16px)",
+            },
+            animation: {
+                "infinite-scroll": "infinite-scroll 20s linear infinite",
+            },
+            keyframes: {
+                "infinite-scroll": {
+                    "from": { transform: "translateX(0)" },
+                    "to": { transform: "translateX(calc(-244px * 6))" },
+                },
             },
         },
     },

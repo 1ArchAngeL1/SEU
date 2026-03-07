@@ -1,21 +1,27 @@
-import Hero from "@/components/Hero";
-import AboutCompany from "@/components/Mission";
-import Ongoing from "@/components/Ongoing";
-import SeuVajaLight from "@/components/SeuVajaLight";
-import SeuVajaDark from "@/components/SeuVajaDark";
-import Upcoming from "@/components/Team";
-import Partners from "@/components/Partners";
+import LandingHero from '@/components/landing/LandingHero';
+import LandingAboutSection from '@/components/landing/LandingAboutSection';
+import OngoingSection from '@/components/landing/OngoingSection';
+import UpcomingSection from '@/components/landing/UpcomingSection';
+import LandingAbout from '@/components/landing/LandingAbout';
+import SeuPartners from '@/components/landing/SeuPartners';
+import { LandingContactSection } from '@/components/landing/LandingContactSection';
 
 export default function Home() {
-    return (
-        <main>
-            <Hero/>
-            <AboutCompany/>
-            <Ongoing/>
-            <SeuVajaLight/>
-            <SeuVajaDark/>
-            <Upcoming/>
-            <Partners/>
-        </main>
-    );
+  return (
+    <main>
+      <LandingHero />
+      <LandingAboutSection />
+      <OngoingSection />
+      <UpcomingSection />
+      <SeuPartners />
+      <LandingAbout />
+      <LandingContactSection />
+      {/*<AboutCompany />*/}
+      {/*<Ongoing />*/}
+      {/*<SeuVajaLight />*/}
+      {/*<SeuVajaDark />*/}
+      {/*<Upcoming />*/}
+      {/*<Partners />*/}
+    </main>
+  );
 }
