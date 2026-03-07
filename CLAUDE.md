@@ -72,9 +72,27 @@ This makes placeholders easy to find and replace later via search.
 
 ### Typography
 - Fonts: Montserrat (primary), Bodoni MT (headings), Geist (sans) + Geist Mono
-- Headings: `font-[--font-bodoni] font-normal text-[2.5rem]`
-- Nav/Body: `font-montserrat font-medium text-lg`
+- Headings: `font-[--font-bodoni] font-normal text-seu-heading-lg`
+- Nav/Body: `font-montserrat font-medium text-seu-body`
 - Always use design-specified font, size, weight, and letter-spacing
+- **Always use `seu-*` font size tokens** instead of arbitrary values or standard Tailwind text sizes
+
+### Font Size Tokens
+| Token | Size | Tailwind Class | Usage |
+|---|---|---|---|
+| `seu-caption-sm` | 12px / 0.75rem | `text-seu-caption-sm` | Labels, badges, metadata |
+| `seu-caption` | 14px / 0.875rem | `text-seu-caption` | Small text, footnotes |
+| `seu-body-sm` | 16px / 1rem | `text-seu-body-sm` | Form inputs, compact body |
+| `seu-body` | 18px / 1.125rem | `text-seu-body` | Nav links, standard body |
+| `seu-body-lg` | 20px / 1.25rem | `text-seu-body-lg` | Content paragraphs |
+| `seu-body-xl` | 22px / 1.375rem | `text-seu-body-xl` | Large body text |
+| `seu-subheading` | 24px / 1.5rem | `text-seu-subheading` | Card body, subtitles |
+| `seu-subheading-lg` | 26px / 1.625rem | `text-seu-subheading-lg` | Large subtitles |
+| `seu-heading` | 32px / 2rem | `text-seu-heading` | Section headings |
+| `seu-heading-lg` | 40px / 2.5rem | `text-seu-heading-lg` | Large section headings |
+| `seu-title` | 48px / 3rem | `text-seu-title` | Page titles |
+| `seu-title-lg` | 56px / 3.5rem | `text-seu-title-lg` | Large display titles |
+| `seu-title-xl` | 64px / 4rem | `text-seu-title-xl` | Hero display text |
 
 ### Component Patterns
 - Sections use `py-20` vertical padding with `max-w-7xl mx-auto px-4 sm:px-6 lg:px-8` container
@@ -87,7 +105,6 @@ This makes placeholders easy to find and replace later via search.
 - `Team.tsx` exports `Upcoming` - file should be renamed
 - `layout.tsx` uses `h-dvw` instead of `h-dvh`
 - `header.desktop.tsx` has typo "Developlment" and placeholder alt text "dwad"
-- `font-[18px]` should be `text-[18px]` in header links
 - Nav links all point to `/racxa` (placeholder)
 - No mobile header yet
 - `globals.css` has conflicting body background rules (line 111 vs line 155)

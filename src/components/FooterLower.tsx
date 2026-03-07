@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 
 export default function FooterLower() {
@@ -19,10 +19,10 @@ export default function FooterLower() {
 
       {/* Center Text */}
       <div className="text-center justify-self-center">
-        <p className="font-montserrat font-normal text-[2.5rem] leading-12.25 tracking-[0.375rem] text-secondary-grey">
+        <p className="font-montserrat font-normal text-seu-heading-lg leading-12.25 tracking-[0.375rem] text-secondary-grey">
           SEU
         </p>
-        <p className="font-montserrat font-normal text-[2.5rem] leading-12.25 tracking-[0.375rem] text-secondary-grey">
+        <p className="font-montserrat font-normal text-seu-heading-lg leading-12.25 tracking-[0.375rem] text-secondary-grey">
           development
         </p>
       </div>

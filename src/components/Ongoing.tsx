@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
 export default function Ongoing() {
   const projects = [
@@ -25,7 +25,7 @@ export default function Ongoing() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Title */}
         <div className="mb-12">
-          <h2 className="text-3xl md:text-4xl font-light text-white">
+          <h2 className="text-seu-heading md:text-seu-heading-lg font-light text-white">
             Ongoing.
           </h2>
         </div>
@@ -50,7 +50,7 @@ export default function Ongoing() {
 
                 {/* Title */}
                 <div className="absolute bottom-4 left-4">
-                  <h3 className="text-white font-medium text-lg">
+                  <h3 className="text-white font-medium text-seu-body">
                     {project.title}
                   </h3>
                 </div>

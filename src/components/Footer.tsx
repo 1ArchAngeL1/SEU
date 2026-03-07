@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useState } from "react";
 
 export default function Footer() {
@@ -23,13 +23,13 @@ export default function Footer() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
           {/* Left - About */}
           <div>
-            <p className="text-[#c9a962] text-xs uppercase tracking-[0.3em] mb-4">
+            <p className="text-[#c9a962] text-seu-caption-sm uppercase tracking-[0.3em] mb-4">
               About SEU
             </p>
-            <h3 className="text-3xl md:text-4xl font-light text-white mb-6">
+            <h3 className="text-seu-heading md:text-seu-heading-lg font-light text-white mb-6">
               About SEU.
             </h3>
-            <p className="text-[#9ca3af] text-sm leading-relaxed mb-6">
+            <p className="text-[#9ca3af] text-seu-caption leading-relaxed mb-6">
               SEU Development has been operating in the real estate market since 2016.
               The company&apos;s mission is to create high-quality, comfortable, and modern
               residential spaces that meet the highest standards. We combine innovative
@@ -101,8 +101,8 @@ export default function Footer() {
         {/* Request a Call Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 py-12 border-t border-white/10">
           <div>
-            <h3 className="text-2xl font-light text-white mb-2">Request a Call.</h3>
-            <p className="text-[#9ca3af] text-sm">
+            <h3 className="text-seu-subheading font-light text-white mb-2">Request a Call.</h3>
+            <p className="text-[#9ca3af] text-seu-caption">
               Leave your contact information and our team will reach out to you.
             </p>
           </div>
@@ -142,10 +142,10 @@ export default function Footer() {
                 className="h-8 w-auto"
               />
               <span className="text-white font-medium">SEU</span>
-              <span className="text-[#9ca3af] text-sm">development</span>
+              <span className="text-[#9ca3af] text-seu-caption">development</span>
             </div>
 
-            <nav className="flex flex-wrap justify-center gap-6 text-sm text-[#9ca3af]">
+            <nav className="flex flex-wrap justify-center gap-6 text-seu-caption text-[#9ca3af]">
               <Link href="#projects" className="hover:text-[#c9a962] transition-colors">Projects</Link>
               <Link href="#seu-card" className="hover:text-[#c9a962] transition-colors">SEU Card</Link>
               <Link href="/privacy" className="hover:text-[#c9a962] transition-colors">Privacy Policy</Link>
@@ -153,7 +153,7 @@ export default function Footer() {
               <Link href="#about" className="hover:text-[#c9a962] transition-colors">About</Link>
             </nav>
 
-            <p className="text-[#6b7280] text-sm">
+            <p className="text-[#6b7280] text-seu-caption">
               &copy; {new Date().getFullYear()} SEU Development
             </p>
           </div>

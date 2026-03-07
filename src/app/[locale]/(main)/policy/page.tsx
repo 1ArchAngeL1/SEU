@@ -10,10 +10,10 @@ export default function PolicyPage() {
     <main>
       {/* Dark Hero */}
       <div className="bg-dark-green py-12 px-12">
-        <h1 className="font-[--font-bodoni] font-normal text-[4rem] leading-[6rem] text-pale-gray mb-4 py-10">
+        <h1 className="font-[--font-bodoni] font-normal text-seu-title-xl leading-[6rem] text-pale-gray mb-4 py-10">
           PRIVACY POLICY
         </h1>
-        <p className="font-montserrat font-medium text-[1.5rem] leading-[1.8125rem] text-pale-gray pt-10">
+        <p className="font-montserrat font-medium text-seu-subheading leading-[1.8125rem] text-pale-gray pt-10">
           Real estate market since 2014.
         </p>
       </div>
@@ -25,7 +25,7 @@ export default function PolicyPage() {
             {paragraphs.map((text, j) => (
               <p
                 key={j}
-                className="font-montserrat font-normal text-[1.25rem] leading-[1.5rem] text-dark-green mb-4 last:mb-0"
+                className="font-montserrat font-normal text-seu-body-lg leading-[1.5rem] text-dark-green mb-4 last:mb-0"
               >
                 {text}
               </p>

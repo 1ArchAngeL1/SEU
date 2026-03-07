@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
 export default function SeuVajaDark() {
   return (
@@ -8,13 +8,13 @@ export default function SeuVajaDark() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left - Content */}
           <div>
-            <p className="text-[#c9a962] text-xs uppercase tracking-[0.3em] mb-4">
+            <p className="text-[#c9a962] text-seu-caption-sm uppercase tracking-[0.3em] mb-4">
               Featured Project
             </p>
-            <h2 className="text-4xl md:text-5xl font-light text-white mb-6">
+            <h2 className="text-seu-heading-lg md:text-seu-title font-light text-white mb-6">
               SEU VAJA
             </h2>
-            <p className="text-[#9ca3af] text-sm leading-relaxed mb-8">
+            <p className="text-[#9ca3af] text-seu-caption leading-relaxed mb-8">
               Discover the perfect blend of comfort and elegance. Our apartments
               feature spacious layouts, high-quality finishes, and breathtaking
               views of the city skyline.
@@ -23,16 +23,16 @@ export default function SeuVajaDark() {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-6 mb-8">
               <div>
-                <p className="text-3xl font-light text-[#c9a962]">150+</p>
-                <p className="text-[#9ca3af] text-xs uppercase tracking-wider mt-1">Apartments</p>
+                <p className="text-seu-heading font-light text-[#c9a962]">150+</p>
+                <p className="text-[#9ca3af] text-seu-caption-sm uppercase tracking-wider mt-1">Apartments</p>
               </div>
               <div>
-                <p className="text-3xl font-light text-[#c9a962]">12</p>
-                <p className="text-[#9ca3af] text-xs uppercase tracking-wider mt-1">Floors</p>
+                <p className="text-seu-heading font-light text-[#c9a962]">12</p>
+                <p className="text-[#9ca3af] text-seu-caption-sm uppercase tracking-wider mt-1">Floors</p>
               </div>
               <div>
-                <p className="text-3xl font-light text-[#c9a962]">2025</p>
-                <p className="text-[#9ca3af] text-xs uppercase tracking-wider mt-1">Completion</p>
+                <p className="text-seu-heading font-light text-[#c9a962]">2025</p>
+                <p className="text-[#9ca3af] text-seu-caption-sm uppercase tracking-wider mt-1">Completion</p>
               </div>
             </div>
 

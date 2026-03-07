@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import {cn} from "@/lib/utils";
 import {Button} from "@/components/ui/button";
@@ -11,15 +11,15 @@ type HeaderLinkProps = {
 
 const HeaderLink = ({href, className, children}: HeaderLinkProps) => {
 
-    return <Link href={href} className={cn("font-[18px]", className)}>{children}</Link>
+    return <Link href={href} className={cn("text-seu-body", className)}>{children}</Link>
 }
 
 const CenterSeuLink = () => {
     return (
         <div className={"flex flex-col text-center items-center"}>
             <Image src={"/common/seu-minimalistic.png"} alt={"dwad"} width={40} height={92}/>
-            <p className={"text-[18px]"}>SEU</p>
-            <p className={"text-[12px]"}>Developlment</p>
+            <p className={"text-seu-body"}>SEU</p>
+            <p className={"text-seu-caption-sm"}>Developlment</p>
         </div>
     )
 }

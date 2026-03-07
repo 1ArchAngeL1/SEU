@@ -6,10 +6,10 @@ export default function CardHero() {
       <div className="px-12 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         {/* Left — Text */}
         <div>
-          <h1 className="font-[--font-bodoni] font-normal text-[4rem] leading-[6rem] text-dark-green mb-8">
+          <h1 className="font-[--font-bodoni] font-normal text-seu-title-xl leading-[6rem] text-dark-green mb-8">
             SEU CARD
           </h1>
-          <p className="font-montserrat font-normal text-[1.5rem] leading-[3.125rem] text-[#3D3D3D]">
+          <p className="font-montserrat font-normal text-seu-subheading leading-[3.125rem] text-[#3D3D3D]">
             When buying property in any of the company&apos;s projects, clients
             will receive an exclusive personalized SEU card. Residents will be
             able to use the card at the company&apos;s partner establishments,

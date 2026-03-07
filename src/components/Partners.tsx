@@ -15,7 +15,7 @@ export default function Partners() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Title */}
         <div className="mb-10">
-          <h2 className="text-2xl md:text-3xl font-light text-[#0c1829]">
+          <h2 className="text-seu-subheading md:text-seu-heading font-light text-[#0c1829]">
             PARTNERS.
           </h2>
         </div>

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
 const links = [
   { label: "PROJECTS", href: "#" },
@@ -26,8 +26,8 @@ export default function FooterUpper({ variant = "dark" }: { variant?: "dark" | "
             href={link.href}
             className={
               isLight
-                ? "font-montserrat font-medium text-lg leading-[1.375rem] tracking-[0.169rem] text-dark-green hover:text-dark-green/70 transition-colors"
-                : "font-montserrat font-medium text-lg leading-[1.375rem] tracking-[0.169rem] text-pale-gray hover:text-white transition-colors"
+                ? "font-montserrat font-medium text-seu-body leading-[1.375rem] tracking-[0.169rem] text-dark-green hover:text-dark-green/70 transition-colors"
+                : "font-montserrat font-medium text-seu-body leading-[1.375rem] tracking-[0.169rem] text-pale-gray hover:text-white transition-colors"
             }
           >
             {link.label}

@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/i18n/navigation";
 import FooterUpper from "./FooterUpper";
 
 const variantOverrides: Record<string, "light" | "dark"> = {

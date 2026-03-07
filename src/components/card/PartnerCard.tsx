@@ -17,7 +17,7 @@ export default function PartnerCard({ description }: PartnerCardProps) {
       />
 
       {/* Description */}
-      <p className="font-montserrat font-normal text-base leading-[1.75rem] text-secondary-grey">
+      <p className="font-montserrat font-normal text-seu-body-sm leading-[1.75rem] text-secondary-grey">
         {description}
       </p>
     </div>

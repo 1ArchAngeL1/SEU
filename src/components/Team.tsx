@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
 export default function Upcoming() {
   const upcomingProjects = [
@@ -22,7 +22,7 @@ export default function Upcoming() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Title */}
         <div className="mb-12">
-          <h2 className="text-3xl md:text-4xl font-light text-white">
+          <h2 className="text-seu-heading md:text-seu-heading-lg font-light text-white">
             UPCOMING.
           </h2>
         </div>
@@ -43,17 +43,17 @@ export default function Upcoming() {
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 {/* Status Badge */}
-                <div className="absolute top-4 left-4 bg-[#c9a962]/90 text-[#0c1829] text-xs uppercase tracking-wider px-3 py-1 rounded">
+                <div className="absolute top-4 left-4 bg-[#c9a962]/90 text-[#0c1829] text-seu-caption-sm uppercase tracking-wider px-3 py-1 rounded">
                   {project.status}
                 </div>
               </div>
 
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-[#c9a962] text-xs uppercase tracking-[0.2em] mb-1">
+                  <p className="text-[#c9a962] text-seu-caption-sm uppercase tracking-[0.2em] mb-1">
                     Upcoming project
                   </p>
-                  <h3 className="text-white font-medium text-xl">
+                  <h3 className="text-white font-medium text-seu-body-lg">
                     {project.title}
                   </h3>
                 </div>

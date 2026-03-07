@@ -10,7 +10,7 @@ export default function CardPartners() {
   return (
     <div className="py-20">
       <div className="px-12">
-        <h2 className="font-[--font-bodoni] font-normal text-[3.5rem] leading-[4.1875rem] text-[#0D2F21] mb-12">
+        <h2 className="font-[--font-bodoni] font-normal text-seu-title-lg leading-[4.1875rem] text-[#0D2F21] mb-12">
           PARTNERS.
         </h2>
 

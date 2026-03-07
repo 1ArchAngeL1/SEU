@@ -22,10 +22,10 @@ export default function Hero() {
 
           {/* Right side - Text Content */}
           <div className="flex-1 text-center lg:text-left lg:pl-20">
-            <p className="text-[#c9a962] text-xs uppercase tracking-[0.3em] mb-4">
+            <p className="text-[#c9a962] text-seu-caption-sm uppercase tracking-[0.3em] mb-4">
               The company&apos;s team
             </p>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-white mb-2">
+            <h1 className="text-seu-heading-lg md:text-seu-title lg:text-seu-title-xl font-light text-white mb-2">
               SEU VARKETILI
             </h1>
 

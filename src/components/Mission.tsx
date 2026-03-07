@@ -6,7 +6,7 @@ export default function AboutCompany() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Title */}
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-light text-white mb-4">
+          <h2 className="text-seu-heading md:text-seu-heading-lg font-light text-white mb-4">
             About company.
           </h2>
         </div>
@@ -31,12 +31,12 @@ export default function AboutCompany() {
 
         {/* Description */}
         <div className="max-w-3xl mx-auto text-center">
-          <p className="text-[#9ca3af] text-sm leading-relaxed mb-4">
+          <p className="text-[#9ca3af] text-seu-caption leading-relaxed mb-4">
             Your home-market partner since 2016. Developing various real estate
             projects, luxury apartments, commercial buildings to serve the evolving
             needs of modern lifestyle and business.
           </p>
-          <p className="text-[#9ca3af] text-sm leading-relaxed">
+          <p className="text-[#9ca3af] text-seu-caption leading-relaxed">
             SEU Development has been operating in the real estate market since 2016.
             The company&apos;s mission is to create high-quality, comfortable, and modern
             residential spaces that meet the highest standards.

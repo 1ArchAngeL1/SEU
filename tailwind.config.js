@@ -87,6 +87,21 @@ module.exports = {
                 montserrat: ["var(--font-montserrat)", "sans-serif"],
                 bodoni: ["Bodoni MT", "Bodoni 72", "Didot", "GFS Didot", "serif"],
             },
+            fontSize: {
+                "seu-caption-sm": "0.75rem",
+                "seu-caption": "0.875rem",
+                "seu-body-sm": "1rem", // 16px
+                "seu-body": "1.125rem", // 18px
+                "seu-body-lg": "1.25rem", // 20px
+                "seu-body-xl": "1.375rem",
+                "seu-subheading": "1.5rem",
+                "seu-subheading-lg": "1.625rem",
+                "seu-heading": "2rem",
+                "seu-heading-lg": "2.5rem",
+                "seu-title": "3rem",
+                "seu-title-lg": "3.5rem",
+                "seu-title-xl": "4rem",
+            },
             borderRadius: {
                 sm: "calc(var(--radius) - 4px)",
                 md: "calc(var(--radius) - 2px)",
