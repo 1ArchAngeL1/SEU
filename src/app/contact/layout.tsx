@@ -7,7 +7,7 @@ interface ContactLayoutProps {
 
 const ContactLayout = ({children}: ContactLayoutProps) => {
 
-    return <div className={"flex flex-col overflow-y-hidden"}>
+    return <div className={"flex flex-col h-screen overflow-hidden"}>
         <HeaderNew/>
         {children}
     </div>

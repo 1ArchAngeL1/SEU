@@ -63,7 +63,7 @@ export default function HeaderNew() {
         ))}
 
         <Link
-          href="#"
+          href="/contact"
           className="font-montserrat font-medium text-base leading-[1.1875rem] tracking-[0.15rem] text-pale-gray/60 bg-pale-gray/[0.18] border border-secondary-grey/60 rounded-[0.625rem] w-[8.875rem] h-[2.4375rem] flex items-center justify-center hover:text-pale-gray/80 hover:bg-pale-gray/25 transition-colors"
         >
           Contact us
