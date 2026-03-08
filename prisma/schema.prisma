@@ -16,3 +16,50 @@ model ContactRequest {
 
   @@unique([email, phone])
 }
+
+model Project {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  address   String
+  buildings Building[]
+  createdAt DateTime   @default(now())
+}
+
+model Building {
+  id         String      @id @default(auto()) @map("_id") @db.ObjectId
+  projectId  String      @db.ObjectId
+  project    Project     @relation(fields: [projectId], references: [id])
+  block      String
+  floorCount Int
+  apartments Apartment[]
+  createdAt  DateTime    @default(now())
+}
+
+model Apartment {
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  buildingId   String     @db.ObjectId
+  building     Building   @relation(fields: [buildingId], references: [id])
+  floor        Int
+  apartmentNo  String
+  totalSize    Float
+  mainSize     Float
+  openSpaceSize Float
+  bedroomCount Int
+  rooms        RoomSpec[]
+  createdAt    DateTime   @default(now())
+}
+
+type RoomSpec {
+  roomType RoomType
+  size     Float
+}
+
+enum RoomType {
+  BEDROOM
+  LIVING_ROOM
+  KITCHEN
+  BATHROOM
+  BALCONY
+  HALLWAY
+  STORAGE
+}
