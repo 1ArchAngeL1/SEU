@@ -32,7 +32,7 @@ export default function ApartmentCard({
     <div
       onClick={onClick}
       className={cn(
-        'relative w-full h-[499px] bg-[#FFFFFF1F] border border-pale-gray rounded-md overflow-hidden cursor-pointer transition-all hover:border-primary-green hover:scale-105',
+        'relative w-full h-[499px] bg-[#FFFFFF1F] border border-pale-gray rounded-md overflow-hidden cursor-pointer transition-all hover:border-primary-green',
         className
       )}
     >

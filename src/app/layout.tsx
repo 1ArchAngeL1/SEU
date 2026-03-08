@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Montserrat } from 'next/font/google';
 import { getLocale } from 'next-intl/server';
 import './globals.css';
+import MyReactQueryProvider from '@/components/provider/MyReactQueryProvider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -35,7 +36,9 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} antialiased min-h-dvh`}
       >
-        {children}
+        <MyReactQueryProvider>
+          {children}
+        </MyReactQueryProvider>
       </body>
     </html>
   );

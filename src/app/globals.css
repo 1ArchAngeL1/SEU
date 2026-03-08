@@ -179,8 +179,13 @@ body {
   * {
     @apply border-border outline-ring/50;
   }
+}
 
-  body {
-    @apply bg-background text-foreground;
-  }
+/* Hide scrollbar utility */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
 }
