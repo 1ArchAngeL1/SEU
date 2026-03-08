@@ -7,10 +7,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model ContactRequest {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  email     String   @unique
-  name      String?
+  email     String
+  phone     String
+  name      String
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+
+  @@unique([email, phone])
 }

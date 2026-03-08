@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
+import { addContactRequest } from '@/prisma/contact';
 
 export type ContactFormProps = {
   className?: string;
@@ -17,6 +18,7 @@ export default function ContactForm({ className }: ContactFormProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
+    addContactRequest(formData).then(() => {})
     setFormData({ name: '', phone: '', email: '' });
   };
 
