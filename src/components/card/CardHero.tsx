@@ -3,7 +3,7 @@ import Image from 'next/image';
 export default function CardHero() {
   return (
     <div className="py-20">
-      <div className="px-12 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div className="max-w-[1920px] mx-auto px-12 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         {/* Left — Text */}
         <div>
           <h1 className="font-[--font-bodoni] font-normal text-seu-title-xl leading-[6rem] text-dark-green mb-8">

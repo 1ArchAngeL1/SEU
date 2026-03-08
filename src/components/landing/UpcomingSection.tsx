@@ -16,7 +16,7 @@ const UPCOMING_PROJECTS = [
 export default function UpcomingSection() {
   return (
     <section className="bg-dark-green py-20">
-      <div className="mx-auto px-4 sm:px-6 lg:px-10">
+      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-10">
         {/* Title */}
         <h2 className="font-bodoni text-seu-title text-white mb-12">
           Upcoming .

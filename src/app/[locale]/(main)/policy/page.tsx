@@ -9,17 +9,20 @@ export default function PolicyPage() {
   return (
     <main>
       {/* Dark Hero */}
-      <div className="bg-dark-green py-12 px-12">
-        <h1 className="font-[--font-bodoni] font-normal text-seu-title-xl leading-[6rem] text-pale-gray mb-4 py-10">
-          PRIVACY POLICY
-        </h1>
-        <p className="font-montserrat font-medium text-seu-subheading leading-[1.8125rem] text-pale-gray pt-10">
-          Real estate market since 2014.
-        </p>
+      <div className="bg-dark-green py-12">
+        <div className="max-w-[1920px] mx-auto px-12">
+          <h1 className="font-[--font-bodoni] font-normal text-seu-title-xl leading-[6rem] text-pale-gray mb-4 py-10">
+            PRIVACY POLICY
+          </h1>
+          <p className="font-montserrat font-medium text-seu-subheading leading-[1.8125rem] text-pale-gray pt-10">
+            Real estate market since 2014.
+          </p>
+        </div>
       </div>
 
       {/* Light Content */}
-      <div className="bg-pale-gray py-16 px-12">
+      <div className="bg-pale-gray py-16">
+        <div className="max-w-[1920px] mx-auto px-12">
         {Array.from({ length: 8 }, (_, i) => (
           <div key={i} className="mb-8 last:mb-0">
             {paragraphs.map((text, j) => (
@@ -32,6 +35,7 @@ export default function PolicyPage() {
             ))}
           </div>
         ))}
+        </div>
       </div>
     </main>
   );

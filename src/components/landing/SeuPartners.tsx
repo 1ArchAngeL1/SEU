@@ -14,7 +14,7 @@ const PARTNERS = [
 export default function SeuPartners() {
   return (
     <section className="bg-dark-green py-20 overflow-hidden">
-      <div className="mx-auto px-4 sm:px-6 lg:px-10 mb-12">
+      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-10 mb-12">
         <h2 className="font-bodoni text-seu-title text-white uppercase tracking-wide">
           Partners.
         </h2>

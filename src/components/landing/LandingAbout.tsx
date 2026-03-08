@@ -6,7 +6,7 @@ import Image from 'next/image';
 export default function LandingAbout() {
   return (
     <section className="bg-pale-gray py-20 lg:py-32">
-      <div className="mx-auto px-4 sm:px-6 lg:px-10">
+      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-10">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-20">
           {/* Left - Text Content */}
           <div className="flex-1 max-w-xl">

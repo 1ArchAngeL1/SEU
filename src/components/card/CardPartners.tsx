@@ -9,7 +9,7 @@ const partners = Array.from({ length: 15 }, (_, i) => ({
 export default function CardPartners() {
   return (
     <div className="py-20">
-      <div className="px-12">
+      <div className="max-w-[1920px] mx-auto px-12">
         <h2 className="font-[--font-bodoni] font-normal text-seu-title-lg leading-[4.1875rem] text-[#0D2F21] mb-12">
           PARTNERS.
         </h2>

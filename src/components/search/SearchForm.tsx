@@ -64,7 +64,10 @@ export default function SearchForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} className={cn('px-10 pb-14', className)}>
+    <form
+      onSubmit={handleSubmit}
+      className={cn('p-8 xl:p-16 pb-14 max-w-[1920px] mx-auto', className)}
+    >
       {/* Filter Label */}
       <div className="flex items-center gap-2 mb-12">
         <Search className="w-4 h-4 text-secondary-grey" />

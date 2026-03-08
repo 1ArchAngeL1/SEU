@@ -20,7 +20,7 @@ export default function LandingAboutSection() {
 
   return (
     <section className="relative bg-dark-green py-80 overflow-hidden">
-      <div className="mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top Row */}
         <div className="flex items-start justify-between mb-16">
           {/* Title - Left */}

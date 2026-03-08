@@ -16,7 +16,7 @@ export interface ApartmentData {
 
 export const ApartmentCardGridView = ({ data }: ApartmentCardGridViewProps) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 bg-dark-green p-8 xl:p-16 mx-auto">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-8 xl:p-16 max-w-[1920px] mx-auto">
       {data.map((apartment) => (
         <ApartmentCard key={apartment.id} data={apartment} />
       ))}

@@ -32,9 +32,9 @@ const ONGOING_PROJECTS = [
 export default function OngoingSection() {
   return (
     <section className="bg-dark-green py-20">
-      <div className="mx-auto">
+      <div className="max-w-[1920px] mx-auto px-10">
         {/* Title */}
-        <h2 className="font-bodoni text-seu-title text-white mb-12 px-10">
+        <h2 className="font-bodoni text-seu-title text-white mb-12">
           Ongoing .
         </h2>
 

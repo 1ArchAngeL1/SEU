@@ -24,20 +24,21 @@ export default function SearchPage() {
 
   return (
     <div className="bg-pale-gray min-h-screen pt-20 pb-40">
-      <div className="mx-auto ">
-        <h1 className="font-bodoni text-seu-title-xl text-dark-green mb-8 px-10">
+      <div className="mx-auto">
+        <h1 className="font-bodoni text-seu-title-xl text-dark-green mb-8 px-10 max-w-[1920px] mx-auto">
           APARTMENTS.
         </h1>
 
         <SearchForm />
 
-        <ApartmentCardGridView data={pagedData} />
-
-        <PaginationControl
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
+        <div className={'bg-dark-green'}>
+          <ApartmentCardGridView data={pagedData} />
+          <PaginationControl
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </div>
       </div>
     </div>
   );
