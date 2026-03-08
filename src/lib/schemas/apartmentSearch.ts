@@ -4,28 +4,28 @@ import { z } from 'zod';
 const optionalPositiveNumber = z
   .string()
   .transform((val) => (val.trim() === '' ? undefined : Number(val)))
-  .pipe(z.number({ invalid_type_error: 'Must be a number' }).positive('Must be positive').optional());
+  .pipe(z.number().positive('Must be positive').optional());
 
 export const apartmentSearchSchema = z
   .object({
-    project:  z.string(),
-    block:    z.string(),
+    project: z.string(),
+    block: z.string(),
     sizeFrom: optionalPositiveNumber,
-    sizeTo:   optionalPositiveNumber,
-    rooms:    z.number().int().min(1).max(5).nullable(),
+    sizeTo: optionalPositiveNumber,
+    rooms: z.number().int().min(1).max(5).nullable(),
     currency: z.enum(['USD', 'GEL']),
     priceFrom: optionalPositiveNumber,
-    priceTo:   optionalPositiveNumber,
+    priceTo: optionalPositiveNumber,
   })
   .refine(
     ({ sizeFrom, sizeTo }) =>
       sizeFrom === undefined || sizeTo === undefined || sizeFrom <= sizeTo,
-    { message: 'Size "from" must be ≤ "to"', path: ['sizeFrom'] },
+    { message: 'Size "from" must be ≤ "to"', path: ['sizeFrom'] }
   )
   .refine(
     ({ priceFrom, priceTo }) =>
       priceFrom === undefined || priceTo === undefined || priceFrom <= priceTo,
-    { message: 'Price "from" must be ≤ "to"', path: ['priceFrom'] },
+    { message: 'Price "from" must be ≤ "to"', path: ['priceFrom'] }
   );
 
 export type ApartmentSearchFilters = z.infer<typeof apartmentSearchSchema>;

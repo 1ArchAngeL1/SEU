@@ -9,6 +9,9 @@ const PARTNERS = [
   { name: 'Bank of Georgia', logo: '/common/svgs/bog.svg' },
   { name: 'Bank of Georgia', logo: '/common/svgs/bog.svg' },
   { name: 'Bank of Georgia', logo: '/common/svgs/bog.svg' },
+  { name: 'Bank of Georgia', logo: '/common/svgs/bog.svg' },
+  { name: 'Bank of Georgia', logo: '/common/svgs/bog.svg' },
+  { name: 'Bank of Georgia', logo: '/common/svgs/bog.svg' },
 ];
 
 export default function SeuPartners() {
@@ -26,7 +29,7 @@ export default function SeuPartners() {
           {/* First set of partners */}
           {PARTNERS.map((partner, index) => (
             <div key={`first-${index}`} className="flex-shrink-0 mx-3">
-              <div className="w-[220px] h-[100px] flex items-center justify-center border border-secondary-black rounded-xl bg-dark-green/50 px-6">
+              <div className="w-[213px] h-[100px] flex items-center justify-center border border-secondary-black rounded-xl bg-dark-green/50 px-6">
                 <Image
                   src={partner.logo}
                   alt={partner.name}
@@ -40,7 +43,7 @@ export default function SeuPartners() {
           {/* Duplicate set for seamless loop */}
           {PARTNERS.map((partner, index) => (
             <div key={`second-${index}`} className="flex-shrink-0 mx-3">
-              <div className="w-[220px] h-[100px] flex items-center justify-center border border-secondary-black rounded-xl bg-dark-green/50 px-6">
+              <div className="w-[213px] h-[100px] flex items-center justify-center border border-secondary-black rounded-xl bg-dark-green/50 px-6">
                 <Image
                   src={partner.logo}
                   alt={partner.name}

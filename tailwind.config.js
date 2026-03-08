@@ -117,7 +117,7 @@ module.exports = {
             keyframes: {
                 "infinite-scroll": {
                     "from": { transform: "translateX(0)" },
-                    "to": { transform: "translateX(calc(-244px * 6))" },
+                    "to": { transform: "translateX(-2133px)" },
                 },
             },
         },
