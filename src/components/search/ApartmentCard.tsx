@@ -2,6 +2,7 @@
 
 import { cn } from '@/lib/utils';
 import { ApartmentData } from '@/components/search/ApartmentCardGridView';
+import { Link } from '@/i18n/navigation';
 
 export type ApartmentCardProps = {
   className?: string;
@@ -27,10 +28,11 @@ export default function ApartmentCard({
   };
 
   return (
+    <Link href={`/search/${data.id}`}>
     <div
       onClick={onClick}
       className={cn(
-        'relative w-full] h-[499px] bg-[#FFFFFF1F] border border-pale-gray rounded-md overflow-hidden cursor-pointer transition-all hover:border-primary-green hover:scale-105',
+        'relative w-full h-[499px] bg-[#FFFFFF1F] border border-pale-gray rounded-md overflow-hidden cursor-pointer transition-all hover:border-primary-green hover:scale-105',
         className
       )}
     >
@@ -74,5 +76,6 @@ export default function ApartmentCard({
         </span>
       </div>
     </div>
+    </Link>
   );
 }

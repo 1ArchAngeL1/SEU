@@ -3,22 +3,13 @@
 import { useState } from 'react';
 import { Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
-export type SearchFilters = {
-  project: string;
-  block: string;
-  sizeFrom: string;
-  sizeTo: string;
-  rooms: number | null;
-  currency: 'USD' | 'GEL';
-  priceFrom: string;
-  priceTo: string;
-};
+import { apartmentSearchSchema, ApartmentSearchFilters } from '@/lib/schemas/apartmentSearch';
 
 export type SearchFormProps = {
   className?: string;
-  onSubmit?: (filters: SearchFilters) => void;
+  onSubmit?: (filters: ApartmentSearchFilters) => void;
   onClear?: () => void;
+  errors?: Partial<Record<keyof ApartmentSearchFilters, string>>;
 };
 
 const ROOM_OPTIONS = [1, 2, 3, 4, 5];
@@ -36,10 +27,11 @@ export default function SearchForm({
   const [currency, setCurrency] = useState<'USD' | 'GEL'>('USD');
   const [priceFrom, setPriceFrom] = useState('');
   const [priceTo, setPriceTo] = useState('');
+  const [validationErrors, setValidationErrors] = useState<Partial<Record<string, string>>>({});
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit?.({
+    const result = apartmentSearchSchema.safeParse({
       project,
       block,
       sizeFrom,
@@ -49,6 +41,17 @@ export default function SearchForm({
       priceFrom,
       priceTo,
     });
+    if (!result.success) {
+      const flat = result.error.flatten().fieldErrors;
+      setValidationErrors(
+        Object.fromEntries(
+          Object.entries(flat).map(([k, msgs]) => [k, msgs?.[0] ?? ''])
+        )
+      );
+      return;
+    }
+    setValidationErrors({});
+    onSubmit?.(result.data);
   };
 
   const handleClear = () => {
@@ -119,18 +122,27 @@ export default function SearchForm({
             <input
               type="text"
               value={sizeFrom}
-              onChange={(e) => setSizeFrom(e.target.value)}
+              onChange={(e) => { setSizeFrom(e.target.value); setValidationErrors((p) => ({ ...p, sizeFrom: undefined })); }}
               placeholder="From"
-              className="w-1/2 h-10 bg-pale-gray/10 border border-secondary-grey rounded-xl px-4 font-montserrat text-seu-body-sm text-dark-green placeholder:text-secondary-grey focus:outline-none focus:border-dark-green"
+              className={cn(
+                'w-1/2 h-10 bg-pale-gray/10 border rounded-xl px-4 font-montserrat text-seu-body-sm text-dark-green placeholder:text-secondary-grey focus:outline-none',
+                validationErrors.sizeFrom ? 'border-red' : 'border-secondary-grey focus:border-dark-green'
+              )}
             />
             <input
               type="text"
               value={sizeTo}
-              onChange={(e) => setSizeTo(e.target.value)}
+              onChange={(e) => { setSizeTo(e.target.value); setValidationErrors((p) => ({ ...p, sizeTo: undefined })); }}
               placeholder="To"
-              className="w-1/2 h-10 bg-pale-gray/10 border border-secondary-grey rounded-xl px-4 font-montserrat text-seu-body-sm text-dark-green placeholder:text-secondary-grey focus:outline-none focus:border-dark-green"
+              className={cn(
+                'w-1/2 h-10 bg-pale-gray/10 border rounded-xl px-4 font-montserrat text-seu-body-sm text-dark-green placeholder:text-secondary-grey focus:outline-none',
+                validationErrors.sizeTo ? 'border-red' : 'border-secondary-grey focus:border-dark-green'
+              )}
             />
           </div>
+          {validationErrors.sizeFrom && (
+            <p className="mt-1 font-montserrat text-seu-caption-sm text-red">{validationErrors.sizeFrom}</p>
+          )}
         </div>
 
         {/* Rooms */}
@@ -199,18 +211,27 @@ export default function SearchForm({
             <input
               type="text"
               value={priceFrom}
-              onChange={(e) => setPriceFrom(e.target.value)}
+              onChange={(e) => { setPriceFrom(e.target.value); setValidationErrors((p) => ({ ...p, priceFrom: undefined })); }}
               placeholder="From"
-              className="w-24 h-10 bg-pale-gray/10 border border-secondary-grey rounded-xl px-4 font-montserrat text-seu-body-sm text-dark-green placeholder:text-secondary-grey focus:outline-none focus:border-dark-green"
+              className={cn(
+                'w-24 h-10 bg-pale-gray/10 border rounded-xl px-4 font-montserrat text-seu-body-sm text-dark-green placeholder:text-secondary-grey focus:outline-none',
+                validationErrors.priceFrom ? 'border-red' : 'border-secondary-grey focus:border-dark-green'
+              )}
             />
             <input
               type="text"
               value={priceTo}
-              onChange={(e) => setPriceTo(e.target.value)}
+              onChange={(e) => { setPriceTo(e.target.value); setValidationErrors((p) => ({ ...p, priceTo: undefined })); }}
               placeholder="To"
-              className="w-24 h-10 bg-pale-gray/10 border border-secondary-grey rounded-xl px-4 font-montserrat text-seu-body-sm text-dark-green placeholder:text-secondary-grey focus:outline-none focus:border-dark-green"
+              className={cn(
+                'w-24 h-10 bg-pale-gray/10 border rounded-xl px-4 font-montserrat text-seu-body-sm text-dark-green placeholder:text-secondary-grey focus:outline-none',
+                validationErrors.priceTo ? 'border-red' : 'border-secondary-grey focus:border-dark-green'
+              )}
             />
           </div>
+          {validationErrors.priceFrom && (
+            <p className="mt-1 font-montserrat text-seu-caption-sm text-red">{validationErrors.priceFrom}</p>
+          )}
         </div>
 
         {/* Actions */}
