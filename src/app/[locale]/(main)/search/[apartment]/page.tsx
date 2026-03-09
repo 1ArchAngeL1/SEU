@@ -24,7 +24,7 @@ export default function ApartmentDetailPage({
         <ApartmentDetailView apartment={apartment} />
         <Benefits />
         <SimilarApartments currentApartmentId={apartment.id} />
-        <SearchContactForm/>
+        <SearchContactForm />
       </div>
     </div>
   );

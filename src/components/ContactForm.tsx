@@ -18,7 +18,7 @@ export default function ContactForm({ className }: ContactFormProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
-    addContactRequest(formData).then(() => {})
+    addContactRequest(formData).then(() => {});
     setFormData({ name: '', phone: '', email: '' });
   };
 

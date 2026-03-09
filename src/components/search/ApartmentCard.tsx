@@ -29,53 +29,53 @@ export default function ApartmentCard({
 
   return (
     <Link href={`/search/${data.id}`}>
-    <div
-      onClick={onClick}
-      className={cn(
-        'relative w-full h-[499px] bg-[#FFFFFF1F] border border-pale-gray rounded-md overflow-hidden cursor-pointer transition-all hover:border-primary-green',
-        className
-      )}
-    >
-      {/* Apartment Name */}
-      <div className="absolute top-6 left-6">
-        <span className="font-montserrat font-medium text-seu-body text-white uppercase tracking-wide">
-          {data.name}
-        </span>
+      <div
+        onClick={onClick}
+        className={cn(
+          'relative w-full h-[499px] bg-[#FFFFFF1F] border border-pale-gray rounded-md overflow-hidden cursor-pointer transition-all hover:border-primary-green',
+          className
+        )}
+      >
+        {/* Apartment Name */}
+        <div className="absolute top-6 left-6">
+          <span className="font-montserrat font-medium text-seu-body text-white uppercase tracking-wide">
+            {data.name}
+          </span>
+        </div>
+
+        {/* Badges */}
+        <div className="absolute bottom-6 left-6 right-6 flex flex-wrap gap-2">
+          {/* Complex Name */}
+          <span className="px-3 py-1.5 bg-pale-gray/10 border border-secondary-grey rounded-lg font-montserrat text-seu-caption text-pale-gray uppercase">
+            {data.complex}
+          </span>
+
+          {/* Block */}
+          <span className="px-3 py-1.5 bg-pale-gray/10 border border-secondary-grey rounded-lg font-montserrat text-seu-caption text-pale-gray">
+            Block {data.block}
+          </span>
+
+          {/* Rooms */}
+          <span className="px-3 py-1.5 bg-pale-gray/10 border border-secondary-grey rounded-lg font-montserrat text-seu-caption text-pale-gray">
+            {data.rooms} {data.rooms === 1 ? 'Room' : 'Rooms'}
+          </span>
+
+          {/* Size */}
+          <span className="px-3 py-1.5 bg-pale-gray/10 border border-secondary-grey rounded-lg font-montserrat text-seu-caption text-pale-gray">
+            {data.size} m²
+          </span>
+
+          {/* Status */}
+          <span
+            className={cn(
+              'px-3 py-1.5 rounded-lg font-montserrat text-seu-caption text-white'
+              // statusColors[status]
+            )}
+          >
+            {/*{statusLabels[status]}*/}
+          </span>
+        </div>
       </div>
-
-      {/* Badges */}
-      <div className="absolute bottom-6 left-6 right-6 flex flex-wrap gap-2">
-        {/* Complex Name */}
-        <span className="px-3 py-1.5 bg-pale-gray/10 border border-secondary-grey rounded-lg font-montserrat text-seu-caption text-pale-gray uppercase">
-          {data.complex}
-        </span>
-
-        {/* Block */}
-        <span className="px-3 py-1.5 bg-pale-gray/10 border border-secondary-grey rounded-lg font-montserrat text-seu-caption text-pale-gray">
-          Block {data.block}
-        </span>
-
-        {/* Rooms */}
-        <span className="px-3 py-1.5 bg-pale-gray/10 border border-secondary-grey rounded-lg font-montserrat text-seu-caption text-pale-gray">
-          {data.rooms} {data.rooms === 1 ? 'Room' : 'Rooms'}
-        </span>
-
-        {/* Size */}
-        <span className="px-3 py-1.5 bg-pale-gray/10 border border-secondary-grey rounded-lg font-montserrat text-seu-caption text-pale-gray">
-          {data.size} m²
-        </span>
-
-        {/* Status */}
-        <span
-          className={cn(
-            'px-3 py-1.5 rounded-lg font-montserrat text-seu-caption text-white',
-            // statusColors[status]
-          )}
-        >
-          {/*{statusLabels[status]}*/}
-        </span>
-      </div>
-    </div>
     </Link>
   );
 }

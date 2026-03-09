@@ -12,7 +12,7 @@ export const apartmentSearchSchema = z
     block: z.string(),
     sizeFrom: optionalPositiveNumber,
     sizeTo: optionalPositiveNumber,
-    rooms: z.number().int().min(1).max(5).nullable(),
+    rooms: z.array(z.number().int().min(1).max(5)).nullable(),
     currency: z.enum(['USD', 'GEL']),
     priceFrom: optionalPositiveNumber,
     priceTo: optionalPositiveNumber,

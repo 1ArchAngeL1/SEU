@@ -8,7 +8,7 @@ import { LandingContactSection } from '@/components/landing/LandingContactSectio
 
 export default function Home() {
   return (
-    <main className={"bg-dark-green"}>
+    <main className={'bg-dark-green'}>
       <LandingHero />
       <LandingAboutSection />
       <OngoingSection />

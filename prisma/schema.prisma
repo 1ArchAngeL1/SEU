@@ -21,8 +21,8 @@ model Project {
   id        String     @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   address   String
-  buildings Building[]
   createdAt DateTime   @default(now())
+  buildings Building[]
 }
 
 model Building {
@@ -31,22 +31,23 @@ model Building {
   project    Project     @relation(fields: [projectId], references: [id])
   block      String
   floorCount Int
-  apartments Apartment[]
   createdAt  DateTime    @default(now())
+  apartments Apartment[]
 }
 
 model Apartment {
-  id           String     @id @default(auto()) @map("_id") @db.ObjectId
-  buildingId   String     @db.ObjectId
-  building     Building   @relation(fields: [buildingId], references: [id])
-  floor        Int
-  apartmentNo  String
-  totalSize    Float
-  mainSize     Float
+  id            String     @id @default(auto()) @map("_id") @db.ObjectId
+  buildingId    String     @db.ObjectId
+  building      Building   @relation(fields: [buildingId], references: [id])
+  floor         Int
+  apartmentNo   Int
+  totalSize     Float
+  mainSize      Float
   openSpaceSize Float
-  bedroomCount Int
-  rooms        RoomSpec[]
-  createdAt    DateTime   @default(now())
+  bedroomCount  Int
+  price         Float
+  rooms         RoomSpec[]
+  createdAt     DateTime   @default(now())
 }
 
 type RoomSpec {

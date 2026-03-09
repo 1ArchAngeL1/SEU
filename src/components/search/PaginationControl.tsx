@@ -35,7 +35,11 @@ function getPageNumbers(current: number, total: number): (number | '...')[] {
   return result;
 }
 
-export function PaginationControl({ currentPage, totalPages, onPageChange }: PaginationControlProps) {
+export function PaginationControl({
+  currentPage,
+  totalPages,
+  onPageChange,
+}: PaginationControlProps) {
   if (totalPages <= 1) return null;
 
   const pages = getPageNumbers(currentPage, totalPages);

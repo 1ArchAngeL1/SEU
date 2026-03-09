@@ -7,11 +7,13 @@ interface SimilarApartmentsProps {
   currentApartmentId?: number;
 }
 
-export function SimilarApartments({ currentApartmentId }: SimilarApartmentsProps) {
+export function SimilarApartments({
+  currentApartmentId,
+}: SimilarApartmentsProps) {
   // Get similar apartments (exclude current one, take first 8)
-  const similarApartments = DUMMY_APARTMENTS
-    .filter((apt) => apt.id !== currentApartmentId)
-    .slice(0, 8);
+  const similarApartments = DUMMY_APARTMENTS.filter(
+    (apt) => apt.id !== currentApartmentId
+  ).slice(0, 8);
 
   return (
     <div className="mt-32 px-10 pb-20">

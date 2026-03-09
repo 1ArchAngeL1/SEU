@@ -81,7 +81,7 @@ export function ApartmentDetailView({ apartment }: ApartmentDetailViewProps) {
         : apartment.floorPlanImages.threeD;
 
   return (
-    <div className={"px-10"}>
+    <div className={'px-10'}>
       <div className="flex items-center justify-between mb-12">
         <Link href="/search">
           <button className="flex items-center gap-2 border border-pale-gray/30 rounded-full px-5 py-2 font-montserrat text-seu-caption text-pale-gray hover:border-pale-gray transition-colors cursor-pointer">
@@ -312,7 +312,6 @@ export function ApartmentDetailView({ apartment }: ApartmentDetailViewProps) {
       </div>
 
       {/* Benefits Section */}
-
     </div>
   );
 }

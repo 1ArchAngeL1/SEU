@@ -1,7 +1,3 @@
-
-
 export const ApartmentPaging = () => {
-  return (
-    <></>
-  );
+  return <></>;
 };

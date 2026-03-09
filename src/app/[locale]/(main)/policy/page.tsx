@@ -23,18 +23,18 @@ export default function PolicyPage() {
       {/* Light Content */}
       <div className="bg-pale-gray py-16">
         <div className="max-w-[1920px] mx-auto px-12">
-        {Array.from({ length: 8 }, (_, i) => (
-          <div key={i} className="mb-8 last:mb-0">
-            {paragraphs.map((text, j) => (
-              <p
-                key={j}
-                className="font-montserrat font-normal text-seu-body-lg leading-[1.5rem] text-dark-green mb-4 last:mb-0"
-              >
-                {text}
-              </p>
-            ))}
-          </div>
-        ))}
+          {Array.from({ length: 8 }, (_, i) => (
+            <div key={i} className="mb-8 last:mb-0">
+              {paragraphs.map((text, j) => (
+                <p
+                  key={j}
+                  className="font-montserrat font-normal text-seu-body-lg leading-[1.5rem] text-dark-green mb-4 last:mb-0"
+                >
+                  {text}
+                </p>
+              ))}
+            </div>
+          ))}
         </div>
       </div>
     </main>

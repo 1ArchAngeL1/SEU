@@ -36,9 +36,7 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} antialiased min-h-dvh`}
       >
-        <MyReactQueryProvider>
-          {children}
-        </MyReactQueryProvider>
+        <MyReactQueryProvider>{children}</MyReactQueryProvider>
       </body>
     </html>
   );
