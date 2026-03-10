@@ -3,29 +3,24 @@
 import { useEffect, useState } from 'react';
 import { Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import {
-  apartmentSearchSchema,
-  ApartmentSearchFilters,
-} from '@/lib/schemas/apartmentSearch';
+import { apartmentSearchSchema } from '@/lib/schemas/apartmentSearch';
 import { getAllProjects } from '@/prisma/project';
 import { ProjectDTO } from '@/model/dto/project.dto';
 import { getAllBuildingsByProjectId } from '@/prisma/building';
-import { getAllApartmentsFiltered } from '@/prisma/apartment';
-import { ApartmentDTO, ApartmentFilterDTO } from '@/model/dto/apartment.dto';
+import { ApartmentFilterDTO } from '@/model/dto/apartment.dto';
 import { BuildingDTO } from '@/model/dto/building.dto';
 
 export type SearchFormProps = {
   className?: string;
-  onSubmit?: (filters: ApartmentSearchFilters) => void;
+  onSearch?: (filter: ApartmentFilterDTO) => void;
   onClear?: () => void;
-  errors?: Partial<Record<keyof ApartmentSearchFilters, string>>;
 };
 
 const ROOM_OPTIONS = [1, 2, 3, 4, 5];
 
 export default function SearchForm({
   className,
-  onSubmit,
+  onSearch,
   onClear,
 }: SearchFormProps) {
   const [project, setProject] = useState('');
@@ -41,7 +36,6 @@ export default function SearchForm({
   >({});
   const [projects, setProjects] = useState<ProjectDTO[]>([]);
   const [buildings, setBuildings] = useState<BuildingDTO[]>([]);
-  const [apartments, setApartments] = useState<ApartmentDTO[]>([]);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -85,23 +79,16 @@ export default function SearchForm({
       return;
     }
     setValidationErrors({});
-    // onSubmit?.(result.data);
 
-    filterApartments({
-      buildingId: result.data.block,
+    onSearch?.({
+      buildingId: result.data.block || undefined,
       sizeFrom: result.data.sizeFrom,
       sizeTo: result.data.sizeTo,
       selectedRooms: result.data.rooms,
       priceFrom: result.data.priceFrom,
       priceTo: result.data.priceTo,
-    }).then(() => {});
+    });
   };
-
-  const filterApartments = async (filter: ApartmentFilterDTO) => {
-    const fetchedApartments = await getAllApartmentsFiltered(filter);
-    console.log(fetchedApartments);
-    setApartments(fetchedApartments);
-  }
 
   const handleClear = () => {
     setProject('');

@@ -1,21 +1,55 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import SearchForm from '@/components/search/SearchForm';
 import { ApartmentCardGridView } from '@/components/search/ApartmentCardGridView';
 import { PaginationControl } from '@/components/search/PaginationControl';
-import { DUMMY_APARTMENTS } from '@/components/search/dummyApartments';
+import { getAllApartmentsFiltered } from '@/prisma/apartment';
+import { ApartmentDTO, ApartmentFilterDTO } from '@/model/dto/apartment.dto';
 
 const ITEMS_PER_PAGE = 40;
 
 export default function SearchPage() {
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [apartments, setApartments] = useState<ApartmentDTO[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [activeFilter, setActiveFilter] = useState<ApartmentFilterDTO>({
+    selectedRooms: null,
+  });
 
-  const totalPages = Math.ceil(DUMMY_APARTMENTS.length / ITEMS_PER_PAGE);
-  const pagedData = DUMMY_APARTMENTS.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
+  const fetchApartments = useCallback(
+    async (filter: ApartmentFilterDTO, page: number) => {
+      setLoading(true);
+      try {
+        const result = await getAllApartmentsFiltered(filter, {
+          page,
+          pageSize: ITEMS_PER_PAGE,
+        });
+        setApartments(result.items);
+        setTotalPages(result.totalPages);
+      } catch (error) {
+        console.error('Failed to fetch apartments:', error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    []
   );
+
+  useEffect(() => {
+    fetchApartments(activeFilter, currentPage);
+  }, [activeFilter, currentPage, fetchApartments]);
+
+  function handleSearch(filter: ApartmentFilterDTO) {
+    setActiveFilter(filter);
+    setCurrentPage(1);
+  }
+
+  function handleClear() {
+    setActiveFilter({ selectedRooms: null });
+    setCurrentPage(1);
+  }
 
   function handlePageChange(page: number) {
     setCurrentPage(page);
@@ -29,10 +63,24 @@ export default function SearchPage() {
           APARTMENTS.
         </h1>
 
-        <SearchForm />
+        <SearchForm onSearch={handleSearch} onClear={handleClear} />
 
-        <div className={'bg-dark-green'}>
-          <ApartmentCardGridView data={pagedData} />
+        <div className="bg-dark-green">
+          {loading ? (
+            <div className="flex items-center justify-center py-20">
+              <span className="font-montserrat text-seu-body text-pale-gray">
+                Loading apartments...
+              </span>
+            </div>
+          ) : apartments.length === 0 ? (
+            <div className="flex items-center justify-center py-20">
+              <span className="font-montserrat text-seu-body text-secondary-grey">
+                No apartments found
+              </span>
+            </div>
+          ) : (
+            <ApartmentCardGridView data={apartments} />
+          )}
           <PaginationControl
             currentPage={currentPage}
             totalPages={totalPages}

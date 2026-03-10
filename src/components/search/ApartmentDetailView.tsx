@@ -14,9 +14,18 @@ import {
   Waves,
 } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
-import { RoomDetailIcon } from '@/components/search/ApartmentCardGridView';
 
 type ViewMode = '3D' | '2D' | 'Plan';
+
+type RoomDetailIcon =
+  | 'bedroom'
+  | 'hall'
+  | 'balcony'
+  | 'bathroom'
+  | 'kitchen'
+  | 'storage'
+  | 'living'
+  | 'wc';
 
 interface RoomDetail {
   name: string;

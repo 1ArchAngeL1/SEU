@@ -1,12 +1,12 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { ApartmentData } from '@/components/search/ApartmentCardGridView';
+import { ApartmentDTO } from '@/model/dto/apartment.dto';
 import { Link } from '@/i18n/navigation';
 
 export type ApartmentCardProps = {
   className?: string;
-  data: ApartmentData;
+  data: ApartmentDTO;
   onClick?: () => void;
 };
 
@@ -15,18 +15,6 @@ export default function ApartmentCard({
   data,
   onClick,
 }: ApartmentCardProps) {
-  const statusColors = {
-    available: 'bg-primary-green',
-    sold: 'bg-red',
-    reserved: 'bg-secondary-grey',
-  };
-
-  const statusLabels = {
-    available: 'Available',
-    sold: 'Sold',
-    reserved: 'Reserved',
-  };
-
   return (
     <Link href={`/search/${data.id}`}>
       <div
@@ -39,40 +27,44 @@ export default function ApartmentCard({
         {/* Apartment Name */}
         <div className="absolute top-6 left-6">
           <span className="font-montserrat font-medium text-seu-body text-white uppercase tracking-wide">
-            {data.name}
+            Apartment #{data.apartmentNo}
           </span>
         </div>
 
         {/* Badges */}
         <div className="absolute bottom-6 left-6 right-6 flex flex-wrap gap-2">
-          {/* Complex Name */}
-          <span className="px-3 py-1.5 bg-pale-gray/10 border border-secondary-grey rounded-lg font-montserrat text-seu-caption text-pale-gray uppercase">
-            {data.complex}
-          </span>
+          {/* Project Name */}
+          {data.building?.project && (
+            <span className="px-3 py-1.5 bg-pale-gray/10 border border-secondary-grey rounded-lg font-montserrat text-seu-caption text-pale-gray uppercase">
+              {data.building.project.name}
+            </span>
+          )}
 
           {/* Block */}
+          {data.building && (
+            <span className="px-3 py-1.5 bg-pale-gray/10 border border-secondary-grey rounded-lg font-montserrat text-seu-caption text-pale-gray">
+              Block {data.building.block}
+            </span>
+          )}
+
+          {/* Floor */}
           <span className="px-3 py-1.5 bg-pale-gray/10 border border-secondary-grey rounded-lg font-montserrat text-seu-caption text-pale-gray">
-            Block {data.block}
+            Floor {data.floor}
           </span>
 
           {/* Rooms */}
           <span className="px-3 py-1.5 bg-pale-gray/10 border border-secondary-grey rounded-lg font-montserrat text-seu-caption text-pale-gray">
-            {data.rooms} {data.rooms === 1 ? 'Room' : 'Rooms'}
+            {data.bedroomCount} {data.bedroomCount === 1 ? 'Room' : 'Rooms'}
           </span>
 
           {/* Size */}
           <span className="px-3 py-1.5 bg-pale-gray/10 border border-secondary-grey rounded-lg font-montserrat text-seu-caption text-pale-gray">
-            {data.size} m²
+            {data.totalSize} m²
           </span>
 
-          {/* Status */}
-          <span
-            className={cn(
-              'px-3 py-1.5 rounded-lg font-montserrat text-seu-caption text-white'
-              // statusColors[status]
-            )}
-          >
-            {/*{statusLabels[status]}*/}
+          {/* Price */}
+          <span className="px-3 py-1.5 bg-primary-green/20 border border-primary-green rounded-lg font-montserrat text-seu-caption text-primary-green">
+            ${data.price.toLocaleString()}
           </span>
         </div>
       </div>

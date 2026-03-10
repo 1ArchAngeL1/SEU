@@ -21,20 +21,37 @@ export async function addApartment(data: {
   rooms: RoomSpec[];
   price: number;
 }) {
-  await prisma.apartment.create({ data });
+  for (let i = 0; i < 50; i ++) {
+    await prisma.apartment.create({ data });
+  }
 }
 
 export async function getAllApartmentsByBuildingId(buildingId: string): Promise<ApartmentDTO[]> {
   return prisma.apartment.findMany({ where: { buildingId } });
 }
 
+export async function getApartmentById(id: string): Promise<ApartmentDTO | null> {
+  return prisma.apartment.findUnique({
+    where: { id },
+    include: {
+      building: {
+        include: {
+          project: true,
+        },
+      },
+    },
+  });
+}
+
 export async function getAllApartmentsFiltered(
   filter: ApartmentFilterDTO,
   pageable: PageableDTO = { page: 1, pageSize: 10 }
 ): Promise<PageableResult<ApartmentDTO>> {
-  const where: Record<string, unknown> = {
-    buildingId: filter.buildingId,
-  };
+  const where: Record<string, unknown> = {};
+
+  if (filter.buildingId) {
+    where.buildingId = filter.buildingId;
+  }
 
   if (filter.sizeFrom !== undefined || filter.sizeTo !== undefined) {
     where.totalSize = {
@@ -43,7 +60,7 @@ export async function getAllApartmentsFiltered(
     };
   }
 
-  if (filter.selectedRooms !== null && filter.selectedRooms.length > 0) {
+  if (filter.selectedRooms !== null && filter.selectedRooms !== undefined && filter.selectedRooms.length > 0) {
     where.bedroomCount = { in: filter.selectedRooms };
   }
 
@@ -60,6 +77,13 @@ export async function getAllApartmentsFiltered(
       skip: (pageable.page - 1) * pageable.pageSize,
       take: pageable.pageSize,
       orderBy: { createdAt: 'desc' },
+      include: {
+        building: {
+          include: {
+            project: true,
+          },
+        },
+      },
     }),
     prisma.apartment.count({ where }),
   ]);

@@ -1,74 +1,9 @@
 import ApartmentCard from '@/components/search/ApartmentCard';
+import { ApartmentDTO } from '@/model/dto/apartment.dto';
 
 export type ApartmentCardGridViewProps = {
-  data: Array<ApartmentData>;
+  data: ApartmentDTO[];
 };
-
-export type RoomDetailIcon =
-  | 'bedroom'
-  | 'hall'
-  | 'balcony'
-  | 'bathroom'
-  | 'kitchen'
-  | 'storage'
-  | 'living'
-  | 'wc';
-
-export interface RoomDetail {
-  name: string;
-  size: number;
-  icon: RoomDetailIcon;
-}
-
-export type ApartmentStatus = 'available' | 'sold' | 'reserved';
-
-export interface FloorPlanImages {
-  plan: string;
-  twoD: string;
-  threeD: string;
-}
-
-export interface ApartmentData {
-  // Identity
-  id: number;
-  apartmentNumber: number;
-  name: string;
-
-  // Location
-  complex: string;
-  block: string;
-  floor: number;
-  totalFloors: number;
-
-  // Sizing
-  size: number;
-  totalSize: number;
-  mainSize: number;
-  openSpace: number;
-
-  // Rooms
-  rooms: number;
-  roomDetails: RoomDetail[];
-
-  // Pricing
-  priceUSD: number;
-  priceGEL: number;
-
-  // Status & availability
-  status: ApartmentStatus;
-  completionYear: number;
-
-  // Amenities
-  parking: boolean;
-  storageUnit: boolean;
-
-  // Media
-  images: string[];
-  floorPlanImages: FloorPlanImages;
-
-  // Content
-  description: string;
-}
 
 export const ApartmentCardGridView = ({ data }: ApartmentCardGridViewProps) => {
   return (

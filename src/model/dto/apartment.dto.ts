@@ -9,11 +9,20 @@ export interface ApartmentDTO {
   openSpaceSize: number;
   bedroomCount: number;
   price: number;
-  rooms: RoomSpec[]
+  rooms: RoomSpec[];
+  building?: {
+    id: string;
+    block: string;
+    floorCount: number;
+    project?: {
+      id: string;
+      name: string;
+    };
+  };
 }
 
 export interface ApartmentFilterDTO {
-  buildingId: string;
+  buildingId?: string;
   sizeFrom?: number;
   sizeTo?: number;
   selectedRooms: number[] | null;
