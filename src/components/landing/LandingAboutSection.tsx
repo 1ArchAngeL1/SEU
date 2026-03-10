@@ -56,7 +56,7 @@ export default function LandingAboutSection() {
                 poster=""
                 onEnded={() => setIsPlaying(false)}
               >
-                <source src="" type="video/mp4" />
+                <source src="video/video.mp4" type="video/mp4" />
               </video>
 
               <button
