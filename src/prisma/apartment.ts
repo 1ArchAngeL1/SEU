@@ -3,6 +3,7 @@
 import prisma from '@/lib/prisma';
 import type { RoomType } from '@prisma/client';
 import { ApartmentDTO, ApartmentFilterDTO } from '@/model/dto/apartment.dto';
+import type { PageableDTO, PageableResult } from '@/model/dto/pageable.dto';
 
 type RoomSpec = {
   roomType: RoomType;
@@ -27,7 +28,10 @@ export async function getAllApartmentsByBuildingId(buildingId: string): Promise<
   return prisma.apartment.findMany({ where: { buildingId } });
 }
 
-export async function getAllApartmentsFiltered(filter: ApartmentFilterDTO): Promise<ApartmentDTO[]> {
+export async function getAllApartmentsFiltered(
+  filter: ApartmentFilterDTO,
+  pageable: PageableDTO = { page: 1, pageSize: 10 }
+): Promise<PageableResult<ApartmentDTO>> {
   const where: Record<string, unknown> = {
     buildingId: filter.buildingId,
   };
@@ -50,7 +54,23 @@ export async function getAllApartmentsFiltered(filter: ApartmentFilterDTO): Prom
     };
   }
 
-  return prisma.apartment.findMany({ where });
+  const [items, total] = await Promise.all([
+    prisma.apartment.findMany({
+      where,
+      skip: (pageable.page - 1) * pageable.pageSize,
+      take: pageable.pageSize,
+      orderBy: { createdAt: 'desc' },
+    }),
+    prisma.apartment.count({ where }),
+  ]);
+
+  return {
+    items,
+    total,
+    page: pageable.page,
+    pageSize: pageable.pageSize,
+    totalPages: Math.ceil(total / pageable.pageSize),
+  };
 }
 
 export async function getApartmentsPaged(page: number = 1, pageSize: number = 10) {
