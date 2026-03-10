@@ -1,13 +1,10 @@
 'use server';
 
 import prisma from '@/lib/prisma';
-import { BuildingDTO } from '@/model/dto/building.dto';
+import { BuildingDTO, CreateBuildingDTO } from '@/model/dto/building.dto';
+import { PageableDTO } from '@/model/dto/pageable.dto';
 
-export async function addBuilding(data: {
-  projectId: string;
-  block: string;
-  floorCount: number;
-}) {
+export async function createBuilding(data: CreateBuildingDTO) {
   await prisma.building.create({ data });
 }
 
@@ -15,7 +12,7 @@ export async function getAllBuildingsByProjectId(projectId: string): Promise<Bui
   return prisma.building.findMany({ where: { projectId } });
 }
 
-export async function getBuildingsPaged(page: number = 1, pageSize: number = 10) {
+export async function getBuildingsPaged({ page, pageSize }: PageableDTO) {
   const [items, total] = await Promise.all([
     prisma.building.findMany({
       skip: (page - 1) * pageSize,

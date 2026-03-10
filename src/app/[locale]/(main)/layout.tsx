@@ -1,4 +1,4 @@
-import HeaderNew from '@/components/header/HeaderNew';
+import SeuHeader from '@/components/header/SeuHeader';
 import FooterUpperWrapper from '@/components/FooterUpperWrapper';
 import FooterLower from '@/components/FooterLower';
 
@@ -9,7 +9,7 @@ export default function MainLayout({
 }) {
   return (
     <>
-      <HeaderNew />
+      <SeuHeader />
       {children}
       <FooterUpperWrapper />
       <FooterLower />

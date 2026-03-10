@@ -1,5 +1,3 @@
-import { getBindingIdentifiers } from '@babel/types';
-
 export type ErrorResp = {
   key: string;
   message: string;
@@ -58,7 +56,8 @@ export interface PageInfo {
   totalPages: number;
 }
 
-export type OptimisticData<T> = T & {
-  _isPending?: boolean;
-  _tempId?: string;
-};
+export interface ContactDTO {
+  email: string;
+  phone: string;
+  name: string;
+}

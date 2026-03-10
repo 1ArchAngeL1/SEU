@@ -2,13 +2,13 @@ import ContactForm from '@/components/ContactForm';
 import ContactPanel from '@/components/ContactPanel';
 import FooterUpper from '@/components/FooterUpper';
 import FooterLower from '@/components/FooterLower';
-import HeaderNew from '@/components/header/HeaderNew';
+import SeuHeader from '@/components/header/SeuHeader';
 import ChooseApartment from '@/components/ChooseApartment';
 
 const Page = () => {
   return (
     <div>
-      <HeaderNew />
+      <SeuHeader />
       <ContactForm />
       <ContactPanel />
       <FooterUpper />

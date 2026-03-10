@@ -2,35 +2,20 @@
 
 import prisma from '@/lib/prisma';
 import type { RoomType } from '@prisma/client';
-import { ApartmentDTO, ApartmentFilterDTO } from '@/model/dto/apartment.dto';
+import {
+  ApartmentDTO,
+  ApartmentFilterDTO,
+  CreateApartmentDTO,
+} from '@/model/dto/apartment.dto';
 import type { PageableDTO, PageableResult } from '@/model/dto/pageable.dto';
 
-type RoomSpec = {
-  roomType: RoomType;
-  size: number;
-};
-
-export async function addApartment(data: {
-  buildingId: string;
-  floor: number;
-  apartmentNo: number;
-  totalSize: number;
-  mainSize: number;
-  openSpaceSize: number;
-  bedroomCount: number;
-  rooms: RoomSpec[];
-  price: number;
-}) {
-  for (let i = 0; i < 50; i ++) {
-    await prisma.apartment.create({ data });
-  }
+export async function createApartment(data: CreateApartmentDTO): Promise<void> {
+  await prisma.apartment.create({ data });
 }
 
-export async function getAllApartmentsByBuildingId(buildingId: string): Promise<ApartmentDTO[]> {
-  return prisma.apartment.findMany({ where: { buildingId } });
-}
-
-export async function getApartmentById(id: string): Promise<ApartmentDTO | null> {
+export async function getApartmentById(
+  id: string
+): Promise<ApartmentDTO | null> {
   return prisma.apartment.findUnique({
     where: { id },
     include: {
@@ -60,7 +45,11 @@ export async function getAllApartmentsFiltered(
     };
   }
 
-  if (filter.selectedRooms !== null && filter.selectedRooms !== undefined && filter.selectedRooms.length > 0) {
+  if (
+    filter.selectedRooms !== null &&
+    filter.selectedRooms !== undefined &&
+    filter.selectedRooms.length > 0
+  ) {
     where.bedroomCount = { in: filter.selectedRooms };
   }
 
@@ -94,26 +83,6 @@ export async function getAllApartmentsFiltered(
     page: pageable.page,
     pageSize: pageable.pageSize,
     totalPages: Math.ceil(total / pageable.pageSize),
-  };
-}
-
-export async function getApartmentsPaged(page: number = 1, pageSize: number = 10) {
-  const [items, total] = await Promise.all([
-    prisma.apartment.findMany({
-      skip: (page - 1) * pageSize,
-      take: pageSize,
-      orderBy: { createdAt: 'desc' },
-      include: { building: true },
-    }),
-    prisma.apartment.count(),
-  ]);
-
-  return {
-    items,
-    total,
-    page,
-    pageSize,
-    totalPages: Math.ceil(total / pageSize),
   };
 }
 

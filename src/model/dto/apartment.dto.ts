@@ -25,7 +25,19 @@ export interface ApartmentFilterDTO {
   buildingId?: string;
   sizeFrom?: number;
   sizeTo?: number;
-  selectedRooms: number[] | null;
+  selectedRooms?: number[] | null;
   priceFrom?: number;
   priceTo?: number;
+}
+
+export interface CreateApartmentDTO {
+  buildingId: string;
+  floor: number;
+  apartmentNo: number;
+  totalSize: number;
+  mainSize: number;
+  openSpaceSize: number;
+  bedroomCount: number;
+  rooms: RoomSpec[];
+  price: number;
 }

@@ -2,6 +2,7 @@
 
 import prisma from '@/lib/prisma';
 import { ProjectDTO } from '@/model/dto/project.dto';
+import { PageableDTO } from '@/model/dto/pageable.dto';
 
 export async function addProject(data: { name: string; address: string }) {
   await prisma.project.create({ data });
@@ -17,10 +18,7 @@ export async function getAllProjects(): Promise<ProjectDTO[]> {
   return [];
 }
 
-export async function getProjectsPaged(
-  page: number = 1,
-  pageSize: number = 10
-) {
+export async function getProjectsPaged({ page, pageSize }: PageableDTO) {
   const [items, total] = await Promise.all([
     prisma.project.findMany({
       skip: (page - 1) * pageSize,
