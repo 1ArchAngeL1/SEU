@@ -1,11 +1,11 @@
 'use server';
 
 import prisma from '@/lib/prisma';
-import type { RoomType } from '@prisma/client';
 import {
   ApartmentDTO,
   ApartmentFilterDTO,
   CreateApartmentDTO,
+  UpdateApartmentDTO,
 } from '@/model/dto/apartment.dto';
 import type { PageableDTO, PageableResult } from '@/model/dto/pageable.dto';
 
@@ -13,11 +13,34 @@ export async function createApartment(data: CreateApartmentDTO): Promise<void> {
   await prisma.apartment.create({ data });
 }
 
+export async function updateApartment(
+  id: string,
+  data: UpdateApartmentDTO
+): Promise<void> {
+  await prisma.apartment.update({ where: { id }, data });
+}
+
 export async function getApartmentById(
   id: string
 ): Promise<ApartmentDTO | null> {
   return prisma.apartment.findUnique({
     where: { id },
+    include: {
+      building: {
+        include: {
+          project: true,
+        },
+      },
+    },
+  });
+}
+
+export async function getApartmentsByBuildingId(
+  buildingId: string
+): Promise<ApartmentDTO[]> {
+  return prisma.apartment.findMany({
+    where: { buildingId },
+    orderBy: [{ floor: 'asc' }, { position: 'asc' }],
     include: {
       building: {
         include: {
@@ -58,6 +81,10 @@ export async function getAllApartmentsFiltered(
       ...(filter.priceFrom !== undefined && { gte: filter.priceFrom }),
       ...(filter.priceTo !== undefined && { lte: filter.priceTo }),
     };
+  }
+
+  if (filter.status) {
+    where.status = filter.status;
   }
 
   const [items, total] = await Promise.all([

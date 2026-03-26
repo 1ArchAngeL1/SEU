@@ -1,11 +1,19 @@
 'use server';
 
 import prisma from '@/lib/prisma';
-import { ProjectDTO } from '@/model/dto/project.dto';
+import { ProjectDTO, UpdateProjectDTO } from '@/model/dto/project.dto';
 import { PageableDTO } from '@/model/dto/pageable.dto';
 
 export async function addProject(data: { name: string; address: string }) {
   await prisma.project.create({ data });
+}
+
+export async function updateProject(id: string, data: UpdateProjectDTO) {
+  await prisma.project.update({ where: { id }, data });
+}
+
+export async function getProjectById(id: string): Promise<ProjectDTO | null> {
+  return prisma.project.findUnique({ where: { id } });
 }
 
 export async function getAllProjects(): Promise<ProjectDTO[]> {

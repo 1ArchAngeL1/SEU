@@ -46,6 +46,8 @@ model Apartment {
   openSpaceSize Float
   bedroomCount  Int
   price         Float
+  status        ApartmentStatus @default(AVAILABLE)
+  position      Int
   rooms         RoomSpec[]
   createdAt     DateTime   @default(now())
 }
@@ -63,4 +65,10 @@ enum RoomType {
   BALCONY
   HALLWAY
   STORAGE
+}
+
+enum ApartmentStatus {
+  AVAILABLE
+  RESERVED
+  SOLD
 }

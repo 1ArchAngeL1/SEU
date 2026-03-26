@@ -3,3 +3,8 @@ export interface ProjectDTO {
   name: string;
   address: string;
 }
+
+export interface UpdateProjectDTO {
+  name?: string;
+  address?: string;
+}

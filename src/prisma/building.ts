@@ -1,14 +1,31 @@
 'use server';
 
 import prisma from '@/lib/prisma';
-import { BuildingDTO, CreateBuildingDTO } from '@/model/dto/building.dto';
+import {
+  BuildingDTO,
+  CreateBuildingDTO,
+  UpdateBuildingDTO,
+} from '@/model/dto/building.dto';
 import { PageableDTO } from '@/model/dto/pageable.dto';
 
 export async function createBuilding(data: CreateBuildingDTO) {
   await prisma.building.create({ data });
 }
 
-export async function getAllBuildingsByProjectId(projectId: string): Promise<BuildingDTO[]> {
+export async function updateBuilding(id: string, data: UpdateBuildingDTO) {
+  await prisma.building.update({ where: { id }, data });
+}
+
+export async function getBuildingById(id: string) {
+  return prisma.building.findUnique({
+    where: { id },
+    include: { project: true },
+  });
+}
+
+export async function getAllBuildingsByProjectId(
+  projectId: string
+): Promise<BuildingDTO[]> {
   return prisma.building.findMany({ where: { projectId } });
 }
 
