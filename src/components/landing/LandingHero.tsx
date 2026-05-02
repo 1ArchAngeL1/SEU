@@ -166,7 +166,7 @@ export default function LandingHero() {
 
           {/* Bottom content */}
           <div className="absolute bottom-0 left-0 right-0 z-10 p-8 lg:p-12">
-            <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-end justify-between gap-8">
+            <div className="mx-auto flex flex-col lg:flex-row items-end justify-between gap-8">
               {/* Project meta */}
               <div className="flex flex-col gap-3 max-w-xl">
                 <div className="flex items-center gap-2 flex-wrap">
@@ -179,10 +179,6 @@ export default function LandingHero() {
                     </span>
                   )}
                 </div>
-
-                <p className="text-seu-caption text-secondary-grey font-montserrat">
-                  Choose, register, move in
-                </p>
 
                 <h1 className="font-[--font-bodoni] text-seu-title lg:text-seu-title-xl text-white leading-none uppercase">
                   {pickLocale(project.name)}

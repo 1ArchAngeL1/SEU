@@ -3,33 +3,27 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useAllProjects } from '@/hooks/queries/use-projects';
 import { pickLocale } from '@/lib/i18n-helpers';
-import {
-  Field,
-  FormFooter,
-  FormSelect,
-  Input,
-  Section,
-  Switch,
-  Tabs,
-  Textarea,
-  useTabs,
-} from './form-primitives';
-import FileUpload from './FileUpload';
-import FileGallery from './FileGallery';
+import { FormFooter, Tabs, useTabs } from './form-primitives';
+import BuildingBasicsSection, {
+  type BuildingBasicsSectionValue,
+} from './building-sections/BuildingBasicsSection';
+import BuildingSizesSection, {
+  type BuildingSizesSectionValue,
+} from './building-sections/BuildingSizesSection';
+import BuildingDescriptionSection, {
+  type BuildingDescriptionSectionValue,
+} from './building-sections/BuildingDescriptionSection';
+import BuildingMediaSection, {
+  type BuildingMediaSectionValue,
+} from './building-sections/BuildingMediaSection';
+import BuildingFlagsSection, {
+  type BuildingFlagsSectionValue,
+} from './building-sections/BuildingFlagsSection';
 import type {
   Building,
   BuildingStatus,
   CreateBuildingInput,
 } from '@/model/types/api';
-
-const BUILDING_STATUSES: BuildingStatus[] = [
-  'planning',
-  'foundation',
-  'under_construction',
-  'finishing',
-  'completed',
-  'occupied',
-];
 
 const TABS = [
   { id: 'basics', label: 'Basics' },
@@ -89,6 +83,12 @@ export default function BuildingForm({
 
   function update<K extends keyof typeof form>(k: K, v: (typeof form)[K]) {
     setForm((p) => ({ ...p, [k]: v }));
+  }
+
+  // Narrow `update` to a section's key set. The parent form holds every key in
+  // every section value, so this cast is sound at runtime.
+  function sectionUpdate<V extends Partial<typeof form>>() {
+    return update as unknown as <K extends keyof V>(k: K, v: V[K]) => void;
   }
 
   useEffect(() => {
@@ -162,164 +162,59 @@ export default function BuildingForm({
       <Tabs tabs={TABS} active={tabs.active} onChange={tabs.setActive} />
 
       {tabs.active === 'basics' && (
-        <div className="space-y-5">
-          {!fixedProjectId && !isEdit && (
-            <Section cols={1}>
-              <Field label="Project">
-                <FormSelect
-                  value={form.project}
-                  onChange={(v) => update('project', v)}
-                  placeholder="Select a project"
-                  options={projects.map((p) => ({
-                    value: p.id,
-                    label: pickLocale(p.name),
-                  }))}
-                />
-              </Field>
-            </Section>
-          )}
-          <Section title="Name">
-            <Field label="Name (Georgian)">
-              <Input
-                value={form.nameKa}
-                onChange={(e) => update('nameKa', e.target.value)}
-                placeholder="ბლოკი A"
-              />
-            </Field>
-            <Field label="Name (English)">
-              <Input
-                value={form.nameEn}
-                onChange={(e) => update('nameEn', e.target.value)}
-                placeholder="Block A"
-              />
-            </Field>
-          </Section>
-          <Section title="Identity" cols={3}>
-            <Field label="Block code" hint="Single letter, e.g. A">
-              <Input
-                value={form.block}
-                onChange={(e) => update('block', e.target.value)}
-                placeholder="A"
-                className="uppercase"
-              />
-            </Field>
-            <Field label="Status">
-              <FormSelect
-                value={form.status}
-                onChange={(v) => update('status', v as BuildingStatus)}
-                options={BUILDING_STATUSES.map((s) => ({ value: s }))}
-              />
-            </Field>
-            <Field label="Address">
-              <Input
-                value={form.address}
-                onChange={(e) => update('address', e.target.value)}
-                placeholder="optional override"
-              />
-            </Field>
-          </Section>
-        </div>
+        <BuildingBasicsSection
+          value={{
+            project: form.project,
+            nameKa: form.nameKa,
+            nameEn: form.nameEn,
+            block: form.block,
+            status: form.status,
+            address: form.address,
+          }}
+          update={sectionUpdate<BuildingBasicsSectionValue>()}
+          showProjectPicker={!fixedProjectId && !isEdit}
+          projectOptions={projects.map((p) => ({
+            id: p.id,
+            label: pickLocale(p.name),
+          }))}
+        />
       )}
 
       {tabs.active === 'sizes' && (
-        <div className="space-y-5">
-          <Section title="Basement & parking" cols={2}>
-            <Field
-              label="Basement floors"
-              hint="Above-ground floors are managed individually under the building."
-            >
-              <Input
-                type="number"
-                min="0"
-                value={form.basementFloors}
-                onChange={(e) => update('basementFloors', e.target.value)}
-              />
-            </Field>
-            <Field label="Parking spaces">
-              <Input
-                type="number"
-                min="0"
-                value={form.parkingSpaces}
-                onChange={(e) => update('parkingSpaces', e.target.value)}
-              />
-            </Field>
-          </Section>
-          <Section title="Area" cols={3}>
-            <Field label="Total size (m²)">
-              <Input
-                type="number"
-                min="0"
-                step="0.01"
-                value={form.totalSize}
-                onChange={(e) => update('totalSize', e.target.value)}
-              />
-            </Field>
-            <Field label="Livable area (m²)">
-              <Input
-                type="number"
-                min="0"
-                step="0.01"
-                value={form.livableArea}
-                onChange={(e) => update('livableArea', e.target.value)}
-              />
-            </Field>
-            <Field label="Construction progress (%)">
-              <Input
-                type="number"
-                min="0"
-                max="100"
-                value={form.constructionProgress}
-                onChange={(e) =>
-                  update('constructionProgress', e.target.value)
-                }
-              />
-            </Field>
-          </Section>
-        </div>
+        <BuildingSizesSection
+          value={{
+            basementFloors: form.basementFloors,
+            parkingSpaces: form.parkingSpaces,
+            totalSize: form.totalSize,
+            livableArea: form.livableArea,
+            constructionProgress: form.constructionProgress,
+          }}
+          update={sectionUpdate<BuildingSizesSectionValue>()}
+        />
       )}
 
       {tabs.active === 'description' && (
-        <div className="space-y-3">
-          <Field label="Description (Georgian)">
-            <Textarea
-              value={form.descriptionKa}
-              onChange={(e) => update('descriptionKa', e.target.value)}
-            />
-          </Field>
-          <Field label="Description (English)">
-            <Textarea
-              value={form.descriptionEn}
-              onChange={(e) => update('descriptionEn', e.target.value)}
-            />
-          </Field>
-        </div>
+        <BuildingDescriptionSection
+          value={{
+            descriptionKa: form.descriptionKa,
+            descriptionEn: form.descriptionEn,
+          }}
+          update={sectionUpdate<BuildingDescriptionSectionValue>()}
+        />
       )}
 
       {tabs.active === 'media' && (
-        <div className="space-y-5">
-          <Field label="Main image" hint="Block cover image">
-            <FileUpload
-              value={form.mainImage || undefined}
-              onChange={(v) => update('mainImage', v ?? '')}
-            />
-          </Field>
-          <Field label="Gallery">
-            <FileGallery
-              value={form.images}
-              onChange={(v) => update('images', v)}
-            />
-          </Field>
-        </div>
+        <BuildingMediaSection
+          value={{ mainImage: form.mainImage, images: form.images }}
+          update={sectionUpdate<BuildingMediaSectionValue>()}
+        />
       )}
 
       {tabs.active === 'flags' && (
-        <div className="space-y-4">
-          <Switch
-            label="Active"
-            checked={form.isActive}
-            onChange={(v) => update('isActive', v)}
-          />
-        </div>
+        <BuildingFlagsSection
+          value={{ isActive: form.isActive }}
+          update={sectionUpdate<BuildingFlagsSectionValue>()}
+        />
       )}
 
       <FormFooter

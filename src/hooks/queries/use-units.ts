@@ -14,6 +14,7 @@ import type {
   UpdateUnitInput,
   UnitFilter,
   PaginationInput,
+  Room,
 } from '@/model/types/api';
 
 export const unitsKeys = {
@@ -89,6 +90,18 @@ export function useUpdateUnitStatus() {
       qc.invalidateQueries({ queryKey: unitsKeys.all });
       qc.invalidateQueries({ queryKey: ['buildings'] });
       qc.invalidateQueries({ queryKey: ['projects'] });
+    },
+  });
+}
+
+export function useSyncUnitRooms() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, rooms }: { id: string; rooms: Room[] }) =>
+      unitsService.syncRooms(id, rooms),
+    onSuccess: (_data, { id }) => {
+      qc.invalidateQueries({ queryKey: unitsKeys.detail(id) });
+      qc.invalidateQueries({ queryKey: unitsKeys.lists() });
     },
   });
 }

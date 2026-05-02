@@ -1,33 +1,27 @@
 'use client';
 
 import { useState } from 'react';
-import {
-  Field,
-  FormFooter,
-  FormSelect,
-  Input,
-  Section,
-  Switch,
-  Tabs,
-  Textarea,
-  useTabs,
-} from './form-primitives';
-import FileUpload from './FileUpload';
-import FileGallery from './FileGallery';
+import { FormFooter, Tabs, useTabs } from './form-primitives';
+import ProjectBasicsSection, {
+  type ProjectBasicsSectionValue,
+} from './project-sections/ProjectBasicsSection';
+import ProjectDescriptionSection, {
+  type ProjectDescriptionSectionValue,
+} from './project-sections/ProjectDescriptionSection';
+import ProjectPricingSection, {
+  type ProjectPricingSectionValue,
+} from './project-sections/ProjectPricingSection';
+import ProjectMediaSection, {
+  type ProjectMediaSectionValue,
+} from './project-sections/ProjectMediaSection';
+import ProjectFlagsSection, {
+  type ProjectFlagsSectionValue,
+} from './project-sections/ProjectFlagsSection';
 import type {
   CreateProjectInput,
   Project,
   ProjectStatus,
 } from '@/model/types/api';
-
-const PROJECT_STATUSES: ProjectStatus[] = [
-  'planning',
-  'presale',
-  'under_construction',
-  'completed',
-  'sold_out',
-  'archived',
-];
 
 const TABS = [
   { id: 'basics', label: 'Basics' },
@@ -90,6 +84,12 @@ export default function ProjectForm({
 
   function update<K extends keyof typeof form>(k: K, v: (typeof form)[K]) {
     setForm((p) => ({ ...p, [k]: v }));
+  }
+
+  // Narrow `update` to a section's key set. The parent form holds every key in
+  // every section value, so this cast is sound at runtime.
+  function sectionUpdate<V extends Partial<typeof form>>() {
+    return update as unknown as <K extends keyof V>(k: K, v: V[K]) => void;
   }
 
   function buildPayload(): CreateProjectInput {
@@ -176,200 +176,62 @@ export default function ProjectForm({
       <Tabs tabs={TABS} active={tabs.active} onChange={tabs.setActive} />
 
       {tabs.active === 'basics' && (
-        <div className="space-y-5">
-          <Section title="Name">
-            <Field label="Name (Georgian)">
-              <Input
-                value={form.nameKa}
-                onChange={(e) => update('nameKa', e.target.value)}
-                placeholder="სახელი"
-              />
-            </Field>
-            <Field label="Name (English)">
-              <Input
-                value={form.nameEn}
-                onChange={(e) => update('nameEn', e.target.value)}
-                placeholder="e.g. SEU Varketili"
-              />
-            </Field>
-          </Section>
-          <Section title="Location" cols={3}>
-            <Field label="Address" className="sm:col-span-3">
-              <Input
-                value={form.address}
-                onChange={(e) => update('address', e.target.value)}
-                placeholder="e.g. Vazha-Pshavela Ave 76"
-              />
-            </Field>
-            <Field label="City">
-              <Input
-                value={form.city}
-                onChange={(e) => update('city', e.target.value)}
-                placeholder="Tbilisi"
-              />
-            </Field>
-            <Field label="District">
-              <Input
-                value={form.district}
-                onChange={(e) => update('district', e.target.value)}
-                placeholder="Saburtalo"
-              />
-            </Field>
-            <Field label="Status">
-              <FormSelect
-                value={form.status}
-                onChange={(v) => update('status', v as ProjectStatus)}
-                options={PROJECT_STATUSES.map((s) => ({ value: s }))}
-              />
-            </Field>
-          </Section>
-        </div>
+        <ProjectBasicsSection
+          value={{
+            nameKa: form.nameKa,
+            nameEn: form.nameEn,
+            address: form.address,
+            city: form.city,
+            district: form.district,
+            status: form.status,
+          }}
+          update={sectionUpdate<ProjectBasicsSectionValue>()}
+        />
       )}
 
       {tabs.active === 'description' && (
-        <div className="space-y-3">
-          <Field label="Description (Georgian)">
-            <Textarea
-              value={form.descriptionKa}
-              onChange={(e) => update('descriptionKa', e.target.value)}
-              placeholder="აღწერა ქართულად"
-            />
-          </Field>
-          <Field label="Description (English)">
-            <Textarea
-              value={form.descriptionEn}
-              onChange={(e) => update('descriptionEn', e.target.value)}
-              placeholder="English description"
-            />
-          </Field>
-        </div>
+        <ProjectDescriptionSection
+          value={{
+            descriptionKa: form.descriptionKa,
+            descriptionEn: form.descriptionEn,
+          }}
+          update={sectionUpdate<ProjectDescriptionSectionValue>()}
+        />
       )}
 
       {tabs.active === 'pricing' && (
-        <div className="space-y-5">
-          <Section title="Dates" cols={3}>
-            <Field label="Start date">
-              <Input
-                type="date"
-                value={form.startDate}
-                onChange={(e) => update('startDate', e.target.value)}
-              />
-            </Field>
-            <Field label="Expected completion">
-              <Input
-                type="date"
-                value={form.expectedCompletionDate}
-                onChange={(e) =>
-                  update('expectedCompletionDate', e.target.value)
-                }
-              />
-            </Field>
-            <Field label="Actual completion">
-              <Input
-                type="date"
-                value={form.actualCompletionDate}
-                onChange={(e) =>
-                  update('actualCompletionDate', e.target.value)
-                }
-              />
-            </Field>
-            <Field label="Total land area (m²)">
-              <Input
-                type="number"
-                min="0"
-                step="0.01"
-                value={form.totalLandArea}
-                onChange={(e) => update('totalLandArea', e.target.value)}
-              />
-            </Field>
-          </Section>
-          <Section title="Price range" cols={3}>
-            <Field label="Currency">
-              <FormSelect
-                value={form.priceCurrency}
-                onChange={(v) => update('priceCurrency', v)}
-                options={[
-                  { value: 'USD', label: 'USD ($)' },
-                  { value: 'GEL', label: 'GEL (₾)' },
-                  { value: 'EUR', label: 'EUR (€)' },
-                ]}
-              />
-            </Field>
-            <Field label="Min price">
-              <Input
-                type="number"
-                min="0"
-                value={form.minPrice}
-                onChange={(e) => update('minPrice', e.target.value)}
-              />
-            </Field>
-            <Field label="Max price">
-              <Input
-                type="number"
-                min="0"
-                value={form.maxPrice}
-                onChange={(e) => update('maxPrice', e.target.value)}
-              />
-            </Field>
-            <Field label="Min price / m²">
-              <Input
-                type="number"
-                min="0"
-                value={form.minPricePerSqm}
-                onChange={(e) => update('minPricePerSqm', e.target.value)}
-              />
-            </Field>
-            <Field label="Max price / m²">
-              <Input
-                type="number"
-                min="0"
-                value={form.maxPricePerSqm}
-                onChange={(e) => update('maxPricePerSqm', e.target.value)}
-              />
-            </Field>
-          </Section>
-        </div>
+        <ProjectPricingSection
+          value={{
+            startDate: form.startDate,
+            expectedCompletionDate: form.expectedCompletionDate,
+            actualCompletionDate: form.actualCompletionDate,
+            totalLandArea: form.totalLandArea,
+            priceCurrency: form.priceCurrency,
+            minPrice: form.minPrice,
+            maxPrice: form.maxPrice,
+            minPricePerSqm: form.minPricePerSqm,
+            maxPricePerSqm: form.maxPricePerSqm,
+          }}
+          update={sectionUpdate<ProjectPricingSectionValue>()}
+        />
       )}
 
       {tabs.active === 'media' && (
-        <div className="space-y-5">
-          <Field label="Main image" hint="Cover image used in cards and headers">
-            <FileUpload
-              value={form.mainImage || undefined}
-              onChange={(v) => update('mainImage', v ?? '')}
-            />
-          </Field>
-          <Field label="Gallery">
-            <FileGallery
-              value={form.images}
-              onChange={(v) => update('images', v)}
-            />
-          </Field>
-          <Field label="Video URL" hint="External video link (YouTube, Vimeo, …)">
-            <Input
-              value={form.videoUrl}
-              onChange={(e) => update('videoUrl', e.target.value)}
-              placeholder="https://youtube.com/…"
-            />
-          </Field>
-        </div>
+        <ProjectMediaSection
+          value={{
+            mainImage: form.mainImage,
+            images: form.images,
+            videoUrl: form.videoUrl,
+          }}
+          update={sectionUpdate<ProjectMediaSectionValue>()}
+        />
       )}
 
       {tabs.active === 'flags' && (
-        <div className="space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <Switch
-              label="Active"
-              checked={form.isActive}
-              onChange={(v) => update('isActive', v)}
-            />
-            <Switch
-              label="Featured"
-              checked={form.isFeatured}
-              onChange={(v) => update('isFeatured', v)}
-            />
-          </div>
-        </div>
+        <ProjectFlagsSection
+          value={{ isActive: form.isActive, isFeatured: form.isFeatured }}
+          update={sectionUpdate<ProjectFlagsSectionValue>()}
+        />
       )}
 
       <FormFooter

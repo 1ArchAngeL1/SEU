@@ -2,20 +2,17 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import {
-  ChevronLeft,
-  Plus,
-  Grid3X3,
-  List,
-  Loader2,
-  Building2,
-} from 'lucide-react';
-import StatusBadge from './StatusBadge';
+import { Loader2 } from 'lucide-react';
 import ChessBoard from './chess/ChessBoard';
 import StoryView from './story/StoryView';
 import UnitForm from './forms/UnitForm';
 import FloorForm from './forms/FloorForm';
 import FloorsPanel from './FloorsPanel';
+import BuildingDetailBreadcrumbs from './building-detail/BuildingDetailBreadcrumbs';
+import BuildingDetailHero from './building-detail/BuildingDetailHero';
+import BuildingStatsRow from './building-detail/BuildingStatsRow';
+import UnitsViewToggle from './building-detail/UnitsViewToggle';
+import NoFloorsWarning from './building-detail/NoFloorsWarning';
 import {
   Dialog,
   DialogContent,
@@ -29,7 +26,6 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet';
-import { cn } from '@/lib/utils';
 import { pickLocale } from '@/lib/i18n-helpers';
 import { useBuilding } from '@/hooks/queries/use-buildings';
 import {
@@ -37,6 +33,7 @@ import {
   useCreateUnit,
   useUpdateUnit,
   useDeleteUnit,
+  useSyncUnitRooms,
 } from '@/hooks/queries/use-units';
 import {
   useFloorsByBuilding,
@@ -48,6 +45,7 @@ import type {
   CreateFloorInput,
   CreateUnitInput,
   Floor,
+  Room,
   Unit,
   UpdateFloorInput,
 } from '@/model/types/api';
@@ -81,6 +79,7 @@ export default function BuildingDetailClient({
   const createUnitMut = useCreateUnit();
   const updateUnitMut = useUpdateUnit();
   const deleteUnitMut = useDeleteUnit();
+  const syncRoomsMut = useSyncUnitRooms();
   const createFloorMut = useCreateFloor();
   const updateFloorMut = useUpdateFloor();
   const deleteFloorMut = useDeleteFloor();
@@ -171,14 +170,15 @@ export default function BuildingDetailClient({
     await deleteFloorMut.mutateAsync(floor.id);
   }
 
-  async function handleUnitSubmit(data: CreateUnitInput) {
+  async function handleUnitSubmit(data: CreateUnitInput, rooms: Room[]) {
     if (editingUnit) {
       const { building: _b, project: _p, ...update } = data;
       void _b;
       void _p;
       await updateUnitMut.mutateAsync({ id: editingUnit.id, input: update });
+      await syncRoomsMut.mutateAsync({ id: editingUnit.id, rooms });
     } else {
-      await createUnitMut.mutateAsync(data);
+      await createUnitMut.mutateAsync({ ...data, rooms });
     }
     setUnitDialogOpen(false);
     setEditingUnit(null);
@@ -208,14 +208,6 @@ export default function BuildingDetailClient({
     setUnitDialogOpen(false);
     setEditingUnit(null);
   }
-
-  const btnToggle = (active: boolean) =>
-    cn(
-      'flex items-center gap-1.5 px-3 py-1.5 rounded-md font-montserrat font-medium text-seu-caption-sm transition-colors',
-      active
-        ? 'bg-primary-green/15 text-admin-fg border border-primary-green/30'
-        : 'text-admin-fg-muted hover:text-admin-fg border border-transparent'
-    );
 
   if (buildingQ.isLoading) {
     return (
@@ -248,76 +240,25 @@ export default function BuildingDetailClient({
 
   return (
     <div>
-      <div className="flex items-center gap-2 mb-4 font-montserrat text-seu-caption-sm">
-        <Link
-          href="/admin/buildings"
-          className="text-admin-fg-muted hover:text-admin-fg transition-colors flex items-center gap-1"
-        >
-          <ChevronLeft className="size-3.5" />
-          Buildings
-        </Link>
-        <span className="text-admin-fg-dim">/</span>
-        {projectId ? (
-          <Link
-            href={`/admin/projects/${projectId}`}
-            className="text-admin-fg-muted hover:text-admin-fg transition-colors"
-          >
-            {projectName}
-          </Link>
-        ) : (
-          <span className="text-admin-fg-muted">{projectName}</span>
-        )}
-        <span className="text-admin-fg-dim">/</span>
-        <span className="text-admin-fg">Block {building.block}</span>
-      </div>
+      <BuildingDetailBreadcrumbs
+        projectId={projectId}
+        projectName={projectName}
+        buildingBlock={building.block}
+      />
 
-      {/* Hero header */}
-      <div className="relative overflow-hidden rounded-2xl border border-admin-border-soft bg-admin-card-gradient mb-6">
-        <div className="absolute -top-20 -right-20 size-64 rounded-full bg-primary-green/10 blur-3xl pointer-events-none" />
-        <div className="relative p-6 sm:p-7 flex items-end justify-between gap-4 flex-wrap">
-          <div className="flex items-center gap-4 min-w-0">
-            <div className="size-16 rounded-xl border border-admin-border bg-admin-input grid place-items-center font-[--font-bodoni] text-seu-title text-admin-fg leading-none shrink-0">
-              {building.block}
-            </div>
-            <div className="min-w-0">
-              <div className="flex items-center gap-3 flex-wrap mb-1">
-                <h1 className="font-[--font-bodoni] font-normal text-seu-heading-lg text-admin-fg leading-none">
-                  Block {building.block}
-                </h1>
-                <StatusBadge status={building.status} />
-              </div>
-              <p className="text-seu-caption text-admin-fg-muted font-montserrat mt-1">
-                {pickLocale(building.name) || `Block ${building.block}`} ·{' '}
-                {aboveGroundFloorCount} floor
-                {aboveGroundFloorCount !== 1 ? 's' : ''}
-                {building.basementFloors > 0 &&
-                  ` · ${building.basementFloors} basement`}
-                {building.constructionProgress != null &&
-                  ` · ${building.constructionProgress}% built`}
-              </p>
-            </div>
-          </div>
-          <button
-            onClick={handleAddUnit}
-            className="bg-primary-green text-white font-montserrat font-medium text-seu-caption px-4 py-2 rounded-lg hover:bg-primary-green/85 transition-colors flex items-center gap-2 shadow-lg shadow-primary-green/20"
-          >
-            <Plus className="size-4" />
-            Add Unit
-          </button>
-        </div>
-      </div>
+      <BuildingDetailHero
+        building={building}
+        aboveGroundFloorCount={aboveGroundFloorCount}
+        onAddUnit={handleAddUnit}
+      />
 
-      {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
-        <StatPill label="Total" value={stats.total} />
-        <StatPill label="Available" value={stats.available} accent="emerald" />
-        <StatPill label="Reserved" value={stats.reserved} accent="amber" />
-        <StatPill label="Sold" value={stats.sold} accent="rose" />
-        <StatPill
-          label="Avg /m²"
-          value={`$${stats.avgPricePerM2.toLocaleString()}`}
-        />
-      </div>
+      <BuildingStatsRow
+        total={stats.total}
+        available={stats.available}
+        reserved={stats.reserved}
+        sold={stats.sold}
+        avgPricePerM2={stats.avgPricePerM2}
+      />
 
       <div className="grid lg:grid-cols-[20rem_1fr] gap-6">
         {/* Floors panel */}
@@ -329,50 +270,11 @@ export default function BuildingDetailClient({
             <h2 className="font-[--font-bodoni] text-seu-subheading-lg text-admin-fg leading-none">
               Units
             </h2>
-            <div className="flex gap-1 p-1 bg-admin-hover rounded-lg border border-admin-border-soft">
-              <button
-                onClick={() => setView('chess')}
-                className={btnToggle(view === 'chess')}
-              >
-                <Grid3X3 className="size-3.5" />
-                Chess
-              </button>
-              <button
-                onClick={() => setView('story')}
-                className={btnToggle(view === 'story')}
-              >
-                <List className="size-3.5" />
-                Storey
-              </button>
-            </div>
+            <UnitsViewToggle view={view} setView={setView} />
           </div>
 
           {floors.length === 0 && !floorsQ.isLoading && (
-            <div
-              className="rounded-xl border p-4 flex items-start gap-3"
-              style={{
-                borderColor: 'var(--admin-warning-border)',
-                background: 'var(--admin-warning-shell)',
-              }}
-            >
-              <Building2
-                className="size-4 mt-0.5 shrink-0"
-                style={{ color: 'var(--admin-warning-text)' }}
-              />
-              <div
-                className="font-montserrat text-seu-caption"
-                style={{ color: 'var(--admin-warning-text)' }}
-              >
-                No floors registered yet — add a floor on the left to start
-                placing units there.
-                <button
-                  onClick={handleAddFloor}
-                  className="block mt-2 text-primary-green hover:text-primary-green/80 transition-colors text-seu-caption-sm"
-                >
-                  + Add first floor
-                </button>
-              </div>
-            </div>
+            <NoFloorsWarning onAddFloor={handleAddFloor} />
           )}
 
           {unitsQ.isLoading ? (
@@ -471,40 +373,6 @@ export default function BuildingDetailClient({
           />
         </DialogContent>
       </Dialog>
-    </div>
-  );
-}
-
-function StatPill({
-  label,
-  value,
-  accent,
-}: {
-  label: string;
-  value: React.ReactNode;
-  accent?: 'emerald' | 'amber' | 'rose';
-}) {
-  const accentClass =
-    accent === 'emerald'
-      ? 'text-emerald-300'
-      : accent === 'amber'
-        ? 'text-amber-300'
-        : accent === 'rose'
-          ? 'text-rose-300'
-          : 'text-admin-fg';
-  return (
-    <div className="rounded-xl border border-admin-border bg-admin-card-gradient shadow-admin px-4 py-3">
-      <div className="text-seu-caption-sm font-montserrat text-admin-fg-muted uppercase tracking-wider">
-        {label}
-      </div>
-      <div
-        className={cn(
-          'font-[--font-bodoni] text-seu-heading leading-none mt-1 tabular-nums',
-          accentClass
-        )}
-      >
-        {value}
-      </div>
     </div>
   );
 }

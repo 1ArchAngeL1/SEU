@@ -33,6 +33,29 @@ export type FurnishingStatus =
   | 'finishing'
   | 'shell_and_core';
 
+export type RoomType =
+  | 'bedroom'
+  | 'living_room'
+  | 'kitchen'
+  | 'bathroom'
+  | 'toilet'
+  | 'hall'
+  | 'balcony'
+  | 'terrace'
+  | 'storage'
+  | 'other';
+
+export interface Room {
+  name: string;
+  type: RoomType;
+  size?: number;
+  description?: string;
+}
+
+export type SyncRoomsInput = {
+  rooms: Room[];
+};
+
 export type Currency = 'USD' | 'GEL' | 'EUR';
 
 export interface PriceRange {
@@ -158,7 +181,7 @@ export interface Unit {
   entrance?: string;
   status: UnitStatus;
   type: UnitType;
-  rooms?: number;
+  rooms?: Room[];
   bedrooms?: number;
   bathrooms?: number;
   livingRooms?: number;
@@ -273,7 +296,7 @@ export type CreateUnitInput = {
   entrance?: string;
   status?: UnitStatus;
   type: UnitType;
-  rooms?: number;
+  rooms?: Room[];
   bedrooms?: number;
   bathrooms?: number;
   livingRooms?: number;

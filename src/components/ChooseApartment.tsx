@@ -45,7 +45,7 @@ export default function ChooseApartment({
   return (
     <div
       className={cn(
-        'bg-dark-green rounded-2xl p-8 max-w-xl border border-secondary-grey',
+        'bg-dark-green rounded-2xl p-6 max-w-md border border-secondary-grey',
         className
       )}
     >

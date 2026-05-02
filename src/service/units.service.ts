@@ -3,6 +3,7 @@ import {
   apiGetPaginated,
   apiPost,
   apiPatch,
+  apiPut,
   apiDelete,
 } from '@/lib/api-client';
 import type {
@@ -14,6 +15,8 @@ import type {
   CreateUnitInput,
   UpdateUnitInput,
   PaginatedResult,
+  Room,
+  SyncRoomsInput,
   UnitFilter,
   PaginationInput,
 } from '@/model/types/api';
@@ -51,6 +54,10 @@ export const unitsService = {
 
   updateStatus(id: string, input: UpdateUnitStatusInput): Promise<Unit> {
     return apiPatch<Unit, UpdateUnitStatusInput>(`/units/${id}/status`, input);
+  },
+
+  syncRooms(id: string, rooms: Room[]): Promise<Unit> {
+    return apiPut<Unit, SyncRoomsInput>(`/units/${id}/rooms`, { rooms });
   },
 
   remove(id: string): Promise<{ deleted: boolean; id: string }> {

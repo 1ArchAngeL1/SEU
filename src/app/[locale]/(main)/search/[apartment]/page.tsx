@@ -84,7 +84,7 @@ export default function ApartmentDetailPage({
             roomDetails: (Array.isArray(unit.rooms) ? unit.rooms : []).map(
               (r) => ({
                 name: pickLocale(r.name),
-                size: r.size,
+                size: r.size ?? 0,
                 icon: nameToIcon(pickLocale(r.name)),
               })
             ),

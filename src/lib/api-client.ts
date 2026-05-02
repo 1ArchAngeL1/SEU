@@ -231,6 +231,14 @@ export async function apiPatch<T, TBody = unknown>(
   return unwrapSingle<T>(await rawRequest('PATCH', path, { ...options, body }));
 }
 
+export async function apiPut<T, TBody = unknown>(
+  path: string,
+  body?: TBody,
+  options?: Omit<ApiCallOptions<TBody>, 'body'>
+): Promise<T> {
+  return unwrapSingle<T>(await rawRequest('PUT', path, { ...options, body }));
+}
+
 export async function apiDelete<T = { deleted: boolean; id: string }>(
   path: string,
   options?: Omit<ApiCallOptions, 'body'>
