@@ -1,22 +1,27 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { apartmentSearchSchema } from '@/lib/schemas/apartmentSearch';
-import { getAllProjects } from '@/prisma/project';
-import { ProjectDTO } from '@/model/dto/project.dto';
-import { getAllBuildingsByProjectId } from '@/prisma/building';
-import { ApartmentFilterDTO } from '@/model/dto/apartment.dto';
-import { BuildingDTO } from '@/model/dto/building.dto';
+import { useAllProjects } from '@/hooks/queries/use-projects';
+import { useBuildingsByProject } from '@/hooks/queries/use-buildings';
+import { pickLocale } from '@/lib/i18n-helpers';
+import type { UnitFilter } from '@/model/types/api';
 
 export type SearchFormProps = {
   className?: string;
-  onSearch?: (filter: ApartmentFilterDTO) => void;
+  onSearch?: (filter: UnitFilter) => void;
   onClear?: () => void;
 };
 
 const ROOM_OPTIONS = [1, 2, 3, 4, 5];
+
+function toNum(v: string): number | undefined {
+  const t = v.trim();
+  if (!t) return undefined;
+  const n = Number(t);
+  return Number.isFinite(n) ? n : undefined;
+}
 
 export default function SearchForm({
   className,
@@ -24,90 +29,75 @@ export default function SearchForm({
   onClear,
 }: SearchFormProps) {
   const [project, setProject] = useState('');
-  const [block, setBlock] = useState('');
+  const [building, setBuilding] = useState('');
   const [sizeFrom, setSizeFrom] = useState('');
   const [sizeTo, setSizeTo] = useState('');
   const [selectedRooms, setSelectedRooms] = useState<number[]>([]);
   const [currency, setCurrency] = useState<'USD' | 'GEL'>('USD');
   const [priceFrom, setPriceFrom] = useState('');
   const [priceTo, setPriceTo] = useState('');
-  const [validationErrors, setValidationErrors] = useState<
-    Partial<Record<string, string>>
-  >({});
-  const [projects, setProjects] = useState<ProjectDTO[]>([]);
-  const [buildings, setBuildings] = useState<BuildingDTO[]>([]);
+  const [validationError, setValidationError] = useState('');
 
-  useEffect(() => {
-    const fetchProjects = async () => {
-      const fetchedProjects = await getAllProjects();
-      setProjects(fetchedProjects);
-    };
+  const projectsQ = useAllProjects();
+  const buildingsQ = useBuildingsByProject(project || undefined);
 
-    fetchProjects().then(() => {});
-  }, []);
-
-  useEffect(() => {
-    const fetchBuildings = async (projectId: string) => {
-      const fetchedBuildings = await getAllBuildingsByProjectId(projectId);
-      setBuildings(fetchedBuildings);
-    };
-
-    if (!project) return;
-
-    fetchBuildings(project).then(() => {});
-  }, [project]);
-
-  const handleSubmit = (e: React.FormEvent) => {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const result = apartmentSearchSchema.safeParse({
-      project,
-      block,
-      sizeFrom,
-      sizeTo,
-      rooms: selectedRooms.length > 0 ? selectedRooms : null,
-      currency,
-      priceFrom,
-      priceTo,
-    });
-    if (!result.success) {
-      const flat = result.error.flatten().fieldErrors;
-      setValidationErrors(
-        Object.fromEntries(
-          Object.entries(flat).map(([k, msgs]) => [k, msgs?.[0] ?? ''])
-        )
-      );
+    setValidationError('');
+
+    const sFrom = toNum(sizeFrom);
+    const sTo = toNum(sizeTo);
+    const pFrom = toNum(priceFrom);
+    const pTo = toNum(priceTo);
+
+    if (sFrom != null && sTo != null && sFrom > sTo) {
+      setValidationError('Size "from" must be ≤ "to"');
       return;
     }
-    setValidationErrors({});
+    if (pFrom != null && pTo != null && pFrom > pTo) {
+      setValidationError('Price "from" must be ≤ "to"');
+      return;
+    }
 
-    onSearch?.({
-      buildingId: result.data.block || undefined,
-      sizeFrom: result.data.sizeFrom,
-      sizeTo: result.data.sizeTo,
-      selectedRooms: result.data.rooms,
-      priceFrom: result.data.priceFrom,
-      priceTo: result.data.priceTo,
-    });
-  };
+    const filter: UnitFilter = {
+      project: project || undefined,
+      building: building || undefined,
+      minSize: sFrom,
+      maxSize: sTo,
+      minPrice: pFrom,
+      maxPrice: pTo,
+      status: 'available',
+    };
+    if (selectedRooms.length === 1) {
+      filter.bedrooms = selectedRooms[0];
+    } else if (selectedRooms.length > 1) {
+      filter.minBedrooms = Math.min(...selectedRooms);
+      filter.maxBedrooms = Math.max(...selectedRooms);
+    }
+    onSearch?.(filter);
+  }
 
-  const handleClear = () => {
+  function handleClear() {
     setProject('');
-    setBlock('');
+    setBuilding('');
     setSizeFrom('');
     setSizeTo('');
     setSelectedRooms([]);
     setCurrency('USD');
     setPriceFrom('');
     setPriceTo('');
+    setValidationError('');
     onClear?.();
-  };
+  }
+
+  const projects = projectsQ.data ?? [];
+  const buildings = buildingsQ.data ?? [];
 
   return (
     <form
       onSubmit={handleSubmit}
       className={cn('p-8 xl:p-16 pb-14 max-w-[1920px] mx-auto', className)}
     >
-      {/* Filter Label */}
       <div className="flex items-center gap-2 mb-12">
         <Search className="w-4 h-4 text-secondary-grey" />
         <span className="font-montserrat text-seu-caption text-secondary-grey uppercase tracking-wider">
@@ -115,49 +105,47 @@ export default function SearchForm({
         </span>
       </div>
 
-      {/* Filter Fields Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-6 mb-6">
-        {/* Project */}
         <div>
           <label className="block font-montserrat text-seu-caption text-dark-green mb-2">
             Project
           </label>
           <select
             value={project}
-            onChange={(e) => setProject(e.target.value)}
+            onChange={(e) => {
+              setProject(e.target.value);
+              setBuilding('');
+            }}
             className="w-full h-10 bg-pale-gray/10 border border-secondary-grey rounded-xl px-4 font-montserrat text-seu-body-sm text-secondary-grey focus:outline-none focus:border-dark-green appearance-none cursor-pointer"
           >
             <option value="">Choose</option>
-
-            {projects.map((project) => (
-              <option value={project.id} key={project.id}>
-                {project.name}
+            {projects.map((p) => (
+              <option value={p.id} key={p.id}>
+                {pickLocale(p.name)}
               </option>
             ))}
           </select>
         </div>
 
-        {/* Block */}
         <div>
           <label className="block font-montserrat text-seu-caption text-dark-green mb-2">
             Block
           </label>
           <select
-            value={block}
-            onChange={(e) => setBlock(e.target.value)}
-            className="w-full h-10 bg-pale-gray/10 border border-secondary-grey rounded-xl px-4 font-montserrat text-seu-body-sm text-secondary-grey focus:outline-none focus:border-dark-green appearance-none cursor-pointer"
+            value={building}
+            onChange={(e) => setBuilding(e.target.value)}
+            disabled={!project}
+            className="w-full h-10 bg-pale-gray/10 border border-secondary-grey rounded-xl px-4 font-montserrat text-seu-body-sm text-secondary-grey focus:outline-none focus:border-dark-green appearance-none cursor-pointer disabled:opacity-50"
           >
             <option value="">Choose</option>
-
-            {buildings.map((building) => (
-              <option value={building.id} key={building.id}>
-                {building.block}
+            {buildings.map((b) => (
+              <option value={b.id} key={b.id}>
+                Block {b.block}
               </option>
             ))}
           </select>
         </div>
 
-        {/* Size m2 */}
         <div>
           <label className="block font-montserrat text-seu-caption text-dark-green mb-2">
             Size m2
@@ -166,42 +154,20 @@ export default function SearchForm({
             <input
               type="text"
               value={sizeFrom}
-              onChange={(e) => {
-                setSizeFrom(e.target.value);
-                setValidationErrors((p) => ({ ...p, sizeFrom: undefined }));
-              }}
+              onChange={(e) => setSizeFrom(e.target.value)}
               placeholder="From"
-              className={cn(
-                'w-1/2 h-10 bg-pale-gray/10 border rounded-xl px-4 font-montserrat text-seu-body-sm text-dark-green placeholder:text-secondary-grey focus:outline-none',
-                validationErrors.sizeFrom
-                  ? 'border-red'
-                  : 'border-secondary-grey focus:border-dark-green'
-              )}
+              className="w-1/2 h-10 bg-pale-gray/10 border border-secondary-grey rounded-xl px-4 font-montserrat text-seu-body-sm text-dark-green placeholder:text-secondary-grey focus:outline-none focus:border-dark-green"
             />
             <input
               type="text"
               value={sizeTo}
-              onChange={(e) => {
-                setSizeTo(e.target.value);
-                setValidationErrors((p) => ({ ...p, sizeTo: undefined }));
-              }}
+              onChange={(e) => setSizeTo(e.target.value)}
               placeholder="To"
-              className={cn(
-                'w-1/2 h-10 bg-pale-gray/10 border rounded-xl px-4 font-montserrat text-seu-body-sm text-dark-green placeholder:text-secondary-grey focus:outline-none',
-                validationErrors.sizeTo
-                  ? 'border-red'
-                  : 'border-secondary-grey focus:border-dark-green'
-              )}
+              className="w-1/2 h-10 bg-pale-gray/10 border border-secondary-grey rounded-xl px-4 font-montserrat text-seu-body-sm text-dark-green placeholder:text-secondary-grey focus:outline-none focus:border-dark-green"
             />
           </div>
-          {validationErrors.sizeFrom && (
-            <p className="mt-1 font-montserrat text-seu-caption-sm text-red">
-              {validationErrors.sizeFrom}
-            </p>
-          )}
         </div>
 
-        {/* Rooms */}
         <div>
           <label className="block font-montserrat text-seu-caption text-dark-green mb-2">
             Rooms
@@ -232,9 +198,7 @@ export default function SearchForm({
         </div>
       </div>
 
-      {/* Price Row */}
       <div className="flex flex-wrap items-end gap-x-8 gap-y-4 mb-8">
-        {/* Price */}
         <div>
           <div className="flex items-center gap-3 mb-2">
             <label className="font-montserrat text-seu-caption text-dark-green">
@@ -271,42 +235,25 @@ export default function SearchForm({
             <input
               type="text"
               value={priceFrom}
-              onChange={(e) => {
-                setPriceFrom(e.target.value);
-                setValidationErrors((p) => ({ ...p, priceFrom: undefined }));
-              }}
+              onChange={(e) => setPriceFrom(e.target.value)}
               placeholder="From"
-              className={cn(
-                'w-24 h-10 bg-pale-gray/10 border rounded-xl px-4 font-montserrat text-seu-body-sm text-dark-green placeholder:text-secondary-grey focus:outline-none',
-                validationErrors.priceFrom
-                  ? 'border-red'
-                  : 'border-secondary-grey focus:border-dark-green'
-              )}
+              className="w-24 h-10 bg-pale-gray/10 border border-secondary-grey rounded-xl px-4 font-montserrat text-seu-body-sm text-dark-green placeholder:text-secondary-grey focus:outline-none focus:border-dark-green"
             />
             <input
               type="text"
               value={priceTo}
-              onChange={(e) => {
-                setPriceTo(e.target.value);
-                setValidationErrors((p) => ({ ...p, priceTo: undefined }));
-              }}
+              onChange={(e) => setPriceTo(e.target.value)}
               placeholder="To"
-              className={cn(
-                'w-24 h-10 bg-pale-gray/10 border rounded-xl px-4 font-montserrat text-seu-body-sm text-dark-green placeholder:text-secondary-grey focus:outline-none',
-                validationErrors.priceTo
-                  ? 'border-red'
-                  : 'border-secondary-grey focus:border-dark-green'
-              )}
+              className="w-24 h-10 bg-pale-gray/10 border border-secondary-grey rounded-xl px-4 font-montserrat text-seu-body-sm text-dark-green placeholder:text-secondary-grey focus:outline-none focus:border-dark-green"
             />
           </div>
-          {validationErrors.priceFrom && (
-            <p className="mt-1 font-montserrat text-seu-caption-sm text-red">
-              {validationErrors.priceFrom}
+          {validationError && (
+            <p className="mt-2 font-montserrat text-seu-caption-sm text-red">
+              {validationError}
             </p>
           )}
         </div>
 
-        {/* Actions */}
         <div className="flex items-center gap-6">
           <button
             type="submit"

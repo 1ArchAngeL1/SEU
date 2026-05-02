@@ -1,60 +1,37 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useState } from 'react';
 import SearchForm from '@/components/search/SearchForm';
 import { ApartmentCardGridView } from '@/components/search/ApartmentCardGridView';
 import { PaginationControl } from '@/components/search/PaginationControl';
-import { getAllApartmentsFiltered } from '@/prisma/apartment';
-import { ApartmentDTO, ApartmentFilterDTO } from '@/model/dto/apartment.dto';
+import { useUnitsList } from '@/hooks/queries/use-units';
+import type { UnitFilter } from '@/model/types/api';
 
 const ITEMS_PER_PAGE = 40;
 
 export default function SearchPage() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [apartments, setApartments] = useState<ApartmentDTO[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [activeFilter, setActiveFilter] = useState<ApartmentFilterDTO>({
-    selectedRooms: null,
-  });
+  const [page, setPage] = useState(1);
+  const [filter, setFilter] = useState<UnitFilter>({ status: 'available' });
 
-  const fetchApartments = useCallback(
-    async (filter: ApartmentFilterDTO, page: number) => {
-      setLoading(true);
-      try {
-        const result = await getAllApartmentsFiltered(filter, {
-          page,
-          pageSize: ITEMS_PER_PAGE,
-        });
-        setApartments(result.items);
-        setTotalPages(result.totalPages);
-      } catch (error) {
-        console.error('Failed to fetch apartments:', error);
-      } finally {
-        setLoading(false);
-      }
-    },
-    []
-  );
+  const unitsQ = useUnitsList(filter, { page, limit: ITEMS_PER_PAGE });
 
-  useEffect(() => {
-    fetchApartments(activeFilter, currentPage);
-  }, [activeFilter, currentPage, fetchApartments]);
-
-  function handleSearch(filter: ApartmentFilterDTO) {
-    setActiveFilter(filter);
-    setCurrentPage(1);
+  function handleSearch(next: UnitFilter) {
+    setFilter(next);
+    setPage(1);
   }
 
   function handleClear() {
-    setActiveFilter({ selectedRooms: null });
-    setCurrentPage(1);
+    setFilter({ status: 'available' });
+    setPage(1);
   }
 
-  function handlePageChange(page: number) {
-    setCurrentPage(page);
+  function handlePageChange(p: number) {
+    setPage(p);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+
+  const units = unitsQ.data?.items ?? [];
+  const totalPages = unitsQ.data?.pagination.totalPages ?? 1;
 
   return (
     <div className="bg-pale-gray min-h-screen pt-20 pb-40">
@@ -66,23 +43,23 @@ export default function SearchPage() {
         <SearchForm onSearch={handleSearch} onClear={handleClear} />
 
         <div className="bg-dark-green">
-          {loading ? (
+          {unitsQ.isLoading ? (
             <div className="flex items-center justify-center py-20">
               <span className="font-montserrat text-seu-body text-pale-gray">
-                Loading apartments...
+                Loading apartments…
               </span>
             </div>
-          ) : apartments.length === 0 ? (
+          ) : units.length === 0 ? (
             <div className="flex items-center justify-center py-20">
               <span className="font-montserrat text-seu-body text-secondary-grey">
                 No apartments found
               </span>
             </div>
           ) : (
-            <ApartmentCardGridView data={apartments} />
+            <ApartmentCardGridView data={units} />
           )}
           <PaginationControl
-            currentPage={currentPage}
+            currentPage={page}
             totalPages={totalPages}
             onPageChange={handlePageChange}
           />

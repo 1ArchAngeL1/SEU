@@ -1,12 +1,37 @@
 'use client';
 
-import { use, useEffect, useState } from 'react';
+import { use, useEffect } from 'react';
 import { notFound } from 'next/navigation';
 import { ApartmentDetailView } from '@/components/search/ApartmentDetailView';
 import { Benefits } from '@/components/search/Benefits';
 import { SimilarApartments } from '@/components/search/SimilarApartments';
 import { SearchContactForm } from '@/components/search/SearchContactForm';
-import { getApartmentById } from '@/prisma/apartment';
+import { useUnit } from '@/hooks/queries/use-units';
+import { unitsService } from '@/service/units.service';
+import { pickLocale } from '@/lib/i18n-helpers';
+import { fileUrl } from '@/lib/file-url';
+
+type RoomIcon =
+  | 'bedroom'
+  | 'hall'
+  | 'balcony'
+  | 'bathroom'
+  | 'kitchen'
+  | 'storage'
+  | 'living'
+  | 'wc';
+
+function nameToIcon(name: string): RoomIcon {
+  const n = name.toLowerCase();
+  if (n.includes('bed')) return 'bedroom';
+  if (n.includes('living')) return 'living';
+  if (n.includes('kitchen')) return 'kitchen';
+  if (n.includes('bath') || n.includes('wc')) return 'bathroom';
+  if (n.includes('balcon') || n.includes('terrace')) return 'balcony';
+  if (n.includes('hall') || n.includes('corridor')) return 'hall';
+  if (n.includes('storage')) return 'storage';
+  return 'bedroom';
+}
 
 export default function ApartmentDetailPage({
   params,
@@ -14,76 +39,69 @@ export default function ApartmentDetailPage({
   params: Promise<{ apartment: string }>;
 }) {
   const { apartment: id } = use(params);
-  const [apartment, setApartment] = useState<Awaited<
-    ReturnType<typeof getApartmentById>
-  > | null>(null);
-  const [loading, setLoading] = useState(true);
+  const unitQ = useUnit(id);
 
   useEffect(() => {
-    getApartmentById(id)
-      .then((apt) => {
-        setApartment(apt);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    if (id) {
+      unitsService.trackView(id).catch(() => {});
+    }
   }, [id]);
 
-  if (loading) {
+  if (unitQ.isLoading) {
     return (
       <div className="bg-dark-green min-h-screen flex items-center justify-center">
         <span className="font-montserrat text-seu-body text-pale-gray">
-          Loading...
+          Loading…
         </span>
       </div>
     );
   }
 
-  if (!apartment) notFound();
+  const unit = unitQ.data;
+  if (!unit) notFound();
+
+  const buildingObj =
+    typeof unit.building === 'string' ? null : unit.building;
+  const projectObj =
+    typeof unit.project === 'string' ? null : unit.project;
+  const buildingId =
+    typeof unit.building === 'string' ? unit.building : unit.building.id;
 
   return (
     <div className="bg-dark-green min-h-screen py-10">
       <div className="flex flex-col mx-auto">
         <ApartmentDetailView
           apartment={{
-            id: Number(apartment.id),
-            complex: apartment.building?.project?.name ?? '',
-            block: apartment.building?.block ?? '',
-            floor: apartment.floor,
-            apartmentNumber: apartment.apartmentNo,
-            totalSize: apartment.totalSize,
-            mainSize: apartment.mainSize,
-            openSpace: apartment.openSpaceSize,
-            rooms: apartment.bedroomCount,
-            roomDetails: apartment.rooms.map((r) => ({
-              name: r.roomType,
-              size: r.size,
-              icon: roomTypeToIcon(r.roomType),
-            })),
-            floorPlanImages: { plan: null, twoD: null, threeD: null },
+            id: unit.id,
+            complex: projectObj ? pickLocale(projectObj.name) : '',
+            block: unit.block,
+            floor: unit.floorNumber,
+            apartmentNumber: unit.unitNumber,
+            totalSize: unit.totalSize,
+            mainSize: unit.livableArea ?? unit.totalSize,
+            openSpace: unit.balconySize ?? 0,
+            rooms: unit.bedrooms ?? 0,
+            roomDetails: (Array.isArray(unit.rooms) ? unit.rooms : []).map(
+              (r) => ({
+                name: pickLocale(r.name),
+                size: r.size,
+                icon: nameToIcon(pickLocale(r.name)),
+              })
+            ),
+            floorPlanImages: {
+              plan: unit.floorPlanImage ? fileUrl(unit.floorPlanImage) : null,
+              twoD: null,
+              threeD: null,
+            },
           }}
         />
         <Benefits />
         <SimilarApartments
-          buildingId={apartment.building?.id}
-          currentApartmentId={apartment.id}
+          buildingId={buildingId}
+          currentApartmentId={unit.id}
         />
         <SearchContactForm />
       </div>
     </div>
   );
-}
-
-function roomTypeToIcon(
-  roomType: string
-): 'bedroom' | 'hall' | 'balcony' | 'bathroom' | 'kitchen' | 'storage' | 'living' | 'wc' {
-  const map: Record<string, ReturnType<typeof roomTypeToIcon>> = {
-    BEDROOM: 'bedroom',
-    LIVING_ROOM: 'living',
-    KITCHEN: 'kitchen',
-    BATHROOM: 'bathroom',
-    BALCONY: 'balcony',
-    HALLWAY: 'hall',
-    STORAGE: 'storage',
-  };
-  return map[roomType] ?? 'bedroom';
 }

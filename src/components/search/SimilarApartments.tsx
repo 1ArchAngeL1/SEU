@@ -1,9 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import ApartmentCard from '@/components/search/ApartmentCard';
-import { ApartmentDTO } from '@/model/dto/apartment.dto';
-import { getAllApartmentsFiltered } from '@/prisma/apartment';
+import { useUnitsList } from '@/hooks/queries/use-units';
 
 interface SimilarApartmentsProps {
   buildingId?: string;
@@ -14,20 +12,16 @@ export function SimilarApartments({
   buildingId,
   currentApartmentId,
 }: SimilarApartmentsProps) {
-  const [apartments, setApartments] = useState<ApartmentDTO[]>([]);
+  const unitsQ = useUnitsList(
+    { building: buildingId, status: 'available' },
+    { page: 1, limit: 9 }
+  );
 
-  useEffect(() => {
-    getAllApartmentsFiltered(
-      { buildingId, selectedRooms: null },
-      { page: 1, pageSize: 9 }
-    ).then((result) => {
-      setApartments(
-        result.items.filter((apt) => apt.id !== currentApartmentId).slice(0, 8)
-      );
-    });
-  }, [buildingId, currentApartmentId]);
+  const apartments = (unitsQ.data?.items ?? [])
+    .filter((u) => u.id !== currentApartmentId)
+    .slice(0, 8);
 
-  if (apartments.length === 0) return null;
+  if (!buildingId || apartments.length === 0) return null;
 
   return (
     <div className="mt-32 px-10 pb-20">

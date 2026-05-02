@@ -34,11 +34,11 @@ interface RoomDetail {
 }
 
 interface Apartment {
-  id: number;
+  id: string | number;
   complex: string;
   block: string;
   floor: number;
-  apartmentNumber: number;
+  apartmentNumber: string | number;
   totalSize: number;
   mainSize: number;
   openSpace: number;

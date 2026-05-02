@@ -1,20 +1,31 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { ApartmentDTO } from '@/model/dto/apartment.dto';
 import { Link } from '@/i18n/navigation';
+import { pickLocale } from '@/lib/i18n-helpers';
+import type { Unit } from '@/model/types/api';
 
 export type ApartmentCardProps = {
   className?: string;
-  data: ApartmentDTO;
+  data: Unit;
   onClick?: () => void;
 };
+
+function currencySymbol(c: string) {
+  if (c === 'USD') return '$';
+  if (c === 'EUR') return '€';
+  if (c === 'GEL') return '₾';
+  return '';
+}
 
 export default function ApartmentCard({
   className,
   data,
   onClick,
 }: ApartmentCardProps) {
+  const projectName =
+    typeof data.project === 'string' ? '' : pickLocale(data.project.name);
+
   return (
     <Link href={`/search/${data.id}`}>
       <div
@@ -24,47 +35,33 @@ export default function ApartmentCard({
           className
         )}
       >
-        {/* Apartment Name */}
         <div className="absolute top-6 left-6">
           <span className="font-montserrat font-medium text-seu-body text-white uppercase tracking-wide">
-            Apartment #{data.apartmentNo}
+            Apartment #{data.unitNumber}
           </span>
         </div>
 
-        {/* Badges */}
         <div className="absolute bottom-6 left-6 right-6 flex flex-wrap gap-2">
-          {/* Project Name */}
-          {data.building?.project && (
+          {projectName && (
             <span className="px-3 py-1.5 bg-pale-gray/10 border border-secondary-grey rounded-lg font-montserrat text-seu-caption text-pale-gray uppercase">
-              {data.building.project.name}
+              {projectName}
             </span>
           )}
-
-          {/* Block */}
-          {data.building && (
-            <span className="px-3 py-1.5 bg-pale-gray/10 border border-secondary-grey rounded-lg font-montserrat text-seu-caption text-pale-gray">
-              Block {data.building.block}
-            </span>
-          )}
-
-          {/* Floor */}
           <span className="px-3 py-1.5 bg-pale-gray/10 border border-secondary-grey rounded-lg font-montserrat text-seu-caption text-pale-gray">
-            Floor {data.floor}
+            Block {data.block}
           </span>
-
-          {/* Rooms */}
           <span className="px-3 py-1.5 bg-pale-gray/10 border border-secondary-grey rounded-lg font-montserrat text-seu-caption text-pale-gray">
-            {data.bedroomCount} {data.bedroomCount === 1 ? 'Room' : 'Rooms'}
+            Floor {data.floorNumber}
           </span>
-
-          {/* Size */}
+          <span className="px-3 py-1.5 bg-pale-gray/10 border border-secondary-grey rounded-lg font-montserrat text-seu-caption text-pale-gray">
+            {data.bedrooms ?? 0} {data.bedrooms === 1 ? 'Room' : 'Rooms'}
+          </span>
           <span className="px-3 py-1.5 bg-pale-gray/10 border border-secondary-grey rounded-lg font-montserrat text-seu-caption text-pale-gray">
             {data.totalSize} m²
           </span>
-
-          {/* Price */}
           <span className="px-3 py-1.5 bg-primary-green/20 border border-primary-green rounded-lg font-montserrat text-seu-caption text-primary-green">
-            ${data.price.toLocaleString()}
+            {currencySymbol(data.price.currency)}
+            {data.price.amount.toLocaleString()}
           </span>
         </div>
       </div>

@@ -1,43 +1,131 @@
 import { cn } from '@/lib/utils';
-import type { ApartmentStatus } from '@prisma/client';
+import type { UnitStatus, UnitType } from '@/model/types/api';
 
-const statusBg: Record<ApartmentStatus, string> = {
-  AVAILABLE: 'bg-navy-green/40 border-navy-green/60',
-  RESERVED: 'bg-[#c9a962]/20 border-[#c9a962]/40',
-  SOLD: 'bg-red/15 border-red/30',
+type StyleConfig = {
+  bg: string;
+  border: string;
+  hover: string;
+  text: string;
+  centerText: string;
+  centerColor: string;
 };
 
+const statusStyle: Record<UnitStatus, StyleConfig> = {
+  available: {
+    bg: 'bg-emerald-500/10',
+    border: 'border-emerald-500/50',
+    hover: 'hover:bg-emerald-500/20 hover:border-emerald-400',
+    text: 'text-emerald-700 dark:text-emerald-100',
+    centerText: '',
+    centerColor: 'text-emerald-600/80 dark:text-emerald-300/70',
+  },
+  reserved: {
+    bg: 'bg-amber-500/10',
+    border: 'border-amber-500/50',
+    hover: 'hover:bg-amber-500/20 hover:border-amber-400',
+    text: 'text-amber-700 dark:text-amber-50',
+    centerText: 'BOOKED',
+    centerColor: 'text-amber-700 dark:text-amber-300',
+  },
+  sold: {
+    bg: 'bg-admin-deep',
+    border: 'border-admin-border',
+    hover: 'hover:bg-admin-hover hover:border-admin-border-strong',
+    text: 'text-admin-fg-muted',
+    centerText: 'SOLD',
+    centerColor: 'text-admin-fg-muted font-bold',
+  },
+  not_for_sale: {
+    bg: 'bg-slate-500/10',
+    border: 'border-admin-border-soft',
+    hover: 'hover:bg-slate-500/20 hover:border-admin-border',
+    text: 'text-admin-fg-muted',
+    centerText: 'N/A',
+    centerColor: 'text-admin-fg-muted',
+  },
+};
+
+function topLeftLabel(type: UnitType, bedrooms?: number): string {
+  if (type === 'parking') return 'P';
+  if (type === 'storage') return 'ST';
+  if (type === 'commerce') return 'C';
+  // living
+  if (typeof bedrooms === 'number' && bedrooms > 0) return `${bedrooms}BR`;
+  return 'LV';
+}
+
 interface ChessCellProps {
-  apartmentNo: number;
+  label: string;
+  fullUnitNumber: string;
   totalSize: number;
-  price: number;
-  status: ApartmentStatus;
+  bedrooms?: number;
+  type: UnitType;
+  status: UnitStatus;
   onClick: () => void;
 }
 
 export default function ChessCell({
-  apartmentNo,
+  label,
+  fullUnitNumber,
   totalSize,
-  price,
+  bedrooms,
+  type,
   status,
   onClick,
 }: ChessCellProps) {
+  const style = statusStyle[status];
+
   return (
     <button
       onClick={onClick}
+      title={`#${fullUnitNumber} · ${totalSize}m²`}
       className={cn(
-        'flex flex-col items-center justify-center gap-0.5 px-2 py-2 rounded border transition-all hover:scale-[1.03] hover:shadow-lg cursor-pointer min-h-[4.5rem]',
-        statusBg[status]
+        'relative rounded-md border transition-all hover:scale-[1.04] hover:shadow-lg hover:z-10 cursor-pointer h-[4.75rem] w-full',
+        style.bg,
+        style.border,
+        style.hover
       )}
     >
-      <span className="font-montserrat font-semibold text-seu-caption text-pale-gray">
-        #{apartmentNo}
+      {/* Top-left: rooms / type */}
+      <span
+        className={cn(
+          'absolute top-1.5 left-2 font-montserrat font-semibold text-[0.65rem] leading-none tracking-tight opacity-80',
+          style.text
+        )}
+      >
+        {topLeftLabel(type, bedrooms)}
       </span>
-      <span className="font-montserrat text-[0.65rem] text-pale-gray/70">
-        {totalSize} m²
+
+      {/* Top-right: simple position label */}
+      <span
+        className={cn(
+          'absolute top-1.5 right-2 font-montserrat font-bold text-[0.75rem] leading-none tabular-nums',
+          style.text
+        )}
+      >
+        {label}
       </span>
-      <span className="font-montserrat text-[0.65rem] text-pale-gray/60">
-        ${price.toLocaleString()}
+
+      {/* Middle: status label */}
+      {style.centerText && (
+        <span
+          className={cn(
+            'absolute inset-0 flex items-center justify-center font-montserrat tracking-wider text-[0.65rem] uppercase',
+            style.centerColor
+          )}
+        >
+          {style.centerText}
+        </span>
+      )}
+
+      {/* Bottom-left: total size */}
+      <span
+        className={cn(
+          'absolute bottom-1.5 left-2 font-montserrat text-[0.65rem] leading-none tabular-nums opacity-75',
+          style.text
+        )}
+      >
+        {totalSize}m²
       </span>
     </button>
   );

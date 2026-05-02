@@ -1,170 +1,239 @@
-import type { ErrorResponse } from '@/model/dto/common.dto';
+import type { PaginatedResult, PaginationMeta } from '@/model/types/api';
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
-export interface ApiResponse<TData = unknown> {
-  data: TData;
-  headers: Record<string, string>;
-  error?: ErrorResponse;
+export const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+
+export class ApiRequestError extends Error {
+  status: number;
+  code?: string;
+  payload?: unknown;
+
+  constructor(message: string, status: number, code?: string, payload?: unknown) {
+    super(message);
+    this.name = 'ApiRequestError';
+    this.status = status;
+    this.code = code;
+    this.payload = payload;
+  }
 }
 
-export const NEXT_API_URL = process.env.NEXT_PUBLIC_APP_URL || '';
-
-interface ApiCallOptions<TRequest = unknown> {
-  data?: TRequest;
-  params?: Record<string, string | number | boolean>;
+interface ApiCallOptions<TBody = unknown> {
+  body?: TBody;
+  params?: Record<string, string | number | boolean | undefined | null>;
   headers?: Record<string, string>;
-}
-
-interface ApiFetchConfig extends RequestInit {
-  method: HttpMethod;
-  headers: Record<string, string>;
-  body?: string | FormData;
+  signal?: AbortSignal;
 }
 
 function buildUrl(
-  baseUrl: string,
   path: string,
-  params?: Record<string, string | number | boolean>
+  params?: Record<string, string | number | boolean | undefined | null>
 ): string {
-  const url = new URL(path.startsWith('/') ? path : `/${path}`, baseUrl);
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  const url = new URL(`${API_BASE_URL}${cleanPath}`);
 
   if (params) {
     Object.entries(params).forEach(([key, value]) => {
-      url.searchParams.append(key, String(value));
+      if (value !== undefined && value !== null && value !== '') {
+        url.searchParams.append(key, String(value));
+      }
     });
   }
 
   return url.toString();
 }
 
-export async function apiClient<TResponse = unknown, TRequest = unknown>(
+async function rawRequest<TBody = unknown>(
   method: HttpMethod,
   path: string,
-  options: ApiCallOptions<TRequest> = {}
-): Promise<ApiResponse<TResponse>> {
+  options: ApiCallOptions<TBody> = {}
+): Promise<unknown> {
+  const { body, params, headers = {}, signal } = options;
+  const isFormData = body instanceof FormData;
+
+  const fetchHeaders: Record<string, string> = {
+    Accept: 'application/json',
+    ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
+    ...headers,
+  };
+
+  const init: RequestInit = {
+    method,
+    headers: fetchHeaders,
+    signal,
+  };
+
+  if (body !== undefined && ['POST', 'PUT', 'PATCH', 'DELETE'].includes(method)) {
+    init.body = isFormData ? (body as FormData) : JSON.stringify(body);
+  }
+
+  let response: Response;
   try {
-    const { data, params, headers = {} } = options;
-    const isFormData = data instanceof FormData;
+    response = await fetch(buildUrl(path, params), init);
+  } catch (e) {
+    throw new ApiRequestError(
+      e instanceof Error ? e.message : 'Network error',
+      0,
+      'NETWORK_ERROR'
+    );
+  }
 
-    const baseUrl = NEXT_API_URL;
-
-    const url: string = buildUrl(baseUrl, path, params);
-
-    const fetchConfig: ApiFetchConfig = {
-      method,
-      headers: {
-        ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
-        'ngrok-skip-browser-warning': 'ababa',
-        ...headers,
-      },
-    };
-
-    if (data && ['POST', 'PUT', 'PATCH'].includes(method)) {
-      fetchConfig.body = isFormData ? data : JSON.stringify(data);
-    }
-
-    const response = await fetch(url, fetchConfig);
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({
-        success: false,
-        error: {
-          key: 'REQUEST_FAILED',
-          message: `Request failed with status ${response.status}`,
-          code: response.status,
-        },
-      }));
-
-      throw errorData as ErrorResponse;
-    }
-
-    let responseData: TResponse;
-
-    if (
-      response.status === 204 ||
-      response.headers.get('content-length') === '0'
-    ) {
-      responseData = {} as TResponse;
-    } else {
-      const contentType = response.headers.get('content-type');
-
-      if (contentType?.includes('application/json')) {
-        const text = await response.text();
-
-        if (!text || text.trim().length === 0) {
-          responseData = {} as TResponse;
-        } else {
-          responseData = JSON.parse(text) as TResponse;
-        }
-      } else {
-        const text = await response.text();
-        responseData = text as TResponse;
+  let payload: unknown = null;
+  if (response.status !== 204 && response.headers.get('content-length') !== '0') {
+    const text = await response.text();
+    if (text.trim().length > 0) {
+      try {
+        payload = JSON.parse(text);
+      } catch {
+        payload = text;
       }
     }
-
-    // Convert headers to a plain object
-    const responseHeaders: Record<string, string> = {};
-    response.headers.forEach((value, key) => {
-      responseHeaders[key] = value;
-    });
-
-    return {
-      data: responseData,
-      headers: responseHeaders,
-    };
-  } catch (error) {
-    if (error && typeof error === 'object' && 'success' in error) {
-      throw error;
-    }
-
-    throw {
-      success: false,
-      error: {
-        key: 'NETWORK_ERROR',
-        message:
-          error instanceof Error ? error.message : 'An unknown error occurred',
-        code: 500,
-      },
-    } as ErrorResponse;
   }
+
+  if (!response.ok) {
+    const err = (payload ?? {}) as Record<string, unknown> & {
+      message?: string | string[];
+      error?: { key?: string; message?: string };
+    };
+    const messageRaw = err.message ?? err.error?.message;
+    const message = Array.isArray(messageRaw)
+      ? messageRaw.join(' · ')
+      : messageRaw || `Request failed with status ${response.status}`;
+    throw new ApiRequestError(
+      message,
+      response.status,
+      err.error?.key,
+      payload
+    );
+  }
+
+  return payload;
 }
 
-export const api = {
-  get: <TResponse = unknown>(
-    path: string,
-    options?: Omit<ApiCallOptions, 'data'>
-  ) => apiClient<TResponse>('GET', path, options),
-
-  post: <TResponse = unknown, TRequest = unknown>(
-    path: string,
-    data?: TRequest,
-    options?: Omit<ApiCallOptions<TRequest>, 'data'>
-  ) => apiClient<TResponse, TRequest>('POST', path, { ...options, data }),
-
-  put: <TResponse = unknown, TRequest = unknown>(
-    path: string,
-    data?: TRequest,
-    options?: Omit<ApiCallOptions<TRequest>, 'data'>
-  ) => apiClient<TResponse, TRequest>('PUT', path, { ...options, data }),
-
-  patch: <TResponse = unknown, TRequest = unknown>(
-    path: string,
-    data?: TRequest,
-    options?: Omit<ApiCallOptions<TRequest>, 'data'>
-  ) => apiClient<TResponse, TRequest>('PATCH', path, { ...options, data }),
-
-  delete: <TResponse = unknown>(
-    path: string,
-    options?: Omit<ApiCallOptions, 'data'>
-  ) => apiClient<TResponse>('DELETE', path, options),
-};
-
-export function getServerFileUrl(id: string): string {
-  return '';
+function isWrappedSingle(p: unknown): p is { success: true; data: unknown } {
+  return (
+    !!p &&
+    typeof p === 'object' &&
+    (p as { success?: unknown }).success === true &&
+    'data' in (p as Record<string, unknown>)
+  );
 }
 
-export function getClientFileUrl(id?: string): string {
-  if (id === undefined) return '';
-  return `/api/file/${id}`;
+function isPaginatedResultShape(
+  p: unknown
+): p is { data: unknown[]; page?: number; limit?: number; total?: number; totalPages?: number } {
+  return (
+    !!p &&
+    typeof p === 'object' &&
+    Array.isArray((p as { data?: unknown }).data)
+  );
+}
+
+/** Single-resource GET/POST/PATCH unwrap. Tolerant of:
+ *  - {success, timestamp, data: T}  (projects)
+ *  - raw T                          (buildings, units, by-project array)
+ */
+function unwrapSingle<T>(payload: unknown): T {
+  if (isWrappedSingle(payload)) return payload.data as T;
+  return payload as T;
+}
+
+/** Paginated list unwrap. Tolerant of:
+ *  - {success, data: T[], pagination: {...}}        (projects/search)
+ *  - {data: T[], page, limit, total, totalPages}    (buildings, units list)
+ *  - raw T[]                                         (buildings/by-project)
+ */
+function unwrapPaginated<T>(payload: unknown): PaginatedResult<T> {
+  if (Array.isArray(payload)) {
+    const items = payload as T[];
+    return {
+      items,
+      pagination: {
+        page: 1,
+        limit: items.length || 0,
+        total: items.length,
+        totalPages: 1,
+      },
+    };
+  }
+  if (isWrappedSingle(payload)) {
+    const wrapped = payload as {
+      data: T[];
+      pagination?: PaginationMeta;
+    };
+    const items = Array.isArray(wrapped.data) ? wrapped.data : [];
+    return {
+      items,
+      pagination: wrapped.pagination ?? defaultPagination(items),
+    };
+  }
+  if (isPaginatedResultShape(payload)) {
+    const items = payload.data as T[];
+    return {
+      items,
+      pagination: {
+        page: payload.page ?? 1,
+        limit: payload.limit ?? items.length,
+        total: payload.total ?? items.length,
+        totalPages: payload.totalPages ?? 1,
+      },
+    };
+  }
+  return {
+    items: [],
+    pagination: { page: 1, limit: 0, total: 0, totalPages: 1 },
+  };
+}
+
+function defaultPagination<T>(items: T[]): PaginationMeta {
+  const len = items.length;
+  return { page: 1, limit: len || 20, total: len, totalPages: 1 };
+}
+
+export async function apiGet<T>(
+  path: string,
+  options?: Omit<ApiCallOptions, 'body'>
+): Promise<T> {
+  return unwrapSingle<T>(await rawRequest('GET', path, options));
+}
+
+export async function apiGetPaginated<T>(
+  path: string,
+  options?: Omit<ApiCallOptions, 'body'>
+): Promise<PaginatedResult<T>> {
+  return unwrapPaginated<T>(await rawRequest('GET', path, options));
+}
+
+export async function apiPost<T, TBody = unknown>(
+  path: string,
+  body?: TBody,
+  options?: Omit<ApiCallOptions<TBody>, 'body'>
+): Promise<T> {
+  return unwrapSingle<T>(await rawRequest('POST', path, { ...options, body }));
+}
+
+export async function apiPostPaginated<T, TBody = unknown>(
+  path: string,
+  body?: TBody,
+  options?: Omit<ApiCallOptions<TBody>, 'body'>
+): Promise<PaginatedResult<T>> {
+  return unwrapPaginated<T>(
+    await rawRequest('POST', path, { ...options, body })
+  );
+}
+
+export async function apiPatch<T, TBody = unknown>(
+  path: string,
+  body?: TBody,
+  options?: Omit<ApiCallOptions<TBody>, 'body'>
+): Promise<T> {
+  return unwrapSingle<T>(await rawRequest('PATCH', path, { ...options, body }));
+}
+
+export async function apiDelete<T = { deleted: boolean; id: string }>(
+  path: string,
+  options?: Omit<ApiCallOptions, 'body'>
+): Promise<T> {
+  return unwrapSingle<T>(await rawRequest('DELETE', path, options));
 }

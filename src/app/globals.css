@@ -180,6 +180,179 @@ body {
   }
 }
 
+/* ============================================================
+ * Admin theme tokens — switched by [data-admin-theme="dark|light"]
+ * Scoped: only nodes inside the admin shell read these vars,
+ * so the public site is unaffected.
+ * ============================================================ */
+[data-admin-theme='dark'] {
+  --admin-bg: #070d14;
+  --admin-bg-pattern: radial-gradient(900px circle at 0% 0%, rgba(255, 107, 53, 0.06), transparent 50%),
+    radial-gradient(700px circle at 100% 100%, rgba(13, 135, 163, 0.05), transparent 55%);
+
+  --admin-card: linear-gradient(180deg, #101926 0%, #0b1320 100%);
+  --admin-card-solid: #0d141d;
+  --admin-input: linear-gradient(180deg, #1a2436 0%, #131c2c 100%);
+  --admin-input-solid: #162033;
+  --admin-deep: #0b121d;
+  --admin-hover: #111a26;
+  --admin-elevated: linear-gradient(180deg, #1d2840 0%, #162033 100%);
+
+  --admin-border: rgba(51, 65, 85, 0.8);
+  --admin-border-soft: rgba(30, 41, 59, 0.7);
+  --admin-border-strong: rgba(71, 85, 105, 0.9);
+
+  --admin-fg: #f4f0e9;
+  --admin-fg-strong: #ffffff;
+  --admin-fg-muted: #a19c92;
+  --admin-fg-dim: rgba(161, 156, 146, 0.6);
+
+  --admin-accent: #ff6b35;
+  --admin-accent-strong: #ff6b35;
+  --admin-accent-soft: rgba(255, 107, 53, 0.15);
+  --admin-accent-ring: rgba(255, 107, 53, 0.3);
+
+  --admin-overlay: rgba(0, 0, 0, 0.6);
+  --admin-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --admin-shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.5);
+  --admin-shadow-accent: 0 6px 16px rgba(255, 107, 53, 0.25);
+
+  /* Status palettes — used by StatusBadge and accent stripes */
+  --admin-emerald-bg: linear-gradient(180deg, rgba(52, 211, 153, 0.18) 0%, rgba(16, 185, 129, 0.06) 100%);
+  --admin-emerald-border: rgba(52, 211, 153, 0.4);
+  --admin-emerald-text: rgb(167, 243, 208);
+  --admin-emerald-dot: rgb(52, 211, 153);
+
+  --admin-amber-bg: linear-gradient(180deg, rgba(251, 191, 36, 0.18) 0%, rgba(245, 158, 11, 0.06) 100%);
+  --admin-amber-border: rgba(251, 191, 36, 0.4);
+  --admin-amber-text: rgb(253, 230, 138);
+  --admin-amber-dot: rgb(251, 191, 36);
+
+  --admin-rose-bg: linear-gradient(180deg, rgba(251, 113, 133, 0.18) 0%, rgba(244, 63, 94, 0.06) 100%);
+  --admin-rose-border: rgba(251, 113, 133, 0.4);
+  --admin-rose-text: rgb(254, 205, 211);
+  --admin-rose-dot: rgb(251, 113, 133);
+
+  --admin-sky-bg: linear-gradient(180deg, rgba(56, 189, 248, 0.18) 0%, rgba(14, 165, 233, 0.06) 100%);
+  --admin-sky-border: rgba(56, 189, 248, 0.4);
+  --admin-sky-text: rgb(186, 230, 253);
+  --admin-sky-dot: rgb(56, 189, 248);
+
+  --admin-warning-shell: rgba(245, 158, 11, 0.05);
+  --admin-warning-border: rgba(245, 158, 11, 0.3);
+  --admin-warning-text: rgb(253, 230, 138);
+
+  --admin-danger-shell: rgba(244, 63, 94, 0.1);
+  --admin-danger-border: rgba(244, 63, 94, 0.4);
+  --admin-danger-text: rgb(254, 205, 211);
+}
+
+[data-admin-theme='light'] {
+  --admin-bg: #f4f6fa;
+  --admin-bg-pattern: radial-gradient(900px circle at 0% 0%, rgba(255, 107, 53, 0.05), transparent 55%),
+    radial-gradient(700px circle at 100% 100%, rgba(13, 135, 163, 0.04), transparent 60%);
+
+  --admin-card: linear-gradient(180deg, #ffffff 0%, #fafbfd 100%);
+  --admin-card-solid: #ffffff;
+  --admin-input: linear-gradient(180deg, #ffffff 0%, #f5f7fa 100%);
+  --admin-input-solid: #ffffff;
+  --admin-deep: #eef1f5;
+  --admin-hover: #f1f4f8;
+  --admin-elevated: linear-gradient(180deg, #fff7f2 0%, #ffeee5 100%);
+
+  --admin-border: rgba(203, 213, 225, 0.95);
+  --admin-border-soft: rgba(226, 232, 240, 0.95);
+  --admin-border-strong: rgba(148, 163, 184, 0.95);
+
+  --admin-fg: #0f172a;
+  --admin-fg-strong: #020617;
+  --admin-fg-muted: #475569;
+  --admin-fg-dim: rgba(71, 85, 105, 0.6);
+
+  --admin-accent: #ea5a2c;
+  --admin-accent-strong: #d6491e;
+  --admin-accent-soft: rgba(255, 107, 53, 0.12);
+  --admin-accent-ring: rgba(255, 107, 53, 0.35);
+
+  --admin-overlay: rgba(15, 23, 42, 0.4);
+  --admin-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --admin-shadow-lg: 0 12px 28px rgba(15, 23, 42, 0.12);
+  --admin-shadow-accent: 0 6px 16px rgba(255, 107, 53, 0.25);
+
+  --admin-emerald-bg: linear-gradient(180deg, rgba(16, 185, 129, 0.12) 0%, rgba(16, 185, 129, 0.04) 100%);
+  --admin-emerald-border: rgba(16, 185, 129, 0.5);
+  --admin-emerald-text: rgb(6, 95, 70);
+  --admin-emerald-dot: rgb(16, 185, 129);
+
+  --admin-amber-bg: linear-gradient(180deg, rgba(217, 119, 6, 0.12) 0%, rgba(217, 119, 6, 0.04) 100%);
+  --admin-amber-border: rgba(217, 119, 6, 0.5);
+  --admin-amber-text: rgb(146, 64, 14);
+  --admin-amber-dot: rgb(217, 119, 6);
+
+  --admin-rose-bg: linear-gradient(180deg, rgba(225, 29, 72, 0.12) 0%, rgba(225, 29, 72, 0.04) 100%);
+  --admin-rose-border: rgba(225, 29, 72, 0.5);
+  --admin-rose-text: rgb(159, 18, 57);
+  --admin-rose-dot: rgb(225, 29, 72);
+
+  --admin-sky-bg: linear-gradient(180deg, rgba(2, 132, 199, 0.12) 0%, rgba(2, 132, 199, 0.04) 100%);
+  --admin-sky-border: rgba(2, 132, 199, 0.5);
+  --admin-sky-text: rgb(7, 89, 133);
+  --admin-sky-dot: rgb(2, 132, 199);
+
+  --admin-warning-shell: rgba(217, 119, 6, 0.08);
+  --admin-warning-border: rgba(217, 119, 6, 0.4);
+  --admin-warning-text: rgb(146, 64, 14);
+
+  --admin-danger-shell: rgba(225, 29, 72, 0.08);
+  --admin-danger-border: rgba(225, 29, 72, 0.45);
+  --admin-danger-text: rgb(159, 18, 57);
+}
+
+/* Map admin tokens into Tailwind utility namespace.
+   Lets us write `bg-admin-card`, `text-admin-fg-muted`, `border-admin-border`. */
+@theme inline {
+  --color-admin-bg: var(--admin-bg);
+  --color-admin-card: var(--admin-card-solid);
+  --color-admin-input: var(--admin-input-solid);
+  --color-admin-deep: var(--admin-deep);
+  --color-admin-hover: var(--admin-hover);
+  --color-admin-border: var(--admin-border);
+  --color-admin-border-soft: var(--admin-border-soft);
+  --color-admin-border-strong: var(--admin-border-strong);
+  --color-admin-fg: var(--admin-fg);
+  --color-admin-fg-strong: var(--admin-fg-strong);
+  --color-admin-fg-muted: var(--admin-fg-muted);
+  --color-admin-fg-dim: var(--admin-fg-dim);
+  --color-admin-accent: var(--admin-accent);
+  --color-admin-accent-strong: var(--admin-accent-strong);
+}
+
+/* Gradient surfaces — the bg-* tokens above can only carry solid colors,
+   so gradient-aware utilities live here. They flip with the theme. */
+.bg-admin-card-gradient {
+  background: var(--admin-card);
+}
+.bg-admin-input-gradient {
+  background: var(--admin-input);
+}
+.bg-admin-elevated-gradient {
+  background: var(--admin-elevated);
+}
+.bg-admin-bg-pattern {
+  background-image: var(--admin-bg-pattern);
+}
+
+/* Shadows that respect theme depth */
+.shadow-admin {
+  box-shadow: var(--admin-shadow);
+}
+.shadow-admin-lg {
+  box-shadow: var(--admin-shadow-lg);
+}
+.shadow-admin-accent {
+  box-shadow: var(--admin-shadow-accent);
+}
+
 /* Hide scrollbar utility */
 .hide-scrollbar {
   -ms-overflow-style: none;

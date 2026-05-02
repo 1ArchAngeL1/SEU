@@ -1,7 +1,7 @@
 # SEU Development - Project Guidelines
 
 ## Project Overview
-SEU Development corporate website built with Next.js 16 (App Router), Tailwind CSS v4, shadcn/ui, Prisma + MongoDB. Real estate company based in Georgia.
+SEU Development corporate website built with Next.js 16 (App Router), Tailwind CSS v4, shadcn/ui. Real estate company based in Georgia.
 
 ## Asset Handling Rules
 

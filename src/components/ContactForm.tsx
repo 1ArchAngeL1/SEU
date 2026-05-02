@@ -1,25 +1,30 @@
 'use client';
 
 import { useState } from 'react';
+import { CheckCircle2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { addContactRequest } from '@/prisma/contact';
 
 export type ContactFormProps = {
   className?: string;
 };
 
 export default function ContactForm({ className }: ContactFormProps) {
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    email: '',
-  });
+  const [formData, setFormData] = useState({ name: '', phone: '', email: '' });
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    addContactRequest(formData).then(() => {});
+    setSubmitting(true);
+
+    // PLACEHOLDER: API - seu-backend has no /contacts endpoint yet.
+    // Wire this to the real API when it ships.
+    await new Promise((r) => setTimeout(r, 500));
+
+    setSubmitting(false);
+    setSubmitted(true);
     setFormData({ name: '', phone: '', email: '' });
+    setTimeout(() => setSubmitted(false), 4000);
   };
 
   return (
@@ -34,6 +39,7 @@ export default function ContactForm({ className }: ContactFormProps) {
           placeholder="Name"
           value={formData.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          required
           className="w-full bg-secondary-grey/40 border border-pale-gray rounded-xl px-6 py-3 font-montserrat font-medium text-seu-body-sm text-white placeholder-white focus:outline-none focus:border-white/40 transition-colors"
         />
         <input
@@ -41,6 +47,7 @@ export default function ContactForm({ className }: ContactFormProps) {
           placeholder="Phone"
           value={formData.phone}
           onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+          required
           className="w-full bg-secondary-grey/40 border border-pale-gray rounded-xl px-6 py-3 font-montserrat font-medium text-seu-body-sm text-white placeholder-white focus:outline-none focus:border-white/40 transition-colors"
         />
         <input
@@ -48,16 +55,24 @@ export default function ContactForm({ className }: ContactFormProps) {
           placeholder="Email"
           value={formData.email}
           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+          required
           className="w-full bg-secondary-grey/40 border border-pale-gray rounded-xl px-6 py-3 font-montserrat font-medium text-seu-body-sm text-white placeholder-white focus:outline-none focus:border-white/40 transition-colors"
         />
 
-        <div className="mt-4">
+        <div className="mt-4 flex items-center gap-4">
           <button
             type="submit"
-            className="bg-primary-green text-white font-montserrat font-medium text-seu-body px-14 py-3 rounded-xl hover:bg-primary-green/85 transition-colors"
+            disabled={submitting}
+            className="bg-primary-green text-white font-montserrat font-medium text-seu-body px-14 py-3 rounded-xl hover:bg-primary-green/85 transition-colors disabled:opacity-60"
           >
-            Contact
+            {submitting ? 'Sending…' : 'Contact'}
           </button>
+          {submitted && (
+            <span className="flex items-center gap-2 text-emerald-400 font-montserrat text-seu-caption">
+              <CheckCircle2 className="size-4" />
+              Thanks — we'll be in touch
+            </span>
+          )}
         </div>
       </form>
     </div>

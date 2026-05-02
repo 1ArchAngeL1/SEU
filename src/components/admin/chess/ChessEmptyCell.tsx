@@ -8,9 +8,9 @@ export default function ChessEmptyCell({ onClick }: ChessEmptyCellProps) {
   return (
     <button
       onClick={onClick}
-      className="flex items-center justify-center rounded border border-dashed border-secondary-black/60 hover:border-pale-gray/40 transition-colors cursor-pointer min-h-[4.5rem] group"
+      className="flex items-center justify-center rounded border border-dashed border-admin-border-soft hover:border-admin-border-strong transition-colors cursor-pointer h-[4.75rem] w-full group"
     >
-      <Plus className="size-4 text-secondary-grey/40 group-hover:text-pale-gray/50 transition-colors" />
+      <Plus className="size-4 text-admin-fg-dim group-hover:text-admin-fg-muted transition-colors" />
     </button>
   );
 }
