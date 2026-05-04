@@ -7,6 +7,16 @@ import { useAllProjects } from '@/hooks/queries/use-projects';
 import { useBuildingsByProject } from '@/hooks/queries/use-buildings';
 import { pickLocale } from '@/lib/i18n-helpers';
 import type { UnitFilter } from '@/model/types/api';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 export type SearchFormProps = {
   className?: string;
@@ -15,6 +25,8 @@ export type SearchFormProps = {
 };
 
 const ROOM_OPTIONS = [1, 2, 3, 4, 5];
+const ANY_PROJECT = '__any_project__';
+const ANY_BUILDING = '__any_building__';
 
 function toNum(v: string): number | undefined {
   const t = v.trim();
@@ -22,6 +34,17 @@ function toNum(v: string): number | undefined {
   const n = Number(t);
   return Number.isFinite(n) ? n : undefined;
 }
+
+const labelClass =
+  'font-montserrat text-seu-caption-sm text-dark-green mb-2 block';
+const fieldClass =
+  'h-10 rounded-md bg-transparent border border-secondary-grey/50 text-dark-green placeholder:text-secondary-grey/70 shadow-none font-montserrat text-seu-caption hover:border-dark-green/50 focus-visible:border-dark-green focus-visible:ring-0';
+const triggerClass =
+  'h-10 rounded-md bg-transparent border border-secondary-grey/50 text-dark-green shadow-none font-montserrat text-seu-caption hover:bg-transparent hover:border-dark-green/50 focus-visible:border-dark-green focus-visible:ring-0 data-[state=open]:border-dark-green data-[state=open]:ring-0 data-[placeholder]:text-secondary-grey/70';
+const contentClass =
+  'bg-white text-dark-green border-secondary-grey/40 backdrop-blur-none shadow-lg shadow-black/10';
+const itemClass =
+  'text-dark-green data-[highlighted]:bg-pale-gray data-[highlighted]:text-dark-green data-[state=checked]:bg-primary-green/10 data-[state=checked]:text-dark-green';
 
 export default function SearchForm({
   className,
@@ -96,155 +119,179 @@ export default function SearchForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className={cn('p-8 xl:p-16 pb-14 max-w-[1920px] mx-auto', className)}
+      data-admin-theme="light"
+      className={cn(
+        'px-6 sm:px-10 xl:px-16 pb-10 max-w-[1920px] mx-auto',
+        className
+      )}
     >
-      <div className="flex items-center gap-2 mb-12">
-        <Search className="w-4 h-4 text-secondary-grey" />
+      {/* Filter header with thin divider underneath */}
+      <div className="flex items-center gap-2 pb-3 mb-8 border-b border-secondary-grey/30">
+        <Search className="size-4 text-secondary-grey" strokeWidth={1.5} />
         <span className="font-montserrat text-seu-caption text-secondary-grey uppercase tracking-wider">
           Filter Apartments
         </span>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-6 mb-6">
+      {/* Top row — Project / Block / Size / Rooms */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-6 mb-6">
         <div>
-          <label className="block font-montserrat text-seu-caption text-dark-green mb-2">
-            Project
-          </label>
-          <select
-            value={project}
-            onChange={(e) => {
-              setProject(e.target.value);
+          <Label className={labelClass}>Project</Label>
+          <Select
+            value={project || ANY_PROJECT}
+            onValueChange={(v) => {
+              setProject(v === ANY_PROJECT ? '' : v);
               setBuilding('');
             }}
-            className="w-full h-10 bg-pale-gray/10 border border-secondary-grey rounded-xl px-4 font-montserrat text-seu-body-sm text-secondary-grey focus:outline-none focus:border-dark-green appearance-none cursor-pointer"
           >
-            <option value="">Choose</option>
-            {projects.map((p) => (
-              <option value={p.id} key={p.id}>
-                {pickLocale(p.name)}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className={triggerClass}>
+              <SelectValue placeholder="Choose" />
+            </SelectTrigger>
+            <SelectContent className={contentClass}>
+              <SelectItem value={ANY_PROJECT} className={itemClass}>
+                Any project
+              </SelectItem>
+              {projects.map((p) => (
+                <SelectItem
+                  value={p.id}
+                  key={p.id}
+                  className={itemClass}
+                >
+                  {pickLocale(p.name)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         <div>
-          <label className="block font-montserrat text-seu-caption text-dark-green mb-2">
-            Block
-          </label>
-          <select
-            value={building}
-            onChange={(e) => setBuilding(e.target.value)}
+          <Label className={labelClass}>Block</Label>
+          <Select
+            value={building || ANY_BUILDING}
+            onValueChange={(v) =>
+              setBuilding(v === ANY_BUILDING ? '' : v)
+            }
             disabled={!project}
-            className="w-full h-10 bg-pale-gray/10 border border-secondary-grey rounded-xl px-4 font-montserrat text-seu-body-sm text-secondary-grey focus:outline-none focus:border-dark-green appearance-none cursor-pointer disabled:opacity-50"
           >
-            <option value="">Choose</option>
-            {buildings.map((b) => (
-              <option value={b.id} key={b.id}>
-                Block {b.block}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className={triggerClass}>
+              <SelectValue placeholder="Choose" />
+            </SelectTrigger>
+            <SelectContent className={contentClass}>
+              <SelectItem value={ANY_BUILDING} className={itemClass}>
+                Any block
+              </SelectItem>
+              {buildings.map((b) => (
+                <SelectItem
+                  value={b.id}
+                  key={b.id}
+                  className={itemClass}
+                >
+                  Block {b.block}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         <div>
-          <label className="block font-montserrat text-seu-caption text-dark-green mb-2">
-            Size m2
-          </label>
-          <div className="flex gap-2">
-            <input
-              type="text"
+          <Label className={labelClass}>Size m2</Label>
+          <div className="flex gap-3">
+            <Input
+              type="number"
+              min={0}
+              inputMode="numeric"
               value={sizeFrom}
               onChange={(e) => setSizeFrom(e.target.value)}
               placeholder="From"
-              className="w-1/2 h-10 bg-pale-gray/10 border border-secondary-grey rounded-xl px-4 font-montserrat text-seu-body-sm text-dark-green placeholder:text-secondary-grey focus:outline-none focus:border-dark-green"
+              className={fieldClass}
             />
-            <input
-              type="text"
+            <Input
+              type="number"
+              min={0}
+              inputMode="numeric"
               value={sizeTo}
               onChange={(e) => setSizeTo(e.target.value)}
               placeholder="To"
-              className="w-1/2 h-10 bg-pale-gray/10 border border-secondary-grey rounded-xl px-4 font-montserrat text-seu-body-sm text-dark-green placeholder:text-secondary-grey focus:outline-none focus:border-dark-green"
+              className={fieldClass}
             />
           </div>
         </div>
 
         <div>
-          <label className="block font-montserrat text-seu-caption text-dark-green mb-2">
-            Rooms
-          </label>
+          <Label className={labelClass}>Rooms</Label>
           <div className="flex gap-2">
-            {ROOM_OPTIONS.map((num) => (
-              <button
-                key={num}
-                type="button"
-                onClick={() =>
-                  setSelectedRooms((prev) =>
-                    prev.includes(num)
-                      ? prev.filter((r) => r !== num)
-                      : [...prev, num]
-                  )
-                }
-                className={cn(
-                  'w-10 h-10 border rounded-xl font-montserrat text-seu-body-sm transition-colors cursor-pointer',
-                  selectedRooms.includes(num)
-                    ? 'bg-dark-green text-white border-dark-green'
-                    : 'bg-pale-gray/10 text-dark-green border-secondary-grey hover:border-dark-green'
-                )}
-              >
-                {num}
-              </button>
-            ))}
+            {ROOM_OPTIONS.map((num) => {
+              const active = selectedRooms.includes(num);
+              return (
+                <button
+                  key={num}
+                  type="button"
+                  onClick={() =>
+                    setSelectedRooms((prev) =>
+                      prev.includes(num)
+                        ? prev.filter((r) => r !== num)
+                        : [...prev, num]
+                    )
+                  }
+                  className={cn(
+                    'size-10 rounded-md font-montserrat text-seu-caption transition-colors border',
+                    active
+                      ? 'bg-dark-green text-white border-dark-green'
+                      : 'bg-transparent text-dark-green border-secondary-grey/50 hover:border-dark-green'
+                  )}
+                >
+                  {num}
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
 
-      <div className="flex flex-wrap items-end gap-x-8 gap-y-4 mb-8">
+      {/* Bottom row — Price + Search/Clear */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-6 items-start">
+        {/* Price field */}
         <div>
           <div className="flex items-center gap-3 mb-2">
-            <label className="font-montserrat text-seu-caption text-dark-green">
+            <span className="font-montserrat text-seu-caption-sm text-dark-green">
               Price
-            </label>
-            <div className="flex items-center gap-1">
-              <button
-                type="button"
-                onClick={() => setCurrency('USD')}
-                className={cn(
-                  'px-3 py-1 font-montserrat text-seu-caption transition-colors',
-                  currency === 'USD'
-                    ? 'bg-primary-green text-white rounded-full'
-                    : 'text-secondary-grey hover:text-dark-green'
-                )}
-              >
-                USD
-              </button>
-              <button
-                type="button"
-                onClick={() => setCurrency('GEL')}
-                className={cn(
-                  'px-3 py-1 font-montserrat text-seu-caption transition-colors',
-                  currency === 'GEL'
-                    ? 'bg-primary-green text-white rounded-full'
-                    : 'text-secondary-grey hover:text-dark-green'
-                )}
-              >
-                GEL
-              </button>
+            </span>
+            <div className="inline-flex items-center gap-1">
+              {(['USD', 'GEL'] as const).map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  onClick={() => setCurrency(c)}
+                  className={cn(
+                    'px-2.5 py-0.5 rounded-md font-montserrat text-[0.7rem] font-medium transition-colors',
+                    currency === c
+                      ? 'bg-primary-green text-white'
+                      : 'text-secondary-grey hover:text-dark-green'
+                  )}
+                >
+                  {c}
+                </button>
+              ))}
             </div>
           </div>
-          <div className="flex gap-2">
-            <input
-              type="text"
+          <div className="flex gap-3">
+            <Input
+              type="number"
+              min={0}
+              inputMode="numeric"
               value={priceFrom}
               onChange={(e) => setPriceFrom(e.target.value)}
               placeholder="From"
-              className="w-24 h-10 bg-pale-gray/10 border border-secondary-grey rounded-xl px-4 font-montserrat text-seu-body-sm text-dark-green placeholder:text-secondary-grey focus:outline-none focus:border-dark-green"
+              className={fieldClass}
             />
-            <input
-              type="text"
+            <Input
+              type="number"
+              min={0}
+              inputMode="numeric"
               value={priceTo}
               onChange={(e) => setPriceTo(e.target.value)}
               placeholder="To"
-              className="w-24 h-10 bg-pale-gray/10 border border-secondary-grey rounded-xl px-4 font-montserrat text-seu-body-sm text-dark-green placeholder:text-secondary-grey focus:outline-none focus:border-dark-green"
+              className={fieldClass}
             />
           </div>
           {validationError && (
@@ -254,20 +301,23 @@ export default function SearchForm({
           )}
         </div>
 
-        <div className="flex items-center gap-6">
-          <button
-            type="submit"
-            className="bg-primary-green text-white font-montserrat font-medium text-seu-body px-8 h-11 rounded-lg hover:bg-primary-green/90 transition-colors"
-          >
-            Search
-          </button>
-          <button
-            type="button"
-            onClick={handleClear}
-            className="font-montserrat text-seu-body-sm text-secondary-grey hover:text-dark-green transition-colors"
-          >
-            Clear filters
-          </button>
+        {/* Search + Clear, vertically aligned with the price inputs */}
+        <div className="md:col-span-2 lg:col-span-3 flex items-end h-full">
+          <div className="flex items-center gap-6 pt-7">
+            <Button
+              type="submit"
+              className="bg-primary-green hover:bg-primary-green/90 text-white font-montserrat font-medium text-seu-caption h-10 px-8 rounded-md shadow-none"
+            >
+              Search
+            </Button>
+            <button
+              type="button"
+              onClick={handleClear}
+              className="font-montserrat text-seu-caption text-dark-green hover:text-primary-green transition-colors"
+            >
+              Clear filters
+            </button>
+          </div>
         </div>
       </div>
     </form>

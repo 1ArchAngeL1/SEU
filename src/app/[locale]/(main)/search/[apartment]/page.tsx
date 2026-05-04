@@ -81,17 +81,24 @@ export default function ApartmentDetailPage({
             mainSize: unit.livableArea ?? unit.totalSize,
             openSpace: unit.balconySize ?? 0,
             rooms: unit.bedrooms ?? 0,
-            roomDetails: (Array.isArray(unit.rooms) ? unit.rooms : []).map(
-              (r) => ({
-                name: pickLocale(r.name),
-                size: r.size ?? 0,
-                icon: nameToIcon(pickLocale(r.name)),
-              })
-            ),
+            roomDetails: (Array.isArray(unit.rooms) ? unit.rooms : [])
+              .filter((r): r is NonNullable<typeof r> => r != null && typeof r === 'object')
+              .map((r) => {
+                const name = pickLocale(r.name ?? '');
+                return {
+                  name,
+                  size: r.size ?? 0,
+                  icon: nameToIcon(name),
+                };
+              }),
             floorPlanImages: {
-              plan: unit.floorPlanImage ? fileUrl(unit.floorPlanImage) : null,
-              twoD: null,
-              threeD: null,
+              plan: unit.mainImage
+                ? fileUrl(unit.mainImage)
+                : unit.floorPlanImage
+                  ? fileUrl(unit.floorPlanImage)
+                  : null,
+              twoD: unit.twoDContent ? fileUrl(unit.twoDContent) : null,
+              threeD: unit.threeDContent ? fileUrl(unit.threeDContent) : null,
             },
           }}
         />

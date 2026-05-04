@@ -9,6 +9,8 @@ export interface UnitMediaSectionValue {
   mainImage: string;
   images: string[];
   floorPlanImage: string;
+  twoDContent: string;
+  threeDContent: string;
   videoTourUrl: string;
   virtualTourUrl: string;
 }
@@ -46,6 +48,20 @@ export default function UnitMediaSection({
             onChange={(v) => update('floorPlanImage', v ?? '')}
           />
         </Field>
+        <Section cols={2}>
+          <Field label="2D content" hint="2D floor plan asset">
+            <FileUpload
+              value={value.twoDContent || undefined}
+              onChange={(v) => update('twoDContent', v ?? '')}
+            />
+          </Field>
+          <Field label="3D content" hint="3D model / render asset">
+            <FileUpload
+              value={value.threeDContent || undefined}
+              onChange={(v) => update('threeDContent', v ?? '')}
+            />
+          </Field>
+        </Section>
         <Section cols={2}>
           <Field
             label="Video tour URL"

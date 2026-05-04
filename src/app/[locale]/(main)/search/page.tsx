@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Loader2, SearchX } from 'lucide-react';
 import SearchForm from '@/components/search/SearchForm';
 import { ApartmentCardGridView } from '@/components/search/ApartmentCardGridView';
 import { PaginationControl } from '@/components/search/PaginationControl';
@@ -44,16 +45,23 @@ export default function SearchPage() {
 
         <div className="bg-dark-green">
           {unitsQ.isLoading ? (
-            <div className="flex items-center justify-center py-20">
-              <span className="font-montserrat text-seu-body text-pale-gray">
+            <div className="flex flex-col items-center justify-center gap-3 py-24">
+              <Loader2 className="size-6 text-primary-green animate-spin" />
+              <span className="font-montserrat text-seu-body-sm text-pale-gray/80">
                 Loading apartments…
               </span>
             </div>
           ) : units.length === 0 ? (
-            <div className="flex items-center justify-center py-20">
-              <span className="font-montserrat text-seu-body text-secondary-grey">
-                No apartments found
+            <div className="flex flex-col items-center justify-center gap-3 py-24 px-6 text-center">
+              <span className="size-12 rounded-full bg-pale-gray/10 border border-pale-gray/15 flex items-center justify-center">
+                <SearchX className="size-5 text-secondary-grey" />
               </span>
+              <p className="font-montserrat font-medium text-seu-body text-pale-gray">
+                No apartments match your filters
+              </p>
+              <p className="font-montserrat text-seu-caption text-secondary-grey max-w-sm">
+                Try widening the size or price range, or clearing some filters.
+              </p>
             </div>
           ) : (
             <ApartmentCardGridView data={units} />

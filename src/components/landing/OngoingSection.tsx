@@ -1,35 +1,23 @@
 'use client';
 
+import { useLocale } from 'next-intl';
 import { OngoingProjectCard } from '@/components/landing/OngoingProjectCard';
-
-const ONGOING_PROJECTS = [
-  {
-    name: 'SEU VAJA',
-    projectId: 'TVAVADETS: ID12345',
-    location: 'Saburtalo',
-    sizeFrom: 64,
-    sizeTo: 250,
-    badge: 'EFF',
-  },
-  {
-    name: 'SEU VARKETILI',
-    projectId: 'TVAVADETS: ID12346',
-    location: 'Varketili',
-    sizeFrom: 45,
-    sizeTo: 180,
-    badge: 'NEW',
-  },
-  {
-    name: 'SEU DIDI DIGHOMI',
-    projectId: 'TVAVADETS: ID12347',
-    location: 'Didi Dighomi',
-    sizeFrom: 55,
-    sizeTo: 200,
-    badge: 'RACXA',
-  },
-];
+import { useProjectsList } from '@/hooks/queries/use-projects';
+import { pickLocale, type Locale } from '@/lib/i18n-helpers';
+import { fileUrl } from '@/lib/file-url';
 
 export default function OngoingSection() {
+  const locale = useLocale() as Locale;
+  const projectsQ = useProjectsList(
+    { status: 'under_construction', isActive: true },
+    { page: 1, limit: 12 }
+  );
+
+  const projects = projectsQ.data?.items ?? [];
+
+  if (projectsQ.isLoading) return null;
+  if (projects.length === 0) return null;
+
   return (
     <section className="bg-dark-green py-20">
       <div className="max-w-[1920px] mx-auto px-10">
@@ -40,15 +28,17 @@ export default function OngoingSection() {
 
         {/* Project Cards */}
         <div className="flex flex-col gap-8">
-          {ONGOING_PROJECTS.map((project, index) => (
+          {projects.map((project) => (
             <OngoingProjectCard
-              key={index}
-              name={project.name}
-              projectId={project.projectId}
-              location={project.location}
-              sizeFrom={project.sizeFrom}
-              sizeTo={project.sizeTo}
-              badge={project.badge}
+              key={project.id}
+              name={pickLocale(project.name, locale)}
+              location={
+                project.location?.district ||
+                project.location?.city ||
+                project.location?.address
+              }
+              image={fileUrl(project.mainImage) || undefined}
+              badge={project.isFeatured ? 'FEATURED' : undefined}
             />
           ))}
         </div>

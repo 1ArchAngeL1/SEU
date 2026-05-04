@@ -1,5 +1,9 @@
 'use client';
 
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+
 type PaginationControlProps = {
   currentPage: number;
   totalPages: number;
@@ -35,6 +39,15 @@ function getPageNumbers(current: number, total: number): (number | '...')[] {
   return result;
 }
 
+const baseBtnClass =
+  'rounded-xl font-montserrat font-medium text-seu-body-sm transition-all border';
+const inactiveBtnClass =
+  'bg-transparent text-pale-gray border-secondary-grey/40 hover:bg-pale-gray/10 hover:border-pale-gray hover:text-white';
+const activeBtnClass =
+  'bg-pale-gray text-dark-green border-pale-gray hover:bg-pale-gray hover:text-dark-green shadow-sm';
+const navBtnClass =
+  'bg-transparent text-pale-gray border-secondary-grey/40 hover:bg-pale-gray/10 hover:border-pale-gray hover:text-white disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:border-secondary-grey/40 disabled:hover:text-pale-gray';
+
 export function PaginationControl({
   currentPage,
   totalPages,
@@ -43,29 +56,61 @@ export function PaginationControl({
   if (totalPages <= 1) return null;
 
   const pages = getPageNumbers(currentPage, totalPages);
+  const canPrev = currentPage > 1;
+  const canNext = currentPage < totalPages;
 
   return (
-    <div className="bg-dark-green flex items-center justify-center gap-3 py-10">
+    <div className="bg-dark-green flex items-center justify-center gap-2 py-10">
+      <Button
+        type="button"
+        size="icon-lg"
+        variant="outline"
+        disabled={!canPrev}
+        onClick={() => canPrev && onPageChange(currentPage - 1)}
+        aria-label="Previous page"
+        className={cn(baseBtnClass, navBtnClass, 'size-11')}
+      >
+        <ChevronLeft className="size-4" />
+      </Button>
+
       {pages.map((page, i) =>
         page === '...' ? (
           <span
             key={`ellipsis-${i}`}
-            className="w-12 h-12 flex items-center justify-center text-secondary-grey text-seu-body-sm select-none"
-          />
+            className="size-11 flex items-center justify-center text-secondary-grey font-montserrat text-seu-body-sm select-none"
+          >
+            …
+          </span>
         ) : (
-          <button
+          <Button
             key={page}
+            type="button"
+            size="icon-lg"
+            variant={page === currentPage ? 'default' : 'outline'}
             onClick={() => onPageChange(page)}
-            className={`w-12 h-12 rounded-xl text-seu-body-sm font-montserrat font-medium transition-colors border ${
-              page === currentPage
-                ? 'bg-pale-gray text-dark-green border-pale-gray'
-                : 'bg-transparent text-pale-gray border-secondary-grey hover:border-pale-gray'
-            }`}
+            aria-current={page === currentPage ? 'page' : undefined}
+            className={cn(
+              baseBtnClass,
+              page === currentPage ? activeBtnClass : inactiveBtnClass,
+              'size-11'
+            )}
           >
             {page}
-          </button>
+          </Button>
         )
       )}
+
+      <Button
+        type="button"
+        size="icon-lg"
+        variant="outline"
+        disabled={!canNext}
+        onClick={() => canNext && onPageChange(currentPage + 1)}
+        aria-label="Next page"
+        className={cn(baseBtnClass, navBtnClass, 'size-11')}
+      >
+        <ChevronRight className="size-4" />
+      </Button>
     </div>
   );
 }

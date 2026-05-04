@@ -10,11 +10,11 @@ export default function LandingAbout() {
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-20">
           {/* Left - Text Content */}
           <div className="flex-1 max-w-xl">
-            <h2 className="font-bodoni text-seu-title lg:text-seu-title-lg text-black mb-8">
+            <h2 className="font-bodoni text-seu-title lg:text-seu-title-lg text-dark-green mb-8">
               About SEU.
             </h2>
 
-            <div className="space-y-6 text-seu-body text-black/80 leading-relaxed">
+            <div className="space-y-6 text-seu-body text-dark-green/80 leading-relaxed">
               <p>
                 SEU Development has been operating in the real estate market
                 since 2014.

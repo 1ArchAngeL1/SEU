@@ -101,6 +101,8 @@ export default function UnitForm({
     mainImage: initialData?.mainImage ?? '',
     images: initialData?.images ?? [],
     floorPlanImage: initialData?.floorPlanImage ?? '',
+    twoDContent: initialData?.twoDContent ?? '',
+    threeDContent: initialData?.threeDContent ?? '',
     videoTourUrl: initialData?.videoTourUrl ?? '',
     virtualTourUrl: initialData?.virtualTourUrl ?? '',
 
@@ -175,6 +177,8 @@ export default function UnitForm({
     if (form.images.length > 0) payload.images = form.images;
     if (form.floorPlanImage)
       payload.floorPlanImage = form.floorPlanImage.trim();
+    if (form.twoDContent) payload.twoDContent = form.twoDContent.trim();
+    if (form.threeDContent) payload.threeDContent = form.threeDContent.trim();
     if (form.videoTourUrl) payload.videoTourUrl = form.videoTourUrl.trim();
     if (form.virtualTourUrl)
       payload.virtualTourUrl = form.virtualTourUrl.trim();
@@ -284,6 +288,8 @@ export default function UnitForm({
             mainImage: form.mainImage,
             images: form.images,
             floorPlanImage: form.floorPlanImage,
+            twoDContent: form.twoDContent,
+            threeDContent: form.threeDContent,
             videoTourUrl: form.videoTourUrl,
             virtualTourUrl: form.virtualTourUrl,
           }}

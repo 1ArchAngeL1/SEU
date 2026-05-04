@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { Link, usePathname, useRouter } from '@/i18n/navigation';
+import { usePathname } from '@/i18n/navigation';
 import { HeaderTextLink } from '@/components/header/HeaderTextLink';
 import { SeuLogoLink } from '@/components/header/SeuLogoLink';
 import { LanguageSwitcher } from '@/components/header/LanguageSwitcher';
@@ -12,8 +12,8 @@ export default function SeuHeader() {
   const t = useTranslations('header');
 
   const leftLinks = [
-    { label: t('searchApartment'), href: '/search' as const },
     { label: t('visualSearch'), href: '/visual-search' as const },
+    { label: t('searchApartment'), href: '/search' as const },
     { label: t('seuCard'), href: '/card' as const },
   ];
 
@@ -38,7 +38,7 @@ export default function SeuHeader() {
         </HeaderTextLink>
       ))}
 
-      <div className={"flex items-center justify-center gap-8"}>
+      <div className={'flex items-center justify-center gap-8'}>
         <HeaderContactUs />
         <LanguageSwitcher />
       </div>

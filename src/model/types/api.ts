@@ -196,6 +196,8 @@ export interface Unit {
   images?: string[];
   mainImage?: string;
   floorPlanImage?: string;
+  twoDContent?: string;
+  threeDContent?: string;
   videoTourUrl?: string;
   virtualTourUrl?: string;
   description?: LocalizedString;
@@ -311,6 +313,8 @@ export type CreateUnitInput = {
   images?: string[];
   mainImage?: string;
   floorPlanImage?: string;
+  twoDContent?: string;
+  threeDContent?: string;
   videoTourUrl?: string;
   virtualTourUrl?: string;
   description?: LocalizedString;

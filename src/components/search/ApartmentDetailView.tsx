@@ -10,6 +10,7 @@ import {
   type RoomDetail,
 } from './apartment-detail/ApartmentRoomList';
 import { ApartmentFloorPlan } from './apartment-detail/ApartmentFloorPlan';
+import { Button } from '@/components/ui/button';
 
 interface Apartment {
   id: string | number;
@@ -35,12 +36,12 @@ interface ApartmentDetailViewProps {
 
 export function ApartmentDetailView({ apartment }: ApartmentDetailViewProps) {
   return (
-    <div className={'px-10'}>
+    <div className="px-6 sm:px-10 max-w-[1920px] mx-auto w-full">
       <ApartmentDetailHeader />
 
-      <div className="flex gap-14 items-start">
+      <div className="flex flex-col lg:flex-row gap-10 xl:gap-14 items-start">
         {/* ── Left: Info Panel ── */}
-        <div className="w-[42%] flex-none">
+        <div className="w-full lg:w-[42%] flex-none">
           <ApartmentMetaHeader
             block={apartment.block}
             floor={apartment.floor}
@@ -54,19 +55,23 @@ export function ApartmentDetailView({ apartment }: ApartmentDetailViewProps) {
             rooms={apartment.rooms}
           />
 
-          {/* Separator */}
-          <div className="border-t border-dashed border-pale-gray/20 mb-8" />
+          {/* Dashed separator */}
+          <div className="border-t border-dashed border-pale-gray/25 mb-8" />
 
           {/* Request Call */}
-          <button className="bg-primary-green text-white font-montserrat font-medium text-seu-body px-10 py-4 rounded-lg hover:bg-primary-green/90 transition-colors cursor-pointer mb-8">
+          <Button
+            type="button"
+            size="lg"
+            className="bg-primary-green hover:bg-primary-green/90 text-white font-montserrat font-medium text-seu-body px-10 h-12 rounded-lg shadow-sm shadow-primary-green/20 mb-8"
+          >
             Request Call
-          </button>
+          </Button>
 
-          {/* Separator */}
-          <div className="border-t border-dashed border-pale-gray/20 mb-8" />
+          {/* Dashed separator */}
+          <div className="border-t border-dashed border-pale-gray/25 mb-8" />
 
           {/* Details heading */}
-          <h3 className="font-montserrat font-semibold text-seu-body-lg text-pale-gray mb-6">
+          <h3 className="font-[--font-bodoni] font-normal text-seu-heading text-pale-gray mb-6 leading-none">
             Details
           </h3>
 
@@ -81,8 +86,6 @@ export function ApartmentDetailView({ apartment }: ApartmentDetailViewProps) {
           block={apartment.block}
         />
       </div>
-
-      {/* Benefits Section */}
     </div>
   );
 }

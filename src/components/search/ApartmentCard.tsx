@@ -1,9 +1,14 @@
 'use client';
 
+import Image from 'next/image';
+import { ArrowUpRight, Maximize2, Building2, Layers, ImageIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Link } from '@/i18n/navigation';
 import { pickLocale } from '@/lib/i18n-helpers';
-import type { Unit } from '@/model/types/api';
+import { fileUrl } from '@/lib/file-url';
+import { Card } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import type { Unit, UnitStatus } from '@/model/types/api';
 
 export type ApartmentCardProps = {
   className?: string;
@@ -11,11 +16,20 @@ export type ApartmentCardProps = {
   onClick?: () => void;
 };
 
-function currencySymbol(c: string) {
-  if (c === 'USD') return '$';
-  if (c === 'EUR') return '€';
-  if (c === 'GEL') return '₾';
-  return '';
+function statusLabel(s: UnitStatus): string {
+  if (s === 'available') return 'Available';
+  if (s === 'reserved') return 'Reserved';
+  if (s === 'sold') return 'Sold';
+  return 'Not for sale';
+}
+
+function statusBadgeClass(s: UnitStatus): string {
+  if (s === 'available')
+    return 'bg-primary-green text-white border-primary-green';
+  if (s === 'reserved')
+    return 'bg-amber-500/90 text-white border-amber-500';
+  if (s === 'sold') return 'bg-rose-500/90 text-white border-rose-500';
+  return 'bg-secondary-grey/40 text-pale-gray border-secondary-grey/60';
 }
 
 export default function ApartmentCard({
@@ -25,46 +39,94 @@ export default function ApartmentCard({
 }: ApartmentCardProps) {
   const projectName =
     typeof data.project === 'string' ? '' : pickLocale(data.project.name);
+  const image = fileUrl(data.mainImage);
 
   return (
-    <Link href={`/search/${data.id}`}>
-      <div
-        onClick={onClick}
+    <Link
+      href={`/search/${data.id}`}
+      onClick={onClick}
+      className="group block focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-green/50 rounded-2xl"
+    >
+      <Card
         className={cn(
-          'relative w-full h-[499px] bg-[#FFFFFF1F] border border-pale-gray rounded-md overflow-hidden cursor-pointer transition-all hover:border-primary-green',
+          'relative w-full h-[480px] overflow-hidden p-0 rounded-2xl border border-pale-gray/15 bg-dark-green shadow-none transition-all duration-300 text-white flex flex-col',
+          'hover:border-primary-green/70 hover:shadow-lg hover:shadow-primary-green/10 hover:-translate-y-1',
           className
         )}
       >
-        <div className="absolute top-6 left-6">
-          <span className="font-montserrat font-medium text-seu-body text-white uppercase tracking-wide">
-            Apartment #{data.unitNumber}
+        {/* Top row: unit number + arrow */}
+        <div className="relative z-10 flex items-start justify-between p-6">
+          <div>
+            <p className="font-montserrat text-seu-caption text-white/70 uppercase tracking-wider mb-1.5">
+              Apartment
+            </p>
+            <p className="font-bodoni text-seu-heading-lg text-white leading-none">
+              #{data.unitNumber}
+            </p>
+          </div>
+          <span className="size-11 rounded-full bg-white/10 backdrop-blur-md border border-white/15 flex items-center justify-center text-white transition-all group-hover:bg-primary-green group-hover:border-primary-green group-hover:scale-110">
+            <ArrowUpRight className="size-5" />
           </span>
         </div>
 
-        <div className="absolute bottom-6 left-6 right-6 flex flex-wrap gap-2">
-          {projectName && (
-            <span className="px-3 py-1.5 bg-pale-gray/10 border border-secondary-grey rounded-lg font-montserrat text-seu-caption text-pale-gray uppercase">
-              {projectName}
-            </span>
+        {/* Centered floor-plan / main image */}
+        <div className="relative flex-1 flex items-center justify-center px-6 pb-2 min-h-0">
+          {image ? (
+            <Image
+              src={image}
+              alt={`Apartment ${data.unitNumber}`}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
+              className="object-contain transition-transform duration-500 group-hover:scale-[1.03]"
+            />
+          ) : (
+            <div className="size-32 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/40">
+              <ImageIcon className="size-10" />
+            </div>
           )}
-          <span className="px-3 py-1.5 bg-pale-gray/10 border border-secondary-grey rounded-lg font-montserrat text-seu-caption text-pale-gray">
-            Block {data.block}
-          </span>
-          <span className="px-3 py-1.5 bg-pale-gray/10 border border-secondary-grey rounded-lg font-montserrat text-seu-caption text-pale-gray">
-            Floor {data.floorNumber}
-          </span>
-          <span className="px-3 py-1.5 bg-pale-gray/10 border border-secondary-grey rounded-lg font-montserrat text-seu-caption text-pale-gray">
-            {data.bedrooms ?? 0} {data.bedrooms === 1 ? 'Room' : 'Rooms'}
-          </span>
-          <span className="px-3 py-1.5 bg-pale-gray/10 border border-secondary-grey rounded-lg font-montserrat text-seu-caption text-pale-gray">
-            {data.totalSize} m²
-          </span>
-          <span className="px-3 py-1.5 bg-primary-green/20 border border-primary-green rounded-lg font-montserrat text-seu-caption text-primary-green">
-            {currencySymbol(data.price.currency)}
-            {data.price.amount.toLocaleString()}
-          </span>
         </div>
-      </div>
+
+        {/* Bottom block: project + block + availability + floor + size */}
+        <div className="relative z-10 p-6 flex flex-wrap items-center gap-2">
+          {projectName && (
+            <Badge
+              variant="outline"
+              className="border-pale-gray/25 bg-pale-gray/5 text-white normal-case tracking-normal text-seu-caption px-3 py-1"
+            >
+              {projectName}
+            </Badge>
+          )}
+          <Badge
+            variant="outline"
+            className="border-pale-gray/25 bg-pale-gray/5 text-white normal-case tracking-normal gap-1.5 text-seu-caption px-3 py-1 [&>svg]:size-4"
+          >
+            <Building2 />
+            Block {data.block}
+          </Badge>
+          <Badge
+            className={cn(
+              'normal-case tracking-normal font-medium text-seu-caption px-3 py-1',
+              statusBadgeClass(data.status)
+            )}
+          >
+            {statusLabel(data.status)}
+          </Badge>
+          <Badge
+            variant="outline"
+            className="border-pale-gray/25 bg-pale-gray/5 text-white normal-case tracking-normal gap-1.5 text-seu-caption px-3 py-1 [&>svg]:size-4"
+          >
+            <Layers />
+            {data.floorNumber}
+          </Badge>
+          <Badge
+            variant="outline"
+            className="border-pale-gray/25 bg-pale-gray/5 text-white normal-case tracking-normal gap-1.5 text-seu-caption px-3 py-1 [&>svg]:size-4"
+          >
+            <Maximize2 />
+            {data.totalSize} m²
+          </Badge>
+        </div>
+      </Card>
     </Link>
   );
 }
