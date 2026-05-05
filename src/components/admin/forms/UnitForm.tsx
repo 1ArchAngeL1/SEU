@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { btnGhost, btnPrimary } from './form-primitives';
+import type { PolygonEditorValue } from './PolygonsEditor';
 import type {
   CreateUnitInput,
   FurnishingStatus,
@@ -68,6 +69,7 @@ export default function UnitForm({
   submitLabel = 'Save',
   footerVariant = 'inline',
 }: UnitFormProps) {
+  const [polygonDirty, setPolygonDirty] = useState(false);
   const [form, setForm] = useState({
     // Basics
     unitNumber: initialData?.unitNumber ?? initialUnitNumber ?? '',
@@ -105,6 +107,14 @@ export default function UnitForm({
     threeDContent: initialData?.threeDContent ?? '',
     videoTourUrl: initialData?.videoTourUrl ?? '',
     virtualTourUrl: initialData?.virtualTourUrl ?? '',
+    renderImage: initialData?.renderImage ?? '',
+    polygonEditor: {
+      entries: initialData?.polygon?.length
+        ? [{ raw: initialData.polygon.map((pt) => `${pt.x},${pt.y}`).join(','), label: '' }]
+        : [],
+      imageWidth: '',
+      imageHeight: '',
+    } as PolygonEditorValue,
 
     // Description
     descriptionKa: initialData?.description?.ka ?? '',
@@ -127,15 +137,15 @@ export default function UnitForm({
         ...(typeof r.description === 'string' && { description: r.description }),
       }));
   });
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   function update<K extends keyof typeof form>(k: K, v: (typeof form)[K]) {
+    if (k === 'polygonEditor') setPolygonDirty(true);
     setForm((p) => ({ ...p, [k]: v }));
   }
 
-  // Narrow `update` to a section's key set. The parent form holds every key in
-  // every section value, so this cast is sound at runtime.
   function sectionUpdate<V extends Partial<typeof form>>() {
     return update as unknown as <K extends keyof V>(k: K, v: V[K]) => void;
   }
@@ -173,15 +183,31 @@ export default function UnitForm({
       isActive: form.isActive,
     };
     if (form.entrance) payload.entrance = form.entrance.trim();
-    if (form.mainImage) payload.mainImage = form.mainImage.trim();
-    if (form.images.length > 0) payload.images = form.images;
-    if (form.floorPlanImage)
-      payload.floorPlanImage = form.floorPlanImage.trim();
-    if (form.twoDContent) payload.twoDContent = form.twoDContent.trim();
-    if (form.threeDContent) payload.threeDContent = form.threeDContent.trim();
-    if (form.videoTourUrl) payload.videoTourUrl = form.videoTourUrl.trim();
-    if (form.virtualTourUrl)
-      payload.virtualTourUrl = form.virtualTourUrl.trim();
+    payload.mainImage = form.mainImage.trim() || undefined;
+    payload.images = form.images;
+    payload.floorPlanImage = form.floorPlanImage.trim() || undefined;
+    payload.twoDContent = form.twoDContent.trim() || undefined;
+    payload.threeDContent = form.threeDContent.trim() || undefined;
+    payload.videoTourUrl = form.videoTourUrl.trim() || undefined;
+    payload.virtualTourUrl = form.virtualTourUrl.trim() || undefined;
+    // Polygon handling
+    const pe = form.polygonEditor;
+    const validEntries = pe.entries.filter((e) => e.raw.trim());
+    if (validEntries.length > 0) {
+      if (polygonDirty) {
+        const imgW = Number(pe.imageWidth);
+        const imgH = Number(pe.imageHeight);
+        if (imgW > 0 && imgH > 0) {
+          payload.rawPolygon = validEntries[0].raw.replace(/\s+/g, ',');
+          payload.imageWidth = imgW;
+          payload.imageHeight = imgH;
+        }
+      } else if (initialData?.polygon?.length) {
+        payload.polygon = initialData.polygon;
+      }
+    } else {
+      payload.polygon = [];
+    }
     if (form.descriptionKa || form.descriptionEn) {
       payload.description = {
         ka: form.descriptionKa.trim() || undefined,
@@ -202,6 +228,14 @@ export default function UnitForm({
     if (form.floor === '') return setError('Floor is required');
     if (!form.totalSize) return setError('Total size is required');
     if (!form.amount) return setError('Price amount is required');
+    const hasPolygonEntries = form.polygonEditor.entries.some((e) => e.raw.trim());
+    if (hasPolygonEntries && polygonDirty) {
+      const imgW = Number(form.polygonEditor.imageWidth);
+      const imgH = Number(form.polygonEditor.imageHeight);
+      if (!imgW || !imgH) {
+        return setError('Enter the source image width and height for polygon coordinate conversion.');
+      }
+    }
     for (const [i, room] of roomsList.entries()) {
       if (!room.name.trim()) return setError(`Room ${i + 1}: name is required`);
     }
@@ -292,6 +326,8 @@ export default function UnitForm({
             threeDContent: form.threeDContent,
             videoTourUrl: form.videoTourUrl,
             virtualTourUrl: form.virtualTourUrl,
+            renderImage: form.renderImage,
+            polygonEditor: form.polygonEditor,
           }}
           update={sectionUpdate<UnitMediaSectionValue>()}
         />

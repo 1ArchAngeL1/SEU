@@ -17,11 +17,12 @@ import BuildingCard from './BuildingCard';
 import ProjectForm from './forms/ProjectForm';
 import BuildingForm from './forms/BuildingForm';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet';
 import {
   useProject,
   useUpdateProject,
@@ -232,37 +233,39 @@ export default function ProjectDetailClient({
         </div>
       )}
 
-      <Dialog open={editProjectOpen} onOpenChange={setEditProjectOpen}>
-        <DialogContent className="bg-admin-card-gradient border-admin-border-soft sm:max-w-4xl max-h-[95vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="text-admin-fg font-[--font-bodoni]">
-              Edit project
-            </DialogTitle>
-          </DialogHeader>
-          <ProjectForm
-            initialData={project}
-            onSubmit={handleProjectUpdate}
-            onCancel={() => setEditProjectOpen(false)}
-            submitLabel="Update"
-          />
-        </DialogContent>
-      </Dialog>
+      <Sheet open={editProjectOpen} onOpenChange={setEditProjectOpen}>
+        <SheetContent side="right" className="w-full sm:max-w-2xl flex flex-col p-0">
+          <SheetHeader>
+            <SheetTitle>Edit project</SheetTitle>
+            <SheetDescription>Update project details</SheetDescription>
+          </SheetHeader>
+          <div className="flex-1 overflow-y-auto px-6 py-4">
+            <ProjectForm
+              initialData={project}
+              onSubmit={handleProjectUpdate}
+              onCancel={() => setEditProjectOpen(false)}
+              submitLabel="Update"
+            />
+          </div>
+        </SheetContent>
+      </Sheet>
 
-      <Dialog open={newBuildingOpen} onOpenChange={setNewBuildingOpen}>
-        <DialogContent className="bg-admin-card-gradient border-admin-border-soft sm:max-w-4xl max-h-[95vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="text-admin-fg font-[--font-bodoni]">
-              New building in {pickLocale(project.name)}
-            </DialogTitle>
-          </DialogHeader>
-          <BuildingForm
-            fixedProjectId={projectId}
-            onSubmit={handleBuildingCreate}
-            onCancel={() => setNewBuildingOpen(false)}
-            submitLabel="Create"
-          />
-        </DialogContent>
-      </Dialog>
+      <Sheet open={newBuildingOpen} onOpenChange={setNewBuildingOpen}>
+        <SheetContent side="right" className="w-full sm:max-w-2xl flex flex-col p-0">
+          <SheetHeader>
+            <SheetTitle>New building in {pickLocale(project.name)}</SheetTitle>
+            <SheetDescription>Add a new building to this project</SheetDescription>
+          </SheetHeader>
+          <div className="flex-1 overflow-y-auto px-6 py-4">
+            <BuildingForm
+              fixedProjectId={projectId}
+              onSubmit={handleBuildingCreate}
+              onCancel={() => setNewBuildingOpen(false)}
+              submitLabel="Create"
+            />
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }

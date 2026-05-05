@@ -11,11 +11,12 @@ import {
   Image as ImageIcon,
 } from 'lucide-react';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet';
 import FloorForm from './forms/FloorForm';
 import { cn } from '@/lib/utils';
 import {
@@ -220,26 +221,31 @@ export default function FloorsPanel({
         </ul>
       )}
 
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="bg-admin-card-gradient border-admin-border-soft sm:max-w-lg">
-          <DialogHeader>
-            <DialogTitle className="text-admin-fg font-[--font-bodoni]">
+      <Sheet open={dialogOpen} onOpenChange={setDialogOpen}>
+        <SheetContent side="right" className="w-full sm:max-w-md flex flex-col p-0">
+          <SheetHeader>
+            <SheetTitle>
               {editing
                 ? `Edit floor ${editing.floorNumber}`
                 : 'New floor'}
-            </DialogTitle>
-          </DialogHeader>
-          <FloorForm
-            buildingId={buildingId}
-            initialData={editing ?? undefined}
-            existingFloorNumbers={existingNumbers}
-            defaultFloorNumber={editing ? undefined : nextSuggestedNumber}
-            onSubmit={handleSubmit}
-            onCancel={() => setDialogOpen(false)}
-            submitLabel={editing ? 'Update' : 'Create'}
-          />
-        </DialogContent>
-      </Dialog>
+            </SheetTitle>
+            <SheetDescription>
+              {editing ? 'Update floor details' : 'Add a new floor to this building'}
+            </SheetDescription>
+          </SheetHeader>
+          <div className="flex-1 overflow-y-auto px-6 py-4">
+            <FloorForm
+              buildingId={buildingId}
+              initialData={editing ?? undefined}
+              existingFloorNumbers={existingNumbers}
+              defaultFloorNumber={editing ? undefined : nextSuggestedNumber}
+              onSubmit={handleSubmit}
+              onCancel={() => setDialogOpen(false)}
+              submitLabel={editing ? 'Update' : 'Create'}
+            />
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }

@@ -12,13 +12,8 @@ export default function ContactPanel({
 }: ContactPanelProps) {
   return (
     <div className={cn('w-full', className)}>
-      <h2
-        className={cn(
-          'font-[--font-bodoni] font-normal text-seu-heading-lg leading-12 text-white mb-10',
-          headerClassName
-        )}
-      >
-        Contact.
+      <h2 className="font-[--font-bodoni] font-normal text-seu-heading-lg leading-12 text-white mb-10">
+        Contact
       </h2>
 
       <div className="border border-secondary-black rounded-xl p-6 bg-dark-green">

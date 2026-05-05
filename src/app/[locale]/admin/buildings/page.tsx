@@ -8,11 +8,12 @@ import BuildingForm from '@/components/admin/forms/BuildingForm';
 import BuildingsGridSection from '@/components/admin/buildings-page/BuildingsGridSection';
 import ProjectPickerRail from '@/components/admin/buildings-page/ProjectPickerRail';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet';
 import {
   useBuildingsByProject,
   useCreateBuilding,
@@ -149,24 +150,29 @@ export default function BuildingsPage() {
         />
       </div>
 
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="bg-admin-card-gradient border-admin-border-soft sm:max-w-4xl max-h-[95vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="text-admin-fg font-[--font-bodoni]">
+      <Sheet open={dialogOpen} onOpenChange={setDialogOpen}>
+        <SheetContent side="right" className="w-full sm:max-w-2xl flex flex-col p-0">
+          <SheetHeader>
+            <SheetTitle>
               {editing
                 ? `Edit Block ${editing.block}`
                 : `New building in ${selectedProject ? pickLocale(selectedProject.name) : ''}`}
-            </DialogTitle>
-          </DialogHeader>
-          <BuildingForm
-            initialData={editing ?? undefined}
-            fixedProjectId={selectedProjectId}
-            onSubmit={handleSubmit}
-            onCancel={() => setDialogOpen(false)}
-            submitLabel={editing ? 'Update' : 'Create'}
-          />
-        </DialogContent>
-      </Dialog>
+            </SheetTitle>
+            <SheetDescription>
+              {editing ? 'Update building details' : 'Add a new building to the project'}
+            </SheetDescription>
+          </SheetHeader>
+          <div className="flex-1 overflow-y-auto px-6 py-4">
+            <BuildingForm
+              initialData={editing ?? undefined}
+              fixedProjectId={selectedProjectId}
+              onSubmit={handleSubmit}
+              onCancel={() => setDialogOpen(false)}
+              submitLabel={editing ? 'Update' : 'Create'}
+            />
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }

@@ -19,7 +19,7 @@ export default function SeuPartners() {
     <section className="bg-dark-green py-20 overflow-hidden">
       <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-10 mb-12">
         <h2 className="font-bodoni text-seu-title text-white uppercase tracking-wide">
-          Partners.
+          Partners
         </h2>
       </div>
 

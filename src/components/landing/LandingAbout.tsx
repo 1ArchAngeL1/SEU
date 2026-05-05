@@ -11,7 +11,7 @@ export default function LandingAbout() {
           {/* Left - Text Content */}
           <div className="flex-1 max-w-xl">
             <h2 className="font-bodoni text-seu-title lg:text-seu-title-lg text-dark-green mb-8">
-              About SEU.
+              About SEU
             </h2>
 
             <div className="space-y-6 text-seu-body text-dark-green/80 leading-relaxed">

@@ -389,3 +389,10 @@ body {
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+/* Animated dashed stroke for polygon hover */
+@keyframes dash {
+  to {
+    stroke-dashoffset: -20;
+  }
+}

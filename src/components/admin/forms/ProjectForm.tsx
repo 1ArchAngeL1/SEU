@@ -68,6 +68,7 @@ export default function ProjectForm({
     totalLandArea: initialData?.totalLandArea?.toString() ?? '',
     images: initialData?.images ?? [],
     mainImage: initialData?.mainImage ?? '',
+    renderImage: initialData?.renderImage ?? '',
     videoUrl: initialData?.videoUrl ?? '',
     priceCurrency: initialData?.priceRange?.currency ?? 'USD',
     minPrice: initialData?.priceRange?.minPrice?.toString() ?? '',
@@ -121,8 +122,9 @@ export default function ProjectForm({
       payload.actualCompletionDate = form.actualCompletionDate;
     if (form.totalLandArea !== '')
       payload.totalLandArea = Number(form.totalLandArea);
-    if (form.images.length > 0) payload.images = form.images;
-    if (form.mainImage) payload.mainImage = form.mainImage.trim();
+    payload.images = form.images;
+    payload.mainImage = form.mainImage.trim() || undefined;
+    payload.renderImage = form.renderImage.trim() || undefined;
     if (form.videoUrl) payload.videoUrl = form.videoUrl.trim();
 
     const minPrice = form.minPrice !== '' ? Number(form.minPrice) : undefined;
@@ -220,6 +222,7 @@ export default function ProjectForm({
         <ProjectMediaSection
           value={{
             mainImage: form.mainImage,
+            renderImage: form.renderImage,
             images: form.images,
             videoUrl: form.videoUrl,
           }}

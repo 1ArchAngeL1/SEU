@@ -87,6 +87,7 @@ export interface Project {
   totalLandArea?: number;
   images?: string[];
   mainImage?: string;
+  renderImage?: string;
   videoUrl?: string;
   priceRange?: PriceRange;
   isActive: boolean;
@@ -100,6 +101,21 @@ export interface FloorPlan {
   imageUrl?: string;
   pdfUrl?: string;
   description?: LocalizedString;
+}
+
+/** A single percentage-based polygon point (0-100) as stored by the backend. */
+export interface PolygonPoint {
+  x: number;
+  y: number;
+}
+
+/**
+ * Admin-side polygon entry used in the PolygonsEditor.
+ * `raw` holds the flat pixel-coord string the user types (e.g. "719,359,719,559,…").
+ */
+export interface PolygonEntry {
+  raw: string;
+  label?: string;
 }
 
 export interface Building {
@@ -121,6 +137,8 @@ export interface Building {
   constructionProgress?: number;
   images?: string[];
   mainImage?: string;
+  renderImage?: string;
+  polygon?: PolygonPoint[];
   /** Building DTO accepts floor plans, but they are not persisted in the schema. */
   floorPlans?: FloorPlan[];
   description?: LocalizedString;
@@ -164,6 +182,8 @@ export interface Floor {
   project: string | Project;
   floorNumber: number;
   floorImageId?: string;
+  renderImage?: string;
+  polygon?: PolygonPoint[];
   totalUnits: number;
   availableUnits: number;
   createdAt: string;
@@ -200,6 +220,8 @@ export interface Unit {
   threeDContent?: string;
   videoTourUrl?: string;
   virtualTourUrl?: string;
+  renderImage?: string;
+  polygon?: PolygonPoint[];
   description?: LocalizedString;
   reservation?: UnitReservation | null;
   saleRecord?: UnitSaleRecord | null;
@@ -259,6 +281,7 @@ export type CreateProjectInput = {
   totalLandArea?: number;
   images?: string[];
   mainImage?: string;
+  renderImage?: string;
   videoUrl?: string;
   priceRange?: PriceRange;
   isActive?: boolean;
@@ -281,6 +304,11 @@ export type CreateBuildingInput = {
   constructionProgress?: number;
   images?: string[];
   mainImage?: string;
+  renderImage?: string;
+  polygon?: PolygonPoint[];
+  rawPolygon?: string;
+  imageWidth?: number;
+  imageHeight?: number;
   /** Accepted by the create DTO but not persisted by the building schema. */
   floorPlans?: FloorPlan[];
   description?: LocalizedString;
@@ -317,6 +345,10 @@ export type CreateUnitInput = {
   threeDContent?: string;
   videoTourUrl?: string;
   virtualTourUrl?: string;
+  polygon?: PolygonPoint[];
+  rawPolygon?: string;
+  imageWidth?: number;
+  imageHeight?: number;
   description?: LocalizedString;
   isActive?: boolean;
 };
@@ -327,10 +359,20 @@ export type CreateFloorInput = {
   building: string;
   floorNumber: number;
   floorImageId?: string;
+  renderImage?: string;
+  polygon?: PolygonPoint[];
+  rawPolygon?: string;
+  imageWidth?: number;
+  imageHeight?: number;
 };
 
 export type UpdateFloorInput = {
   floorImageId?: string;
+  renderImage?: string;
+  polygon?: PolygonPoint[];
+  rawPolygon?: string;
+  imageWidth?: number;
+  imageHeight?: number;
 };
 
 export interface FloorFilter {

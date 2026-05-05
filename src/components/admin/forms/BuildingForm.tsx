@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useAllProjects } from '@/hooks/queries/use-projects';
 import { pickLocale } from '@/lib/i18n-helpers';
 import { FormFooter, Tabs, useTabs } from './form-primitives';
+import type { PolygonEditorValue } from './PolygonsEditor';
 import BuildingBasicsSection, {
   type BuildingBasicsSectionValue,
 } from './building-sections/BuildingBasicsSection';
@@ -75,18 +76,31 @@ export default function BuildingForm({
     descriptionKa: initialData?.description?.ka ?? '',
     descriptionEn: initialData?.description?.en ?? '',
     mainImage: initialData?.mainImage ?? '',
+    renderImage: initialData?.renderImage ?? '',
     images: initialData?.images ?? [],
+    polygonEditor: {
+      entries: initialData?.polygon?.length
+        ? [{
+            raw: initialData.polygon.map((pt) => `${pt.x},${pt.y}`).join(','),
+            label: '',
+          }]
+        : [],
+      imageWidth: '',
+      imageHeight: '',
+    } as PolygonEditorValue,
     isActive: initialData?.isActive ?? true,
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  // Track whether polygon was edited (to distinguish % values from pixel values)
+  const [polygonDirty, setPolygonDirty] = useState(false);
+
   function update<K extends keyof typeof form>(k: K, v: (typeof form)[K]) {
+    if (k === 'polygonEditor') setPolygonDirty(true);
     setForm((p) => ({ ...p, [k]: v }));
   }
 
-  // Narrow `update` to a section's key set. The parent form holds every key in
-  // every section value, so this cast is sound at runtime.
   function sectionUpdate<V extends Partial<typeof form>>() {
     return update as unknown as <K extends keyof V>(k: K, v: V[K]) => void;
   }
@@ -124,8 +138,32 @@ export default function BuildingForm({
         en: form.descriptionEn.trim() || undefined,
       };
     }
-    if (form.mainImage) payload.mainImage = form.mainImage.trim();
-    if (form.images.length > 0) payload.images = form.images;
+    payload.mainImage = form.mainImage.trim() || undefined;
+    payload.renderImage = form.renderImage.trim() || undefined;
+    payload.images = form.images;
+
+    // Polygon: send rawPolygon + dimensions to backend for conversion
+    const pe = form.polygonEditor;
+    const validEntries = pe.entries.filter((e) => e.raw.trim());
+    if (validEntries.length > 0) {
+      if (polygonDirty) {
+        // User edited — send as rawPolygon for backend to convert
+        const imgW = Number(pe.imageWidth);
+        const imgH = Number(pe.imageHeight);
+        if (imgW > 0 && imgH > 0) {
+          payload.rawPolygon = validEntries[0].raw.replace(/\s+/g, ',');
+          payload.imageWidth = imgW;
+          payload.imageHeight = imgH;
+        }
+      } else if (initialData?.polygon?.length) {
+        // Unmodified — send existing percentage values as-is
+        payload.polygon = initialData.polygon;
+      }
+    } else {
+      // All entries removed — clear polygon
+      payload.polygon = [];
+    }
+
     return payload;
   }
 
@@ -146,6 +184,17 @@ export default function BuildingForm({
       setError('Provide a name in Georgian or English');
       tabs.setActive('basics');
       return;
+    }
+    // Validate: if polygon was edited, image dimensions are required
+    const hasPolygonEntries = form.polygonEditor.entries.some((e) => e.raw.trim());
+    if (hasPolygonEntries && polygonDirty) {
+      const imgW = Number(form.polygonEditor.imageWidth);
+      const imgH = Number(form.polygonEditor.imageHeight);
+      if (!imgW || !imgH) {
+        setError('Enter the source image width and height for polygon coordinate conversion.');
+        tabs.setActive('media');
+        return;
+      }
     }
     setLoading(true);
     try {
@@ -205,7 +254,12 @@ export default function BuildingForm({
 
       {tabs.active === 'media' && (
         <BuildingMediaSection
-          value={{ mainImage: form.mainImage, images: form.images }}
+          value={{
+            mainImage: form.mainImage,
+            renderImage: form.renderImage,
+            images: form.images,
+            polygonEditor: form.polygonEditor,
+          }}
           update={sectionUpdate<BuildingMediaSectionValue>()}
         />
       )}

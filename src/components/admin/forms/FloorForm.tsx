@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Field, FormFooter, Input, Section } from './form-primitives';
 import FileUpload from './FileUpload';
+import PolygonsEditor, { type PolygonEditorValue } from './PolygonsEditor';
 import type {
   CreateFloorInput,
   Floor,
@@ -33,6 +34,7 @@ export default function FloorForm({
   submitLabel = 'Save',
 }: FloorFormProps) {
   const isEdit = !!initialData;
+  const [polygonDirty, setPolygonDirty] = useState(false);
   const [floorNumber, setFloorNumber] = useState(
     initialData?.floorNumber.toString() ??
       (defaultFloorNumber !== undefined ? String(defaultFloorNumber) : '')
@@ -40,8 +42,46 @@ export default function FloorForm({
   const [floorImageId, setFloorImageId] = useState(
     initialData?.floorImageId ?? ''
   );
+  const [renderImage, setRenderImage] = useState(
+    initialData?.renderImage ?? ''
+  );
+  const [polygonEditor, setPolygonEditor] = useState<PolygonEditorValue>({
+    entries: initialData?.polygon?.length
+      ? [{ raw: initialData.polygon.map((pt) => `${pt.x},${pt.y}`).join(','), label: '' }]
+      : [],
+    imageWidth: '',
+    imageHeight: '',
+  });
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  function handlePolygonChange(val: PolygonEditorValue) {
+    setPolygonDirty(true);
+    setPolygonEditor(val);
+  }
+
+  function buildPolygonFields(): Record<string, unknown> {
+    const validEntries = polygonEditor.entries.filter((e) => e.raw.trim());
+    if (validEntries.length > 0) {
+      if (polygonDirty) {
+        const imgW = Number(polygonEditor.imageWidth);
+        const imgH = Number(polygonEditor.imageHeight);
+        if (imgW > 0 && imgH > 0) {
+          return {
+            rawPolygon: validEntries[0].raw.replace(/\s+/g, ','),
+            imageWidth: imgW,
+            imageHeight: imgH,
+          };
+        }
+      } else if (initialData?.polygon?.length) {
+        return { polygon: initialData.polygon };
+      }
+    } else {
+      return { polygon: [] as { x: number; y: number }[] };
+    }
+    return {};
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -59,12 +99,26 @@ export default function FloorForm({
       setError(`Floor ${num} already exists in this building`);
       return;
     }
+    const hasPolygons = polygonEditor.entries.some((e) => e.raw.trim());
+    if (hasPolygons && polygonDirty) {
+      const imgW = Number(polygonEditor.imageWidth);
+      const imgH = Number(polygonEditor.imageHeight);
+      if (!imgW || !imgH) {
+        setError('Enter the source image width and height for polygon coordinate conversion.');
+        return;
+      }
+    }
     setLoading(true);
     try {
+      const polyFields = buildPolygonFields();
       if (isEdit) {
         await onSubmit({
           mode: 'update',
-          data: { floorImageId: floorImageId.trim() || undefined },
+          data: {
+            floorImageId: floorImageId.trim() || undefined,
+            renderImage: renderImage.trim() || undefined,
+            ...polyFields,
+          },
         });
       } else {
         await onSubmit({
@@ -73,6 +127,8 @@ export default function FloorForm({
             building: buildingId,
             floorNumber: num,
             floorImageId: floorImageId.trim() || undefined,
+            renderImage: renderImage.trim() || undefined,
+            ...polyFields,
           },
         });
       }
@@ -109,6 +165,19 @@ export default function FloorForm({
             onChange={(v) => setFloorImageId(v ?? '')}
           />
         </Field>
+        <Field
+          label="Render image"
+          hint="Reference image for interactive polygon mapping"
+        >
+          <FileUpload
+            value={renderImage || undefined}
+            onChange={(v) => setRenderImage(v ?? '')}
+          />
+        </Field>
+        <PolygonsEditor
+          value={polygonEditor}
+          onChange={handlePolygonChange}
+        />
       </Section>
 
       <FormFooter

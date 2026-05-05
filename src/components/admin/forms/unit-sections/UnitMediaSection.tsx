@@ -3,6 +3,7 @@
 import { Field, Input, Section } from '../form-primitives';
 import FileUpload from '../FileUpload';
 import FileGallery from '../FileGallery';
+import PolygonsEditor, { type PolygonEditorValue } from '../PolygonsEditor';
 import FormBlock from './FormBlock';
 
 export interface UnitMediaSectionValue {
@@ -13,6 +14,8 @@ export interface UnitMediaSectionValue {
   threeDContent: string;
   videoTourUrl: string;
   virtualTourUrl: string;
+  renderImage: string;
+  polygonEditor: PolygonEditorValue;
 }
 
 interface UnitMediaSectionProps {
@@ -63,20 +66,14 @@ export default function UnitMediaSection({
           </Field>
         </Section>
         <Section cols={2}>
-          <Field
-            label="Video tour URL"
-            hint="External link (YouTube, Vimeo, …)"
-          >
+          <Field label="Video tour URL" hint="External link (YouTube, Vimeo, …)">
             <Input
               value={value.videoTourUrl}
               onChange={(e) => update('videoTourUrl', e.target.value)}
               placeholder="https://youtube.com/…"
             />
           </Field>
-          <Field
-            label="Virtual tour URL"
-            hint="External link (Matterport, …)"
-          >
+          <Field label="Virtual tour URL" hint="External link (Matterport, …)">
             <Input
               value={value.virtualTourUrl}
               onChange={(e) => update('virtualTourUrl', e.target.value)}
@@ -84,6 +81,16 @@ export default function UnitMediaSection({
             />
           </Field>
         </Section>
+        <Field label="Render image" hint="Reference image for interactive polygon mapping">
+          <FileUpload
+            value={value.renderImage || undefined}
+            onChange={(v) => update('renderImage', v ?? '')}
+          />
+        </Field>
+        <PolygonsEditor
+          value={value.polygonEditor}
+          onChange={(v) => update('polygonEditor', v)}
+        />
       </div>
     </FormBlock>
   );

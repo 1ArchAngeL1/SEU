@@ -6,6 +6,7 @@ import FileGallery from '../FileGallery';
 
 export interface ProjectMediaSectionValue {
   mainImage: string;
+  renderImage: string;
   images: string[];
   videoUrl: string;
 }
@@ -25,6 +26,12 @@ export default function ProjectMediaSection({ value, update }: Props) {
         <FileUpload
           value={value.mainImage || undefined}
           onChange={(v) => update('mainImage', v ?? '')}
+        />
+      </Field>
+      <Field label="Render image" hint="Project render / 3D visual for visual search">
+        <FileUpload
+          value={value.renderImage || undefined}
+          onChange={(v) => update('renderImage', v ?? '')}
         />
       </Field>
       <Field label="Gallery">

@@ -18,11 +18,12 @@ import StatusBadge from '@/components/admin/StatusBadge';
 import ProjectCard from '@/components/admin/ProjectCard';
 import ProjectForm from '@/components/admin/forms/ProjectForm';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet';
 import { Input } from '@/components/ui/input';
 import {
   useProjectsList,
@@ -277,21 +278,26 @@ export default function ProjectsPage() {
         </div>
       )}
 
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="bg-admin-card-gradient border-admin-border-soft sm:max-w-4xl max-h-[95vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="text-admin-fg font-[--font-bodoni]">
+      <Sheet open={dialogOpen} onOpenChange={setDialogOpen}>
+        <SheetContent side="right" className="w-full sm:max-w-2xl flex flex-col p-0">
+          <SheetHeader>
+            <SheetTitle>
               {editing ? 'Edit Project' : 'New Project'}
-            </DialogTitle>
-          </DialogHeader>
-          <ProjectForm
-            initialData={editing ?? undefined}
-            onSubmit={handleSubmit}
-            onCancel={() => setDialogOpen(false)}
-            submitLabel={editing ? 'Update' : 'Create'}
-          />
-        </DialogContent>
-      </Dialog>
+            </SheetTitle>
+            <SheetDescription>
+              {editing ? 'Update project details' : 'Create a new development project'}
+            </SheetDescription>
+          </SheetHeader>
+          <div className="flex-1 overflow-y-auto px-6 py-4">
+            <ProjectForm
+              initialData={editing ?? undefined}
+              onSubmit={handleSubmit}
+              onCancel={() => setDialogOpen(false)}
+              submitLabel={editing ? 'Update' : 'Create'}
+            />
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }

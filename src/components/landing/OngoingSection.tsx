@@ -22,9 +22,7 @@ export default function OngoingSection() {
     <section className="bg-dark-green py-20">
       <div className="max-w-[1920px] mx-auto px-10">
         {/* Title */}
-        <h2 className="font-bodoni text-seu-title text-white mb-12">
-          Ongoing .
-        </h2>
+        <h2 className="font-bodoni text-seu-title text-white mb-12">Ongoing</h2>
 
         {/* Project Cards */}
         <div className="flex flex-col gap-8">

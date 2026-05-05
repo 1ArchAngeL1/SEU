@@ -14,12 +14,6 @@ import BuildingStatsRow from './building-detail/BuildingStatsRow';
 import UnitsViewToggle from './building-detail/UnitsViewToggle';
 import NoFloorsWarning from './building-detail/NoFloorsWarning';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import {
   Sheet,
   SheetContent,
   SheetDescription,
@@ -354,25 +348,30 @@ export default function BuildingDetailClient({
         </SheetContent>
       </Sheet>
 
-      <Dialog open={floorDialogOpen} onOpenChange={setFloorDialogOpen}>
-        <DialogContent className="bg-admin-card-gradient border-admin-border-soft sm:max-w-lg">
-          <DialogHeader>
-            <DialogTitle className="text-admin-fg font-[--font-bodoni]">
+      <Sheet open={floorDialogOpen} onOpenChange={setFloorDialogOpen}>
+        <SheetContent side="right" className="w-full sm:max-w-md flex flex-col p-0">
+          <SheetHeader>
+            <SheetTitle>
               {editingFloor
                 ? `Edit floor ${editingFloor.floorNumber}`
                 : 'New floor'}
-            </DialogTitle>
-          </DialogHeader>
-          <FloorForm
-            buildingId={buildingId}
-            initialData={editingFloor ?? undefined}
-            existingFloorNumbers={existingFloorNumbers}
-            onSubmit={handleFloorSubmit}
-            onCancel={() => setFloorDialogOpen(false)}
-            submitLabel={editingFloor ? 'Update' : 'Create'}
-          />
-        </DialogContent>
-      </Dialog>
+            </SheetTitle>
+            <SheetDescription>
+              {editingFloor ? 'Update floor details' : 'Add a new floor to this building'}
+            </SheetDescription>
+          </SheetHeader>
+          <div className="flex-1 overflow-y-auto px-6 py-4">
+            <FloorForm
+              buildingId={buildingId}
+              initialData={editingFloor ?? undefined}
+              existingFloorNumbers={existingFloorNumbers}
+              onSubmit={handleFloorSubmit}
+              onCancel={() => setFloorDialogOpen(false)}
+              submitLabel={editingFloor ? 'Update' : 'Create'}
+            />
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }

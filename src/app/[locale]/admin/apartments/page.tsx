@@ -11,12 +11,6 @@ import AdminPageHeader from '@/components/admin/AdminPageHeader';
 import UnitForm from '@/components/admin/forms/UnitForm';
 import FloorForm from '@/components/admin/forms/FloorForm';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import {
   Sheet,
   SheetContent,
   SheetDescription,
@@ -447,27 +441,32 @@ export default function UnitsPage() {
         </SheetContent>
       </Sheet>
 
-      <Dialog open={floorDialogOpen} onOpenChange={setFloorDialogOpen}>
-        <DialogContent className="bg-admin-card-gradient border-admin-border-soft sm:max-w-lg">
-          <DialogHeader>
-            <DialogTitle className="text-admin-fg font-[--font-bodoni]">
+      <Sheet open={floorDialogOpen} onOpenChange={setFloorDialogOpen}>
+        <SheetContent side="right" className="w-full sm:max-w-md flex flex-col p-0">
+          <SheetHeader>
+            <SheetTitle>
               {editingFloor
                 ? `Edit floor ${editingFloor.floorNumber}`
                 : 'New floor'}
-            </DialogTitle>
-          </DialogHeader>
-          {filterBuilding && (
-            <FloorForm
-              buildingId={filterBuilding}
-              initialData={editingFloor ?? undefined}
-              existingFloorNumbers={floors.map((f) => f.floorNumber)}
-              onSubmit={handleFloorSubmit}
-              onCancel={() => setFloorDialogOpen(false)}
-              submitLabel={editingFloor ? 'Update' : 'Create'}
-            />
-          )}
-        </DialogContent>
-      </Dialog>
+            </SheetTitle>
+            <SheetDescription>
+              {editingFloor ? 'Update floor details' : 'Add a new floor'}
+            </SheetDescription>
+          </SheetHeader>
+          <div className="flex-1 overflow-y-auto px-6 py-4">
+            {filterBuilding && (
+              <FloorForm
+                buildingId={filterBuilding}
+                initialData={editingFloor ?? undefined}
+                existingFloorNumbers={floors.map((f) => f.floorNumber)}
+                onSubmit={handleFloorSubmit}
+                onCancel={() => setFloorDialogOpen(false)}
+                submitLabel={editingFloor ? 'Update' : 'Create'}
+              />
+            )}
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }
