@@ -24,7 +24,7 @@ import { pickLocale } from '@/lib/i18n-helpers';
 import type { Building, CreateBuildingInput } from '@/model/types/api';
 
 const btnPrimary =
-  'bg-gradient-to-b from-primary-green to-primary-green/85 text-white font-montserrat font-medium text-seu-caption px-4 py-2 rounded-lg shadow-md shadow-primary-green/25 hover:shadow-lg hover:shadow-primary-green/30 transition-all flex items-center gap-2 disabled:opacity-50';
+  'bg-gradient-to-b from-primary-orange to-primary-orange/85 text-white font-montserrat font-medium text-seu-caption px-4 py-2 rounded-lg shadow-md shadow-primary-orange/25 hover:shadow-lg hover:shadow-primary-orange/30 transition-all flex items-center gap-2 disabled:opacity-50';
 
 export default function BuildingsPage() {
   const router = useRouter();

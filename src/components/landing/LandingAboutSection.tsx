@@ -29,9 +29,9 @@ export default function LandingAboutSection() {
           </h2>
 
           <div className="w-16 h-16 flex items-center justify-center">
-            <div className="w-12 h-12 border-2 border-primary-green rounded-lg relative">
-              <div className="absolute -top-1 -right-1 w-12 h-12 border-2 border-primary-green/60 rounded-lg" />
-              <div className="absolute -top-2 -right-2 w-12 h-12 border-2 border-primary-green/30 rounded-lg" />
+            <div className="w-12 h-12 border-2 border-primary-orange rounded-lg relative">
+              <div className="absolute -top-1 -right-1 w-12 h-12 border-2 border-primary-orange/60 rounded-lg" />
+              <div className="absolute -top-2 -right-2 w-12 h-12 border-2 border-primary-orange/30 rounded-lg" />
             </div>
           </div>
         </div>
@@ -56,14 +56,14 @@ export default function LandingAboutSection() {
                 poster=""
                 onEnded={() => setIsPlaying(false)}
               >
-                <source src="video/video.mp4" type="video/mp4" />
+                <source src="video/seu_video.mp4" type="video/mp4" />
               </video>
 
               <button
                 onClick={togglePlay}
                 className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors group"
               >
-                <div className="w-16 h-16 rounded-full bg-primary-green flex items-center justify-center group-hover:scale-110 transition-transform">
+                <div className="w-16 h-16 rounded-full bg-primary-orange flex items-center justify-center group-hover:scale-110 transition-transform">
                   {isPlaying ? (
                     <Pause className="w-6 h-6 text-white" />
                   ) : (

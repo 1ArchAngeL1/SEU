@@ -184,9 +184,9 @@ export default function ChessBoard({
                       ? `Add unit on basement ${Math.abs(floor)}`
                       : `Add unit on floor ${floor}`
                   }
-                  className="group h-[4.75rem] rounded-md border border-admin-border bg-admin-input-gradient hover:border-primary-green/60 hover:bg-primary-green/10 transition-all flex items-center justify-center"
+                  className="group h-[4.75rem] rounded-md border border-admin-border bg-admin-input-gradient hover:border-primary-orange/60 hover:bg-primary-orange/10 transition-all flex items-center justify-center"
                 >
-                  <Plus className="size-4 text-admin-fg-dim group-hover:text-primary-green transition-colors" />
+                  <Plus className="size-4 text-admin-fg-dim group-hover:text-primary-orange transition-colors" />
                 </button>
               </div>
             );

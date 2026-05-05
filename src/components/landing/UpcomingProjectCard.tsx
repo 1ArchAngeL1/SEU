@@ -25,7 +25,7 @@ export default function UpcomingProjectCard({
     >
       {/* Background Image or Gradient Placeholder */}
       {image ? (
-        <Image src={image} alt={name} fill className="object-cover" />
+        <Image src={image} alt={name} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
       ) : (
         <div className="absolute inset-0 bg-gradient-to-b from-secondary-black/80 via-dark-green to-navy-green/50" />
       )}

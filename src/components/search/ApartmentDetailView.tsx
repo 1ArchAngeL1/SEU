@@ -62,7 +62,7 @@ export function ApartmentDetailView({ apartment }: ApartmentDetailViewProps) {
           <Button
             type="button"
             size="lg"
-            className="bg-primary-green hover:bg-primary-green/90 text-white font-montserrat font-medium text-seu-body px-10 h-12 rounded-lg shadow-sm shadow-primary-green/20 mb-8"
+            className="bg-primary-orange hover:bg-primary-orange/90 text-white font-montserrat font-medium text-seu-body px-10 h-12 rounded-lg shadow-sm shadow-primary-orange/20 mb-8"
           >
             Request Call
           </Button>

@@ -58,7 +58,7 @@ This makes placeholders easy to find and replace later via search.
 | `--secondary-black`  | `#282626` | `border-secondary-black` | Borders, dividers      |
 | `--secondary-grey`   | `#A19C92` | `text-secondary-grey`| Muted text, input bg/40    |
 | `--pale-gray`        | `#F4F0E9` | `text-pale-gray`     | Primary light text, borders|
-| `--primary-green`    | `#FF6B35` | `bg-primary-green`   | CTA buttons (orange)       |
+| `--primary-orange`    | `#FF6B35` | `bg-primary-orange`   | CTA buttons (orange)       |
 | `--black`            | `#040303` | `bg-black`           | Footer background          |
 | `--navy-green`       | `#003253` | `bg-navy-green`      | TBD                        |
 | `--blue`             | `#0087A3` | `text-blue`          | TBD                        |

@@ -18,7 +18,7 @@ const badgeVariants = cva(
         default:
           'border-slate-600/80 bg-slate-800/60 text-pale-gray/85 backdrop-blur-sm',
         primary:
-          'border-primary-green/40 bg-primary-green/15 text-primary-green shadow-sm shadow-primary-green/10',
+          'border-primary-orange/40 bg-primary-orange/15 text-primary-orange shadow-sm shadow-primary-orange/10',
         success:
           'border-emerald-400/40 bg-emerald-500/15 text-emerald-200 shadow-sm shadow-emerald-500/10',
         warning:

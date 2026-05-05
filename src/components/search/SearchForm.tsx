@@ -44,7 +44,7 @@ const triggerClass =
 const contentClass =
   'bg-white text-dark-green border-secondary-grey/40 backdrop-blur-none shadow-lg shadow-black/10';
 const itemClass =
-  'text-dark-green data-[highlighted]:bg-pale-gray data-[highlighted]:text-dark-green data-[state=checked]:bg-primary-green/10 data-[state=checked]:text-dark-green';
+  'text-dark-green data-[highlighted]:bg-pale-gray data-[highlighted]:text-dark-green data-[state=checked]:bg-primary-orange/10 data-[state=checked]:text-dark-green';
 
 export default function SearchForm({
   className,
@@ -265,7 +265,7 @@ export default function SearchForm({
                   className={cn(
                     'px-2.5 py-0.5 rounded-md font-montserrat text-[0.7rem] font-medium transition-colors',
                     currency === c
-                      ? 'bg-primary-green text-white'
+                      ? 'bg-primary-orange text-white'
                       : 'text-secondary-grey hover:text-dark-green'
                   )}
                 >
@@ -306,14 +306,14 @@ export default function SearchForm({
           <div className="flex items-center gap-6 pt-7">
             <Button
               type="submit"
-              className="bg-primary-green hover:bg-primary-green/90 text-white font-montserrat font-medium text-seu-caption h-10 px-8 rounded-md shadow-none"
+              className="bg-primary-orange hover:bg-primary-orange/90 text-white font-montserrat font-medium text-seu-caption h-10 px-8 rounded-md shadow-none"
             >
               Search
             </Button>
             <button
               type="button"
               onClick={handleClear}
-              className="font-montserrat text-seu-caption text-dark-green hover:text-primary-green transition-colors"
+              className="font-montserrat text-seu-caption text-dark-green hover:text-primary-orange transition-colors"
             >
               Clear filters
             </button>

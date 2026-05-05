@@ -40,7 +40,7 @@ export default function ContactPanel({
 
         {/* PLACEHOLDER: IMAGE - Dark-themed map of Tbilisi, Jikia st. area */}
         <div className="w-full h-48 md:h-56 rounded-lg bg-dark-green/80 border border-secondary-black flex items-center justify-center">
-          <MapPin className="w-8 h-8 text-primary-green" />
+          <MapPin className="w-8 h-8 text-primary-orange" />
         </div>
 
         {/* Address */}

@@ -33,7 +33,7 @@ export default function AdminSidebar() {
     <aside className="w-64 shrink-0 relative z-10 bg-admin-card-gradient border-r border-admin-border flex flex-col shadow-admin-lg">
       <div className="px-6 py-7 border-b border-admin-border-soft">
         <Link href="/admin" className="flex items-center gap-3 group">
-          <span className="size-10 rounded-xl bg-gradient-to-br from-primary-green to-primary-green/70 grid place-items-center shadow-admin-accent ring-1 ring-primary-green/40">
+          <span className="size-10 rounded-xl bg-gradient-to-br from-primary-orange to-primary-orange/70 grid place-items-center shadow-admin-accent ring-1 ring-primary-orange/40">
             <span className="font-[--font-bodoni] text-white text-xl leading-none">
               S
             </span>
@@ -63,17 +63,17 @@ export default function AdminSidebar() {
               className={cn(
                 'flex items-center gap-3 px-3 py-2.5 rounded-lg font-montserrat font-medium text-seu-caption transition-all relative',
                 isActive
-                  ? 'bg-admin-elevated-gradient text-admin-fg shadow-admin ring-1 ring-primary-green/20'
+                  ? 'bg-admin-elevated-gradient text-admin-fg shadow-admin ring-1 ring-primary-orange/20'
                   : 'text-admin-fg-muted hover:text-admin-fg hover:bg-admin-hover'
               )}
             >
               {isActive && (
-                <span className="absolute left-0 top-2 bottom-2 w-1 rounded-r bg-gradient-to-b from-primary-green to-primary-green/60 shadow-[0_0_8px] shadow-primary-green/40" />
+                <span className="absolute left-0 top-2 bottom-2 w-1 rounded-r bg-gradient-to-b from-primary-orange to-primary-orange/60 shadow-[0_0_8px] shadow-primary-orange/40" />
               )}
               <Icon
                 className={cn(
                   'size-[1.125rem] shrink-0',
-                  isActive ? 'text-primary-green' : ''
+                  isActive ? 'text-primary-orange' : ''
                 )}
               />
               {label}

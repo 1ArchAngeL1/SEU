@@ -14,7 +14,7 @@
   --secondary-grey: #a19c92;
   --navy-green: #003253;
   --pale-gray: #f4f0e9;
-  --primary-green: #ff6b35;
+  --primary-orange: #ff6b35;
   --black: #040303;
   --unnamed-color-15201d: #15201d;
   --unnamed-color-ffffff: #ffffff;
@@ -41,7 +41,7 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
   /* shadcn tokens mapped to SEU brand so <Button> defaults to brand orange */
-  --primary: var(--primary-green);
+  --primary: var(--primary-orange);
   --primary-foreground: #ffffff;
   --secondary: var(--pale-gray);
   --secondary-foreground: var(--dark-green);
@@ -77,7 +77,7 @@
   --color-secondary-grey: var(--secondary-grey);
   --color-navy-green: var(--navy-green);
   --color-pale-gray: var(--pale-gray);
-  --color-primary-green: var(--primary-green);
+  --color-primary-orange: var(--primary-orange);
   --color-black: var(--black);
   /* Legacy colors */
   --color-seu-dark: var(--seu-dark);
@@ -135,7 +135,6 @@
 
 html,
 body {
-  scroll-behavior: smooth;
   overflow-x: hidden;
   width: 100%;
   max-width: 100%;
@@ -148,7 +147,7 @@ body {
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: var(--primary-green);
+  --primary: var(--primary-orange);
   --primary-foreground: #ffffff;
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);

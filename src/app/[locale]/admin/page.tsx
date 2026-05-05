@@ -81,13 +81,13 @@ export default function AdminDashboard() {
       <div className="grid lg:grid-cols-2 gap-6 mb-8">
         <Link
           href="/admin/projects"
-          className="group block rounded-2xl border border-admin-border-soft bg-admin-card p-6 hover:border-primary-green/40 hover:bg-admin-hover transition-all"
+          className="group block rounded-2xl border border-admin-border-soft bg-admin-card p-6 hover:border-primary-orange/40 hover:bg-admin-hover transition-all"
         >
           <div className="flex items-start justify-between mb-4">
-            <div className="size-12 rounded-xl bg-primary-green/15 border border-primary-green/30 grid place-items-center">
-              <FolderKanban className="size-5 text-primary-green" />
+            <div className="size-12 rounded-xl bg-primary-orange/15 border border-primary-orange/30 grid place-items-center">
+              <FolderKanban className="size-5 text-primary-orange" />
             </div>
-            <ArrowRight className="size-5 text-admin-fg-muted group-hover:text-primary-green group-hover:translate-x-1 transition-all" />
+            <ArrowRight className="size-5 text-admin-fg-muted group-hover:text-primary-orange group-hover:translate-x-1 transition-all" />
           </div>
           <h3 className="font-[--font-bodoni] text-seu-heading text-admin-fg mb-1">
             Projects
@@ -100,7 +100,7 @@ export default function AdminDashboard() {
 
         <Link
           href="/admin/buildings"
-          className="group block rounded-2xl border border-admin-border-soft bg-admin-card p-6 hover:border-primary-green/40 hover:bg-admin-hover transition-all"
+          className="group block rounded-2xl border border-admin-border-soft bg-admin-card p-6 hover:border-primary-orange/40 hover:bg-admin-hover transition-all"
         >
           <div className="flex items-start justify-between mb-4">
             <div className="size-12 rounded-xl bg-sky-500/15 border border-sky-500/30 grid place-items-center">
@@ -130,7 +130,7 @@ export default function AdminDashboard() {
           </div>
           <Link
             href="/admin/projects"
-            className="font-montserrat text-seu-caption-sm text-primary-green hover:underline flex items-center gap-1"
+            className="font-montserrat text-seu-caption-sm text-primary-orange hover:underline flex items-center gap-1"
           >
             View all <ArrowRight className="size-3.5" />
           </Link>
@@ -183,7 +183,7 @@ export default function AdminDashboard() {
                   </div>
                   <Link
                     href={`/admin/projects/${p.id}`}
-                    className="text-primary-green hover:underline flex items-center gap-1"
+                    className="text-primary-orange hover:underline flex items-center gap-1"
                   >
                     Open <TrendingUp className="size-3.5" />
                   </Link>

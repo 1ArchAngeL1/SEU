@@ -174,7 +174,7 @@ export default function LandingHero() {
                     {STATUS_LABELS[project.status] ?? project.status}
                   </span>
                   {project.isFeatured && (
-                    <span className="px-3 py-1 rounded-full bg-primary-green/20 border border-primary-green/40 backdrop-blur font-montserrat text-[0.7rem] uppercase tracking-wider text-pale-gray">
+                    <span className="px-3 py-1 rounded-full bg-primary-orange/20 border border-primary-orange/40 backdrop-blur font-montserrat text-[0.7rem] uppercase tracking-wider text-pale-gray">
                       Featured
                     </span>
                   )}
@@ -203,7 +203,7 @@ export default function LandingHero() {
                           className={cn(
                             'h-1.5 rounded-full transition-all',
                             index === active
-                              ? 'w-8 bg-primary-green'
+                              ? 'w-8 bg-primary-orange'
                               : 'w-2 bg-white/35 hover:bg-white/60'
                           )}
                           aria-label={`Show image ${index + 1}`}

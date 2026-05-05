@@ -105,7 +105,7 @@ export default function ChooseApartment({
               className={cn(
                 'w-12 h-12 rounded-lg font-montserrat text-seu-body-sm transition-colors cursor-pointer',
                 selectedBedrooms === num
-                  ? 'bg-primary-green text-white'
+                  ? 'bg-primary-orange text-white'
                   : 'bg-pale-gray/26 text-pale-gray hover:bg-secondary-black/80'
               )}
             >
@@ -119,7 +119,7 @@ export default function ChooseApartment({
         <button
           type="button"
           onClick={handleSearch}
-          className="bg-primary-green text-white font-montserrat font-medium text-seu-body px-10 py-3 rounded-xl hover:bg-primary-green/85 transition-colors"
+          className="bg-primary-orange text-white font-montserrat font-medium text-seu-body px-10 py-3 rounded-xl hover:bg-primary-orange/85 transition-colors"
         >
           Search
         </button>

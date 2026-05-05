@@ -16,7 +16,7 @@ import type { Building, Project } from '@/model/types/api';
 import EmptyState from './EmptyState';
 
 const btnPrimary =
-  'bg-gradient-to-b from-primary-green to-primary-green/85 text-white font-montserrat font-medium text-seu-caption px-4 py-2 rounded-lg shadow-md shadow-primary-green/25 hover:shadow-lg hover:shadow-primary-green/30 transition-all flex items-center gap-2 disabled:opacity-50';
+  'bg-gradient-to-b from-primary-orange to-primary-orange/85 text-white font-montserrat font-medium text-seu-caption px-4 py-2 rounded-lg shadow-md shadow-primary-orange/25 hover:shadow-lg hover:shadow-primary-orange/30 transition-all flex items-center gap-2 disabled:opacity-50';
 
 interface BuildingsGridSectionProps {
   selectedProject: Project | undefined;
@@ -51,7 +51,7 @@ export default function BuildingsGridSection({
       ) : (
         <>
           <div className="rounded-2xl border border-admin-border-soft bg-admin-card-gradient p-5 sm:p-6 mb-5 relative overflow-hidden">
-            <div className="absolute -top-16 -right-16 size-48 rounded-full bg-primary-green/10 blur-3xl pointer-events-none" />
+            <div className="absolute -top-16 -right-16 size-48 rounded-full bg-primary-orange/10 blur-3xl pointer-events-none" />
             <div className="relative flex items-end justify-between gap-4 flex-wrap">
               <div>
                 <div className="flex items-center gap-2 mb-1.5">
@@ -72,7 +72,7 @@ export default function BuildingsGridSection({
               </div>
               <button
                 onClick={() => onOpenProject(selectedProject.id)}
-                className="font-montserrat text-seu-caption-sm text-primary-green hover:text-primary-green/80 transition-colors flex items-center gap-1"
+                className="font-montserrat text-seu-caption-sm text-primary-orange hover:text-primary-orange/80 transition-colors flex items-center gap-1"
               >
                 Open project
                 <ChevronRight className="size-3.5" />
@@ -124,10 +124,10 @@ export default function BuildingsGridSection({
               ))}
               <button
                 onClick={onAddBuilding}
-                className="rounded-2xl border border-dashed border-admin-border bg-admin-card/40 p-6 text-center hover:border-primary-green/60 hover:bg-primary-green/5 transition-colors flex flex-col items-center justify-center min-h-[18rem] group"
+                className="rounded-2xl border border-dashed border-admin-border bg-admin-card/40 p-6 text-center hover:border-primary-orange/60 hover:bg-primary-orange/5 transition-colors flex flex-col items-center justify-center min-h-[18rem] group"
               >
-                <span className="size-12 rounded-full border border-admin-border group-hover:border-primary-green/60 grid place-items-center mb-3 transition-colors">
-                  <Plus className="size-5 text-admin-fg-muted group-hover:text-primary-green transition-colors" />
+                <span className="size-12 rounded-full border border-admin-border group-hover:border-primary-orange/60 grid place-items-center mb-3 transition-colors">
+                  <Plus className="size-5 text-admin-fg-muted group-hover:text-primary-orange transition-colors" />
                 </span>
                 <span className="font-montserrat text-seu-caption text-admin-fg-muted group-hover:text-admin-fg transition-colors">
                   Add another block

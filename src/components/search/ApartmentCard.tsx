@@ -25,7 +25,7 @@ function statusLabel(s: UnitStatus): string {
 
 function statusBadgeClass(s: UnitStatus): string {
   if (s === 'available')
-    return 'bg-primary-green text-white border-primary-green';
+    return 'bg-primary-orange text-white border-primary-orange';
   if (s === 'reserved')
     return 'bg-amber-500/90 text-white border-amber-500';
   if (s === 'sold') return 'bg-rose-500/90 text-white border-rose-500';
@@ -45,12 +45,12 @@ export default function ApartmentCard({
     <Link
       href={`/search/${data.id}`}
       onClick={onClick}
-      className="group block focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-green/50 rounded-2xl"
+      className="group block focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-orange/50 rounded-2xl"
     >
       <Card
         className={cn(
           'relative w-full h-[480px] overflow-hidden p-0 rounded-2xl border border-pale-gray/15 bg-dark-green shadow-none transition-all duration-300 text-white flex flex-col',
-          'hover:border-primary-green/70 hover:shadow-lg hover:shadow-primary-green/10 hover:-translate-y-1',
+          'hover:border-primary-orange/70 hover:shadow-lg hover:shadow-primary-orange/10 hover:-translate-y-1',
           className
         )}
       >
@@ -64,7 +64,7 @@ export default function ApartmentCard({
               #{data.unitNumber}
             </p>
           </div>
-          <span className="size-11 rounded-full bg-white/10 backdrop-blur-md border border-white/15 flex items-center justify-center text-white transition-all group-hover:bg-primary-green group-hover:border-primary-green group-hover:scale-110">
+          <span className="size-11 rounded-full bg-white/10 backdrop-blur-md border border-white/15 flex items-center justify-center text-white transition-all group-hover:bg-primary-orange group-hover:border-primary-orange group-hover:scale-110">
             <ArrowUpRight className="size-5" />
           </span>
         </div>

@@ -63,7 +63,7 @@ export default function ContactForm({ className }: ContactFormProps) {
           <button
             type="submit"
             disabled={submitting}
-            className="bg-primary-green text-white font-montserrat font-medium text-seu-body px-14 py-3 rounded-xl hover:bg-primary-green/85 transition-colors disabled:opacity-60"
+            className="bg-primary-orange text-white font-montserrat font-medium text-seu-body px-14 py-3 rounded-xl hover:bg-primary-orange/85 transition-colors disabled:opacity-60"
           >
             {submitting ? 'Sending…' : 'Contact'}
           </button>

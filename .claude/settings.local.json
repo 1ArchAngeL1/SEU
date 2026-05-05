@@ -7,7 +7,8 @@
       "Bash(rmdir:*)",
       "Bash(npm install:*)",
       "mcp__ide__getDiagnostics",
-      "Bash(npx shadcn@latest add dialog -y)"
+      "Bash(npx shadcn@latest add dialog -y)",
+      "Bash(cd \"/Users/leogogichaishvili/SEU/seu project\" && sed -i '' 's/primary-green/primary-orange/g' tailwind.config.js)"
     ]
   }
 }

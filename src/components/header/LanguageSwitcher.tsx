@@ -1,23 +1,18 @@
 'use client'
 
-import { useRouter, usePathname } from '@/i18n/navigation';
 import { useLocale, useTranslations } from 'next-intl';
+import { useLocaleTransition } from '@/components/header/LocaleTransitionContext';
 
 export const LanguageSwitcher = () => {
-  const router = useRouter();
   const locale = useLocale();
   const t = useTranslations('header');
-  const pathname = usePathname();
-
-  function switchLocale(newLocale: 'en' | 'ka') {
-    router.replace(pathname, { locale: newLocale });
-  }
+  const { switchLocale } = useLocaleTransition();
 
   return (
     <div className="relative flex items-center h-10 border border-secondary-grey bg-pale-gray/10 rounded-[10px] px-[0.175rem]">
       {/* Sliding pill */}
       <div
-        className={`absolute top-[0.175rem] h-8 w-16 rounded-[8px] bg-pale-gray/30 border border-secondary-grey transition-transform duration-300 ease-in-out ${
+        className={`absolute top-[0.175rem] h-8 w-16 rounded-[8px] bg-primary-orange border border-primary-orange/60 transition-transform duration-300 ease-in-out ${
           locale === 'ka' ? 'translate-x-[calc(100%+0.175rem)]' : 'translate-x-0'
         }`}
       />

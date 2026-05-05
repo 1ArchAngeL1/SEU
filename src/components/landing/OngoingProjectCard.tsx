@@ -35,7 +35,7 @@ export const OngoingProjectCard = ({
     >
       {/* Background Image or Gradient Placeholder */}
       {image ? (
-        <Image src={image} alt={name} fill className="object-cover" />
+        <Image src={image} alt={name} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
       ) : (
         <div className="absolute inset-0 bg-gradient-to-br from-secondary-black via-dark-green to-navy-green" />
       )}
@@ -46,7 +46,7 @@ export const OngoingProjectCard = ({
       {/* Badge - Top Right */}
       {badge && (
         <div className="absolute top-6 right-6">
-          <span className="px-3 py-1 bg-primary-green text-white text-seu-caption-sm font-montserrat font-medium rounded">
+          <span className="px-3 py-1 bg-primary-orange text-white text-seu-caption-sm font-montserrat font-medium rounded">
             {badge}
           </span>
         </div>
@@ -88,7 +88,7 @@ export const OngoingProjectCard = ({
           {location && (
             <div>
               <span className="text-secondary-grey">Location - </span>
-              <span className="text-primary-green">{location}</span>
+              <span className="text-primary-orange">{location}</span>
             </div>
           )}
           {hasSizeRange && (

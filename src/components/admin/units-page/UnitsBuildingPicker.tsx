@@ -57,7 +57,7 @@ export default function UnitsBuildingPicker({
                     className={cn(
                       'w-full text-left px-4 py-3 border-l-2 transition-colors',
                       isActive
-                        ? 'border-primary-green bg-primary-green/5'
+                        ? 'border-primary-orange bg-primary-orange/5'
                         : 'border-transparent hover:bg-admin-hover'
                     )}
                   >

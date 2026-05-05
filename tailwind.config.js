@@ -17,7 +17,7 @@ module.exports = {
                 "secondary-grey": "#A19C92",
                 "navy-green": "#003253",
                 "pale-gray": "#F4F0E9",
-                "primary-green": "#FF6B35",
+                "primary-orange": "#FF6B35",
                 black: "#040303",
                 // Legacy colors
                 "seu-dark": "#0c1829",

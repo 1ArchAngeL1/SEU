@@ -17,6 +17,7 @@ export default function AboutCompany() {
             src="/panorama.jpg"
             alt="360 View"
             fill
+            sizes="100vw"
             className="object-cover"
           />
           {/* 360 View Icon Overlay */}

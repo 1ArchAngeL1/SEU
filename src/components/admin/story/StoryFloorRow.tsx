@@ -124,7 +124,7 @@ export default function StoryFloorRow({
           {onAddUnit && (
             <button
               onClick={onAddUnit}
-              className="text-primary-green/80 hover:text-primary-green hover:bg-primary-green/10 p-1.5 rounded-md transition-colors"
+              className="text-primary-orange/80 hover:text-primary-orange hover:bg-primary-orange/10 p-1.5 rounded-md transition-colors"
               title="Add unit on this floor"
             >
               <Plus className="size-3.5" />
@@ -219,7 +219,7 @@ export default function StoryFloorRow({
           {onAddUnit && (
             <button
               onClick={onAddUnit}
-              className="font-montserrat text-seu-caption-sm text-primary-green hover:text-primary-green/80 flex items-center gap-1 transition-colors"
+              className="font-montserrat text-seu-caption-sm text-primary-orange hover:text-primary-orange/80 flex items-center gap-1 transition-colors"
             >
               <Plus className="size-3.5" />
               Add the first unit

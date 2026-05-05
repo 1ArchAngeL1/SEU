@@ -296,8 +296,8 @@ export default function UnitsPage() {
 
       {/* Top breadcrumb / picker bar */}
       <div className="flex flex-wrap items-center gap-3 mb-6 rounded-2xl border border-admin-border bg-admin-card-gradient shadow-admin px-4 py-3">
-        <span className="size-8 rounded-md bg-primary-green/15 border border-primary-green/30 grid place-items-center shadow-sm shadow-primary-green/10">
-          <Building2 className="size-4 text-primary-green" />
+        <span className="size-8 rounded-md bg-primary-orange/15 border border-primary-orange/30 grid place-items-center shadow-sm shadow-primary-orange/10">
+          <Building2 className="size-4 text-primary-orange" />
         </span>
         <label className="font-montserrat text-seu-caption-sm text-admin-fg-muted uppercase tracking-wider">
           Project

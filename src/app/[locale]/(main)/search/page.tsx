@@ -46,7 +46,7 @@ export default function SearchPage() {
         <div className="bg-dark-green">
           {unitsQ.isLoading ? (
             <div className="flex flex-col items-center justify-center gap-3 py-24">
-              <Loader2 className="size-6 text-primary-green animate-spin" />
+              <Loader2 className="size-6 text-primary-orange animate-spin" />
               <span className="font-montserrat text-seu-body-sm text-pale-gray/80">
                 Loading apartments…
               </span>

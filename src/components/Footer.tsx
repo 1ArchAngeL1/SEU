@@ -97,6 +97,7 @@ export default function Footer() {
                 src="/map.jpg"
                 alt="Location Map"
                 fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover opacity-70"
               />
               <div className="absolute inset-0 flex items-center justify-center">

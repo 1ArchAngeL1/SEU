@@ -12,8 +12,8 @@ export default function ContactsPage() {
       />
 
       <div className="rounded-2xl border border-dashed border-admin-border-soft bg-admin-card p-12 text-center">
-        <div className="mx-auto size-14 rounded-2xl bg-primary-green/10 border border-primary-green/30 grid place-items-center mb-4">
-          <Inbox className="size-6 text-primary-green" />
+        <div className="mx-auto size-14 rounded-2xl bg-primary-orange/10 border border-primary-orange/30 grid place-items-center mb-4">
+          <Inbox className="size-6 text-primary-orange" />
         </div>
         <h2 className="font-[--font-bodoni] text-seu-heading text-admin-fg mb-2">
           No backend yet

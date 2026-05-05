@@ -25,7 +25,7 @@ export default function NoFloorsWarning({ onAddFloor }: NoFloorsWarningProps) {
         units there.
         <button
           onClick={onAddFloor}
-          className="block mt-2 text-primary-green hover:text-primary-green/80 transition-colors text-seu-caption-sm"
+          className="block mt-2 text-primary-orange hover:text-primary-orange/80 transition-colors text-seu-caption-sm"
         >
           + Add first floor
         </button>

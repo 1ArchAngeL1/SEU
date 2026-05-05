@@ -80,7 +80,7 @@ export default function AboutHiring() {
               </p>
             </div>
 
-            <button className="mt-8 bg-primary-green text-white font-montserrat font-medium text-seu-caption px-8 py-2 rounded-lg hover:bg-primary-green/85 transition-colors uppercase">
+            <button className="mt-8 bg-primary-orange text-white font-montserrat font-medium text-seu-caption px-8 py-2 rounded-lg hover:bg-primary-orange/85 transition-colors uppercase">
               Send Resume
             </button>
           </div>
