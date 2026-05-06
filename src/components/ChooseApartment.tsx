@@ -23,8 +23,8 @@ export default function ChooseApartment({
   onSearch,
   onReset,
 }: ChooseApartmentProps) {
-  const [sizeFrom, setSizeFrom] = useState<string | undefined>(undefined);
-  const [sizeTo, setSizeTo] = useState<string | undefined>(undefined);
+  const [sizeFrom, setSizeFrom] = useState('');
+  const [sizeTo, setSizeTo] = useState('');
   const [selectedBedrooms, setSelectedBedrooms] = useState<number | null>(null);
 
   const handleSearch = () => {
@@ -36,8 +36,8 @@ export default function ChooseApartment({
   };
 
   const handleReset = () => {
-    setSizeFrom('0');
-    setSizeTo('250');
+    setSizeFrom('');
+    setSizeTo('');
     setSelectedBedrooms(null);
     onReset?.();
   };
