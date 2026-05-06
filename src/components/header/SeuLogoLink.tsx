@@ -1,7 +1,14 @@
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
+import type { HeaderVariant } from './SeuHeader';
 
-export const SeuLogoLink = () => {
+export const SeuLogoLink = ({
+  variant = 'dark',
+}: {
+  variant?: HeaderVariant;
+}) => {
+  const textColor = variant === 'light' ? 'text-black' : 'text-pale-gray';
+
   return (
     <Link
       href="/"
@@ -13,20 +20,24 @@ export const SeuLogoLink = () => {
           alt="SEU Development Logo"
           width={53}
           height={47}
-          className="object-contain absolute top-0 left-0 transition-opacity duration-500 ease-in-out group-hover:opacity-0"
+          className={`object-contain absolute top-0 left-0 transition-opacity duration-500 ease-in-out group-hover:opacity-0 ${variant === 'light' ? 'invert' : ''}`}
         />
         <Image
           src="/common/svgs/Group 169-streched.svg"
           alt="SEU Development Logo"
           width={53}
           height={58}
-          className="object-contain absolute top-0 left-0 transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100"
+          className={`object-contain absolute top-0 left-0 transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100 ${variant === 'light' ? 'invert' : ''}`}
         />
       </div>
-      <p className="font-montserrat font-normal text-seu-caption tracking-[0.169rem] text-pale-gray mt-1 group-hover:mt-3 transition-all duration-500 ease-in-out">
+      <p
+        className={`font-montserrat font-normal text-seu-caption tracking-[0.169rem] ${textColor} mt-1 group-hover:mt-3 transition-all duration-500 ease-in-out`}
+      >
         S E U
       </p>
-      <p className="font-montserrat font-normal text-seu-caption-sm tracking-wide text-pale-gray">
+      <p
+        className={`font-montserrat font-normal text-seu-caption-sm tracking-wide ${textColor}`}
+      >
         Development
       </p>
     </Link>

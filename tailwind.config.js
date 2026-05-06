@@ -28,6 +28,7 @@ module.exports = {
                 "seu-cream-light": "#f5efe6",
                 "seu-teal": "#0d2e2e",
                 "seu-teal-light": "#1a3a3a",
+                "seu-dark-gray" : "#F4F0E91A",
                 "seu-white": "#ffffff",
                 "seu-gray": "#6b7280",
                 "seu-light-gray": "#9ca3af",

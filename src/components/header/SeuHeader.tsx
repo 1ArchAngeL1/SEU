@@ -7,9 +7,17 @@ import { SeuLogoLink } from '@/components/header/SeuLogoLink';
 import { LanguageSwitcher } from '@/components/header/LanguageSwitcher';
 import { HeaderContactUs } from '@/components/header/HeaderContactUs';
 
+export type HeaderVariant = 'dark' | 'light';
+
+const lightPages = ['/search'];
+
 export default function SeuHeader() {
   const pathname = usePathname();
   const t = useTranslations('header');
+
+  const variant: HeaderVariant = lightPages.some((p) => pathname.startsWith(p))
+    ? 'light'
+    : 'dark';
 
   const leftLinks = [
     { label: t('visualSearch'), href: '/visual-search' as const },
@@ -23,24 +31,38 @@ export default function SeuHeader() {
   ];
 
   return (
-    <header className="w-full flex items-center justify-between px-10 h-40 bg-dark-green">
+    <header
+      className={`w-full flex items-center justify-between px-10 h-40 transition-colors duration-300 ${
+        variant === 'light' ? 'bg-pale-gray' : 'bg-dark-green'
+      }`}
+    >
       {leftLinks.map((link) => (
-        <HeaderTextLink key={link.href} href={link.href} pathName={pathname}>
+        <HeaderTextLink
+          key={link.href}
+          href={link.href}
+          pathName={pathname}
+          variant={variant}
+        >
           {link.label}
         </HeaderTextLink>
       ))}
 
-      <SeuLogoLink />
+      <SeuLogoLink variant={variant} />
 
       {rightLinks.map((link) => (
-        <HeaderTextLink key={link.href} href={link.href} pathName={pathname}>
+        <HeaderTextLink
+          key={link.href}
+          href={link.href}
+          pathName={pathname}
+          variant={variant}
+        >
           {link.label}
         </HeaderTextLink>
       ))}
 
       <div className={'flex items-center justify-center gap-8'}>
-        <HeaderContactUs />
-        <LanguageSwitcher />
+        <HeaderContactUs variant={variant} />
+        <LanguageSwitcher variant={variant} />
       </div>
     </header>
   );

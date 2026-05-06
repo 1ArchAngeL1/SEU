@@ -23,8 +23,8 @@ export default function ChooseApartment({
   onSearch,
   onReset,
 }: ChooseApartmentProps) {
-  const [sizeFrom, setSizeFrom] = useState('0');
-  const [sizeTo, setSizeTo] = useState('250');
+  const [sizeFrom, setSizeFrom] = useState<string | undefined>(undefined);
+  const [sizeTo, setSizeTo] = useState<string | undefined>(undefined);
   const [selectedBedrooms, setSelectedBedrooms] = useState<number | null>(null);
 
   const handleSearch = () => {
@@ -43,12 +43,7 @@ export default function ChooseApartment({
   };
 
   return (
-    <div
-      className={cn(
-        'bg-dark-green rounded-2xl p-6 max-w-md border border-secondary-grey',
-        className
-      )}
-    >
+    <div className={cn('bg-dark-green rounded-2xl p-6 max-w-md', className)}>
       <div className="flex items-center gap-3 mb-8">
         <Search className="w-6 h-6 text-pale-gray/26" />
         <h2 className="font-bodoni text-seu-subheading text-pale-gray uppercase tracking-wide">
@@ -61,24 +56,26 @@ export default function ChooseApartment({
           Size m2
         </label>
         <div className="flex gap-4">
-          <div className="flex-1 flex items-center bg-pale-gray/26 border border-secondary-black rounded-xl px-4 py-3">
+          <div className="flex-1 flex items-center bg-seu-dark-gray border border-secondary-black rounded-xl px-4 py-3">
             <span className="text-seu-body-sm text-secondary-grey mr-2">
               From
             </span>
             <input
               type="number"
+              placeholder="0"
               value={sizeFrom}
               onChange={(e) => setSizeFrom(e.target.value)}
-              className="w-full bg-transparent text-seu-body-sm text-white focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+              className="w-full text-seu-body-sm text-white focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
               min={0}
             />
           </div>
-          <div className="flex-1 flex items-center bg-pale-gray/26 border border-secondary-black rounded-xl px-4 py-3">
+          <div className="flex-1 flex items-center bg-seu-dark-gray border border-secondary-black rounded-xl px-4 py-3">
             <span className="text-seu-body-sm text-secondary-grey mr-2">
               To
             </span>
             <input
               type="number"
+              placeholder="250"
               value={sizeTo}
               onChange={(e) => setSizeTo(e.target.value)}
               className="w-full bg-transparent text-seu-body-sm text-white focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
@@ -119,7 +116,7 @@ export default function ChooseApartment({
         <button
           type="button"
           onClick={handleSearch}
-          className="bg-primary-orange text-white font-montserrat font-medium text-seu-body px-10 py-3 rounded-xl hover:bg-primary-orange/85 transition-colors"
+          className="bg-primary-orange/70 text-white font-montserrat font-medium text-seu-body px-10 py-3 rounded-xl hover:bg-primary-orange/85 transition-colors"
         >
           Search
         </button>
