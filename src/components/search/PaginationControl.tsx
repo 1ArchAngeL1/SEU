@@ -60,7 +60,7 @@ export function PaginationControl({
   const canNext = currentPage < totalPages;
 
   return (
-    <div className="bg-dark-green flex items-center justify-center gap-2 py-10">
+    <div className="bg-dark-green flex items-center justify-center gap-1.5 lg:gap-2 py-8 lg:py-10 px-4">
       <Button
         type="button"
         size="icon-lg"

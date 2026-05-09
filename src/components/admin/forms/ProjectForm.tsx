@@ -96,57 +96,40 @@ export default function ProjectForm({
   function buildPayload(): CreateProjectInput {
     const payload: CreateProjectInput = {
       name: {
-        ka: form.nameKa.trim() || undefined,
-        en: form.nameEn.trim() || undefined,
+        ka: form.nameKa.trim() || null,
+        en: form.nameEn.trim() || null,
+      },
+      description: {
+        ka: form.descriptionKa.trim() || null,
+        en: form.descriptionEn.trim() || null,
       },
       location: {
         address: form.address.trim(),
-        city: form.city.trim() || undefined,
-        district: form.district.trim() || undefined,
+        city: form.city.trim() || null,
+        district: form.district.trim() || null,
       },
       status: form.status,
       isActive: form.isActive,
       isFeatured: form.isFeatured,
-    };
-
-    if (form.descriptionKa || form.descriptionEn) {
-      payload.description = {
-        ka: form.descriptionKa.trim() || undefined,
-        en: form.descriptionEn.trim() || undefined,
-      };
-    }
-    if (form.startDate) payload.startDate = form.startDate;
-    if (form.expectedCompletionDate)
-      payload.expectedCompletionDate = form.expectedCompletionDate;
-    if (form.actualCompletionDate)
-      payload.actualCompletionDate = form.actualCompletionDate;
-    if (form.totalLandArea !== '')
-      payload.totalLandArea = Number(form.totalLandArea);
-    payload.images = form.images;
-    payload.mainImage = form.mainImage.trim() || undefined;
-    payload.renderImage = form.renderImage.trim() || undefined;
-    if (form.videoUrl) payload.videoUrl = form.videoUrl.trim();
-
-    const minPrice = form.minPrice !== '' ? Number(form.minPrice) : undefined;
-    const maxPrice = form.maxPrice !== '' ? Number(form.maxPrice) : undefined;
-    const minPricePerSqm =
-      form.minPricePerSqm !== '' ? Number(form.minPricePerSqm) : undefined;
-    const maxPricePerSqm =
-      form.maxPricePerSqm !== '' ? Number(form.maxPricePerSqm) : undefined;
-    if (
-      minPrice !== undefined ||
-      maxPrice !== undefined ||
-      minPricePerSqm !== undefined ||
-      maxPricePerSqm !== undefined
-    ) {
-      payload.priceRange = {
+      startDate: form.startDate || null,
+      expectedCompletionDate: form.expectedCompletionDate || null,
+      actualCompletionDate: form.actualCompletionDate || null,
+      totalLandArea:
+        form.totalLandArea !== '' ? Number(form.totalLandArea) : null,
+      images: form.images,
+      mainImage: form.mainImage.trim() || null,
+      renderImage: form.renderImage.trim() || null,
+      videoUrl: form.videoUrl.trim() || null,
+      priceRange: {
         currency: form.priceCurrency,
-        minPrice,
-        maxPrice,
-        minPricePerSqm,
-        maxPricePerSqm,
-      };
-    }
+        minPrice: form.minPrice !== '' ? Number(form.minPrice) : null,
+        maxPrice: form.maxPrice !== '' ? Number(form.maxPrice) : null,
+        minPricePerSqm:
+          form.minPricePerSqm !== '' ? Number(form.minPricePerSqm) : null,
+        maxPricePerSqm:
+          form.maxPricePerSqm !== '' ? Number(form.maxPricePerSqm) : null,
+      },
+    };
     return payload;
   }
 

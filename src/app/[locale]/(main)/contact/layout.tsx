@@ -1,4 +1,3 @@
-import SeuHeader from '@/components/header/SeuHeader';
 import React from 'react';
 
 interface ContactLayoutProps {
@@ -7,8 +6,7 @@ interface ContactLayoutProps {
 
 const ContactLayout = ({ children }: ContactLayoutProps) => {
   return (
-    <div className={'flex flex-col h-[calc(100vh-10rem)] overflow-hidden'}>
-      {/*<SeuHeader />*/}
+    <div className="flex flex-col min-h-[calc(100dvh-5rem)] lg:min-h-0 lg:h-[calc(100vh-8rem)] lg:overflow-hidden">
       {children}
     </div>
   );

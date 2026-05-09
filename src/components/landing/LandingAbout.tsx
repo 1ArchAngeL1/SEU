@@ -2,14 +2,15 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import FadeIn from '@/components/FadeIn';
 
 export default function LandingAbout() {
   return (
-    <section className="bg-pale-gray py-20 lg:py-32">
-      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-10">
+    <section className="bg-pale-gray py-16 lg:py-24">
+      <div className="max-w-[1920px] mx-auto px-5 lg:px-10">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-20">
           {/* Left - Text Content */}
-          <div className="flex-1 max-w-xl">
+          <FadeIn direction="left" className="flex-1 max-w-xl">
             <h2 className="font-bodoni text-seu-title lg:text-seu-title-lg text-dark-green mb-8">
               About SEU
             </h2>
@@ -43,10 +44,10 @@ export default function LandingAbout() {
             >
               CONTACT
             </Link>
-          </div>
+          </FadeIn>
 
           {/* Right - Logo */}
-          <div className="flex-1 flex items-center justify-center lg:justify-end mr-52">
+          <FadeIn direction="right" delay={200} className="flex-1 flex items-center justify-center lg:justify-end lg:mr-52">
             <Image
               src="/common/svgs/SEUcolored.svg"
               alt="SEU Development Logo"
@@ -54,7 +55,7 @@ export default function LandingAbout() {
               height={400}
               className="w-[300px] h-[300px] lg:w-[400px] lg:h-[400px]"
             />
-          </div>
+          </FadeIn>
         </div>
       </div>
     </section>

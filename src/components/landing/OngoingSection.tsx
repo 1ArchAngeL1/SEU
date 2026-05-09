@@ -5,6 +5,7 @@ import { OngoingProjectCard } from '@/components/landing/OngoingProjectCard';
 import { useProjectsList } from '@/hooks/queries/use-projects';
 import { pickLocale, type Locale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
+import FadeIn from '@/components/FadeIn';
 
 export default function OngoingSection() {
   const locale = useLocale() as Locale;
@@ -20,24 +21,27 @@ export default function OngoingSection() {
 
   return (
     <section className="bg-dark-green py-20">
-      <div className="max-w-[1920px] mx-auto px-10">
+      <div className="max-w-[1920px] mx-auto px-5 lg:px-10">
         {/* Title */}
-        <h2 className="font-bodoni text-seu-title text-white mb-12">Ongoing</h2>
+        <FadeIn>
+          <h2 className="font-bodoni text-seu-heading lg:text-seu-title text-white mb-8 lg:mb-12">Ongoing</h2>
+        </FadeIn>
 
         {/* Project Cards */}
         <div className="flex flex-col gap-8">
-          {projects.map((project) => (
-            <OngoingProjectCard
-              key={project.id}
-              name={pickLocale(project.name, locale)}
-              location={
-                project.location?.district ||
-                project.location?.city ||
-                project.location?.address
-              }
-              image={fileUrl(project.mainImage) || undefined}
-              badge={project.isFeatured ? 'FEATURED' : undefined}
-            />
+          {projects.map((project, i) => (
+            <FadeIn key={project.id} delay={i * 150} duration={800}>
+              <OngoingProjectCard
+                name={pickLocale(project.name, locale)}
+                location={
+                  project.location?.district ||
+                  project.location?.city ||
+                  project.location?.address
+                }
+                image={fileUrl(project.mainImage) || undefined}
+                badge={project.isFeatured ? 'FEATURED' : undefined}
+              />
+            </FadeIn>
           ))}
         </div>
       </div>

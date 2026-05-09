@@ -29,7 +29,7 @@ export const OngoingProjectCard = ({
   return (
     <div
       className={cn(
-        'relative w-full h-[500px] rounded-2xl overflow-hidden group',
+        'relative w-full h-[280px] lg:h-[500px] rounded-2xl overflow-hidden group hover-lift',
         className
       )}
     >
@@ -53,11 +53,11 @@ export const OngoingProjectCard = ({
       )}
 
       {/* Content - Bottom */}
-      <div className="absolute bottom-0 left-0 right-0 p-8 flex items-end justify-between">
+      <div className="absolute bottom-0 left-0 right-0 p-5 lg:p-8 flex flex-col lg:flex-row items-start lg:items-end justify-between gap-2 lg:gap-0">
         {/* Left - Project Info */}
         <div>
           {projectId && (
-            <p className="text-seu-caption text-secondary-grey mb-2 flex items-center gap-2">
+            <p className="text-seu-caption-sm lg:text-seu-caption text-secondary-grey mb-2 flex items-center gap-2">
               <svg
                 className="w-4 h-4"
                 fill="none"
@@ -80,11 +80,11 @@ export const OngoingProjectCard = ({
               {projectId}
             </p>
           )}
-          <h3 className="font-bodoni text-seu-title text-white">{name}</h3>
+          <h3 className="font-bodoni text-seu-heading lg:text-seu-title text-white">{name}</h3>
         </div>
 
         {/* Right - Location & Size */}
-        <div className="flex items-center gap-8 text-seu-caption">
+        <div className="flex items-center gap-4 lg:gap-8 text-seu-caption-sm lg:text-seu-caption">
           {location && (
             <div>
               <span className="text-secondary-grey">Location - </span>

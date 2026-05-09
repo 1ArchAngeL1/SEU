@@ -115,32 +115,31 @@ export default function BuildingForm({
     const payload: CreateBuildingInput = {
       project: form.project,
       name: {
-        ka: form.nameKa.trim() || undefined,
-        en: form.nameEn.trim() || undefined,
+        ka: form.nameKa.trim() || null,
+        en: form.nameEn.trim() || null,
       },
       block: form.block.trim().toUpperCase(),
       status: form.status,
       isActive: form.isActive,
+      location: { address: form.address.trim() || '' },
+      basementFloors:
+        form.basementFloors !== '' ? Number(form.basementFloors) : null,
+      totalSize: form.totalSize !== '' ? Number(form.totalSize) : null,
+      livableArea: form.livableArea !== '' ? Number(form.livableArea) : null,
+      parkingSpaces:
+        form.parkingSpaces !== '' ? Number(form.parkingSpaces) : null,
+      constructionProgress:
+        form.constructionProgress !== ''
+          ? Number(form.constructionProgress)
+          : null,
+      description: {
+        ka: form.descriptionKa.trim() || null,
+        en: form.descriptionEn.trim() || null,
+      },
+      mainImage: form.mainImage.trim() || null,
+      renderImage: form.renderImage.trim() || null,
+      images: form.images,
     };
-    if (form.address) payload.location = { address: form.address.trim() };
-    if (form.basementFloors !== '')
-      payload.basementFloors = Number(form.basementFloors);
-    if (form.totalSize !== '') payload.totalSize = Number(form.totalSize);
-    if (form.livableArea !== '')
-      payload.livableArea = Number(form.livableArea);
-    if (form.parkingSpaces !== '')
-      payload.parkingSpaces = Number(form.parkingSpaces);
-    if (form.constructionProgress !== '')
-      payload.constructionProgress = Number(form.constructionProgress);
-    if (form.descriptionKa || form.descriptionEn) {
-      payload.description = {
-        ka: form.descriptionKa.trim() || undefined,
-        en: form.descriptionEn.trim() || undefined,
-      };
-    }
-    payload.mainImage = form.mainImage.trim() || undefined;
-    payload.renderImage = form.renderImage.trim() || undefined;
-    payload.images = form.images;
 
     // Polygon: send rawPolygon + dimensions to backend for conversion
     const pe = form.polygonEditor;

@@ -1,8 +1,36 @@
-const paragraphs = [
-  'SEU Development has been operating in the real estate market since 2014.',
-  'The company\u2019s team, consisting of experienced professionals who care about continuous development, implements high construction standards and uses innovative and modern approaches that meet European standards.',
-  'Successfully completed projects by SEU Development include the old and new buildings of the Georgian National University, which house modern educational and exhibition facilities, as well as a business center in the suburbs of Tbilisi. All SEU Development construction projects are fully funded at an early stage, which ensures they are completed on time. The company\u2019s social responsibility ensures that it only uses energy efficient building materials for its projects.',
-  'SEU Development aims to create a multifunctional residential complex that meets the needs and wishes of each client and ensures that such projects are accessible to every member of society.',
+import FadeIn from '@/components/FadeIn';
+
+const sections = [
+  {
+    title: null,
+    content:
+      'წინამდებარე ვებ გვერდი www.seudevelopment.ge (შემდგომში ,,ვებ გვერდი\'\') წარმოადგენს შპს ,,სეუ გრუპ დეველოპმენტ კომპანი\'\'-ს (ს/კ 405062836) საკუთრებას. ჩვენი კომპანიისთვის პრიორიტეტულია მომხმარებლის ნდობა და მათი პირადი სივრცის ხელშეუხებლობა. წინამდებარე დოკუმენტი განმარტავს თუ როგორ უზრუნველყოფს შპს ,,სეუ გრუპ დეველოპმენტ კომპანი\'\' თქვენს მიერ მოწოდებული ინფორმაციის უსაფრთხოებასა და კონფიდენციალურობას მოქმედი კანონმდებლობის შესაბამისად.',
+  },
+  {
+    title: 'რა სახის ინფორმაციას ვაგროვებთ?',
+    content:
+      'ჩვენს ვებგვერდზე სტუმრობისას, მონაცემთა შეგროვება ხდება შემდეგი გზებით:',
+    bullets: [
+      'აქტიური კომუნიკაცია: როდესაც იყენებთ ,,ნომრის დატოვების\'\' ფუნქციას, ჩვენ ვინახავთ თქვენს საკონტაქტო ნომერს თქვენთან დასაკავშირებლად და საინტერესო შეთავაზებების მოსაწოდებლად.',
+      'ანალიტიკური მონაცემები: ჩვენ აღვრიცხავთ ინფორმაციას იმის შესახებ, თუ რომელი წყაროდან შემოხვედით ვებგვერდზე, რა დრო დაყავით კონკრეტულ გვერდზე და რა ტიპის პროდუქციით დაინტერესდით. ეს გვეხმარება მომსახურების ხარისხის გაუმჯობესებაში.',
+    ],
+  },
+  {
+    title: 'მომხმარებლის უფლებები',
+    content:
+      'თქვენ სრულად ფლობთ კონტროლს თქვენს პერსონალურ მონაცემებზე და გაქვთ უფლება:',
+    bullets: [
+      'მოითხოვოთ ინფორმაცია თქვენი მონაცემების დამუშავების შესახებ;',
+      'მოითხოვოთ არასწორი ან არაზუსტი მონაცემების შესწორება;',
+      'მოითხოვოთ მონაცემების წაშლა ან მათი დამუშავების შეწყვეტა;',
+    ],
+    note: 'შენიშვნა: ნებისმიერ მოთხოვნაზე კომპანია გიპასუხებთ 30 სამუშაო დღის განმავლობაში.',
+  },
+  {
+    title: 'მონაცემთა უსაფრთხოება და შენახვა',
+    content:
+      'კომპანია იყენებს თანამედროვე ტექნიკურ და ორგანიზაციულ გადაწყვეტილებებს თქვენი ინფორმაციის დასაცავად. მონაცემები ინახება მხოლოდ იმ ვადით, რაც საჭიროა მომსახურების გაუმჯობესებისა და სარეკლამო მიზნების მისაღწევად. მიზნის მიღწევის ან თქვენი მოთხოვნის საფუძველზე, ინფორმაცია ექვემდებარება უსაფრთხო წაშლას.',
+  },
 ];
 
 export default function PolicyPage() {
@@ -10,30 +38,46 @@ export default function PolicyPage() {
     <main>
       {/* Dark Hero */}
       <div className="bg-dark-green py-12">
-        <div className="max-w-[1920px] mx-auto px-12">
-          <h1 className="font-[--font-bodoni] font-normal text-seu-title-xl leading-[6rem] text-pale-gray mb-4 py-10">
-            PRIVACY POLICY
-          </h1>
-          <p className="font-montserrat font-medium text-seu-subheading leading-[1.8125rem] text-pale-gray pt-10">
-            Real estate market since 2014.
-          </p>
+        <div className="max-w-[1920px] mx-auto px-5 lg:px-10">
+          <FadeIn direction="left" duration={900}>
+            <h1 className="font-[--font-bodoni] font-normal text-seu-heading lg:text-seu-title-xl leading-tight lg:leading-[6rem] text-pale-gray mb-4 py-6 lg:py-10">
+              PRIVACY POLICY
+            </h1>
+          </FadeIn>
         </div>
       </div>
 
       {/* Light Content */}
-      <div className="bg-pale-gray py-16">
-        <div className="max-w-[1920px] mx-auto px-12">
-          {Array.from({ length: 8 }, (_, i) => (
-            <div key={i} className="mb-8 last:mb-0">
-              {paragraphs.map((text, j) => (
-                <p
-                  key={j}
-                  className="font-montserrat font-normal text-seu-body-lg leading-[1.5rem] text-dark-green mb-4 last:mb-0"
-                >
-                  {text}
+      <div className="bg-pale-gray py-10 lg:py-16">
+        <div className="max-w-[1920px] mx-auto px-5 lg:px-10 flex flex-col gap-10">
+          {sections.map((section, i) => (
+            <FadeIn key={i} delay={i * 100}>
+              {section.title && (
+                <h2 className="font-[--font-bodoni] font-normal text-seu-subheading lg:text-seu-heading leading-tight text-dark-green mb-4">
+                  {section.title}
+                </h2>
+              )}
+              <p className="font-montserrat font-normal text-seu-body-sm lg:text-seu-body-lg leading-7 text-dark-green">
+                {section.content}
+              </p>
+              {section.bullets && (
+                <ul className="mt-4 flex flex-col gap-3 pl-5 list-disc">
+                  {section.bullets.map((bullet, j) => (
+                    <li
+                      key={j}
+                      className="font-montserrat font-normal text-seu-body-sm lg:text-seu-body-lg leading-7 text-dark-green"
+                    >
+                      {bullet}
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {section.note && (
+                <p className="mt-4 font-montserrat font-medium text-seu-body-sm lg:text-seu-body leading-7 text-dark-green/80 italic">
+                  {section.note}
                 </p>
-              ))}
-            </div>
+              )}
+            </FadeIn>
           ))}
         </div>
       </div>

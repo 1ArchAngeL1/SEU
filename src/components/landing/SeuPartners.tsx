@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import FadeIn from '@/components/FadeIn';
 
 const PARTNERS = [
   { name: 'Bank of Georgia', logo: '/common/svgs/bog.svg' },
@@ -17,11 +18,11 @@ const PARTNERS = [
 export default function SeuPartners() {
   return (
     <section className="bg-dark-green py-20 overflow-hidden">
-      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-10 mb-12">
-        <h2 className="font-bodoni text-seu-title text-white uppercase tracking-wide">
+      <FadeIn className="max-w-[1920px] mx-auto px-5 lg:px-10 mb-8 lg:mb-12">
+        <h2 className="font-bodoni text-seu-heading lg:text-seu-title text-white uppercase tracking-wide">
           Partners
         </h2>
-      </div>
+      </FadeIn>
 
       {/* Infinite scroll container */}
       <div className="relative">

@@ -49,7 +49,7 @@ export default function ApartmentCard({
     >
       <Card
         className={cn(
-          'relative w-full h-[480px] overflow-hidden p-0 rounded-2xl border border-pale-gray/15 bg-dark-green shadow-none transition-all duration-300 text-white flex flex-col',
+          'relative w-full h-[400px] lg:h-[480px] overflow-hidden p-0 rounded-2xl border border-pale-gray/15 bg-dark-green shadow-none transition-all duration-300 text-white flex flex-col',
           'hover:border-primary-orange/70 hover:shadow-lg hover:shadow-primary-orange/10 hover:-translate-y-1',
           className
         )}

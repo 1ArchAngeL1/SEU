@@ -1,15 +1,19 @@
+import FadeIn from '@/components/FadeIn';
+
 export default function AboutMission() {
   return (
     <div className="py-20 lg:py-28">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-10 text-center">
-        <h2 className="font-[--font-bodoni] font-normal text-seu-title text-white mb-4">
-          Our Mission
-        </h2>
-        <p className="font-[--font-bodoni] font-normal text-seu-body-lg text-pale-gray/70 italic mb-12">
-          Real estate market since 2014.
-        </p>
+      <div className="max-w-4xl mx-auto px-5 lg:px-10 text-center">
+        <FadeIn>
+          <h2 className="font-[--font-bodoni] font-normal text-seu-title text-white mb-4">
+            Our Mission
+          </h2>
+          <p className="font-[--font-bodoni] font-normal text-seu-body-lg text-pale-gray/70 italic mb-12">
+            Real estate market since 2014.
+          </p>
+        </FadeIn>
 
-        <div className="space-y-8 font-montserrat font-normal text-seu-body text-secondary-grey leading-relaxed">
+        <FadeIn delay={150} className="space-y-8 font-montserrat font-normal text-seu-body text-secondary-grey leading-relaxed">
           <p>
             SEU Development has been operating in the real estate market since
             2014.
@@ -38,7 +42,7 @@ export default function AboutMission() {
             that meets the needs and wishes of each client and ensures that such
             projects are accessible to every member of society.
           </p>
-        </div>
+        </FadeIn>
       </div>
     </div>
   );

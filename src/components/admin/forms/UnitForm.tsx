@@ -151,10 +151,6 @@ export default function UnitForm({
   }
 
   function buildPayload(): CreateUnitInput {
-    const pricePerSqm = num(form.pricePerSqm);
-    const discount = num(form.discount);
-    const originalPrice = num(form.originalPrice);
-
     const payload: CreateUnitInput = {
       building: buildingId,
       project: projectId,
@@ -163,33 +159,39 @@ export default function UnitForm({
       floorNumber: Number(form.floor) || 0,
       type: form.type,
       status: form.status,
-      bedrooms: num(form.bedrooms),
-      bathrooms: num(form.bathrooms),
-      livingRooms: num(form.livingRooms),
-      balconies: num(form.balconies),
-      terraces: num(form.terraces),
+      bedrooms: num(form.bedrooms) ?? null,
+      bathrooms: num(form.bathrooms) ?? null,
+      livingRooms: num(form.livingRooms) ?? null,
+      balconies: num(form.balconies) ?? null,
+      terraces: num(form.terraces) ?? null,
       totalSize: Number(form.totalSize) || 0,
-      livableArea: num(form.livableArea),
-      balconySize: num(form.balconySize),
-      terraceSize: num(form.terraceSize),
+      livableArea: num(form.livableArea) ?? null,
+      balconySize: num(form.balconySize) ?? null,
+      terraceSize: num(form.terraceSize) ?? null,
       price: {
         currency: form.currency,
         amount: Number(form.amount) || 0,
-        ...(pricePerSqm !== undefined && { pricePerSqm }),
-        ...(discount !== undefined && { discount }),
-        ...(originalPrice !== undefined && { originalPrice }),
+        pricePerSqm: num(form.pricePerSqm) ?? null,
+        discount: num(form.discount) ?? null,
+        originalPrice: num(form.originalPrice) ?? null,
       },
       furnishingStatus: form.furnishingStatus,
       isActive: form.isActive,
+      entrance: form.entrance.trim() || null,
+      mainImage: form.mainImage.trim() || null,
+      images: form.images,
+      floorPlanImage: form.floorPlanImage.trim() || null,
+      twoDContent: form.twoDContent.trim() || null,
+      threeDContent: form.threeDContent.trim() || null,
+      videoTourUrl: form.videoTourUrl.trim() || null,
+      virtualTourUrl: form.virtualTourUrl.trim() || null,
+      renderImage: form.renderImage.trim() || null,
+      description: {
+        ka: form.descriptionKa.trim() || null,
+        en: form.descriptionEn.trim() || null,
+      },
     };
-    if (form.entrance) payload.entrance = form.entrance.trim();
-    payload.mainImage = form.mainImage.trim() || undefined;
-    payload.images = form.images;
-    payload.floorPlanImage = form.floorPlanImage.trim() || undefined;
-    payload.twoDContent = form.twoDContent.trim() || undefined;
-    payload.threeDContent = form.threeDContent.trim() || undefined;
-    payload.videoTourUrl = form.videoTourUrl.trim() || undefined;
-    payload.virtualTourUrl = form.virtualTourUrl.trim() || undefined;
+
     // Polygon handling
     const pe = form.polygonEditor;
     const validEntries = pe.entries.filter((e) => e.raw.trim());
@@ -208,16 +210,8 @@ export default function UnitForm({
     } else {
       payload.polygon = [];
     }
-    if (form.descriptionKa || form.descriptionEn) {
-      payload.description = {
-        ka: form.descriptionKa.trim() || undefined,
-        en: form.descriptionEn.trim() || undefined,
-      };
-    }
 
-    return Object.fromEntries(
-      Object.entries(payload).filter(([, v]) => v !== undefined)
-    ) as CreateUnitInput;
+    return payload;
   }
 
   async function handleSubmit(e: React.FormEvent) {

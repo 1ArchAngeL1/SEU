@@ -63,7 +63,7 @@ export function ApartmentFloorPlan({
         : floorPlanImages.threeD;
 
   return (
-    <div className="flex-1 bg-white rounded-2xl overflow-hidden flex flex-col min-h-[640px] shadow-sm">
+    <div className="flex-1 bg-white rounded-2xl overflow-hidden flex flex-col min-h-[400px] lg:min-h-[640px] shadow-sm">
       {/* Tabs + Compass */}
       <div className="flex items-center justify-between px-6 py-5">
         <div className="flex gap-2">
@@ -75,7 +75,7 @@ export function ApartmentFloorPlan({
                 type="button"
                 onClick={() => setViewMode(mode)}
                 className={cn(
-                  'px-6 h-9 rounded-lg font-montserrat text-seu-body-sm transition-colors border',
+                  'px-4 lg:px-6 h-9 rounded-lg font-montserrat text-seu-caption lg:text-seu-body-sm transition-colors border',
                   active
                     ? 'bg-dark-green text-white border-dark-green'
                     : 'bg-transparent text-dark-green border-secondary-grey/50 hover:bg-pale-gray/40 hover:border-dark-green/40'

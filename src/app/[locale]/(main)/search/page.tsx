@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Loader2, SearchX } from 'lucide-react';
 import SearchForm from '@/components/search/SearchForm';
 import { ApartmentCardGridView } from '@/components/search/ApartmentCardGridView';
@@ -10,9 +11,33 @@ import type { UnitFilter } from '@/model/types/api';
 
 const ITEMS_PER_PAGE = 40;
 
+function toNum(v: string | null): number | undefined {
+  if (!v) return undefined;
+  const n = Number(v);
+  return Number.isFinite(n) ? n : undefined;
+}
+
 export default function SearchPage() {
+  const searchParams = useSearchParams();
+
+  const initialFilter = useMemo<UnitFilter>(() => {
+    const f: UnitFilter = { status: 'available' };
+    const minSize = toNum(searchParams.get('minSize'));
+    const maxSize = toNum(searchParams.get('maxSize'));
+    const bedrooms = toNum(searchParams.get('bedrooms'));
+    const minBedrooms = toNum(searchParams.get('minBedrooms'));
+    const maxBedrooms = toNum(searchParams.get('maxBedrooms'));
+    if (minSize != null) f.minSize = minSize;
+    if (maxSize != null) f.maxSize = maxSize;
+    if (bedrooms != null) f.bedrooms = bedrooms;
+    if (minBedrooms != null) f.minBedrooms = minBedrooms;
+    if (maxBedrooms != null) f.maxBedrooms = maxBedrooms;
+    return f;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const [page, setPage] = useState(1);
-  const [filter, setFilter] = useState<UnitFilter>({ status: 'available' });
+  const [filter, setFilter] = useState<UnitFilter>(initialFilter);
 
   const unitsQ = useUnitsList(filter, { page, limit: ITEMS_PER_PAGE });
 
@@ -35,13 +60,13 @@ export default function SearchPage() {
   const totalPages = unitsQ.data?.pagination.totalPages ?? 1;
 
   return (
-    <div className="bg-pale-gray min-h-screen pt-12">
+    <div className="bg-pale-gray min-h-screen pt-8 lg:pt-12">
       <div className="mx-auto">
-        <h1 className="font-bodoni text-seu-title-xl text-dark-green mb-8 px-10 max-w-[1920px] mx-auto">
+        <h1 className="font-bodoni text-seu-heading lg:text-seu-title-xl text-dark-green mb-6 lg:mb-8 px-5 lg:px-10 max-w-[1920px] mx-auto">
           APARTMENTS
         </h1>
 
-        <SearchForm onSearch={handleSearch} onClear={handleClear} />
+        <SearchForm initialFilter={initialFilter} onSearch={handleSearch} onClear={handleClear} />
 
         <div className="bg-dark-green">
           {unitsQ.isLoading ? (

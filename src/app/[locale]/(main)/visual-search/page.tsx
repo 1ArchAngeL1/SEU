@@ -2,28 +2,25 @@
 
 import { useLocale } from 'next-intl';
 import Image from 'next/image';
-import { Loader2, ArrowRight } from 'lucide-react';
+import { ArrowRight, Loader2 } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import { useProjectsList } from '@/hooks/queries/use-projects';
-import { pickLocale, type Locale } from '@/lib/i18n-helpers';
+import { type Locale, pickLocale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
 
 export default function VisualSearchPage() {
   const locale = useLocale() as Locale;
-  const projectsQ = useProjectsList(
-    { isActive: true },
-    { page: 1, limit: 50 }
-  );
+  const projectsQ = useProjectsList({ isActive: true }, { page: 1, limit: 50 });
 
   const projects = projectsQ.data?.items ?? [];
 
   return (
-    <main className="bg-dark-green min-h-dvh py-20">
-      <div className="max-w-[1920px] mx-auto px-10">
-        <h1 className="font-bodoni text-seu-title text-white mb-4">
+    <main className="bg-dark-green pt-8 pb-16 lg:pt-12 lg:pb-24">
+      <div className="max-w-[1920px] mx-auto px-5 lg:px-10">
+        <h1 className="font-bodoni text-seu-heading lg:text-seu-title text-white mb-4">
           Visual Search.
         </h1>
-        <p className="font-montserrat text-seu-body text-secondary-grey mb-16 max-w-xl">
+        <p className="font-montserrat text-seu-body-sm lg:text-seu-body text-secondary-grey mb-8 lg:mb-12 max-w-xl">
           Choose a project to explore its buildings and apartments visually.
         </p>
 
@@ -55,7 +52,7 @@ export default function VisualSearchPage() {
                 href={`/visual-search/${project.id}`}
                 className="group block"
               >
-                <div className="relative h-[500px] rounded-2xl overflow-hidden border border-pale-gray/10 hover:border-primary-orange/50 transition-all">
+                <div className="relative h-[280px] lg:h-[500px] rounded-2xl overflow-hidden border border-pale-gray/10 hover:border-primary-orange/50 transition-all">
                   {/* Image or placeholder */}
                   {image ? (
                     <Image
@@ -73,18 +70,18 @@ export default function VisualSearchPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
                   {/* Content */}
-                  <div className="absolute bottom-0 left-0 right-0 p-8 flex items-end justify-between">
+                  <div className="absolute bottom-0 left-0 right-0 p-5 lg:p-8 flex items-end justify-between">
                     <div>
                       {location && (
-                        <p className="font-montserrat text-seu-caption text-secondary-grey mb-2">
+                        <p className="font-montserrat text-seu-caption-sm lg:text-seu-caption text-secondary-grey mb-1 lg:mb-2">
                           {location}
                         </p>
                       )}
-                      <h3 className="font-bodoni text-seu-heading-lg text-white">
+                      <h3 className="font-bodoni text-seu-body-lg lg:text-seu-heading-lg text-white">
                         {name}
                       </h3>
                     </div>
-                    <span className="size-12 rounded-full border border-pale-gray/20 flex items-center justify-center text-pale-gray group-hover:bg-primary-orange group-hover:border-primary-orange group-hover:text-white transition-all shrink-0">
+                    <span className="size-10 lg:size-12 rounded-full border border-pale-gray/20 flex items-center justify-center text-pale-gray group-hover:bg-primary-orange group-hover:border-primary-orange group-hover:text-white transition-all shrink-0">
                       <ArrowRight className="size-5" />
                     </span>
                   </div>

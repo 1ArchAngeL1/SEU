@@ -1,10 +1,12 @@
+import FadeIn from '@/components/FadeIn';
+
 export default function AboutHiring() {
   return (
     <div className="bg-pale-gray py-20 lg:py-28">
-      <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-10">
+      <div className="max-w-[1920px] mx-auto px-5 lg:px-10">
         <div className="flex flex-col lg:flex-row gap-0">
           {/* Left - Title & Info Box */}
-          <div className="w-full lg:w-1/2 flex flex-col justify-between pr-0 lg:pr-20">
+          <FadeIn direction="left" className="w-full lg:w-1/2 flex flex-col justify-between pr-0 lg:pr-20">
             <div>
               <h2 className="font-[--font-bodoni] font-normal text-seu-title text-dark-green uppercase mb-4">
                 We Are Hiring.
@@ -20,16 +22,16 @@ export default function AboutHiring() {
             </div>
 
             {/* Blue info box */}
-            <div className="mt-auto -ml-4 sm:-ml-6 lg:-ml-10 -mr-0 lg:-mr-20 bg-dark-green px-4 sm:px-6 lg:px-10 py-16">
+            <div className="mt-auto -ml-5 lg:-ml-10 -mr-0 lg:-mr-20 bg-dark-green px-5 lg:px-10 py-16">
               <p className="font-montserrat font-medium text-seu-body text-pale-gray/80 leading-relaxed">
                 Duis aute irure dolor in reprehenderit in voluptate velit esse
                 cillum dolore eu fugiat nulla pariatur.
               </p>
             </div>
-          </div>
+          </FadeIn>
 
           {/* Right - Job Listing */}
-          <div className="w-full lg:w-1/2 bg-white rounded-lg p-10">
+          <FadeIn direction="right" delay={200} className="w-full lg:w-1/2 bg-white rounded-lg p-10">
             <h3 className="font-[--font-bodoni] font-normal text-seu-heading text-dark-green uppercase mb-2">
               Marketing
             </h3>
@@ -83,7 +85,7 @@ export default function AboutHiring() {
             <button className="mt-8 bg-primary-orange text-white font-montserrat font-medium text-seu-caption px-8 py-2 rounded-lg hover:bg-primary-orange/85 transition-colors uppercase">
               Send Resume
             </button>
-          </div>
+          </FadeIn>
         </div>
       </div>
     </div>

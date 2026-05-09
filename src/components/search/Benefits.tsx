@@ -44,9 +44,9 @@ export function Benefits() {
   ];
 
   return (
-    <div className="mt-40 flex gap-12 px-10">
+    <div className="mt-16 lg:mt-40 flex flex-col lg:flex-row gap-8 lg:gap-12 px-5 lg:px-10">
       {/* Left side: Benefits list */}
-      <div className="w-[30%] shrink-0">
+      <div className="w-full lg:w-[30%] shrink-0">
         <h2 className="font-[--font-bodoni] font-normal text-seu-subheading text-pale-gray mb-6">
           Benefits
         </h2>
@@ -70,7 +70,7 @@ export function Benefits() {
           {visibleImages.map((image) => (
             <div
               key={image.id}
-              className="flex-1 h-80 rounded-lg overflow-hidden relative"
+              className="flex-1 h-48 lg:h-80 rounded-lg overflow-hidden relative"
             >
               {/* PLACEHOLDER: IMAGE - Building/amenity photo */}
               <div className="absolute inset-0 bg-[#1a2535] flex items-center justify-center">

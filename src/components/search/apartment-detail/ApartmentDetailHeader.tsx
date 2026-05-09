@@ -1,34 +1,34 @@
 'use client';
 
 import { ArrowLeft, FileText } from 'lucide-react';
-import { Link } from '@/i18n/navigation';
-import { Button } from '@/components/ui/button';
+import { useRouter } from '@/i18n/navigation';
 
 export function ApartmentDetailHeader() {
-  return (
-    <div className="flex items-center justify-between mb-12">
-      <Link href="/search">
-        <Button
-          type="button"
-          variant="outline"
-          className="gap-2 rounded-full border border-pale-gray/30 bg-transparent text-pale-gray font-montserrat text-seu-caption px-5 h-9 hover:bg-pale-gray/10 hover:border-pale-gray hover:text-pale-gray"
-        >
-          <ArrowLeft className="size-3" />
-          Back
-        </Button>
-      </Link>
+  const router = useRouter();
 
-      <span className="font-montserrat text-seu-caption text-pale-gray/40 tracking-[0.2rem] uppercase">
+  return (
+    <div className="flex items-center justify-between mb-8 lg:mb-12">
+      <button
+        type="button"
+        onClick={() => router.back()}
+        className="inline-flex items-center gap-2 rounded-full border border-pale-gray/30 bg-transparent text-pale-gray font-montserrat text-seu-caption px-4 lg:px-5 h-9 hover:bg-pale-gray/10 hover:border-pale-gray transition-colors"
+      >
+        <ArrowLeft className="size-3" />
+        <span className="hidden sm:inline">Back</span>
+      </button>
+
+      <span className="hidden sm:block font-montserrat text-seu-caption text-pale-gray/40 tracking-[0.2rem] uppercase">
         Floor Plan
       </span>
 
-      <Button
+      <button
         type="button"
-        className="gap-2.5 rounded-lg bg-navy-green hover:bg-navy-green/80 border border-pale-gray/20 text-pale-gray font-montserrat text-seu-caption px-5 h-10"
+        className="inline-flex items-center gap-2 lg:gap-2.5 rounded-lg bg-navy-green hover:bg-navy-green/80 border border-pale-gray/20 text-pale-gray font-montserrat text-seu-caption-sm lg:text-seu-caption px-3 lg:px-5 h-9 lg:h-10 transition-colors"
       >
         <FileText className="size-4" />
-        SEE PRESENTATION
-      </Button>
+        <span className="hidden sm:inline">SEE PRESENTATION</span>
+        <span className="sm:hidden">PDF</span>
+      </button>
     </div>
   );
 }
@@ -47,7 +47,7 @@ export function ApartmentMetaHeader({
   return (
     <>
       {/* Block & Floor — inline label + serif value */}
-      <div className="flex items-baseline gap-12 mb-8">
+      <div className="flex items-baseline gap-8 lg:gap-12 mb-6 lg:mb-8">
         <div className="flex items-baseline gap-3">
           <span className="font-montserrat text-seu-body text-pale-gray/50">
             Block

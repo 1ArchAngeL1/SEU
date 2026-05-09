@@ -12,7 +12,7 @@ export const SeuLogoLink = ({
   return (
     <Link
       href="/"
-      className="group flex flex-col items-center justify-self-center px-10 lg:px-16 overflow-visible"
+      className="group flex flex-col items-center justify-self-center px-2 lg:px-16 overflow-visible"
     >
       <div className="relative w-13.25 h-11.75 group-hover:h-14.5 transition-all duration-500 ease-in-out">
         <Image
