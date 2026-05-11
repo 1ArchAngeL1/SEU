@@ -155,5 +155,33 @@
   },
   "policy": {
     "title": "PRIVACY POLICY"
+  },
+  "howItWorks": {
+    "title": "How It Works",
+    "subtitle": "Find your dream apartment in just a few clicks using our interactive visual search — explore projects, buildings, and floor plans visually.",
+    "step": "Step {n}",
+    "steps": {
+      "0": {
+        "title": "Choose a Project",
+        "description": "Browse our available developments and select the project that interests you. Each project features detailed renders and location info."
+      },
+      "1": {
+        "title": "Select a Building",
+        "description": "Explore the project's render image and click directly on the building you'd like to view. Interactive highlights guide your selection."
+      },
+      "2": {
+        "title": "Pick a Floor",
+        "description": "Navigate through floors visually. See availability at a glance and choose the floor that suits your preference."
+      },
+      "3": {
+        "title": "Find Your Apartment",
+        "description": "View the floor plan with all units highlighted. Tap any apartment to see its size, layout, price, and availability instantly."
+      }
+    },
+    "cta": "Try Visual Search",
+    "screenProjectLabel": "Choose project",
+    "screenBuildingLabel": "Select building",
+    "screenFloorLabel": "Pick a floor",
+    "screenApartmentLabel": "Choose apartment"
   }
 }
