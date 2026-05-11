@@ -67,6 +67,70 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* ============================================================
+   * Public site semantic theme tokens
+   * Default: dark theme (current look)
+   * ============================================================ */
+  --site-bg: #0d141d;
+  --site-bg-alt: #060d16;
+  --site-bg-card: #0d141d;
+  --site-bg-elevated: #101926;
+  --site-bg-input: rgba(255, 255, 255, 0.08);
+  --site-bg-hover: rgba(255, 255, 255, 0.05);
+
+  --site-fg: #f4f0e9;
+  --site-fg-strong: #ffffff;
+  --site-fg-muted: #a19c92;
+  --site-fg-dim: rgba(244, 240, 233, 0.5);
+
+  --site-border: #282626;
+  --site-border-soft: rgba(244, 240, 233, 0.1);
+  --site-border-strong: rgba(244, 240, 233, 0.15);
+
+  --site-input-border: rgba(255, 255, 255, 0.1);
+  --site-input-text: #ffffff;
+
+  --site-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --site-shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.4);
+
+  --site-overlay: rgba(13, 20, 29, 0.55);
+  --site-overlay-strong: rgba(13, 20, 29, 0.70);
+
+  --site-footer-bg: #040303;
+}
+
+/* ============================================================
+ * Light theme for the public site
+ * Applied via [data-site-theme="light"] on <html>
+ * ============================================================ */
+[data-site-theme='light'] {
+  --site-bg: #f4f0e9;
+  --site-bg-alt: #ffffff;
+  --site-bg-card: #ffffff;
+  --site-bg-elevated: #ffffff;
+  --site-bg-input: rgba(13, 20, 29, 0.04);
+  --site-bg-hover: rgba(13, 20, 29, 0.04);
+
+  --site-fg: #0d141d;
+  --site-fg-strong: #040303;
+  --site-fg-muted: #6b7280;
+  --site-fg-dim: rgba(13, 20, 29, 0.45);
+
+  --site-border: rgba(161, 156, 146, 0.35);
+  --site-border-soft: rgba(161, 156, 146, 0.2);
+  --site-border-strong: rgba(161, 156, 146, 0.5);
+
+  --site-input-border: rgba(161, 156, 146, 0.4);
+  --site-input-text: #0d141d;
+
+  --site-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --site-shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.08);
+
+  --site-overlay: rgba(244, 240, 233, 0.6);
+  --site-overlay-strong: rgba(244, 240, 233, 0.8);
+
+  --site-footer-bg: #0d141d;
 }
 
 @theme inline {
@@ -95,6 +159,24 @@
   --color-seu-light-gray: var(--seu-light-gray);
   --font-montserrat: var(--font-montserrat);
   --font-bodoni: 'Bodoni MT', 'Bodoni 72', 'Didot', 'GFS Didot', serif;
+  /* Site theme semantic tokens */
+  --color-site-bg: var(--site-bg);
+  --color-site-bg-alt: var(--site-bg-alt);
+  --color-site-bg-card: var(--site-bg-card);
+  --color-site-bg-elevated: var(--site-bg-elevated);
+  --color-site-bg-input: var(--site-bg-input);
+  --color-site-bg-hover: var(--site-bg-hover);
+  --color-site-fg: var(--site-fg);
+  --color-site-fg-strong: var(--site-fg-strong);
+  --color-site-fg-muted: var(--site-fg-muted);
+  --color-site-fg-dim: var(--site-fg-dim);
+  --color-site-border: var(--site-border);
+  --color-site-border-soft: var(--site-border-soft);
+  --color-site-border-strong: var(--site-border-strong);
+  --color-site-input-border: var(--site-input-border);
+  --color-site-input-text: var(--site-input-text);
+  --color-site-footer-bg: var(--site-footer-bg);
+
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -483,4 +565,12 @@ img {
 .hover-lift:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+}
+
+/* Site theme shadows */
+.shadow-site {
+  box-shadow: var(--site-shadow);
+}
+.shadow-site-lg {
+  box-shadow: var(--site-shadow-lg);
 }

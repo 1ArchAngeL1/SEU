@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl';
 export default function FooterLower() {
   const t = useTranslations('footer');
   return (
-    <div className="w-full bg-black py-12 lg:py-0 lg:h-82 flex flex-col lg:grid lg:grid-cols-3 items-center gap-8 lg:gap-0 px-5 lg:px-10">
+    <div className="w-full bg-site-footer-bg py-12 lg:py-0 lg:h-82 flex flex-col lg:grid lg:grid-cols-3 items-center gap-8 lg:gap-0 px-5 lg:px-10">
       {/* Social Icons */}
       <div className="flex items-center gap-10 lg:gap-18 justify-self-start lg:order-none order-last">
         <Link href="#" className="hover:opacity-80 transition-opacity">
@@ -41,10 +41,10 @@ export default function FooterLower() {
 
       {/* Center Text — hidden on mobile */}
       <div className="hidden lg:block text-center justify-self-center">
-        <p className="font-montserrat font-normal text-seu-heading-lg leading-12.25 tracking-[0.375rem] text-secondary-grey">
+        <p className="font-montserrat font-normal text-seu-heading-lg leading-12.25 tracking-[0.375rem] text-site-fg-muted">
           {t('seu')}
         </p>
-        <p className="font-montserrat font-normal text-seu-heading-lg leading-12.25 tracking-[0.375rem] text-secondary-grey">
+        <p className="font-montserrat font-normal text-seu-heading-lg leading-12.25 tracking-[0.375rem] text-site-fg-muted">
           {t('development')}
         </p>
       </div>

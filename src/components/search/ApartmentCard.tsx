@@ -51,7 +51,7 @@ export default function ApartmentCard({
     >
       <Card
         className={cn(
-          'relative w-full h-[400px] lg:h-[480px] overflow-hidden p-0 rounded-2xl border border-pale-gray/15 bg-dark-green shadow-none transition-all duration-300 text-white flex flex-col',
+          'relative w-full h-[400px] lg:h-[480px] overflow-hidden p-0 rounded-2xl border border-site-border-soft bg-site-bg-card shadow-none transition-all duration-300 text-site-fg-strong flex flex-col',
           'hover:border-primary-orange/70 hover:shadow-lg hover:shadow-primary-orange/10 hover:-translate-y-1',
           className
         )}
@@ -59,14 +59,14 @@ export default function ApartmentCard({
         {/* Top row: unit number + arrow */}
         <div className="relative z-10 flex items-start justify-between p-6">
           <div>
-            <p className="font-montserrat text-seu-caption text-white/70 uppercase tracking-wider mb-1.5">
+            <p className="font-montserrat text-seu-caption text-site-fg-dim uppercase tracking-wider mb-1.5">
               {t('apartment')}
             </p>
-            <p className="font-bodoni text-seu-heading-lg text-white leading-none">
+            <p className="font-bodoni text-seu-heading-lg text-site-fg-strong leading-none">
               #{data.unitNumber}
             </p>
           </div>
-          <span className="size-11 rounded-full bg-white/10 backdrop-blur-md border border-white/15 flex items-center justify-center text-white transition-all group-hover:bg-primary-orange group-hover:border-primary-orange group-hover:scale-110">
+          <span className="size-11 rounded-full bg-site-bg-hover backdrop-blur-md border border-site-border-soft flex items-center justify-center text-site-fg-strong transition-all group-hover:bg-primary-orange group-hover:border-primary-orange group-hover:scale-110">
             <ArrowUpRight className="size-5" />
           </span>
         </div>
@@ -74,15 +74,19 @@ export default function ApartmentCard({
         {/* Centered floor-plan / main image */}
         <div className="relative flex-1 flex items-center justify-center px-6 pb-2 min-h-0">
           {image ? (
-            <Image
-              src={image}
-              alt={`Apartment ${data.unitNumber}`}
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
-              className="object-contain transition-transform duration-500 group-hover:scale-[1.03]"
-            />
+            <>
+              <Image
+                src={image}
+                alt={`Apartment ${data.unitNumber}`}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
+                className="object-contain transition-transform duration-500 group-hover:scale-[1.03]"
+              />
+              {/* Soft edge fade into card background */}
+              <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_30px_12px_var(--site-bg-card)]" />
+            </>
           ) : (
-            <div className="size-32 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/40">
+            <div className="size-32 rounded-full bg-site-bg-hover border border-site-border-soft flex items-center justify-center text-site-fg-dim">
               <ImageIcon className="size-10" />
             </div>
           )}
@@ -93,14 +97,14 @@ export default function ApartmentCard({
           {projectName && (
             <Badge
               variant="outline"
-              className="border-pale-gray/25 bg-pale-gray/5 text-white normal-case tracking-normal text-seu-caption px-3 py-1"
+              className="border-site-border-soft bg-site-bg-hover text-site-fg-strong normal-case tracking-normal text-seu-caption px-3 py-1"
             >
               {projectName}
             </Badge>
           )}
           <Badge
             variant="outline"
-            className="border-pale-gray/25 bg-pale-gray/5 text-white normal-case tracking-normal gap-1.5 text-seu-caption px-3 py-1 [&>svg]:size-4"
+            className="border-site-border-soft bg-site-bg-hover text-site-fg-strong normal-case tracking-normal gap-1.5 text-seu-caption px-3 py-1 [&>svg]:size-4"
           >
             <Building2 />
             {t('block')} {data.block}
@@ -115,14 +119,14 @@ export default function ApartmentCard({
           </Badge>
           <Badge
             variant="outline"
-            className="border-pale-gray/25 bg-pale-gray/5 text-white normal-case tracking-normal gap-1.5 text-seu-caption px-3 py-1 [&>svg]:size-4"
+            className="border-site-border-soft bg-site-bg-hover text-site-fg-strong normal-case tracking-normal gap-1.5 text-seu-caption px-3 py-1 [&>svg]:size-4"
           >
             <Layers />
             {data.floorNumber}
           </Badge>
           <Badge
             variant="outline"
-            className="border-pale-gray/25 bg-pale-gray/5 text-white normal-case tracking-normal gap-1.5 text-seu-caption px-3 py-1 [&>svg]:size-4"
+            className="border-site-border-soft bg-site-bg-hover text-site-fg-strong normal-case tracking-normal gap-1.5 text-seu-caption px-3 py-1 [&>svg]:size-4"
           >
             <Maximize2 />
             {data.totalSize} m²

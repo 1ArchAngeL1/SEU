@@ -42,11 +42,11 @@ function getPageNumbers(current: number, total: number): (number | '...')[] {
 const baseBtnClass =
   'rounded-xl font-montserrat font-medium text-seu-body-sm transition-all border';
 const inactiveBtnClass =
-  'bg-transparent text-pale-gray border-secondary-grey/40 hover:bg-pale-gray/10 hover:border-pale-gray hover:text-white';
+  'bg-transparent text-site-fg border-site-border-strong hover:bg-site-bg-hover hover:border-site-fg hover:text-site-fg-strong';
 const activeBtnClass =
-  'bg-pale-gray text-dark-green border-pale-gray hover:bg-pale-gray hover:text-dark-green shadow-sm';
+  'bg-site-fg text-site-bg border-site-fg hover:bg-site-fg hover:text-site-bg shadow-sm';
 const navBtnClass =
-  'bg-transparent text-pale-gray border-secondary-grey/40 hover:bg-pale-gray/10 hover:border-pale-gray hover:text-white disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:border-secondary-grey/40 disabled:hover:text-pale-gray';
+  'bg-transparent text-site-fg border-site-border-strong hover:bg-site-bg-hover hover:border-site-fg hover:text-site-fg-strong disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:border-site-border-strong disabled:hover:text-site-fg';
 
 export function PaginationControl({
   currentPage,
@@ -60,7 +60,7 @@ export function PaginationControl({
   const canNext = currentPage < totalPages;
 
   return (
-    <div className="bg-dark-green flex items-center justify-center gap-1.5 lg:gap-2 py-8 lg:py-10 px-4">
+    <div className="bg-site-bg flex items-center justify-center gap-1.5 lg:gap-2 py-8 lg:py-10 px-4">
       <Button
         type="button"
         size="icon-lg"
@@ -77,7 +77,7 @@ export function PaginationControl({
         page === '...' ? (
           <span
             key={`ellipsis-${i}`}
-            className="size-11 flex items-center justify-center text-secondary-grey font-montserrat text-seu-body-sm select-none"
+            className="size-11 flex items-center justify-center text-site-fg-muted font-montserrat text-seu-body-sm select-none"
           >
             …
           </span>

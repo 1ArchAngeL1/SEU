@@ -262,21 +262,21 @@ export default function VisualSearchProjectPage({
   // Fallback: no render image → show grid cards
   if (!isLoading && !renderImage) {
     return (
-      <main className="bg-dark-green pt-8 pb-16 lg:pt-12 lg:pb-24">
+      <main className="bg-site-bg pt-8 pb-16 lg:pt-12 lg:pb-24">
         <div className="max-w-[1920px] mx-auto px-5 lg:px-10">
           <Link
             href="/visual-search"
-            className="inline-flex items-center gap-2 font-montserrat text-seu-caption text-secondary-grey hover:text-pale-gray transition-colors mb-10"
+            className="inline-flex items-center gap-2 font-montserrat text-seu-caption text-site-fg-muted hover:text-site-fg transition-colors mb-10"
           >
             <ArrowLeft className="size-4" />
             Back to projects
           </Link>
           {project && (
-            <h1 className="font-bodoni text-seu-title text-white mb-16">
+            <h1 className="font-bodoni text-seu-title text-site-fg-strong mb-16">
               {pickLocale(project.name, locale)}
             </h1>
           )}
-          <p className="text-secondary-grey font-montserrat text-seu-body text-center py-32">
+          <p className="text-site-fg-muted font-montserrat text-seu-body text-center py-32">
             No render image available for this project.
           </p>
         </div>
@@ -285,13 +285,13 @@ export default function VisualSearchProjectPage({
   }
 
   return (
-    <main className="bg-dark-green pt-8 pb-16 lg:pt-12 lg:pb-24">
+    <main className="bg-site-bg pt-8 pb-16 lg:pt-12 lg:pb-24">
       <div className="max-w-[1920px] mx-auto lg:px-10">
         <div className="px-4 lg:px-0">
           {/* Back link */}
           <Link
             href="/visual-search"
-            className="inline-flex items-center gap-2 font-montserrat text-seu-caption text-secondary-grey hover:text-pale-gray transition-colors mb-6 lg:mb-10"
+            className="inline-flex items-center gap-2 font-montserrat text-seu-caption text-site-fg-muted hover:text-site-fg transition-colors mb-6 lg:mb-10"
           >
             <ArrowLeft className="size-4" />
             Back to projects
@@ -300,11 +300,11 @@ export default function VisualSearchProjectPage({
           {/* Project header */}
           {project && (
             <div className="mb-6 lg:mb-10">
-              <h1 className="font-bodoni text-seu-heading lg:text-seu-title text-white mb-2">
+              <h1 className="font-bodoni text-seu-heading lg:text-seu-title text-site-fg-strong mb-2">
                 {pickLocale(project.name, locale)}
               </h1>
               {project.location?.address && (
-                <p className="font-montserrat text-seu-body text-secondary-grey">
+                <p className="font-montserrat text-seu-body text-site-fg-muted">
                   {project.location.address}
                 </p>
               )}
@@ -324,7 +324,7 @@ export default function VisualSearchProjectPage({
             {/* Mobile: zoomable viewport — image keeps natural aspect ratio */}
             <div
               ref={panZoom.containerRef}
-              className="lg:hidden relative w-full overflow-hidden border-y border-pale-gray/10 touch-none"
+              className="lg:hidden relative w-full overflow-hidden border-y border-site-border-soft touch-none"
               onTouchStart={panZoom.handleTouchStart}
               onTouchEnd={panZoom.handleTouchEnd}
             >
@@ -387,27 +387,27 @@ export default function VisualSearchProjectPage({
               <div className="absolute bottom-4 right-4 flex flex-col gap-2 z-10">
                 <button
                   onClick={panZoom.zoomIn}
-                  className="size-10 rounded-full bg-dark-green/80 backdrop-blur border border-pale-gray/20 flex items-center justify-center text-white"
+                  className="size-10 rounded-full bg-site-bg/80 backdrop-blur border border-site-border-soft flex items-center justify-center text-site-fg-strong"
                 >
                   <ZoomIn className="size-5" />
                 </button>
                 <button
                   onClick={panZoom.zoomOut}
-                  className="size-10 rounded-full bg-dark-green/80 backdrop-blur border border-pale-gray/20 flex items-center justify-center text-white"
+                  className="size-10 rounded-full bg-site-bg/80 backdrop-blur border border-site-border-soft flex items-center justify-center text-site-fg-strong"
                 >
                   <ZoomOut className="size-5" />
                 </button>
                 <button
                   onClick={panZoom.resetView}
-                  className="size-10 rounded-full bg-dark-green/80 backdrop-blur border border-pale-gray/20 flex items-center justify-center text-white"
+                  className="size-10 rounded-full bg-site-bg/80 backdrop-blur border border-site-border-soft flex items-center justify-center text-site-fg-strong"
                 >
                   <Maximize className="size-5" />
                 </button>
               </div>
 
               {/* Hint overlay — fades out */}
-              <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-dark-green/80 backdrop-blur rounded-full px-4 py-2 pointer-events-none animate-[fadeOut_3s_2s_forwards] opacity-100">
-                <p className="font-montserrat text-seu-caption-sm text-pale-gray whitespace-nowrap">
+              <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-site-bg/80 backdrop-blur rounded-full px-4 py-2 pointer-events-none animate-[fadeOut_3s_2s_forwards] opacity-100">
+                <p className="font-montserrat text-seu-caption-sm text-site-fg whitespace-nowrap">
                   Drag to explore · Tap building to select
                 </p>
               </div>
@@ -415,8 +415,8 @@ export default function VisualSearchProjectPage({
 
             {/* Mobile: selected building label */}
             {activeId && (
-              <div className="lg:hidden flex items-center justify-between bg-secondary-black/50 px-4 py-3 border-b border-pale-gray/10">
-                <p className="font-montserrat text-seu-body-sm text-white">
+              <div className="lg:hidden flex items-center justify-between bg-secondary-black/50 px-4 py-3 border-b border-site-border-soft">
+                <p className="font-montserrat text-seu-body-sm text-site-fg-strong">
                   {pickLocale(
                     buildings.find((b) => b.id === activeId)?.name ?? {},
                     locale
@@ -435,7 +435,7 @@ export default function VisualSearchProjectPage({
             )}
 
             {/* Desktop: original view */}
-            <div className="hidden lg:block relative w-full rounded-2xl overflow-hidden border border-pale-gray/10">
+            <div className="hidden lg:block relative w-full rounded-2xl overflow-hidden border border-site-border-soft shadow-[0_0_60px_20px_var(--site-bg)]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={renderImage}
@@ -490,8 +490,8 @@ export default function VisualSearchProjectPage({
                     className="absolute pointer-events-none -translate-x-1/2 -translate-y-full z-10"
                     style={{ left: `${center.x}%`, top: `${center.y}%` }}
                   >
-                    <div className="bg-dark-green/90 backdrop-blur-md border border-success-green/40 rounded-xl px-5 py-3 shadow-lg mb-2">
-                      <p className="font-montserrat font-semibold text-seu-body-sm text-white whitespace-nowrap">
+                    <div className="bg-site-bg/90 backdrop-blur-md border border-success-green/40 rounded-xl px-5 py-3 shadow-lg mb-2">
+                      <p className="font-montserrat font-semibold text-seu-body-sm text-site-fg-strong whitespace-nowrap">
                         {pickLocale(b.name, locale)}
                       </p>
                       <div className="flex items-center gap-3 font-montserrat text-seu-caption mt-1">
@@ -499,10 +499,10 @@ export default function VisualSearchProjectPage({
                           <span className="text-success-green font-medium">Block {b.block}</span>
                         )}
                         {b.status && (
-                          <span className="text-secondary-grey capitalize">{b.status.replace(/_/g, ' ')}</span>
+                          <span className="text-site-fg-muted capitalize">{b.status.replace(/_/g, ' ')}</span>
                         )}
                         {b.constructionProgress !== undefined && b.constructionProgress > 0 && (
-                          <span className="text-pale-gray/70">{b.constructionProgress}%</span>
+                          <span className="text-site-fg-dim">{b.constructionProgress}%</span>
                         )}
                       </div>
                     </div>

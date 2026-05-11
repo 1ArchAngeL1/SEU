@@ -11,10 +11,10 @@ export default function CardHero() {
       <div className="max-w-[1920px] mx-auto px-5 lg:px-10 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
         {/* Left — Text */}
         <FadeIn direction="left">
-          <h1 className="font-[--font-bodoni] font-normal text-seu-heading lg:text-seu-title-xl leading-tight lg:leading-[6rem] text-dark-green mb-4 lg:mb-8">
+          <h1 className="font-[--font-bodoni] font-normal text-seu-heading lg:text-seu-title-xl leading-tight lg:leading-[6rem] text-site-fg mb-4 lg:mb-8">
             {t('title')}
           </h1>
-          <p className="font-montserrat font-normal text-seu-body lg:text-seu-subheading leading-relaxed lg:leading-[3.125rem] text-[#3D3D3D]">
+          <p className="font-montserrat font-normal text-seu-body lg:text-seu-subheading leading-relaxed lg:leading-[3.125rem] text-site-fg-muted">
             {t('description')}
           </p>
         </FadeIn>
@@ -41,7 +41,7 @@ export default function CardHero() {
             />
           </div>
           {/* Drop shadow */}
-          <div className="w-[14.6875rem] h-5 bg-navy-green blur-[20px] mt-24" />
+          <div className="w-[14.6875rem] h-5 bg-site-fg-dim blur-[20px] mt-24" />
         </FadeIn>
       </div>
     </div>

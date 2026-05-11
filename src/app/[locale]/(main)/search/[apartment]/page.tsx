@@ -49,8 +49,8 @@ export default function ApartmentDetailPage({
 
   if (unitQ.isLoading) {
     return (
-      <div className="bg-dark-green min-h-screen flex items-center justify-center">
-        <span className="font-montserrat text-seu-body text-pale-gray">
+      <div className="bg-site-bg min-h-screen flex items-center justify-center">
+        <span className="font-montserrat text-seu-body text-site-fg">
           Loading…
         </span>
       </div>
@@ -68,7 +68,7 @@ export default function ApartmentDetailPage({
     typeof unit.building === 'string' ? unit.building : unit.building.id;
 
   return (
-    <div className="bg-dark-green min-h-screen py-10">
+    <div className="bg-site-bg min-h-screen py-10">
       <div className="flex flex-col mx-auto">
         <ApartmentDetailView
           apartment={{

@@ -15,12 +15,12 @@ export default function VisualSearchPage() {
   const projects = projectsQ.data?.items ?? [];
 
   return (
-    <main className="bg-dark-green pt-8 pb-16 lg:pt-12 lg:pb-24">
+    <main className="bg-site-bg pt-8 pb-16 lg:pt-12 lg:pb-24">
       <div className="max-w-[1920px] mx-auto px-5 lg:px-10">
-        <h1 className="font-bodoni text-seu-heading lg:text-seu-title text-white mb-4">
+        <h1 className="font-bodoni text-seu-heading lg:text-seu-title text-site-fg-strong mb-4">
           Visual Search.
         </h1>
-        <p className="font-montserrat text-seu-body-sm lg:text-seu-body text-secondary-grey mb-8 lg:mb-12 max-w-xl">
+        <p className="font-montserrat text-seu-body-sm lg:text-seu-body text-site-fg-muted mb-8 lg:mb-12 max-w-xl">
           Choose a project to explore its buildings and apartments visually.
         </p>
 
@@ -31,7 +31,7 @@ export default function VisualSearchPage() {
         )}
 
         {!projectsQ.isLoading && projects.length === 0 && (
-          <p className="text-secondary-grey font-montserrat text-seu-body py-32 text-center">
+          <p className="text-site-fg-muted font-montserrat text-seu-body py-32 text-center">
             No projects available.
           </p>
         )}
@@ -52,7 +52,7 @@ export default function VisualSearchPage() {
                 href={`/visual-search/${project.id}`}
                 className="group block"
               >
-                <div className="relative h-[280px] lg:h-[500px] rounded-2xl overflow-hidden border border-pale-gray/10 hover:border-primary-orange/50 transition-all">
+                <div className="relative h-[280px] lg:h-[500px] rounded-2xl overflow-hidden border border-site-border-soft hover:border-primary-orange/50 transition-all shadow-[0_0_40px_10px_var(--site-bg)]">
                   {/* Image or placeholder */}
                   {image ? (
                     <Image
@@ -63,7 +63,7 @@ export default function VisualSearchPage() {
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   ) : (
-                    <div className="absolute inset-0 bg-gradient-to-br from-secondary-black via-dark-green to-navy-green" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-secondary-black via-site-bg to-navy-green" />
                   )}
 
                   {/* Gradient overlay */}
@@ -73,15 +73,15 @@ export default function VisualSearchPage() {
                   <div className="absolute bottom-0 left-0 right-0 p-5 lg:p-8 flex items-end justify-between">
                     <div>
                       {location && (
-                        <p className="font-montserrat text-seu-caption-sm lg:text-seu-caption text-secondary-grey mb-1 lg:mb-2">
+                        <p className="font-montserrat text-seu-caption-sm lg:text-seu-caption text-site-fg-muted mb-1 lg:mb-2">
                           {location}
                         </p>
                       )}
-                      <h3 className="font-bodoni text-seu-body-lg lg:text-seu-heading-lg text-white">
+                      <h3 className="font-bodoni text-seu-body-lg lg:text-seu-heading-lg text-site-fg-strong">
                         {name}
                       </h3>
                     </div>
-                    <span className="size-10 lg:size-12 rounded-full border border-pale-gray/20 flex items-center justify-center text-pale-gray group-hover:bg-primary-orange group-hover:border-primary-orange group-hover:text-white transition-all shrink-0">
+                    <span className="size-10 lg:size-12 rounded-full border border-site-border-soft flex items-center justify-center text-site-fg group-hover:bg-primary-orange group-hover:border-primary-orange group-hover:text-white transition-all shrink-0">
                       <ArrowRight className="size-5" />
                     </span>
                   </div>

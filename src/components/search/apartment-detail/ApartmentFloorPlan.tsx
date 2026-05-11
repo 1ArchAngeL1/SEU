@@ -65,7 +65,7 @@ export function ApartmentFloorPlan({
         : floorPlanImages.threeD;
 
   return (
-    <div className="flex-1 bg-white rounded-2xl overflow-hidden flex flex-col min-h-[400px] lg:min-h-[640px] shadow-sm">
+    <div className="flex-1 bg-site-bg-card rounded-2xl overflow-hidden flex flex-col min-h-[400px] lg:min-h-[640px] shadow-site">
       {/* Tabs + Compass */}
       <div className="flex items-center justify-between px-6 py-5">
         <div className="flex gap-2">
@@ -79,8 +79,8 @@ export function ApartmentFloorPlan({
                 className={cn(
                   'px-4 lg:px-6 h-9 rounded-lg font-montserrat text-seu-caption lg:text-seu-body-sm transition-colors border',
                   active
-                    ? 'bg-dark-green text-white border-dark-green'
-                    : 'bg-transparent text-dark-green border-secondary-grey/50 hover:bg-pale-gray/40 hover:border-dark-green/40'
+                    ? 'bg-site-bg text-site-fg border-site-bg'
+                    : 'bg-transparent text-site-fg border-site-border-strong hover:bg-site-bg-hover hover:border-site-fg-muted'
                 )}
               >
                 {mode}
@@ -95,19 +95,23 @@ export function ApartmentFloorPlan({
       {/* Floor plan area */}
       <div className="flex-1 flex items-center justify-center p-8">
         {floorPlanSrc ? (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img
-            src={floorPlanSrc}
-            alt={`${viewMode} floor plan — Apt ${apartmentNumber}`}
-            className="max-h-[480px] object-contain"
-          />
+          <div className="relative">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={floorPlanSrc}
+              alt={`${viewMode} floor plan — Apt ${apartmentNumber}`}
+              className="max-h-[480px] object-contain"
+            />
+            {/* Soft edge fade into background */}
+            <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_30px_12px_var(--site-bg-card)]" />
+          </div>
         ) : (
-          <div className="w-full h-full min-h-[480px] border-2 border-dashed border-secondary-grey/25 rounded-xl flex flex-col items-center justify-center gap-3">
-            <FileText className="w-10 h-10 text-secondary-grey/30" />
-            <p className="font-montserrat text-seu-body-sm text-secondary-grey/40">
+          <div className="w-full h-full min-h-[480px] border-2 border-dashed border-site-border-soft rounded-xl flex flex-col items-center justify-center gap-3">
+            <FileText className="w-10 h-10 text-site-fg-dim" />
+            <p className="font-montserrat text-seu-body-sm text-site-fg-dim">
               {viewMode} {t('floorPlan')}
             </p>
-            <p className="font-montserrat text-seu-caption-sm text-secondary-grey/30">
+            <p className="font-montserrat text-seu-caption-sm text-site-fg-dim">
               {complex} · {t('block')} {block} · Apt {apartmentNumber}
             </p>
           </div>

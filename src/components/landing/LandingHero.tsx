@@ -88,7 +88,7 @@ export default function LandingHero() {
 
   return (
     <section
-      className="relative h-dvh lg:h-[48rem] bg-dark-green overflow-hidden"
+      className="relative h-dvh lg:h-[48rem] bg-site-bg overflow-hidden"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
@@ -102,7 +102,7 @@ export default function LandingHero() {
       {/* Empty / loading state */}
       {!project && (
         <div className="relative z-10 h-full flex items-center justify-center">
-          <span className="font-montserrat text-seu-body text-pale-gray/60">
+          <span className="font-montserrat text-seu-body text-site-fg-dim">
             {projectsQ.isLoading
               ? t('loadingDevelopments')
               : t('noProjects')}
@@ -114,21 +114,22 @@ export default function LandingHero() {
         <>
           <HeroSlideCounter active={active} total={gallery.length} />
 
-          {/* Mobile: Visual search button — centered */}
-          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center lg:hidden animate-[fadeInUp_0.9s_cubic-bezier(0.16,1,0.3,1)_0.5s_both]">
+          {/* Visual search button — centered */}
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none animate-[fadeInUp_0.9s_cubic-bezier(0.16,1,0.3,1)_0.5s_both]">
             <Link
-              href="/visual-search"
-              className="flex flex-col items-center gap-2"
+              href={`/visual-search/${project.id}`}
+              className="pointer-events-auto flex flex-col items-center gap-3 group"
             >
-              <span className="font-montserrat font-medium text-seu-caption text-pale-gray">
+              <span className="font-montserrat font-medium text-seu-caption lg:text-seu-body-sm text-pale-gray tracking-wider uppercase">
                 {t('visualSearch')}
               </span>
-              <div className="size-16 rounded-full border border-pale-gray/30 bg-dark-green/50 backdrop-blur flex items-center justify-center">
+              <div className="size-16 lg:size-20 rounded-full border border-pale-gray/30 bg-site-bg/50 backdrop-blur flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:border-primary-orange/60 group-hover:bg-primary-orange/20">
                 <Image
                   src="/common/svgs/Group 169.svg"
                   alt="Visual search"
                   width={32}
                   height={28}
+                  className="lg:w-9 lg:h-8"
                 />
               </div>
             </Link>

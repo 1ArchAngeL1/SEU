@@ -62,31 +62,31 @@ export default function SearchPage() {
   const totalPages = unitsQ.data?.pagination.totalPages ?? 1;
 
   return (
-    <div className="bg-pale-gray min-h-screen pt-8 lg:pt-12">
+    <div className="bg-site-bg-alt min-h-screen pt-8 lg:pt-12">
       <div className="mx-auto">
-        <h1 className="font-bodoni text-seu-heading lg:text-seu-title-xl text-dark-green mb-6 lg:mb-8 px-5 lg:px-10 max-w-[1920px] mx-auto">
+        <h1 className="font-bodoni text-seu-heading lg:text-seu-title-xl text-site-fg mb-6 lg:mb-8 px-5 lg:px-10 max-w-[1920px] mx-auto">
           {t('apartments')}
         </h1>
 
         <SearchForm initialFilter={initialFilter} onSearch={handleSearch} onClear={handleClear} />
 
-        <div className="bg-dark-green">
+        <div className="bg-site-bg">
           {unitsQ.isLoading ? (
             <div className="flex flex-col items-center justify-center gap-3 py-24">
               <Loader2 className="size-6 text-primary-orange animate-spin" />
-              <span className="font-montserrat text-seu-body-sm text-pale-gray/80">
+              <span className="font-montserrat text-seu-body-sm text-site-fg-dim">
                 {t('loading')}
               </span>
             </div>
           ) : units.length === 0 ? (
             <div className="flex flex-col items-center justify-center gap-3 py-24 px-6 text-center">
-              <span className="size-12 rounded-full bg-pale-gray/10 border border-pale-gray/15 flex items-center justify-center">
-                <SearchX className="size-5 text-secondary-grey" />
+              <span className="size-12 rounded-full bg-site-bg-hover border border-site-border-soft flex items-center justify-center">
+                <SearchX className="size-5 text-site-fg-muted" />
               </span>
-              <p className="font-montserrat font-medium text-seu-body text-pale-gray">
+              <p className="font-montserrat font-medium text-seu-body text-site-fg">
                 {t('noResults')}
               </p>
-              <p className="font-montserrat text-seu-caption text-secondary-grey max-w-sm">
+              <p className="font-montserrat text-seu-caption text-site-fg-muted max-w-sm">
                 {t('noResultsHint')}
               </p>
             </div>

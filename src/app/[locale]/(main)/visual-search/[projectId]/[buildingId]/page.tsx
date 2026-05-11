@@ -61,21 +61,21 @@ export default function VisualSearchBuildingPage({
 
   if (!isLoading && !renderImage) {
     return (
-      <main className="bg-dark-green pt-8 pb-16 lg:pt-12 lg:pb-24">
+      <main className="bg-site-bg pt-8 pb-16 lg:pt-12 lg:pb-24">
         <div className="max-w-[1920px] mx-auto px-5 lg:px-10">
           <Link
             href={`/visual-search/${projectId}`}
-            className="inline-flex items-center gap-1.5 font-montserrat text-seu-caption text-pale-gray border border-pale-gray/20 rounded-full px-4 py-1.5 hover:bg-pale-gray/10 transition-colors mb-6 lg:mb-8"
+            className="inline-flex items-center gap-1.5 font-montserrat text-seu-caption text-site-fg border border-site-border-soft rounded-full px-4 py-1.5 hover:bg-site-bg-hover transition-colors mb-6 lg:mb-8"
           >
             <ChevronLeft className="size-3.5" />
             Back
           </Link>
           {building && (
-            <h1 className="font-bodoni text-seu-title text-white mb-8 lg:mb-12">
+            <h1 className="font-bodoni text-seu-title text-site-fg-strong mb-8 lg:mb-12">
               {pickLocale(building.name, locale)}
             </h1>
           )}
-          <p className="text-secondary-grey font-montserrat text-seu-body text-center py-32">
+          <p className="text-site-fg-muted font-montserrat text-seu-body text-center py-32">
             No render image available for this building.
           </p>
         </div>
@@ -86,7 +86,7 @@ export default function VisualSearchBuildingPage({
   const hoveredFloor = hoveredId ? floors.find((f) => f.id === hoveredId) : null;
 
   return (
-    <main className="relative bg-dark-green overflow-hidden">
+    <main className="relative bg-site-bg overflow-hidden">
       {/* Full-width blurred background cover */}
       {renderImage && (
         <div className="absolute inset-0">
@@ -96,8 +96,8 @@ export default function VisualSearchBuildingPage({
             alt=""
             className="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl opacity-30"
           />
-          <div className="absolute inset-0 bg-dark-green/60" />
-          <div className="absolute inset-0 bg-gradient-to-b from-dark-green via-transparent to-dark-green" />
+          <div className="absolute inset-0 bg-site-bg/60" />
+          <div className="absolute inset-0 bg-gradient-to-b from-site-bg via-transparent to-site-bg" />
         </div>
       )}
 
@@ -108,7 +108,7 @@ export default function VisualSearchBuildingPage({
           <div className="flex items-center justify-between mb-6 lg:mb-8">
             <Link
               href={`/visual-search/${projectId}`}
-              className="inline-flex items-center gap-1.5 font-montserrat text-seu-caption text-pale-gray border border-pale-gray/20 rounded-full px-4 py-1.5 hover:bg-pale-gray/10 transition-colors backdrop-blur-sm"
+              className="inline-flex items-center gap-1.5 font-montserrat text-seu-caption text-site-fg border border-site-border-soft rounded-full px-4 py-1.5 hover:bg-site-bg-hover transition-colors backdrop-blur-sm"
             >
               <ChevronLeft className="size-3.5" />
               Back
@@ -116,10 +116,10 @@ export default function VisualSearchBuildingPage({
 
             {building && (
               <div className="text-right">
-                <h1 className="font-bodoni text-seu-heading lg:text-seu-heading-lg text-white leading-none">
+                <h1 className="font-bodoni text-seu-heading lg:text-seu-heading-lg text-site-fg-strong leading-none">
                   {pickLocale(building.name, locale)}
                 </h1>
-                <p className="font-montserrat text-seu-caption text-secondary-grey mt-1">
+                <p className="font-montserrat text-seu-caption text-site-fg-muted mt-1">
                   Block {building.block} · {sortedFloors.length} floors
                 </p>
               </div>
@@ -135,7 +135,7 @@ export default function VisualSearchBuildingPage({
           {renderImage && (
             <div className="flex flex-col items-center">
                 <div
-                  className="relative mx-auto rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/5 w-full"
+                  className="relative mx-auto rounded-2xl overflow-hidden shadow-[0_0_60px_20px_var(--site-bg)] ring-1 ring-site-border-soft w-full"
                   style={{
                     maxHeight: '75vh',
                     maxWidth: imgNatural
@@ -154,7 +154,7 @@ export default function VisualSearchBuildingPage({
                   />
 
                   {/* Soft vignette edges */}
-                  <div className="absolute inset-0 pointer-events-none rounded-2xl shadow-[inset_0_0_60px_20px_rgba(13,20,29,0.6)]" />
+                  <div className="absolute inset-0 pointer-events-none rounded-2xl shadow-[inset_0_0_60px_20px_var(--site-bg)]" />
 
                   <svg
                     viewBox="0 0 100 100"
@@ -200,8 +200,8 @@ export default function VisualSearchBuildingPage({
                         className="absolute pointer-events-none -translate-x-1/2 -translate-y-full z-10"
                         style={{ left: `${center.x}%`, top: `${center.y}%` }}
                       >
-                        <div className="bg-dark-green/90 backdrop-blur-md border border-success-green/30 rounded-xl px-4 py-2.5 shadow-lg mb-2">
-                          <p className="font-montserrat font-semibold text-seu-body-sm text-white whitespace-nowrap">
+                        <div className="bg-site-bg/90 backdrop-blur-md border border-success-green/30 rounded-xl px-4 py-2.5 shadow-lg mb-2">
+                          <p className="font-montserrat font-semibold text-seu-body-sm text-site-fg-strong whitespace-nowrap">
                             Floor {hoveredFloor.floorNumber}
                           </p>
                           <p className="font-montserrat text-seu-caption text-success-green mt-0.5">
@@ -218,27 +218,27 @@ export default function VisualSearchBuildingPage({
                   <div className="flex items-center justify-center gap-8 mt-6">
                     {building.totalSize && (
                       <div className="flex items-center gap-2">
-                        <Building2 className="size-4 text-secondary-grey" />
-                        <span className="font-montserrat text-seu-caption text-secondary-grey">
+                        <Building2 className="size-4 text-site-fg-muted" />
+                        <span className="font-montserrat text-seu-caption text-site-fg-muted">
                           {building.totalSize.toLocaleString()} m²
                         </span>
                       </div>
                     )}
                     {building.constructionProgress !== undefined && building.constructionProgress > 0 && (
                       <div className="flex items-center gap-2">
-                        <div className="w-20 h-1.5 bg-pale-gray/10 rounded-full overflow-hidden">
+                        <div className="w-20 h-1.5 bg-site-bg-hover rounded-full overflow-hidden">
                           <div
                             className="h-full bg-success-green rounded-full transition-all duration-700"
                             style={{ width: `${building.constructionProgress}%` }}
                           />
                         </div>
-                        <span className="font-montserrat text-seu-caption text-secondary-grey">
+                        <span className="font-montserrat text-seu-caption text-site-fg-muted">
                           {building.constructionProgress}%
                         </span>
                       </div>
                     )}
                     {building.status && (
-                      <span className="font-montserrat text-seu-caption text-secondary-grey capitalize">
+                      <span className="font-montserrat text-seu-caption text-site-fg-muted capitalize">
                         {building.status.replace(/_/g, ' ')}
                       </span>
                     )}

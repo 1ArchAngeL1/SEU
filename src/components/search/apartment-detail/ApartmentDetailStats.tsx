@@ -17,10 +17,10 @@ interface StatCellProps {
 function StatCell({ label, value }: StatCellProps) {
   return (
     <div className="flex flex-col">
-      <p className="font-montserrat text-seu-caption text-pale-gray/50 mb-1.5">
+      <p className="font-montserrat text-seu-caption text-site-fg-dim mb-1.5">
         {label}
       </p>
-      <p className="font-montserrat font-medium text-seu-body-lg text-pale-gray">
+      <p className="font-montserrat font-medium text-seu-body-lg text-site-fg">
         {value}
       </p>
     </div>

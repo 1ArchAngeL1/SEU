@@ -12,10 +12,10 @@ export default function AboutPartners() {
   return (
     <div>
       {/* Light header area */}
-      <div className="bg-pale-gray pt-12 lg:pt-16 pb-0">
+      <div className="bg-site-bg-alt pt-12 lg:pt-16 pb-0">
         <div className="max-w-[1920px] mx-auto px-5 lg:px-10">
           <FadeIn direction="left">
-            <h2 className="font-[--font-bodoni] font-normal text-seu-title text-dark-green uppercase">
+            <h2 className="font-[--font-bodoni] font-normal text-seu-title text-site-fg uppercase">
               {t('partners')}
             </h2>
           </FadeIn>
@@ -23,9 +23,9 @@ export default function AboutPartners() {
       </div>
 
       {/* Dark area */}
-      <div className="bg-dark-green pt-3 pb-12 lg:pb-16">
+      <div className="bg-site-bg pt-3 pb-12 lg:pb-16">
         <div className="max-w-[1920px] mx-auto px-5 lg:px-10">
-          <p className="font-montserrat font-normal text-seu-body text-secondary-grey mb-12">
+          <p className="font-montserrat font-normal text-seu-body text-site-fg-muted mb-12">
             {t('partnersCount')}
           </p>
 
@@ -34,7 +34,7 @@ export default function AboutPartners() {
               {Array.from({ length: 4 }).map((_, i) => (
                 <div
                   key={i}
-                  className="h-56 rounded-2xl bg-white/5 animate-pulse"
+                  className="h-56 rounded-2xl bg-site-bg-hover animate-pulse"
                 />
               ))}
             </div>

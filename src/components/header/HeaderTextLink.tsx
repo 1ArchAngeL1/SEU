@@ -1,14 +1,12 @@
 import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
 import React from 'react';
-import type { HeaderVariant } from './SeuHeader';
 
 type HeaderTextLinkProps = {
   pathName: string;
   href: string;
   className?: string;
   children?: React.ReactNode;
-  variant?: HeaderVariant;
 };
 
 export const HeaderTextLink = ({
@@ -16,13 +14,7 @@ export const HeaderTextLink = ({
   href,
   pathName,
   children,
-  variant = 'dark',
 }: HeaderTextLinkProps) => {
-  const colors =
-    variant === 'light'
-      ? 'text-black hover:text-black/70'
-      : 'text-pale-gray hover:text-white';
-
   const isActive = pathName === href || (href !== '/' && pathName.startsWith(href));
 
   return (
@@ -31,7 +23,7 @@ export const HeaderTextLink = ({
       href={href}
       className={cn(
         'group relative font-montserrat font-medium text-seu-caption lg:text-seu-body leading-5.5 tracking-[0.056rem] transition-colors duration-300 px-4',
-        colors,
+        'text-site-fg hover:text-site-fg-strong',
         className
       )}
     >

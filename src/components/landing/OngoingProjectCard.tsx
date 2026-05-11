@@ -37,9 +37,11 @@ export const OngoingProjectCard = ({
       {image ? (
         <Image src={image} alt={name} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
       ) : (
-        <div className="absolute inset-0 bg-gradient-to-br from-secondary-black via-dark-green to-navy-green" />
+        <div className="absolute inset-0 bg-gradient-to-br from-secondary-black via-site-bg to-navy-green" />
       )}
 
+      {/* Edge vignette for smooth background transition */}
+      <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_40px_10px_var(--site-bg)]" />
       {/* Left gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" />
 

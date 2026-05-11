@@ -9,15 +9,15 @@ export default function AboutMission() {
     <div className="py-20 lg:py-28">
       <div className="max-w-4xl mx-auto px-5 lg:px-10 text-center">
         <FadeIn>
-          <h2 className="font-[--font-bodoni] font-normal text-seu-title text-white mb-4">
+          <h2 className="font-[--font-bodoni] font-normal text-seu-title text-site-fg-strong mb-4">
             {t('ourMission')}
           </h2>
-          <p className="font-[--font-bodoni] font-normal text-seu-body-lg text-pale-gray/70 italic mb-12">
+          <p className="font-[--font-bodoni] font-normal text-seu-body-lg text-site-fg-dim italic mb-12">
             {t('realEstateSince')}
           </p>
         </FadeIn>
 
-        <FadeIn delay={150} className="space-y-8 font-montserrat font-normal text-seu-body text-secondary-grey leading-relaxed">
+        <FadeIn delay={150} className="space-y-8 font-montserrat font-normal text-seu-body text-site-fg-muted leading-relaxed">
           <p>{t('missionText1')}</p>
 
           <p>{t('missionText2')}</p>

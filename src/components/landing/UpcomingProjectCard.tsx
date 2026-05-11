@@ -27,11 +27,13 @@ export default function UpcomingProjectCard({
       {image ? (
         <Image src={image} alt={name} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
       ) : (
-        <div className="absolute inset-0 bg-gradient-to-b from-secondary-black/80 via-dark-green to-navy-green/50" />
+        <div className="absolute inset-0 bg-gradient-to-b from-secondary-black/80 via-site-bg to-navy-green/50" />
       )}
 
+      {/* Edge vignette for smooth background transition */}
+      <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_40px_10px_var(--site-bg)]" />
       {/* Fog overlay effect */}
-      <div className="absolute inset-0 bg-gradient-to-t from-dark-green/90 via-transparent to-dark-green/40" />
+      <div className="absolute inset-0 bg-gradient-to-t from-site-bg/90 via-transparent to-site-bg/40" />
 
       {/* Content - Bottom */}
       <div className="absolute bottom-6 left-6 right-6">

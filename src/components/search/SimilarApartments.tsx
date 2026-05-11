@@ -27,7 +27,7 @@ export function SimilarApartments({
 
   return (
     <div className="mt-16 lg:mt-32 px-5 lg:px-10 pb-12 lg:pb-20">
-      <h2 className="font-[--font-bodoni] font-normal text-seu-subheading text-pale-gray mb-8">
+      <h2 className="font-[--font-bodoni] font-normal text-seu-subheading text-site-fg mb-8">
         {t('similarApartments')}
       </h2>
 

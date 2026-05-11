@@ -42,12 +42,12 @@ export default function LandingAboutSection() {
   };
 
   return (
-    <section className="relative bg-dark-green py-16 lg:py-32">
+    <section className="relative bg-site-bg py-16 lg:py-32">
       <div className="max-w-[1920px] mx-auto px-5 lg:px-10">
         {/* Top Row */}
         <FadeIn className="flex items-start justify-between mb-8 lg:mb-16">
           {/* Title - Left */}
-          <h2 className="font-bodoni text-seu-heading lg:text-seu-title text-white">
+          <h2 className="font-bodoni text-seu-heading lg:text-seu-title text-site-fg-strong">
             {t('aboutCompany')}
           </h2>
 
@@ -62,7 +62,7 @@ export default function LandingAboutSection() {
         <div className="relative flex flex-col lg:flex-row items-center justify-between gap-8">
           {/* Left Text */}
           <FadeIn direction="left" delay={150} className="hidden lg:block flex-1 max-w-xs">
-            <p className="font-bodoni text-seu-body-lg text-white">
+            <p className="font-bodoni text-seu-body-lg text-site-fg-strong">
               {t('realEstateSince')}
             </p>
           </FadeIn>
@@ -71,7 +71,7 @@ export default function LandingAboutSection() {
           <div className="relative flex items-center justify-center w-full lg:w-auto">
             <div
               ref={containerRef}
-              className="relative z-10 w-full lg:w-[928px] h-[16rem] lg:h-[600px] rounded-xl overflow-hidden bg-secondary-black ring-1 ring-white/10"
+              className="relative z-10 w-full lg:w-[928px] h-[16rem] lg:h-[600px] rounded-xl overflow-hidden bg-secondary-black ring-1 ring-site-border-soft shadow-[0_0_60px_20px_var(--site-bg)]"
             >
               {isVisible && (
                 <video
@@ -104,7 +104,7 @@ export default function LandingAboutSection() {
           <OrbitalRings />
 
           <FadeIn direction="right" delay={150} className="lg:flex-1 lg:max-w-xs lg:text-right">
-            <p className="text-seu-body-sm lg:text-seu-body text-white leading-relaxed">
+            <p className="text-seu-body-sm lg:text-seu-body text-site-fg-strong leading-relaxed">
               {t('companyDescription')}
             </p>
           </FadeIn>

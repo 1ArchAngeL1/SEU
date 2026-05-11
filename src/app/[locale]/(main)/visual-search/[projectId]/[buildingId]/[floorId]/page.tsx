@@ -115,7 +115,7 @@ export default function VisualSearchFloorPage({
   const location = project?.location;
 
   return (
-    <main className="bg-dark-green">
+    <main className="bg-site-bg">
       <div className="max-w-[1920px] mx-auto px-5 lg:px-10 pt-6 lg:pt-8 pb-16 lg:pb-24">
 
         {/* ===== MOBILE HEADER ===== */}
@@ -124,14 +124,14 @@ export default function VisualSearchFloorPage({
           <div className="flex items-center justify-between mb-4">
             <Link
               href={`/visual-search/${projectId}/${buildingId}`}
-              className="inline-flex items-center gap-1 font-montserrat text-seu-caption text-pale-gray"
+              className="inline-flex items-center gap-1 font-montserrat text-seu-caption text-site-fg"
             >
               <ChevronLeft className="size-4" />
               Back
             </Link>
 
             {building && (
-              <h1 className="font-bodoni text-seu-body-lg text-white">
+              <h1 className="font-bodoni text-seu-body-lg text-site-fg-strong">
                 Block {building.block}
               </h1>
             )}
@@ -142,15 +142,15 @@ export default function VisualSearchFloorPage({
                 type="button"
                 onClick={() => goToFloor('down')}
                 disabled={currentFloorIndex <= 0}
-                className="size-8 rounded-full border border-pale-gray/20 flex items-center justify-center text-pale-gray/60 disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
+                className="size-8 rounded-full border border-site-border-soft flex items-center justify-center text-site-fg-dim disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
               >
                 <ChevronLeft className="size-4" />
               </button>
               <div className="flex flex-col items-center min-w-[2.5rem]">
-                <span className="font-bodoni text-seu-subheading text-white leading-none">
+                <span className="font-bodoni text-seu-subheading text-site-fg-strong leading-none">
                   {floor?.floorNumber ?? '—'}
                 </span>
-                <span className="font-montserrat text-[0.6rem] text-secondary-grey uppercase tracking-wider">
+                <span className="font-montserrat text-[0.6rem] text-site-fg-muted uppercase tracking-wider">
                   Floor
                 </span>
               </div>
@@ -158,7 +158,7 @@ export default function VisualSearchFloorPage({
                 type="button"
                 onClick={() => goToFloor('up')}
                 disabled={currentFloorIndex >= sortedFloors.length - 1}
-                className="size-8 rounded-full border border-pale-gray/20 flex items-center justify-center text-pale-gray/60 disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
+                className="size-8 rounded-full border border-site-border-soft flex items-center justify-center text-site-fg-dim disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
               >
                 <ChevronRight className="size-4" />
               </button>
@@ -178,7 +178,7 @@ export default function VisualSearchFloorPage({
                       'shrink-0 px-4 py-1.5 rounded-full font-montserrat text-seu-caption-sm transition-colors border',
                       isActive
                         ? 'bg-primary-orange border-primary-orange text-white'
-                        : 'border-pale-gray/20 text-secondary-grey'
+                        : 'border-site-border-soft text-site-fg-muted'
                     )}
                   >
                     {b.block}
@@ -189,14 +189,14 @@ export default function VisualSearchFloorPage({
           )}
 
           {/* Tabs */}
-          <div className="flex items-center gap-6 mb-4 border-b border-pale-gray/10 pb-3">
+          <div className="flex items-center gap-6 mb-4 border-b border-site-border-soft pb-3">
             <button
               onClick={() => setActiveTab('floor-plan')}
               className={cn(
                 'font-montserrat font-medium text-seu-caption uppercase tracking-wider transition-colors',
                 activeTab === 'floor-plan'
-                  ? 'text-pale-gray'
-                  : 'text-secondary-grey'
+                  ? 'text-site-fg'
+                  : 'text-site-fg-muted'
               )}
             >
               Floor Plan
@@ -206,8 +206,8 @@ export default function VisualSearchFloorPage({
               className={cn(
                 'font-montserrat font-medium text-seu-caption uppercase tracking-wider transition-colors',
                 activeTab === 'grid'
-                  ? 'text-pale-gray'
-                  : 'text-secondary-grey'
+                  ? 'text-site-fg'
+                  : 'text-site-fg-muted'
               )}
             >
               Grid View
@@ -219,7 +219,7 @@ export default function VisualSearchFloorPage({
         <div className="hidden lg:block">
           <Link
             href={`/visual-search/${projectId}/${buildingId}`}
-            className="inline-flex items-center gap-1.5 font-montserrat text-seu-caption text-pale-gray border border-pale-gray/20 rounded-full px-4 py-1.5 hover:bg-pale-gray/10 transition-colors"
+            className="inline-flex items-center gap-1.5 font-montserrat text-seu-caption text-site-fg border border-site-border-soft rounded-full px-4 py-1.5 hover:bg-site-bg-hover transition-colors"
           >
             <ChevronLeft className="size-3.5" />
             Back
@@ -232,8 +232,8 @@ export default function VisualSearchFloorPage({
               className={cn(
                 'font-montserrat font-medium text-seu-caption uppercase tracking-wider pb-1 transition-colors',
                 activeTab === 'floor-plan'
-                  ? 'text-pale-gray underline underline-offset-4 decoration-pale-gray'
-                  : 'text-secondary-grey hover:text-pale-gray/70'
+                  ? 'text-site-fg underline underline-offset-4 decoration-site-fg'
+                  : 'text-site-fg-muted hover:text-site-fg-dim'
               )}
             >
               Floor Plan
@@ -243,8 +243,8 @@ export default function VisualSearchFloorPage({
               className={cn(
                 'font-montserrat font-medium text-seu-caption uppercase tracking-wider pb-1 transition-colors',
                 activeTab === 'grid'
-                  ? 'text-pale-gray underline underline-offset-4 decoration-pale-gray'
-                  : 'text-secondary-grey hover:text-pale-gray/70'
+                  ? 'text-site-fg underline underline-offset-4 decoration-site-fg'
+                  : 'text-site-fg-muted hover:text-site-fg-dim'
               )}
             >
               Grid View
@@ -265,7 +265,7 @@ export default function VisualSearchFloorPage({
               <>
                 {renderImage ? (
                   <div
-                    className="relative w-full mx-auto"
+                    className="relative w-full mx-auto shadow-[0_0_60px_20px_var(--site-bg)]"
                     style={{
                       maxHeight: '70vh',
                       ...(imgNatural ? { aspectRatio: `${imgNatural.w} / ${imgNatural.h}` } : {}),
@@ -336,12 +336,12 @@ export default function VisualSearchFloorPage({
                       })}
                   </div>
                 ) : (
-                  <p className="text-secondary-grey font-montserrat text-seu-body text-center py-16">
+                  <p className="text-site-fg-muted font-montserrat text-seu-body text-center py-16">
                     No floor plan available for this floor.
                   </p>
                 )}
                 {location?.address && (
-                  <p className="font-montserrat text-seu-caption text-secondary-grey mt-4 tracking-wider text-center">
+                  <p className="font-montserrat text-seu-caption text-site-fg-muted mt-4 tracking-wider text-center">
                     {location.address}
                     {location.city && ` · ${location.city}`}
                   </p>
@@ -352,7 +352,7 @@ export default function VisualSearchFloorPage({
             {activeTab === 'grid' && (
               <>
                 {units.length === 0 ? (
-                  <p className="text-secondary-grey font-montserrat text-seu-body text-center py-16">
+                  <p className="text-site-fg-muted font-montserrat text-seu-body text-center py-16">
                     No units on this floor.
                   </p>
                 ) : (
@@ -363,10 +363,10 @@ export default function VisualSearchFloorPage({
                         <button
                           key={unit.id}
                           onClick={() => handleUnitClick(unit)}
-                          className="bg-pale-gray/5 border border-pale-gray/10 rounded-xl p-4 text-left hover:border-primary-orange/40 transition-colors"
+                          className="bg-site-bg-hover border border-site-border-soft rounded-xl p-4 text-left hover:border-primary-orange/40 transition-colors"
                         >
                           <div className="flex items-center justify-between mb-2">
-                            <span className="font-montserrat font-semibold text-seu-body-sm text-white">
+                            <span className="font-montserrat font-semibold text-seu-body-sm text-site-fg-strong">
                               Unit {unit.unitNumber}
                             </span>
                             <span
@@ -380,9 +380,9 @@ export default function VisualSearchFloorPage({
                             </span>
                           </div>
                           <div className="flex items-center gap-3 font-montserrat text-seu-caption-sm">
-                            <span className="text-secondary-grey">{unit.totalSize} m²</span>
+                            <span className="text-site-fg-muted">{unit.totalSize} m²</span>
                             {unit.bedrooms !== undefined && (
-                              <span className="text-pale-gray/70">
+                              <span className="text-site-fg-dim">
                                 {unit.bedrooms} bed{unit.bedrooms !== 1 ? 's' : ''}
                               </span>
                             )}
@@ -408,7 +408,7 @@ export default function VisualSearchFloorPage({
             {/* Left column — Block title + Floor selector */}
             <div className="flex flex-col items-start shrink-0 w-24">
               {building && (
-                <h1 className="font-bodoni text-seu-heading text-white mb-6 whitespace-nowrap">
+                <h1 className="font-bodoni text-seu-heading text-site-fg-strong mb-6 whitespace-nowrap">
                   Block {building.block}
                 </h1>
               )}
@@ -419,15 +419,15 @@ export default function VisualSearchFloorPage({
                   type="button"
                   onClick={() => goToFloor('up')}
                   disabled={currentFloorIndex >= sortedFloors.length - 1}
-                  className="text-pale-gray/60 hover:text-pale-gray disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
+                  className="text-site-fg-dim hover:text-site-fg disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
                 >
                   <ChevronUp className="size-5" />
                 </button>
                 <div className="flex flex-col items-center">
-                  <span className="font-bodoni text-seu-title text-white leading-none">
+                  <span className="font-bodoni text-seu-title text-site-fg-strong leading-none">
                     {floor?.floorNumber ?? '—'}
                   </span>
-                  <span className="font-montserrat text-seu-caption-sm text-secondary-grey mt-1">
+                  <span className="font-montserrat text-seu-caption-sm text-site-fg-muted mt-1">
                     Floor
                   </span>
                 </div>
@@ -435,7 +435,7 @@ export default function VisualSearchFloorPage({
                   type="button"
                   onClick={() => goToFloor('down')}
                   disabled={currentFloorIndex <= 0}
-                  className="text-pale-gray/60 hover:text-pale-gray disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
+                  className="text-site-fg-dim hover:text-site-fg disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
                 >
                   <ChevronDown className="size-5" />
                 </button>
@@ -448,7 +448,7 @@ export default function VisualSearchFloorPage({
                 <>
                   {renderImage ? (
                     <div
-                      className="relative w-full max-w-3xl mx-auto"
+                      className="relative w-full max-w-3xl mx-auto shadow-[0_0_60px_20px_var(--site-bg)]"
                       style={{
                         maxHeight: '70vh',
                         ...(imgNatural ? { aspectRatio: `${imgNatural.w} / ${imgNatural.h}` } : {}),
@@ -551,16 +551,16 @@ export default function VisualSearchFloorPage({
                             const u = units.find((u) => u.id === hoveredId);
                             if (!u) return null;
                             return (
-                              <div className="bg-dark-green/90 backdrop-blur-md border border-primary-orange/40 rounded-xl px-6 py-4 shadow-lg">
-                                <p className="font-montserrat font-semibold text-seu-body text-white">
+                              <div className="bg-site-bg/90 backdrop-blur-md border border-primary-orange/40 rounded-xl px-6 py-4 shadow-lg">
+                                <p className="font-montserrat font-semibold text-seu-body text-site-fg-strong">
                                   Unit {u.unitNumber}
                                 </p>
                                 <div className="flex items-center gap-4 font-montserrat text-seu-caption mt-1">
-                                  <span className="text-secondary-grey">
+                                  <span className="text-site-fg-muted">
                                     {u.totalSize} m²
                                   </span>
                                   {u.bedrooms !== undefined && (
-                                    <span className="text-pale-gray/70">
+                                    <span className="text-site-fg-dim">
                                       {u.bedrooms} bed{u.bedrooms !== 1 ? 's' : ''}
                                     </span>
                                   )}
@@ -578,14 +578,14 @@ export default function VisualSearchFloorPage({
                       )}
                     </div>
                   ) : (
-                    <p className="text-secondary-grey font-montserrat text-seu-body text-center py-20">
+                    <p className="text-site-fg-muted font-montserrat text-seu-body text-center py-20">
                       No floor plan available for this floor.
                     </p>
                   )}
 
                   {/* Location text */}
                   {location?.address && (
-                    <p className="font-montserrat text-seu-caption text-secondary-grey mt-6 tracking-wider">
+                    <p className="font-montserrat text-seu-caption text-site-fg-muted mt-6 tracking-wider">
                       {location.address}
                       {location.city && ` · ${location.city}`}
                     </p>
@@ -596,12 +596,12 @@ export default function VisualSearchFloorPage({
               {activeTab === 'grid' && (
                 <>
                   {building && (
-                    <h2 className="font-bodoni text-seu-heading text-white mb-6 self-start">
+                    <h2 className="font-bodoni text-seu-heading text-site-fg-strong mb-6 self-start">
                       Block {building.block} — Floor {floor?.floorNumber}
                     </h2>
                   )}
                   {units.length === 0 ? (
-                    <p className="text-secondary-grey font-montserrat text-seu-body text-center py-20">
+                    <p className="text-site-fg-muted font-montserrat text-seu-body text-center py-20">
                       No units on this floor.
                     </p>
                   ) : (
@@ -613,10 +613,10 @@ export default function VisualSearchFloorPage({
                           <button
                             key={unit.id}
                             onClick={() => handleUnitClick(unit)}
-                            className="bg-pale-gray/5 border border-pale-gray/10 rounded-xl p-5 text-left hover:border-primary-orange/40 transition-colors"
+                            className="bg-site-bg-hover border border-site-border-soft rounded-xl p-5 text-left hover:border-primary-orange/40 transition-colors"
                           >
                             <div className="flex items-center justify-between mb-3">
-                              <span className="font-montserrat font-semibold text-seu-body text-white">
+                              <span className="font-montserrat font-semibold text-seu-body text-site-fg-strong">
                                 Unit {unit.unitNumber}
                               </span>
                               <span
@@ -630,11 +630,11 @@ export default function VisualSearchFloorPage({
                               </span>
                             </div>
                             <div className="flex items-center gap-4 font-montserrat text-seu-caption">
-                              <span className="text-secondary-grey">
+                              <span className="text-site-fg-muted">
                                 {unit.totalSize} m²
                               </span>
                               {unit.bedrooms !== undefined && (
-                                <span className="text-pale-gray/70">
+                                <span className="text-site-fg-dim">
                                   {unit.bedrooms} bed{unit.bedrooms !== 1 ? 's' : ''}
                                 </span>
                               )}
@@ -657,7 +657,7 @@ export default function VisualSearchFloorPage({
             {/* Right column — Blocks sidebar */}
             {allBuildings.length > 1 && (
               <div className="shrink-0 w-40">
-                <h3 className="font-bodoni text-seu-body text-pale-gray mb-4 text-right">
+                <h3 className="font-bodoni text-seu-body text-site-fg mb-4 text-right">
                   Blocks
                 </h3>
                 <div className="grid grid-cols-2 gap-2">
@@ -670,8 +670,8 @@ export default function VisualSearchFloorPage({
                         className={cn(
                           'px-3 py-2 rounded-md font-montserrat text-seu-caption-sm transition-colors border',
                           isActive
-                            ? 'bg-pale-gray/15 border-pale-gray/30 text-white'
-                            : 'border-pale-gray/10 text-secondary-grey hover:border-pale-gray/25 hover:text-pale-gray'
+                            ? 'bg-site-bg-hover border-site-border-soft text-site-fg-strong'
+                            : 'border-site-border-soft text-site-fg-muted hover:border-site-border hover:text-site-fg'
                         )}
                       >
                         {b.block}

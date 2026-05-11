@@ -9,6 +9,7 @@ import { HeaderTextLink } from '@/components/header/HeaderTextLink';
 import { SeuLogoLink } from '@/components/header/SeuLogoLink';
 import { LanguageSwitcher } from '@/components/header/LanguageSwitcher';
 import { HeaderContactUs } from '@/components/header/HeaderContactUs';
+import { SiteThemeToggle } from '@/components/header/SiteThemeToggle';
 import { MobileMenuSheet } from '@/components/header/MobileMenuSheet';
 
 export type HeaderVariant = 'dark' | 'light';
@@ -17,8 +18,6 @@ export default function SeuHeader() {
   const pathname = usePathname();
   const t = useTranslations('header');
   const [sheetOpen, setSheetOpen] = useState(false);
-
-  const variant: HeaderVariant = 'dark';
 
   const isContact = pathname === '/contact';
 
@@ -45,7 +44,7 @@ export default function SeuHeader() {
     <div className="sticky top-0 z-50">
       <header
         className={`w-full flex items-center justify-between px-3 lg:px-10 h-20 lg:h-32 transition-colors duration-300 ${
-          isContact ? 'bg-transparent! lg:bg-dark-green!' : variant === 'light' ? 'bg-pale-gray' : 'bg-dark-green'
+          isContact ? 'bg-transparent! lg:bg-site-bg!' : 'bg-site-bg'
         }`}
       >
         {/* Mobile: logo left */}
@@ -59,11 +58,11 @@ export default function SeuHeader() {
             />
             <div className={'flex flex-col justify-between py-1'}>
               <p
-                className={`font-[--font-bodoni] font-normal text-seu-body leading-5.5 tracking-[0.169rem] ${variant === 'light' ? 'text-dark-green' : 'text-pale-gray'}`}
+                className="font-[--font-bodoni] font-normal text-seu-body leading-5.5 tracking-[0.169rem] text-site-fg"
               >
                 SEU
               </p>
-              <p className="font-montserrat font-normal text-seu-caption-sm leading-[0.9375rem] text-secondary-grey">
+              <p className="font-montserrat font-normal text-seu-caption-sm leading-[0.9375rem] text-site-fg-muted">
                 Development
               </p>
             </div>
@@ -77,7 +76,6 @@ export default function SeuHeader() {
               key={link.href}
               href={link.href}
               pathName={pathname}
-              variant={variant}
             >
               {link.label}
             </HeaderTextLink>
@@ -86,7 +84,7 @@ export default function SeuHeader() {
 
         {/* Desktop center logo */}
         <div className="hidden lg:block">
-          <SeuLogoLink variant={variant} />
+          <SeuLogoLink />
         </div>
 
         {/* Desktop nav links right */}
@@ -96,17 +94,17 @@ export default function SeuHeader() {
               key={link.href}
               href={link.href}
               pathName={pathname}
-              variant={variant}
             >
               {link.label}
             </HeaderTextLink>
           ))}
         </div>
 
-        {/* Desktop contact + lang */}
-        <div className="hidden lg:flex items-center justify-center gap-8">
-          <HeaderContactUs variant={variant} />
-          <LanguageSwitcher variant={variant} />
+        {/* Desktop contact + lang + theme */}
+        <div className="hidden lg:flex items-center justify-center gap-5">
+          <HeaderContactUs />
+          <SiteThemeToggle />
+          <LanguageSwitcher />
         </div>
 
         {/* Mobile hamburger — Sheet trigger */}

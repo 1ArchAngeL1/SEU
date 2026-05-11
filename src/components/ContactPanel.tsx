@@ -5,13 +5,11 @@ import { cn } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
 
 export type ContactPanelProps = {
-  headerClassName?: string;
   className?: string;
 };
 
 export default function ContactPanel({
   className,
-  headerClassName,
 }: ContactPanelProps) {
   const t = useTranslations('contact');
   return (
@@ -25,31 +23,28 @@ export default function ContactPanel({
           </span>
         </div>
         <h2
-          className={cn(
-            'font-[--font-bodoni] font-normal text-seu-title lg:text-seu-title-lg leading-none text-white',
-            headerClassName
-          )}
+          className="font-[--font-bodoni] font-normal text-seu-title lg:text-seu-title-lg leading-none text-site-fg-strong"
         >
           {t('address')}
         </h2>
       </div>
 
-      <div className="rounded-2xl overflow-hidden border border-secondary-black bg-dark-green">
+      <div className="rounded-2xl overflow-hidden border border-site-border bg-site-bg-card">
         {/* Contact info cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-secondary-black">
+        <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-site-border">
           {/* Email */}
           <a
             href={`mailto:${t('email')}`}
-            className="group flex items-center gap-4 p-5 hover:bg-white/5 transition-colors"
+            className="group flex items-center gap-4 p-5 hover:bg-site-bg-hover transition-colors"
           >
             <span className="size-10 shrink-0 rounded-xl bg-primary-orange grid place-items-center shadow-sm shadow-primary-orange/30 group-hover:scale-110 transition-transform">
               <Mail className="size-5 text-white" />
             </span>
             <div className="min-w-0">
-              <p className="font-montserrat text-seu-caption-sm text-secondary-grey mb-0.5">
+              <p className="font-montserrat text-seu-caption-sm text-site-fg-muted mb-0.5">
                 Email
               </p>
-              <p className="font-montserrat font-medium text-seu-caption text-pale-gray truncate">
+              <p className="font-montserrat font-medium text-seu-caption text-site-fg truncate">
                 {t('email')}
               </p>
             </div>
@@ -58,16 +53,16 @@ export default function ContactPanel({
           {/* Phone */}
           <a
             href={`tel:${t('phone').replace(/\s/g, '')}`}
-            className="group flex items-center gap-4 p-5 hover:bg-white/5 transition-colors"
+            className="group flex items-center gap-4 p-5 hover:bg-site-bg-hover transition-colors"
           >
             <span className="size-10 shrink-0 rounded-xl bg-primary-orange grid place-items-center shadow-sm shadow-primary-orange/30 group-hover:scale-110 transition-transform">
               <Phone className="size-5 text-white" />
             </span>
             <div className="min-w-0">
-              <p className="font-montserrat text-seu-caption-sm text-secondary-grey mb-0.5">
+              <p className="font-montserrat text-seu-caption-sm text-site-fg-muted mb-0.5">
                 Phone
               </p>
-              <p className="font-montserrat font-medium text-seu-caption text-pale-gray">
+              <p className="font-montserrat font-medium text-seu-caption text-site-fg">
                 {t('phone')}
               </p>
             </div>
@@ -79,10 +74,10 @@ export default function ContactPanel({
               <MapPin className="size-5 text-white" />
             </span>
             <div className="min-w-0">
-              <p className="font-montserrat text-seu-caption-sm text-secondary-grey mb-0.5">
+              <p className="font-montserrat text-seu-caption-sm text-site-fg-muted mb-0.5">
                 Address
               </p>
-              <p className="font-montserrat font-medium text-seu-caption text-pale-gray">
+              <p className="font-montserrat font-medium text-seu-caption text-site-fg">
                 {t('address')}
               </p>
             </div>
@@ -90,7 +85,7 @@ export default function ContactPanel({
         </div>
 
         {/* Google Maps */}
-        <div className="border-t border-secondary-black">
+        <div className="border-t border-site-border">
           <iframe
             title="SEU Development Location"
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2978.8!2d44.793!3d41.7196!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40440cd7e164810d%3A0x4523b1f1b8e1b2a0!2sJikia%20St%2C%20Tbilisi!5e0!3m2!1sen!2sge!4v1700000000000"

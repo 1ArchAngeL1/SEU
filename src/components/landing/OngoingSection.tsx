@@ -21,11 +21,11 @@ export default function OngoingSection() {
   if (projects.length === 0) return null;
 
   return (
-    <section className="bg-dark-green py-20">
+    <section className="bg-site-bg py-20">
       <div className="max-w-[1920px] mx-auto px-5 lg:px-10">
         {/* Title */}
         <FadeIn>
-          <h2 className="font-bodoni text-seu-heading lg:text-seu-title text-white mb-8 lg:mb-12">{t('ongoing')}</h2>
+          <h2 className="font-bodoni text-seu-heading lg:text-seu-title text-site-fg-strong mb-8 lg:mb-12">{t('ongoing')}</h2>
         </FadeIn>
 
         {/* Project Cards */}

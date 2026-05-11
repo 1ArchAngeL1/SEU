@@ -19,9 +19,9 @@ const PARTNERS = [
 export default function SeuPartners() {
   const t = useTranslations('landing');
   return (
-    <section className="bg-dark-green py-20 overflow-hidden">
+    <section className="bg-site-bg py-20 overflow-hidden">
       <FadeIn className="max-w-[1920px] mx-auto px-5 lg:px-10 mb-8 lg:mb-12">
-        <h2 className="font-bodoni text-seu-heading lg:text-seu-title text-white uppercase tracking-wide">
+        <h2 className="font-bodoni text-seu-heading lg:text-seu-title text-site-fg-strong uppercase tracking-wide">
           {t('partners')}
         </h2>
       </FadeIn>
@@ -32,7 +32,7 @@ export default function SeuPartners() {
           {/* First set of partners */}
           {PARTNERS.map((partner, index) => (
             <div key={`first-${index}`} className="flex-shrink-0 mx-3">
-              <div className="w-[213px] h-[100px] flex items-center justify-center border border-secondary-black rounded-xl bg-dark-green/50 px-6">
+              <div className="w-[213px] h-[100px] flex items-center justify-center border border-site-border rounded-xl bg-site-bg px-6">
                 <Image
                   src={partner.logo}
                   alt={partner.name}
@@ -46,7 +46,7 @@ export default function SeuPartners() {
           {/* Duplicate set for seamless loop */}
           {PARTNERS.map((partner, index) => (
             <div key={`second-${index}`} className="flex-shrink-0 mx-3">
-              <div className="w-[213px] h-[100px] flex items-center justify-center border border-secondary-black rounded-xl bg-dark-green/50 px-6">
+              <div className="w-[213px] h-[100px] flex items-center justify-center border border-site-border rounded-xl bg-site-bg px-6">
                 <Image
                   src={partner.logo}
                   alt={partner.name}

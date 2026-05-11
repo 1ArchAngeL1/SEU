@@ -34,7 +34,7 @@ export default function ContactForm({
   };
 
   const inputBase =
-    'w-full bg-white/[0.08] border border-white/10 rounded-xl pl-12 pr-6 py-4 font-montserrat font-medium text-seu-body-sm text-white placeholder-pale-gray/50 focus:outline-none focus:border-primary-orange/60 focus:ring-1 focus:ring-primary-orange/20 transition-all';
+    'w-full bg-site-bg-input border border-site-input-border rounded-xl pl-12 pr-6 py-4 font-montserrat font-medium text-seu-body-sm text-site-input-text placeholder-site-fg-dim focus:outline-none focus:border-primary-orange/60 focus:ring-1 focus:ring-primary-orange/20 transition-all';
 
   return (
     <div className={cn('w-full', className)}>
@@ -47,10 +47,7 @@ export default function ContactForm({
           </span>
         </div>
         <h2
-          className={cn(
-            'font-[--font-bodoni] font-normal text-seu-title lg:text-seu-title-lg leading-none',
-            variant === 'mobile-diagonal' ? 'text-dark-green' : 'text-white'
-          )}
+          className="font-[--font-bodoni] font-normal text-seu-title lg:text-seu-title-lg leading-none text-site-fg-strong"
         >
           {t('requestsCall')}
         </h2>
@@ -62,7 +59,7 @@ export default function ContactForm({
       >
         <div className="relative group">
           <span className="absolute left-4 top-1/2 -translate-y-1/2 size-5 grid place-items-center pointer-events-none">
-            <User className="size-5 text-secondary-grey group-focus-within:text-primary-orange transition-colors" />
+            <User className="size-5 text-site-fg-muted group-focus-within:text-primary-orange transition-colors" />
           </span>
           <input
             type="text"
@@ -77,7 +74,7 @@ export default function ContactForm({
 
         <div className="relative group">
           <span className="absolute left-4 top-1/2 -translate-y-1/2 size-5 grid place-items-center pointer-events-none">
-            <Phone className="size-5 text-secondary-grey group-focus-within:text-primary-orange transition-colors" />
+            <Phone className="size-5 text-site-fg-muted group-focus-within:text-primary-orange transition-colors" />
           </span>
           <input
             type="tel"
@@ -93,7 +90,7 @@ export default function ContactForm({
 
         <div className="relative group">
           <span className="absolute left-4 top-1/2 -translate-y-1/2 size-5 grid place-items-center pointer-events-none">
-            <Mail className="size-5 text-secondary-grey group-focus-within:text-primary-orange transition-colors" />
+            <Mail className="size-5 text-site-fg-muted group-focus-within:text-primary-orange transition-colors" />
           </span>
           <input
             type="email"

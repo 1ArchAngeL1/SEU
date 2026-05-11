@@ -58,7 +58,7 @@ export function ApartmentDetailView({ apartment }: ApartmentDetailViewProps) {
           />
 
           {/* Dashed separator */}
-          <div className="border-t border-dashed border-pale-gray/25 mb-8" />
+          <div className="border-t border-dashed border-site-border-soft mb-8" />
 
           {/* Request Call */}
           <Button
@@ -70,10 +70,10 @@ export function ApartmentDetailView({ apartment }: ApartmentDetailViewProps) {
           </Button>
 
           {/* Dashed separator */}
-          <div className="border-t border-dashed border-pale-gray/25 mb-8" />
+          <div className="border-t border-dashed border-site-border-soft mb-8" />
 
           {/* Details heading */}
-          <h3 className="font-[--font-bodoni] font-normal text-seu-heading text-pale-gray mb-6 leading-none">
+          <h3 className="font-[--font-bodoni] font-normal text-seu-heading text-site-fg mb-6 leading-none">
             {t('details')}
           </h3>
 

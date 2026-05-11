@@ -45,12 +45,12 @@ export default function HeroSlideshow({
       })}
 
       {gallery.length === 0 && (
-        <div className="absolute inset-0 bg-gradient-to-br from-secondary-black via-dark-green to-black" />
+        <div className="absolute inset-0 bg-gradient-to-br from-secondary-black via-site-bg to-black" />
       )}
 
       {/* Overlay for legibility */}
-      <div className="absolute inset-0 bg-gradient-to-t from-dark-green via-dark-green/55 to-dark-green/15" />
-      <div className="absolute inset-0 bg-gradient-to-r from-dark-green/70 via-dark-green/30 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-site-bg via-site-bg/55 to-site-bg/15" />
+      <div className="absolute inset-0 bg-gradient-to-r from-site-bg/70 via-site-bg/30 to-transparent" />
     </div>
   );
 }

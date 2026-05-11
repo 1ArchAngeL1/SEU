@@ -3,9 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useLocaleTransition } from '@/components/header/LocaleTransitionContext';
-import type { HeaderVariant } from './SeuHeader';
 
-export const LanguageSwitcher = ({ variant = 'dark' }: { variant?: HeaderVariant }) => {
+export const LanguageSwitcher = () => {
   const locale = useLocale();
   const t = useTranslations('header');
   const { switchLocale } = useLocaleTransition();
@@ -21,7 +20,7 @@ export const LanguageSwitcher = ({ variant = 'dark' }: { variant?: HeaderVariant
   };
 
   return (
-    <div className={`relative flex items-center h-10 border border-secondary-grey rounded-[10px] px-[0.175rem] ${variant === 'light' ? 'bg-pale-gray/10 border-black/30' : 'bg-pale-gray/10'}`}>
+    <div className="relative flex items-center h-10 border border-site-border-soft rounded-[10px] px-[0.175rem] bg-site-bg-hover">
       {/* Sliding pill */}
       <div
         className={`absolute top-[0.175rem] h-8 w-16 rounded-[8px] bg-primary-orange border border-primary-orange/60 transition-transform duration-300 ease-in-out ${
@@ -32,10 +31,8 @@ export const LanguageSwitcher = ({ variant = 'dark' }: { variant?: HeaderVariant
         onClick={() => handleSwitch('en')}
         className={`relative z-10 h-8 w-16 font-montserrat font-medium text-seu-body-sm leading-[1.1875rem] tracking-[0.15rem] rounded-[8px] transition-colors duration-300 ${
           activeLocale === 'en'
-            ? 'text-pale-gray'
-            : variant === 'light'
-              ? 'text-black/50 hover:text-black/70'
-              : 'text-pale-gray/50 hover:text-pale-gray/70'
+            ? 'text-white'
+            : 'text-site-fg-dim hover:text-site-fg'
         }`}
       >
         {t('en')}
@@ -44,10 +41,8 @@ export const LanguageSwitcher = ({ variant = 'dark' }: { variant?: HeaderVariant
         onClick={() => handleSwitch('ka')}
         className={`relative z-10 h-8 w-16 font-montserrat font-medium text-seu-body-sm leading-[1.1875rem] tracking-[0.15rem] rounded-[8px] transition-colors duration-300 ${
           activeLocale === 'ka'
-            ? 'text-pale-gray'
-            : variant === 'light'
-              ? 'text-black/50 hover:text-black/70'
-              : 'text-pale-gray/50 hover:text-pale-gray/70'
+            ? 'text-white'
+            : 'text-site-fg-dim hover:text-site-fg'
         }`}
       >
         {t('ge')}

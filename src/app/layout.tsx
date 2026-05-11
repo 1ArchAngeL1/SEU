@@ -34,7 +34,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} suppressHydrationWarning={true} data-scroll-behavior="smooth">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} antialiased min-h-dvh bg-dark-green`}
+        className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} antialiased min-h-dvh bg-site-bg transition-colors duration-300`}
       >
         {children}
       </body>

@@ -29,7 +29,7 @@ export interface RoomDetail {
 }
 
 function RoomIcon({ type }: { type: RoomDetailIcon }) {
-  const cls = 'size-5 text-pale-gray/50 flex-shrink-0';
+  const cls = 'size-5 text-site-fg-dim flex-shrink-0';
   switch (type) {
     case 'bedroom':
       return <BedDouble className={cls} />;
@@ -58,7 +58,7 @@ export function ApartmentRoomList({ roomDetails }: ApartmentRoomListProps) {
   const t = useTranslations('search');
   if (roomDetails.length === 0) {
     return (
-      <p className="font-montserrat text-seu-caption text-pale-gray/40">
+      <p className="font-montserrat text-seu-caption text-site-fg-dim">
         {t('noRoomDetails')}
       </p>
     );
@@ -70,10 +70,10 @@ export function ApartmentRoomList({ roomDetails }: ApartmentRoomListProps) {
         <div key={i} className="flex items-center gap-2.5">
           <RoomIcon type={room.icon} />
           <div className="flex items-baseline gap-2 min-w-0">
-            <span className="font-montserrat text-seu-caption text-pale-gray truncate">
+            <span className="font-montserrat text-seu-caption text-site-fg truncate">
               {room.name}
             </span>
-            <span className="font-montserrat text-seu-caption text-pale-gray/50">
+            <span className="font-montserrat text-seu-caption text-site-fg-dim">
               {room.size} {t('m2')}
             </span>
           </div>

@@ -14,12 +14,12 @@ const ContactPage = () => {
         <div className="relative flex-1 overflow-hidden">
           {/* Light bg (top-left triangle) */}
           <div
-            className="absolute inset-0 bg-pale-gray"
+            className="absolute inset-0 bg-site-bg-alt"
             style={{ clipPath: 'polygon(0 0, 100% 0, 0 65%)' }}
           />
           {/* Dark bg (bottom-right triangle) */}
           <div
-            className="absolute inset-0 bg-dark-green"
+            className="absolute inset-0 bg-site-bg"
             style={{ clipPath: 'polygon(100% 0, 100% 100%, 0 100%, 0 65%)' }}
           />
 
@@ -30,7 +30,7 @@ const ContactPage = () => {
         </div>
 
         {/* Contact info panel — dark section below */}
-        <div className="bg-dark-green px-5 pt-6 pb-10">
+        <div className="bg-site-bg px-5 pt-6 pb-10">
           <ContactPanel className="max-w-xl" />
         </div>
       </div>
@@ -39,12 +39,12 @@ const ContactPage = () => {
       <div className="hidden lg:flex relative flex-1 min-h-0 overflow-hidden">
         {/* Dark section — clipped diagonal */}
         <div
-          className="absolute inset-0 bg-dark-green"
+          className="absolute inset-0 bg-site-bg"
           style={{ clipPath: 'polygon(0 0, 90% 0, 5% 100%, 0 100%)' }}
         />
         {/* Light section — opposite diagonal */}
         <div
-          className="absolute inset-0 bg-pale-gray"
+          className="absolute inset-0 bg-site-bg-alt"
           style={{ clipPath: 'polygon(90% 0, 100% 0, 100% 100%, 5% 100%)' }}
         />
         {/* Content layer */}
@@ -55,7 +55,6 @@ const ContactPage = () => {
           <div className="flex-1 flex items-end justify-end pb-16 pr-10">
             <ContactPanel
               className="max-w-2xl"
-              headerClassName="text-dark-green"
             />
           </div>
         </div>
