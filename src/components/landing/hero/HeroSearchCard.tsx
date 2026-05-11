@@ -2,12 +2,14 @@
 
 import { useState } from 'react';
 import { RotateCcw, Search } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
 
 const ROOM_OPTIONS = [1, 2, 3, 4];
 
 export default function HeroSearchCard() {
+  const t = useTranslations('landing');
   const router = useRouter();
   const [sizeFrom, setSizeFrom] = useState('');
   const [sizeTo, setSizeTo] = useState('');
@@ -43,19 +45,19 @@ export default function HeroSearchCard() {
             strokeWidth={1.5}
           />
           <span className="font-montserrat text-seu-body-sm text-pale-gray">
-            Find Apartment
+            {t('findApartment')}
           </span>
         </div>
 
         {/* Size m² */}
         <div className="mt-5">
           <span className="font-montserrat font-medium text-seu-caption text-pale-gray block mb-2.5">
-            Size m²
+            {t('sizeM2')}
           </span>
           <div className="flex items-center gap-2.5">
             <input
               type="number"
-              placeholder="From 0"
+              placeholder={t('fromPlaceholder')}
               value={sizeFrom}
               onChange={(e) => setSizeFrom(e.target.value)}
               className={
@@ -65,7 +67,7 @@ export default function HeroSearchCard() {
             />
             <input
               type="number"
-              placeholder="To 250+"
+              placeholder={t('toPlaceholder')}
               value={sizeTo}
               onChange={(e) => setSizeTo(e.target.value)}
               className={
@@ -79,7 +81,7 @@ export default function HeroSearchCard() {
         {/* Bedrooms */}
         <div className="mt-5">
           <span className="font-montserrat font-medium text-seu-caption text-pale-gray block mb-2.5">
-            Bedrooms
+            {t('bedrooms')}
           </span>
           <div className="grid grid-cols-6 gap-1.5">
             {ROOM_OPTIONS.map((n) => {
@@ -116,7 +118,7 @@ export default function HeroSearchCard() {
             onClick={handleSearch}
             className="bg-primary-orange text-white font-montserrat font-medium text-seu-caption px-7 py-2.5 rounded-xl hover:bg-primary-orange/85 transition-colors"
           >
-            Search
+            {t('search')}
           </button>
           <button
             type="button"
@@ -124,7 +126,7 @@ export default function HeroSearchCard() {
             className="flex items-center gap-2 font-montserrat text-seu-caption text-secondary-grey hover:text-pale-gray transition-colors"
           >
             <RotateCcw className="size-3.5" strokeWidth={2} />
-            Clear
+            {t('clear')}
           </button>
         </div>
       </div>

@@ -1,3 +1,6 @@
+'use client';
+
+import { useTranslations } from 'next-intl';
 import { pickLocale } from '@/lib/i18n-helpers';
 import { Label } from '@/components/ui/label';
 import {
@@ -22,19 +25,20 @@ export default function ProjectSelect({
   onChange,
   projects,
 }: ProjectSelectProps) {
+  const t = useTranslations('search');
   return (
     <div>
-      <Label className={labelClass}>Project</Label>
+      <Label className={labelClass}>{t('project')}</Label>
       <Select
         value={value || ANY_PROJECT}
         onValueChange={(v) => onChange(v === ANY_PROJECT ? '' : v)}
       >
         <SelectTrigger className={triggerClass}>
-          <SelectValue placeholder="Choose" />
+          <SelectValue placeholder={t('choose')} />
         </SelectTrigger>
         <SelectContent className={contentClass}>
           <SelectItem value={ANY_PROJECT} className={itemClass}>
-            Any project
+            {t('anyProject')}
           </SelectItem>
           {projects.map((p) => (
             <SelectItem value={p.id} key={p.id} className={itemClass}>

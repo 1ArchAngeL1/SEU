@@ -1,19 +1,23 @@
-import { Link } from '@/i18n/navigation';
+'use client';
 
-const links = [
-  { label: 'PROJECTS', href: '#' },
-  { label: 'SEU CARD', href: '/card' },
-  { label: 'PRIVACY POLICY', href: '/policy' },
-  { label: 'NEWS', href: '#' },
-  { label: 'ABOUT', href: '#' },
-];
+import { Link } from '@/i18n/navigation';
+import { useTranslations } from 'next-intl';
 
 export default function FooterUpper({
   variant = 'dark',
 }: {
   variant?: 'dark' | 'light';
 }) {
+  const t = useTranslations('footer');
   const isLight = variant === 'light';
+
+  const links = [
+    { label: t('projects'), href: '#' },
+    { label: t('seuCard'), href: '/card' },
+    { label: t('privacyPolicy'), href: '/policy' },
+    { label: t('news'), href: '#' },
+    { label: t('about'), href: '#' },
+  ];
 
   return (
     <nav

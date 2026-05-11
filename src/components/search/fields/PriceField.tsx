@@ -1,3 +1,6 @@
+'use client';
+
+import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
 import { fieldClass } from './styles';
@@ -21,11 +24,12 @@ export default function PriceField({
   onToChange,
   error,
 }: PriceFieldProps) {
+  const t = useTranslations('search');
   return (
     <div>
       <div className="flex items-center gap-3 mb-2">
         <span className="font-montserrat text-seu-caption-sm text-dark-green">
-          Price
+          {t('price')}
         </span>
         <div className="inline-flex items-center gap-1">
           {(['USD', 'GEL'] as const).map((c) => (
@@ -52,7 +56,7 @@ export default function PriceField({
           inputMode="numeric"
           value={from}
           onChange={(e) => onFromChange(e.target.value)}
-          placeholder="From"
+          placeholder={t('from')}
           className={fieldClass}
         />
         <Input
@@ -61,7 +65,7 @@ export default function PriceField({
           inputMode="numeric"
           value={to}
           onChange={(e) => onToChange(e.target.value)}
-          placeholder="To"
+          placeholder={t('to')}
           className={fieldClass}
         />
       </div>

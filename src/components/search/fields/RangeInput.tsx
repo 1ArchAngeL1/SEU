@@ -1,3 +1,6 @@
+'use client';
+
+import { useTranslations } from 'next-intl';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { fieldClass, labelClass } from './styles';
@@ -17,6 +20,7 @@ export default function RangeInput({
   onFromChange,
   onToChange,
 }: RangeInputProps) {
+  const t = useTranslations('search');
   return (
     <div>
       <Label className={labelClass}>{label}</Label>
@@ -27,7 +31,7 @@ export default function RangeInput({
           inputMode="numeric"
           value={from}
           onChange={(e) => onFromChange(e.target.value)}
-          placeholder="From"
+          placeholder={t('from')}
           className={fieldClass}
         />
         <Input
@@ -36,7 +40,7 @@ export default function RangeInput({
           inputMode="numeric"
           value={to}
           onChange={(e) => onToChange(e.target.value)}
-          placeholder="To"
+          placeholder={t('to')}
           className={fieldClass}
         />
       </div>

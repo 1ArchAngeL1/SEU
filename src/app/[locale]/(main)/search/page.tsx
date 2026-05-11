@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { Loader2, SearchX } from 'lucide-react';
 import SearchForm from '@/components/search/SearchForm';
@@ -18,6 +19,7 @@ function toNum(v: string | null): number | undefined {
 }
 
 export default function SearchPage() {
+  const t = useTranslations('search');
   const searchParams = useSearchParams();
 
   const initialFilter = useMemo<UnitFilter>(() => {
@@ -63,7 +65,7 @@ export default function SearchPage() {
     <div className="bg-pale-gray min-h-screen pt-8 lg:pt-12">
       <div className="mx-auto">
         <h1 className="font-bodoni text-seu-heading lg:text-seu-title-xl text-dark-green mb-6 lg:mb-8 px-5 lg:px-10 max-w-[1920px] mx-auto">
-          APARTMENTS
+          {t('apartments')}
         </h1>
 
         <SearchForm initialFilter={initialFilter} onSearch={handleSearch} onClear={handleClear} />
@@ -73,7 +75,7 @@ export default function SearchPage() {
             <div className="flex flex-col items-center justify-center gap-3 py-24">
               <Loader2 className="size-6 text-primary-orange animate-spin" />
               <span className="font-montserrat text-seu-body-sm text-pale-gray/80">
-                Loading apartments…
+                {t('loading')}
               </span>
             </div>
           ) : units.length === 0 ? (
@@ -82,10 +84,10 @@ export default function SearchPage() {
                 <SearchX className="size-5 text-secondary-grey" />
               </span>
               <p className="font-montserrat font-medium text-seu-body text-pale-gray">
-                No apartments match your filters
+                {t('noResults')}
               </p>
               <p className="font-montserrat text-seu-caption text-secondary-grey max-w-sm">
-                Try widening the size or price range, or clearing some filters.
+                {t('noResultsHint')}
               </p>
             </div>
           ) : (

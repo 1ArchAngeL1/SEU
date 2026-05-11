@@ -424,3 +424,30 @@ export interface PaginationInput {
 }
 
 export type SortDirection = 'asc' | 'desc';
+
+export interface Partner {
+  id: string;
+  name: string;
+  description?: string;
+  logoId?: string;
+  mail?: string;
+  phone?: string;
+  address?: string;
+  facebookLink?: string;
+  discountPercentage?: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type CreatePartnerInput = {
+  name: string;
+  description?: string;
+  logoId?: string;
+  mail?: string;
+  phone?: string;
+  address?: string;
+  facebookLink?: string;
+  discountPercentage?: number;
+};
+
+export type UpdatePartnerInput = Partial<CreatePartnerInput>;

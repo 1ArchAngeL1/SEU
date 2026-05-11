@@ -1,20 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-
-const benefits = [
-  'Up to 2 hectares of recreational space;',
-  'Guarded courtyard;',
-  'Underground and surface parking;',
-  'Trade and office premises;',
-  'Children playgrounds;',
-  'Sports and playgrounds;',
-  'Tennis courts;',
-  'Gym;',
-  'There will be a lobby at the entrance to each building;',
-  'School.',
-];
 
 // PLACEHOLDER: IMAGE - Replace with actual benefit/building images
 const placeholderImages = [
@@ -26,6 +14,9 @@ const placeholderImages = [
 ];
 
 export function Benefits() {
+  const t = useTranslations('search');
+  const tb = useTranslations('benefitsList');
+  const benefits = [tb('b1'), tb('b2'), tb('b3'), tb('b4'), tb('b5'), tb('b6'), tb('b7'), tb('b8'), tb('b9'), tb('b10')];
   const [currentIndex, setCurrentIndex] = useState(0);
   const totalImages = placeholderImages.length;
 
@@ -48,7 +39,7 @@ export function Benefits() {
       {/* Left side: Benefits list */}
       <div className="w-full lg:w-[30%] shrink-0">
         <h2 className="font-[--font-bodoni] font-normal text-seu-subheading text-pale-gray mb-6">
-          Benefits
+          {t('benefits')}
         </h2>
 
         <ul className="space-y-2">

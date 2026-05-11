@@ -2,10 +2,12 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { Pause, Play } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import FadeIn from '@/components/FadeIn';
 import OrbitalRings from '@/components/landing/about/OrbitalRings';
 
 export default function LandingAboutSection() {
+  const t = useTranslations('landing');
   const [isPlaying, setIsPlaying] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -46,7 +48,7 @@ export default function LandingAboutSection() {
         <FadeIn className="flex items-start justify-between mb-8 lg:mb-16">
           {/* Title - Left */}
           <h2 className="font-bodoni text-seu-heading lg:text-seu-title text-white">
-            About company
+            {t('aboutCompany')}
           </h2>
 
           <div className="w-16 h-16 hidden lg:flex items-center justify-center">
@@ -61,7 +63,7 @@ export default function LandingAboutSection() {
           {/* Left Text */}
           <FadeIn direction="left" delay={150} className="hidden lg:block flex-1 max-w-xs">
             <p className="font-bodoni text-seu-body-lg text-white">
-              Real estate market since 2014.
+              {t('realEstateSince')}
             </p>
           </FadeIn>
 
@@ -103,9 +105,7 @@ export default function LandingAboutSection() {
 
           <FadeIn direction="right" delay={150} className="lg:flex-1 lg:max-w-xs lg:text-right">
             <p className="text-seu-body-sm lg:text-seu-body text-white leading-relaxed">
-              The company&#39;s team, consisting of experienced professionals, cares
-              about continuous development, adheres to high construction
-              standards and uses innovative technologies.
+              {t('companyDescription')}
             </p>
           </FadeIn>
         </div>

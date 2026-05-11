@@ -1,7 +1,11 @@
+'use client';
+
 import Image from 'next/image';
 import FadeIn from '@/components/FadeIn';
+import { useTranslations } from 'next-intl';
 
 export default function AboutHero() {
+  const t = useTranslations('about');
   return (
     <div className="relative h-[calc(100dvh-5rem)] lg:h-[calc(100dvh-10rem)] overflow-hidden">
       {/* PLACEHOLDER: IMAGE - Office/lounge interior with SEU logo on wall */}
@@ -22,10 +26,10 @@ export default function AboutHero() {
       <div className="relative z-10 max-w-[1920px] mx-auto px-5 lg:px-10 pt-16 lg:pt-24">
         <FadeIn direction="left" duration={900}>
           <p className="font-montserrat font-medium text-seu-body-sm lg:text-seu-body text-pale-gray mb-2">
-            The company&apos;s team
+            {t('companyTeam')}
           </p>
           <h1 className="font-[--font-bodoni] font-normal text-seu-heading lg:text-seu-title-lg text-pale-gray">
-            Seu development
+            {t('seuDevelopment')}
           </h1>
         </FadeIn>
       </div>

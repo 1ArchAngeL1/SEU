@@ -1,3 +1,6 @@
+'use client';
+
+import { useTranslations } from 'next-intl';
 import {
   BedDouble,
   ChefHat,
@@ -52,10 +55,11 @@ interface ApartmentRoomListProps {
 }
 
 export function ApartmentRoomList({ roomDetails }: ApartmentRoomListProps) {
+  const t = useTranslations('search');
   if (roomDetails.length === 0) {
     return (
       <p className="font-montserrat text-seu-caption text-pale-gray/40">
-        No room details available
+        {t('noRoomDetails')}
       </p>
     );
   }
@@ -70,7 +74,7 @@ export function ApartmentRoomList({ roomDetails }: ApartmentRoomListProps) {
               {room.name}
             </span>
             <span className="font-montserrat text-seu-caption text-pale-gray/50">
-              {room.size} M2
+              {room.size} {t('m2')}
             </span>
           </div>
         </div>

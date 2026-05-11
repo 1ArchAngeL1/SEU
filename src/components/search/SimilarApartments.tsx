@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import ApartmentCard from '@/components/search/ApartmentCard';
 import { useUnitsList } from '@/hooks/queries/use-units';
 
@@ -12,6 +13,7 @@ export function SimilarApartments({
   buildingId,
   currentApartmentId,
 }: SimilarApartmentsProps) {
+  const t = useTranslations('search');
   const unitsQ = useUnitsList(
     { building: buildingId, status: 'available' },
     { page: 1, limit: 9 }
@@ -26,7 +28,7 @@ export function SimilarApartments({
   return (
     <div className="mt-16 lg:mt-32 px-5 lg:px-10 pb-12 lg:pb-20">
       <h2 className="font-[--font-bodoni] font-normal text-seu-subheading text-pale-gray mb-8">
-        Similar Apartments
+        {t('similarApartments')}
       </h2>
 
       <div className="flex gap-6 overflow-x-auto pb-4 hide-scrollbar">

@@ -1,3 +1,6 @@
+'use client';
+
+import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import { Label } from '@/components/ui/label';
 import { labelClass } from './styles';
@@ -13,9 +16,10 @@ export default function RoomSelector({
   selected,
   onChange,
 }: RoomSelectorProps) {
+  const t = useTranslations('search');
   return (
     <div>
-      <Label className={labelClass}>Rooms</Label>
+      <Label className={labelClass}>{t('rooms')}</Label>
       <div className="flex gap-2">
         {ROOM_OPTIONS.map((num) => {
           const active = selected.includes(num);

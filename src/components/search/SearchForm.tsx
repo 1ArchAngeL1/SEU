@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAllProjects } from '@/hooks/queries/use-projects';
@@ -56,6 +57,7 @@ export default function SearchForm({
   const [priceTo, setPriceTo] = useState(initialFilter?.maxPrice != null ? String(initialFilter.maxPrice) : '');
   const [validationError, setValidationError] = useState('');
 
+  const t = useTranslations('search');
   const projectsQ = useAllProjects();
   const buildingsQ = useBuildingsByProject(project || undefined);
 
@@ -69,11 +71,11 @@ export default function SearchForm({
     const pTo = toNum(priceTo);
 
     if (sFrom != null && sTo != null && sFrom > sTo) {
-      setValidationError('Size "from" must be \u2264 "to"');
+      setValidationError(t('sizeFromError'));
       return;
     }
     if (pFrom != null && pTo != null && pFrom > pTo) {
-      setValidationError('Price "from" must be \u2264 "to"');
+      setValidationError(t('priceFromError'));
       return;
     }
 
@@ -124,7 +126,7 @@ export default function SearchForm({
       <div className="flex items-center gap-2 pb-3 mb-8 border-b border-secondary-grey/30">
         <Search className="size-4 text-secondary-grey" strokeWidth={1.5} />
         <span className="font-montserrat text-seu-caption text-secondary-grey uppercase tracking-wider">
-          Filter Apartments
+          {t('filterApartments')}
         </span>
       </div>
 
@@ -147,7 +149,7 @@ export default function SearchForm({
         />
 
         <RangeInput
-          label="Size m2"
+          label={t('sizeM2')}
           from={sizeFrom}
           to={sizeTo}
           onFromChange={setSizeFrom}
@@ -179,14 +181,14 @@ export default function SearchForm({
               type="submit"
               className="bg-primary-orange hover:bg-primary-orange/90 text-white font-montserrat font-medium text-seu-caption h-10 px-8 rounded-md shadow-none"
             >
-              Search
+              {t('searchBtn')}
             </Button>
             <button
               type="button"
               onClick={handleClear}
               className="font-montserrat text-seu-caption text-dark-green hover:text-primary-orange transition-colors"
             >
-              Clear filters
+              {t('clearFilters')}
             </button>
           </div>
         </div>

@@ -2,9 +2,11 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import FadeIn from '@/components/FadeIn';
 
 export default function LandingAbout() {
+  const t = useTranslations('landing');
   return (
     <section className="bg-pale-gray py-16 lg:py-24">
       <div className="max-w-[1920px] mx-auto px-5 lg:px-10">
@@ -12,29 +14,20 @@ export default function LandingAbout() {
           {/* Left - Text Content */}
           <FadeIn direction="left" className="flex-1 max-w-xl">
             <h2 className="font-bodoni text-seu-title lg:text-seu-title-lg text-dark-green mb-8">
-              About SEU
+              {t('aboutSeu')}
             </h2>
 
             <div className="space-y-6 text-seu-body text-dark-green/80 leading-relaxed">
               <p>
-                SEU Development has been operating in the real estate market
-                since 2014.
+                {t('aboutText1')}
               </p>
 
               <p>
-                The company's team, consisting of experienced professionals who
-                care about continuous development, implements high construction
-                standards and uses innovative and modern approaches that meet
-                European standards.
+                {t('aboutText2')}
               </p>
 
               <p>
-                Successfully completed projects by SEU Development include the
-                old and new buildings of the Georgian National University, which
-                house modern educational and exhibition facilities, as well as a
-                business center in the suburbs of Tbilisi. All SEU Development
-                construction projects are fully funded at an early stage, which
-                ensures they are completed on time.
+                {t('aboutText3')}
               </p>
             </div>
 
@@ -42,7 +35,7 @@ export default function LandingAbout() {
               href="/contact"
               className="inline-block mt-10 bg-primary-orange text-white font-montserrat font-medium text-seu-body px-16 py-3 rounded-lg hover:bg-primary-orange/85 transition-colors"
             >
-              CONTACT
+              {t('contact')}
             </Link>
           </FadeIn>
 

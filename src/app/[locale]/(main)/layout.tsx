@@ -11,10 +11,12 @@ export default function MainLayout({
 }) {
   return (
     <LocaleTransitionProvider>
-      <SeuHeader />
-      {children}
-      <FooterUpperWrapper />
-      <FooterLower />
+      <div className="flex flex-col min-h-dvh">
+        <SeuHeader />
+        <div className="flex-1 flex flex-col">{children}</div>
+        <FooterUpperWrapper />
+        <FooterLower />
+      </div>
     </LocaleTransitionProvider>
   );
 }

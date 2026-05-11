@@ -1,6 +1,7 @@
 'use client';
 
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
 import { pickLocale } from '@/lib/i18n-helpers';
 import { cn } from '@/lib/utils';
@@ -23,6 +24,7 @@ export default function HeroMobileContent({
   onPrev,
   onNext,
 }: HeroMobileContentProps) {
+  const t = useTranslations('landing');
   const router = useRouter();
 
   function handleFindApartment() {
@@ -42,7 +44,7 @@ export default function HeroMobileContent({
         onClick={handleFindApartment}
         className="w-full bg-primary-orange text-white font-montserrat font-medium text-seu-body py-4 rounded-xl hover:bg-primary-orange/85 transition-colors"
       >
-        Find Apartment
+        {t('findApartment')}
       </button>
 
       {/* Pagination dots + arrows */}

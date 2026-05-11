@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import { ArrowUpRight, Maximize2, Building2, Layers, ImageIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Link } from '@/i18n/navigation';
@@ -16,13 +17,6 @@ export type ApartmentCardProps = {
   onClick?: () => void;
 };
 
-function statusLabel(s: UnitStatus): string {
-  if (s === 'available') return 'Available';
-  if (s === 'reserved') return 'Reserved';
-  if (s === 'sold') return 'Sold';
-  return 'Not for sale';
-}
-
 function statusBadgeClass(s: UnitStatus): string {
   if (s === 'available')
     return 'bg-primary-orange text-white border-primary-orange';
@@ -37,8 +31,16 @@ export default function ApartmentCard({
   data,
   onClick,
 }: ApartmentCardProps) {
+  const t = useTranslations('search');
   const projectName =
     typeof data.project === 'string' ? '' : pickLocale(data.project.name);
+
+  function statusLabel(s: UnitStatus): string {
+    if (s === 'available') return t('available');
+    if (s === 'reserved') return t('reserved');
+    if (s === 'sold') return t('sold');
+    return t('notForSale');
+  }
   const image = fileUrl(data.mainImage);
 
   return (
@@ -58,7 +60,7 @@ export default function ApartmentCard({
         <div className="relative z-10 flex items-start justify-between p-6">
           <div>
             <p className="font-montserrat text-seu-caption text-white/70 uppercase tracking-wider mb-1.5">
-              Apartment
+              {t('apartment')}
             </p>
             <p className="font-bodoni text-seu-heading-lg text-white leading-none">
               #{data.unitNumber}
@@ -101,7 +103,7 @@ export default function ApartmentCard({
             className="border-pale-gray/25 bg-pale-gray/5 text-white normal-case tracking-normal gap-1.5 text-seu-caption px-3 py-1 [&>svg]:size-4"
           >
             <Building2 />
-            Block {data.block}
+            {t('block')} {data.block}
           </Badge>
           <Badge
             className={cn(

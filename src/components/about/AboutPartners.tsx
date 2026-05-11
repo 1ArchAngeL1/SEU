@@ -1,13 +1,14 @@
-import Image from 'next/image';
-import FadeIn from '@/components/FadeIn';
+'use client';
 
-const PARTNERS = Array.from({ length: 8 }, (_, i) => ({
-  id: i + 1,
-  name: 'Bank of Georgia',
-  logo: '/common/svgs/bog.svg',
-}));
+import FadeIn from '@/components/FadeIn';
+import PartnerCard from '@/components/card/PartnerCard';
+import { useTranslations } from 'next-intl';
+import { useAllPartners } from '@/hooks/queries/use-partners';
 
 export default function AboutPartners() {
+  const t = useTranslations('about');
+  const { data: partners = [], isLoading } = useAllPartners();
+
   return (
     <div>
       {/* Light header area */}
@@ -15,34 +16,46 @@ export default function AboutPartners() {
         <div className="max-w-[1920px] mx-auto px-5 lg:px-10">
           <FadeIn direction="left">
             <h2 className="font-[--font-bodoni] font-normal text-seu-title text-dark-green uppercase">
-              Partners.
+              {t('partners')}
             </h2>
           </FadeIn>
         </div>
       </div>
 
-      {/* Dark area from 80+ onwards */}
+      {/* Dark area */}
       <div className="bg-dark-green pt-3 pb-12 lg:pb-16">
         <div className="max-w-[1920px] mx-auto px-5 lg:px-10">
           <p className="font-montserrat font-normal text-seu-body text-secondary-grey mb-12">
-            80+ Partners trust us.
+            {t('partnersCount')}
           </p>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {PARTNERS.map((partner, i) => (
-              <FadeIn key={partner.id} delay={(i % 4) * 80} duration={500}>
-                <div className="h-24 flex items-center justify-center border border-secondary-black rounded-xl bg-dark-green/50 px-6 hover-lift">
-                  <Image
-                    src={partner.logo}
-                    alt={partner.name}
-                    width={160}
-                    height={50}
-                    className="object-contain opacity-80 hover:opacity-100 transition-opacity"
+          {isLoading ? (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="h-56 rounded-2xl bg-white/5 animate-pulse"
+                />
+              ))}
+            </div>
+          ) : partners.length === 0 ? null : (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {partners.map((partner, i) => (
+                <FadeIn key={partner.id} delay={(i % 4) * 80} duration={500}>
+                  <PartnerCard
+                    name={partner.name}
+                    logoId={partner.logoId}
+                    description={partner.description}
+                    mail={partner.mail}
+                    phone={partner.phone}
+                    address={partner.address}
+                    facebookLink={partner.facebookLink}
+                    discountPercentage={partner.discountPercentage}
                   />
-                </div>
-              </FadeIn>
-            ))}
-          </div>
+                </FadeIn>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

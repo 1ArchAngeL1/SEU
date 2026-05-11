@@ -1,21 +1,21 @@
+'use client';
+
 import Image from 'next/image';
 import FadeIn from '@/components/FadeIn';
+import { useTranslations } from 'next-intl';
 
 export default function CardHero() {
+  const t = useTranslations('card');
   return (
     <div className="py-20">
       <div className="max-w-[1920px] mx-auto px-5 lg:px-10 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
         {/* Left — Text */}
         <FadeIn direction="left">
           <h1 className="font-[--font-bodoni] font-normal text-seu-heading lg:text-seu-title-xl leading-tight lg:leading-[6rem] text-dark-green mb-4 lg:mb-8">
-            SEU CARD
+            {t('title')}
           </h1>
           <p className="font-montserrat font-normal text-seu-body lg:text-seu-subheading leading-relaxed lg:leading-[3.125rem] text-[#3D3D3D]">
-            When buying property in any of the company&apos;s projects, clients
-            will receive an exclusive personalized SEU card. Residents will be
-            able to use the card at the company&apos;s partner establishments,
-            taking advantage of exclusive conditions and discounts. You can see
-            the full list of our partners below:
+            {t('description')}
           </p>
         </FadeIn>
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import UpcomingProjectCard from './UpcomingProjectCard';
 import { useProjectsList } from '@/hooks/queries/use-projects';
 import { pickLocale, type Locale } from '@/lib/i18n-helpers';
@@ -17,6 +17,7 @@ function formatStartDate(iso: string | null | undefined): string | undefined {
 }
 
 export default function UpcomingSection() {
+  const t = useTranslations('landing');
   const locale = useLocale() as Locale;
   const projectsQ = useProjectsList(
     { status: 'planning', isActive: true },
@@ -33,7 +34,7 @@ export default function UpcomingSection() {
       <div className="max-w-[1920px] mx-auto px-5 lg:px-10">
         {/* Title */}
         <h2 className="font-bodoni text-seu-title text-white mb-12">
-          Upcoming .
+          {t('upcoming')}
         </h2>
 
         {/* Project Cards - Staggered Layout */}

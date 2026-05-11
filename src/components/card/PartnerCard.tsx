@@ -1,25 +1,135 @@
 import Image from 'next/image';
+import { Handshake, Mail, Phone, MapPin, ExternalLink } from 'lucide-react';
+import { fileUrl } from '@/lib/file-url';
 
 interface PartnerCardProps {
-  description: string;
+  name: string;
+  logoId?: string;
+  description?: string;
+  mail?: string;
+  phone?: string;
+  address?: string;
+  facebookLink?: string;
+  discountPercentage?: number;
 }
 
-export default function PartnerCard({ description }: PartnerCardProps) {
-  return (
-    <div className="bg-dark-green rounded-lg p-6">
-      {/* Partner Logo + Title (embedded in SVG) */}
-      <Image
-        src="/common/svgs/bog.svg"
-        alt="Bank of Georgia Group PLC"
-        width={320}
-        height={54}
-        className="object-contain mb-4"
-      />
+export default function PartnerCard({
+  name,
+  logoId,
+  description,
+  mail,
+  phone,
+  address,
+  facebookLink,
+  discountPercentage,
+}: PartnerCardProps) {
+  const hasContact = mail || phone || address || facebookLink;
 
-      {/* Description */}
-      <p className="font-montserrat font-normal text-seu-body-sm leading-[1.75rem] text-secondary-grey">
-        {description}
-      </p>
+  return (
+    <div className="group relative w-full h-56 rounded-2xl overflow-hidden bg-dark-green hover-lift">
+      <div className="flex h-full">
+        {/* Left — Logo area */}
+        <div className="relative w-44 shrink-0 flex items-center justify-center bg-linear-to-br from-white/10 to-white/3 border-r border-white/6 p-5">
+          {logoId ? (
+            <Image
+              src={fileUrl(logoId)}
+              alt={name}
+              width={200}
+              height={120}
+              className="object-contain max-h-24 w-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]"
+            />
+          ) : (
+            <div className="flex flex-col items-center gap-3">
+              <span className="size-14 rounded-2xl bg-white/10 border border-white/10 grid place-items-center">
+                <Handshake className="size-7 text-pale-gray/60" />
+              </span>
+              <span className="font-[--font-bodoni] font-normal text-seu-caption text-pale-gray/80 text-center leading-tight">
+                {name}
+              </span>
+            </div>
+          )}
+
+          {/* Discount badge */}
+          {discountPercentage != null && discountPercentage > 0 && (
+            <span className="absolute top-3 left-3 bg-primary-orange text-white font-montserrat font-bold text-seu-caption-sm px-2 py-0.5 rounded-md shadow-md shadow-primary-orange/30">
+              -{discountPercentage}%
+            </span>
+          )}
+
+          {/* Hover overlay — slides from left over the logo */}
+          {hasContact && (
+            <div className="absolute inset-0 bg-dark-green flex flex-col items-stretch justify-center gap-2 px-3 py-4 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out">
+              {mail && (
+                <a
+                  href={`mailto:${mail}`}
+                  title={mail}
+                  className="flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors"
+                >
+                  <span className="size-7 shrink-0 rounded-lg bg-primary-orange grid place-items-center shadow-sm shadow-primary-orange/30">
+                    <Mail className="size-3.5 text-white" />
+                  </span>
+                  <span className="font-montserrat text-seu-caption-sm text-pale-gray truncate">
+                    {mail}
+                  </span>
+                </a>
+              )}
+              {phone && (
+                <a
+                  href={`tel:${phone}`}
+                  title={phone}
+                  className="flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors"
+                >
+                  <span className="size-7 shrink-0 rounded-lg bg-primary-orange grid place-items-center shadow-sm shadow-primary-orange/30">
+                    <Phone className="size-3.5 text-white" />
+                  </span>
+                  <span className="font-montserrat text-seu-caption-sm text-pale-gray">
+                    {phone}
+                  </span>
+                </a>
+              )}
+              {address && (
+                <div className="flex items-center gap-2.5 px-2 py-1.5">
+                  <span className="size-7 shrink-0 rounded-lg bg-primary-orange grid place-items-center shadow-sm shadow-primary-orange/30">
+                    <MapPin className="size-3.5 text-white" />
+                  </span>
+                  <span className="font-montserrat text-seu-caption-sm text-pale-gray truncate">
+                    {address}
+                  </span>
+                </div>
+              )}
+              {facebookLink && (
+                <a
+                  href={facebookLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Facebook"
+                  className="flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors"
+                >
+                  <span className="size-7 shrink-0 rounded-lg bg-primary-orange grid place-items-center shadow-sm shadow-primary-orange/30">
+                    <ExternalLink className="size-3.5 text-white" />
+                  </span>
+                  <span className="font-montserrat text-seu-caption-sm text-pale-gray">
+                    Facebook
+                  </span>
+                </a>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Right — Content */}
+        <div className="flex-1 min-w-0 p-5 flex flex-col">
+          <h3 className="font-[--font-bodoni] font-normal text-seu-subheading text-pale-gray leading-tight mb-3">
+            {name}
+          </h3>
+
+          {description && (
+            <p className="font-montserrat font-normal text-seu-caption leading-6 text-secondary-grey line-clamp-5 flex-1">
+              {description}
+            </p>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { useAllProjects } from '@/hooks/queries/use-projects';
 import { pickLocale } from '@/lib/i18n-helpers';
@@ -44,6 +45,7 @@ function buildGallery(project: Project | undefined): string[] {
 }
 
 export default function LandingHero() {
+  const t = useTranslations('landing');
   const projectsQ = useAllProjects();
 
   const project = useMemo(
@@ -102,8 +104,8 @@ export default function LandingHero() {
         <div className="relative z-10 h-full flex items-center justify-center">
           <span className="font-montserrat text-seu-body text-pale-gray/60">
             {projectsQ.isLoading
-              ? 'Loading developments…'
-              : 'No projects available yet.'}
+              ? t('loadingDevelopments')
+              : t('noProjects')}
           </span>
         </div>
       )}
@@ -119,7 +121,7 @@ export default function LandingHero() {
               className="flex flex-col items-center gap-2"
             >
               <span className="font-montserrat font-medium text-seu-caption text-pale-gray">
-                Visual search
+                {t('visualSearch')}
               </span>
               <div className="size-16 rounded-full border border-pale-gray/30 bg-dark-green/50 backdrop-blur flex items-center justify-center">
                 <Image

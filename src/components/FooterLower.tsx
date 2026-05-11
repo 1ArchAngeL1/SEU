@@ -1,7 +1,11 @@
+'use client';
+
 import { Link } from '@/i18n/navigation';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 export default function FooterLower() {
+  const t = useTranslations('footer');
   return (
     <div className="w-full bg-black py-12 lg:py-0 lg:h-82 flex flex-col lg:grid lg:grid-cols-3 items-center gap-8 lg:gap-0 px-5 lg:px-10">
       {/* Social Icons */}
@@ -38,10 +42,10 @@ export default function FooterLower() {
       {/* Center Text — hidden on mobile */}
       <div className="hidden lg:block text-center justify-self-center">
         <p className="font-montserrat font-normal text-seu-heading-lg leading-12.25 tracking-[0.375rem] text-secondary-grey">
-          SEU
+          {t('seu')}
         </p>
         <p className="font-montserrat font-normal text-seu-heading-lg leading-12.25 tracking-[0.375rem] text-secondary-grey">
-          development
+          {t('development')}
         </p>
       </div>
 

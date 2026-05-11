@@ -1,4 +1,7 @@
+'use client';
+
 import FadeIn from '@/components/FadeIn';
+import { useTranslations } from 'next-intl';
 
 const sections = [
   {
@@ -34,6 +37,7 @@ const sections = [
 ];
 
 export default function PolicyPage() {
+  const t = useTranslations('policy');
   return (
     <main>
       {/* Dark Hero */}
@@ -41,7 +45,7 @@ export default function PolicyPage() {
         <div className="max-w-[1920px] mx-auto px-5 lg:px-10">
           <FadeIn direction="left" duration={900}>
             <h1 className="font-[--font-bodoni] font-normal text-seu-heading lg:text-seu-title-xl leading-tight lg:leading-[6rem] text-pale-gray mb-4 py-6 lg:py-10">
-              PRIVACY POLICY
+              {t('title')}
             </h1>
           </FadeIn>
         </div>

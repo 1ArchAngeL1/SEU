@@ -1,3 +1,7 @@
+'use client';
+
+import { useTranslations } from 'next-intl';
+
 interface ApartmentDetailStatsProps {
   totalSize: number;
   mainSize: number;
@@ -29,12 +33,13 @@ export function ApartmentDetailStats({
   openSpace,
   rooms,
 }: ApartmentDetailStatsProps) {
+  const t = useTranslations('search');
   return (
     <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-8 gap-y-6 mb-8">
-      <StatCell label="Total Size" value={`${totalSize} SQ.M`} />
-      <StatCell label="Main Size" value={`${mainSize} SQ.M`} />
-      <StatCell label="Open Space" value={`${openSpace} SQ.M`} />
-      <StatCell label="Bedroom" value={rooms} />
+      <StatCell label={t('totalSize')} value={`${totalSize} ${t('sqm')}`} />
+      <StatCell label={t('mainSize')} value={`${mainSize} ${t('sqm')}`} />
+      <StatCell label={t('openSpace')} value={`${openSpace} ${t('sqm')}`} />
+      <StatCell label={t('bedroom')} value={rooms} />
     </div>
   );
 }

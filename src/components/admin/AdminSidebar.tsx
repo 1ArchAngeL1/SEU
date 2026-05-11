@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import {
   Building2,
   FolderKanban,
+  Handshake,
   Home,
   LayoutDashboard,
   MessageSquare,
@@ -22,6 +23,7 @@ const navItems = [
   { href: '/admin/projects', label: 'Projects', icon: FolderKanban },
   { href: '/admin/buildings', label: 'Buildings', icon: Building2 },
   { href: '/admin/apartments', label: 'Units', icon: Home },
+  { href: '/admin/partners', label: 'Partners', icon: Handshake },
   { href: '/admin/contacts', label: 'Contacts', icon: MessageSquare },
 ];
 

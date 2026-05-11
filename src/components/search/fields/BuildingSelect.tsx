@@ -1,3 +1,6 @@
+'use client';
+
+import { useTranslations } from 'next-intl';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -23,24 +26,25 @@ export default function BuildingSelect({
   buildings,
   disabled,
 }: BuildingSelectProps) {
+  const t = useTranslations('search');
   return (
     <div>
-      <Label className={labelClass}>Block</Label>
+      <Label className={labelClass}>{t('block')}</Label>
       <Select
         value={value || ANY_BUILDING}
         onValueChange={(v) => onChange(v === ANY_BUILDING ? '' : v)}
         disabled={disabled}
       >
         <SelectTrigger className={triggerClass}>
-          <SelectValue placeholder="Choose" />
+          <SelectValue placeholder={t('choose')} />
         </SelectTrigger>
         <SelectContent className={contentClass}>
           <SelectItem value={ANY_BUILDING} className={itemClass}>
-            Any block
+            {t('anyBlock')}
           </SelectItem>
           {buildings.map((b) => (
             <SelectItem value={b.id} key={b.id} className={itemClass}>
-              Block {b.block}
+              {t('block')} {b.block}
             </SelectItem>
           ))}
         </SelectContent>

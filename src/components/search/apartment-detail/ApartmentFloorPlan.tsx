@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { FileText } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -53,6 +54,7 @@ export function ApartmentFloorPlan({
   complex,
   block,
 }: ApartmentFloorPlanProps) {
+  const t = useTranslations('search');
   const [viewMode, setViewMode] = useState<ViewMode>('Plan');
 
   const floorPlanSrc =
@@ -103,10 +105,10 @@ export function ApartmentFloorPlan({
           <div className="w-full h-full min-h-[480px] border-2 border-dashed border-secondary-grey/25 rounded-xl flex flex-col items-center justify-center gap-3">
             <FileText className="w-10 h-10 text-secondary-grey/30" />
             <p className="font-montserrat text-seu-body-sm text-secondary-grey/40">
-              {viewMode} Floor Plan
+              {viewMode} {t('floorPlan')}
             </p>
             <p className="font-montserrat text-seu-caption-sm text-secondary-grey/30">
-              {complex} · Block {block} · Apt {apartmentNumber}
+              {complex} · {t('block')} {block} · Apt {apartmentNumber}
             </p>
           </div>
         )}

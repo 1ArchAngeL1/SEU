@@ -1,7 +1,11 @@
+'use client';
+
 import ContactForm from '@/components/ContactForm';
 import ContactPanel from '@/components/ContactPanel';
+import { useTranslations } from 'next-intl';
 
 const ContactPage = () => {
+  const t = useTranslations('contact');
   return (
     <>
       {/* ===== MOBILE ===== */}
@@ -21,9 +25,6 @@ const ContactPage = () => {
 
           {/* Content */}
           <div className="relative z-10 px-5 pt-8 pb-10">
-            <h1 className="font-bodoni text-seu-heading text-dark-green mb-6">
-              Contact
-            </h1>
             <ContactForm className="max-w-xl" variant="mobile-diagonal" />
           </div>
         </div>

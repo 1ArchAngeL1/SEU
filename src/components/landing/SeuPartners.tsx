@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import FadeIn from '@/components/FadeIn';
 
 const PARTNERS = [
@@ -16,11 +17,12 @@ const PARTNERS = [
 ];
 
 export default function SeuPartners() {
+  const t = useTranslations('landing');
   return (
     <section className="bg-dark-green py-20 overflow-hidden">
       <FadeIn className="max-w-[1920px] mx-auto px-5 lg:px-10 mb-8 lg:mb-12">
         <h2 className="font-bodoni text-seu-heading lg:text-seu-title text-white uppercase tracking-wide">
-          Partners
+          {t('partners')}
         </h2>
       </FadeIn>
 

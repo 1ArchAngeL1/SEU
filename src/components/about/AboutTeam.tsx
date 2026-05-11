@@ -1,6 +1,9 @@
+'use client';
+
 import Image from 'next/image';
 import { User } from 'lucide-react';
 import FadeIn from '@/components/FadeIn';
+import { useTranslations } from 'next-intl';
 
 const TEAM_MEMBERS = [
   { name: 'Kate Asyeladze', position: 'Marketing Lead' },
@@ -8,6 +11,7 @@ const TEAM_MEMBERS = [
 ];
 
 export default function AboutTeam() {
+  const t = useTranslations('about');
   return (
     <div className="relative py-20 lg:py-28 overflow-hidden">
       {/* PLACEHOLDER: IMAGE - Team section background */}
@@ -31,10 +35,10 @@ export default function AboutTeam() {
           {/* Left - Text */}
           <FadeIn direction="left" className="flex-1 max-w-xl">
             <h2 className="font-[--font-bodoni] font-normal text-seu-title text-white uppercase mb-4">
-              Our Team.
+              {t('ourTeam')}
             </h2>
             <p className="font-[--font-bodoni] font-normal text-seu-body-lg text-pale-gray/70 italic">
-              Meet Our Leaders
+              {t('meetOurLeaders')}
             </p>
           </FadeIn>
 
@@ -62,10 +66,7 @@ export default function AboutTeam() {
         </div>
 
         <p className="font-montserrat font-semibold text-seu-caption text-secondary-grey leading-relaxed mt-6 mb-16 max-w-xl">
-          Successfully completed projects by SEU Development include the old
-          and new buildings of the Georgian National University, which house
-          modern educational and exhibition facilities, as well as a business
-          center in the suburbs of Tbilisi.
+          {t('teamDescription')}
         </p>
       </div>
     </div>

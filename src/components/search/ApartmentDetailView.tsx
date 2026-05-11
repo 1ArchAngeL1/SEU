@@ -10,6 +10,7 @@ import {
   type RoomDetail,
 } from './apartment-detail/ApartmentRoomList';
 import { ApartmentFloorPlan } from './apartment-detail/ApartmentFloorPlan';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 
 interface Apartment {
@@ -35,6 +36,7 @@ interface ApartmentDetailViewProps {
 }
 
 export function ApartmentDetailView({ apartment }: ApartmentDetailViewProps) {
+  const t = useTranslations('search');
   return (
     <div className="px-5 sm:px-10 max-w-[1920px] mx-auto w-full">
       <ApartmentDetailHeader />
@@ -64,7 +66,7 @@ export function ApartmentDetailView({ apartment }: ApartmentDetailViewProps) {
             size="lg"
             className="bg-primary-orange hover:bg-primary-orange/90 text-white font-montserrat font-medium text-seu-body px-10 h-12 rounded-lg shadow-sm shadow-primary-orange/20 mb-8"
           >
-            Request Call
+            {t('requestCall')}
           </Button>
 
           {/* Dashed separator */}
@@ -72,7 +74,7 @@ export function ApartmentDetailView({ apartment }: ApartmentDetailViewProps) {
 
           {/* Details heading */}
           <h3 className="font-[--font-bodoni] font-normal text-seu-heading text-pale-gray mb-6 leading-none">
-            Details
+            {t('details')}
           </h3>
 
           <ApartmentRoomList roomDetails={apartment.roomDetails} />

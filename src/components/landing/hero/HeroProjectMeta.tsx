@@ -1,18 +1,10 @@
 'use client';
 
 import { ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { pickLocale } from '@/lib/i18n-helpers';
 import { cn } from '@/lib/utils';
 import type { Project } from '@/model/types/api';
-
-const STATUS_LABELS: Record<string, string> = {
-  planning: 'Planning',
-  presale: 'Pre-sale',
-  under_construction: 'Under construction',
-  completed: 'Completed',
-  sold_out: 'Sold out',
-  archived: 'Archived',
-};
 
 interface HeroProjectMetaProps {
   project: Project;
@@ -31,17 +23,18 @@ export default function HeroProjectMeta({
   onPrev,
   onNext,
 }: HeroProjectMetaProps) {
+  const t = useTranslations('status');
   return (
     <div className="absolute bottom-0 left-0 right-0 z-10 hidden lg:flex flex-col animate-[fadeInUp_0.9s_cubic-bezier(0.16,1,0.3,1)_0.3s_both]">
       <div className="px-12 pb-8 flex items-end justify-between">
         <div className="flex flex-col gap-3 max-w-xl">
           <div className="flex items-center gap-2 flex-wrap">
             <span className="px-3 py-1 rounded-full bg-pale-gray/10 border border-pale-gray/20 backdrop-blur font-montserrat text-[0.7rem] uppercase tracking-wider text-pale-gray/85">
-              {STATUS_LABELS[project.status] ?? project.status}
+              {t(project.status as any)}
             </span>
             {project.isFeatured && (
               <span className="px-3 py-1 rounded-full bg-primary-orange/20 border border-primary-orange/40 backdrop-blur font-montserrat text-[0.7rem] uppercase tracking-wider text-pale-gray">
-                Featured
+                {t('featured')}
               </span>
             )}
           </div>
