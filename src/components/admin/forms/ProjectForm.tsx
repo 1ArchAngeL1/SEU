@@ -102,44 +102,44 @@ export default function ProjectForm({
   function buildPayload(): CreateProjectInput {
     const payload: CreateProjectInput = {
       name: {
-        ka: form.nameKa.trim() || null,
-        en: form.nameEn.trim() || null,
+        ka: form.nameKa.trim() || undefined,
+        en: form.nameEn.trim() || undefined,
       },
       description: {
-        ka: form.descriptionKa.trim() || null,
-        en: form.descriptionEn.trim() || null,
+        ka: form.descriptionKa.trim() || undefined,
+        en: form.descriptionEn.trim() || undefined,
       },
       benefits: form.benefits.trim() || undefined,
       location: {
         address: form.address.trim(),
-        city: form.city.trim() || null,
-        district: form.district.trim() || null,
+        city: form.city.trim() || undefined,
+        district: form.district.trim() || undefined,
       },
       status: form.status,
       isActive: form.isActive,
       isFeatured: form.isFeatured,
-      startDate: form.startDate || null,
-      expectedCompletionDate: form.expectedCompletionDate || null,
-      actualCompletionDate: form.actualCompletionDate || null,
+      startDate: form.startDate || undefined,
+      expectedCompletionDate: form.expectedCompletionDate || undefined,
+      actualCompletionDate: form.actualCompletionDate || undefined,
       totalLandArea:
-        form.totalLandArea !== '' ? Number(form.totalLandArea) : null,
+        form.totalLandArea !== '' ? Number(form.totalLandArea) : undefined,
       images: form.images,
-      mainImage: form.mainImage.trim() || null,
-      renderImage: form.renderImage.trim() || null,
-      videoUrl: form.videoUrl.trim() || null,
-      googleMapLink: form.googleMapLink.trim() || null,
+      mainImage: form.mainImage.trim() || undefined,
+      renderImage: form.renderImage.trim() || undefined,
+      videoUrl: form.videoUrl.trim() || undefined,
+      googleMapLink: form.googleMapLink.trim() || undefined,
       minSizeApartment:
         form.minSizeApartment !== '' ? Number(form.minSizeApartment) : undefined,
       maxSizeApartment:
         form.maxSizeApartment !== '' ? Number(form.maxSizeApartment) : undefined,
       priceRange: {
         currency: form.priceCurrency,
-        minPrice: form.minPrice !== '' ? Number(form.minPrice) : null,
-        maxPrice: form.maxPrice !== '' ? Number(form.maxPrice) : null,
+        minPrice: form.minPrice !== '' ? Number(form.minPrice) : undefined,
+        maxPrice: form.maxPrice !== '' ? Number(form.maxPrice) : undefined,
         minPricePerSqm:
-          form.minPricePerSqm !== '' ? Number(form.minPricePerSqm) : null,
+          form.minPricePerSqm !== '' ? Number(form.minPricePerSqm) : undefined,
         maxPricePerSqm:
-          form.maxPricePerSqm !== '' ? Number(form.maxPricePerSqm) : null,
+          form.maxPricePerSqm !== '' ? Number(form.maxPricePerSqm) : undefined,
       },
     };
     return payload;

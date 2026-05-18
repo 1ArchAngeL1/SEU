@@ -353,6 +353,7 @@ export type CreateUnitInput = {
   threeDContent?: string;
   videoTourUrl?: string;
   virtualTourUrl?: string;
+  renderImage?: string;
   polygon?: PolygonPoint[];
   rawPolygon?: string;
   imageWidth?: number;

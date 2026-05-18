@@ -98,8 +98,8 @@ export default function FloorForm({
         await onSubmit({
           mode: 'update',
           data: {
-            floorImageId: floorImageId.trim() || null,
-            renderImage: renderImage.trim() || null,
+            floorImageId: floorImageId.trim() || undefined,
+            renderImage: renderImage.trim() || undefined,
             ...polyFields,
           },
         });
@@ -109,8 +109,8 @@ export default function FloorForm({
           data: {
             building: buildingId,
             floorNumber: num,
-            floorImageId: floorImageId.trim() || null,
-            renderImage: renderImage.trim() || null,
+            floorImageId: floorImageId.trim() || undefined,
+            renderImage: renderImage.trim() || undefined,
             ...polyFields,
           },
         });

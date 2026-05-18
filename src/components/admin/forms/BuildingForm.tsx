@@ -109,29 +109,30 @@ export default function BuildingForm({
     const payload: CreateBuildingInput = {
       project: form.project,
       name: {
-        ka: form.nameKa.trim() || null,
-        en: form.nameEn.trim() || null,
+        ka: form.nameKa.trim() || undefined,
+        en: form.nameEn.trim() || undefined,
       },
       block: form.block.trim().toUpperCase(),
       status: form.status,
       isActive: form.isActive,
       location: { address: form.address.trim() || '' },
       basementFloors:
-        form.basementFloors !== '' ? Number(form.basementFloors) : null,
-      totalSize: form.totalSize !== '' ? Number(form.totalSize) : null,
-      livableArea: form.livableArea !== '' ? Number(form.livableArea) : null,
+        form.basementFloors !== '' ? Number(form.basementFloors) : undefined,
+      totalSize: form.totalSize !== '' ? Number(form.totalSize) : undefined,
+      livableArea:
+        form.livableArea !== '' ? Number(form.livableArea) : undefined,
       parkingSpaces:
-        form.parkingSpaces !== '' ? Number(form.parkingSpaces) : null,
+        form.parkingSpaces !== '' ? Number(form.parkingSpaces) : undefined,
       constructionProgress:
         form.constructionProgress !== ''
           ? Number(form.constructionProgress)
-          : null,
+          : undefined,
       description: {
-        ka: form.descriptionKa.trim() || null,
-        en: form.descriptionEn.trim() || null,
+        ka: form.descriptionKa.trim() || undefined,
+        en: form.descriptionEn.trim() || undefined,
       },
-      mainImage: form.mainImage.trim() || null,
-      renderImage: form.renderImage.trim() || null,
+      mainImage: form.mainImage.trim() || undefined,
+      renderImage: form.renderImage.trim() || undefined,
       images: form.images,
     };
 
