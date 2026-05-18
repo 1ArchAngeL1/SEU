@@ -1,4 +1,5 @@
 import type { PaginatedResult, PaginationMeta } from '@/model/types/api';
+import { getToken, removeToken } from '@/lib/auth';
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
@@ -52,9 +53,11 @@ async function rawRequest<TBody = unknown>(
   const { body, params, headers = {}, signal } = options;
   const isFormData = body instanceof FormData;
 
+  const token = getToken();
   const fetchHeaders: Record<string, string> = {
     Accept: 'application/json',
     ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
     ...headers,
   };
 
@@ -92,6 +95,14 @@ async function rawRequest<TBody = unknown>(
   }
 
   if (!response.ok) {
+    if (response.status === 401 && typeof window !== 'undefined') {
+      removeToken();
+      const isAdminPath = window.location.pathname.match(/^\/(en|ka)\/admin/);
+      if (isAdminPath && !window.location.pathname.includes('/admin/login')) {
+        window.location.href = window.location.pathname.replace(/\/admin.*/, '/admin/login');
+      }
+    }
+
     const err = (payload ?? {}) as Record<string, unknown> & {
       message?: string | string[];
       error?: { key?: string; message?: string };

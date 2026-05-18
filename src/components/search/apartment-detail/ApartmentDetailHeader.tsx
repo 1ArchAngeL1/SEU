@@ -1,23 +1,15 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { ArrowLeft, FileText } from 'lucide-react';
-import { useRouter } from '@/i18n/navigation';
+import { FileText } from 'lucide-react';
+import BackButton from '@/components/BackButton';
 
 export function ApartmentDetailHeader() {
   const t = useTranslations('search');
-  const router = useRouter();
 
   return (
     <div className="flex items-center justify-between mb-8 lg:mb-12">
-      <button
-        type="button"
-        onClick={() => router.back()}
-        className="inline-flex items-center gap-2 rounded-full border border-site-border-soft bg-transparent text-site-fg font-montserrat text-seu-caption px-4 lg:px-5 h-9 hover:bg-site-bg-hover hover:border-site-fg transition-colors"
-      >
-        <ArrowLeft className="size-3" />
-        <span className="hidden sm:inline">{t('back')}</span>
-      </button>
+      <BackButton />
 
       <span className="hidden sm:block font-montserrat text-seu-caption text-site-fg/40 tracking-[0.2rem] uppercase">
         {t('floorPlan')}

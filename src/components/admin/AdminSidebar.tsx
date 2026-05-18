@@ -8,9 +8,14 @@ import {
   Handshake,
   Home,
   LayoutDashboard,
+  LogOut,
   MessageSquare,
+  Newspaper,
+  PenTool,
+  Users,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/components/providers/AuthProvider';
 import ThemeToggle from './ThemeToggle';
 
 const navItems = [
@@ -24,12 +29,16 @@ const navItems = [
   { href: '/admin/buildings', label: 'Buildings', icon: Building2 },
   { href: '/admin/apartments', label: 'Units', icon: Home },
   { href: '/admin/partners', label: 'Partners', icon: Handshake },
+  { href: '/admin/news', label: 'News', icon: Newspaper },
   { href: '/admin/contacts', label: 'Contacts', icon: MessageSquare },
+  { href: '/admin/polygon-editor', label: 'Polygon Editor', icon: PenTool },
+  { href: '/admin/users', label: 'Users', icon: Users },
 ];
 
 export default function AdminSidebar() {
   const pathname = usePathname();
   const pathWithoutLocale = pathname.replace(/^\/[a-z]{2}(?=\/|$)/, '') || '/';
+  const { logout } = useAuth();
 
   return (
     <aside className="w-64 shrink-0 relative z-10 bg-admin-card-gradient border-r border-admin-border flex flex-col shadow-admin-lg">
@@ -91,13 +100,20 @@ export default function AdminSidebar() {
         <ThemeToggle />
       </div>
 
-      <div className="p-3 border-t border-admin-border-soft mt-3">
+      <div className="p-3 border-t border-admin-border-soft mt-3 flex flex-col gap-1">
         <Link
           href="/"
           className="flex items-center gap-2 px-3 py-2 text-seu-caption-sm text-admin-fg-muted hover:text-admin-fg transition-colors font-montserrat"
         >
           ← Back to site
         </Link>
+        <button
+          onClick={logout}
+          className="flex items-center gap-2 px-3 py-2 text-seu-caption-sm text-admin-fg-muted hover:text-red transition-colors font-montserrat w-full text-left"
+        >
+          <LogOut className="size-3.5" />
+          Logout
+        </button>
       </div>
     </aside>
   );

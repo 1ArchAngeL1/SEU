@@ -5,6 +5,7 @@ import { Pause, Play } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import FadeIn from '@/components/FadeIn';
 import OrbitalRings from '@/components/landing/about/OrbitalRings';
+import { SeuGreenlogo } from '../common/SeuGreenlogo';
 
 export default function LandingAboutSection() {
   const t = useTranslations('landing');
@@ -42,7 +43,7 @@ export default function LandingAboutSection() {
   };
 
   return (
-    <section className="relative bg-site-bg py-16 lg:py-32">
+    <section className="relative bg-site-bg py-16 lg:py-40 site-noise site-glow-center">
       <div className="max-w-[1920px] mx-auto px-5 lg:px-10">
         {/* Top Row */}
         <FadeIn className="flex items-start justify-between mb-8 lg:mb-16">
@@ -51,18 +52,19 @@ export default function LandingAboutSection() {
             {t('aboutCompany')}
           </h2>
 
-          <div className="w-16 h-16 hidden lg:flex items-center justify-center">
-            <div className="w-12 h-12 border-2 border-primary-orange rounded-lg relative shadow-[0_0_20px_-4px] shadow-primary-orange/30">
-              <div className="absolute -top-1.5 -right-1.5 w-12 h-12 border-2 border-primary-orange/50 rounded-lg" />
-              <div className="absolute -top-3 -right-3 w-12 h-12 border-2 border-primary-orange/20 rounded-lg" />
-            </div>
+          <div className="hidden lg:block">
+            <SeuGreenlogo />
           </div>
         </FadeIn>
 
         <div className="relative flex flex-col lg:flex-row items-center justify-between gap-8">
           {/* Left Text */}
-          <FadeIn direction="left" delay={150} className="hidden lg:block flex-1 max-w-xs">
-            <p className="font-bodoni text-seu-body-lg text-site-fg-strong">
+          <FadeIn
+            direction="left"
+            delay={150}
+            className="hidden lg:block flex-1 max-w-xs"
+          >
+            <p className="text-seu-body-sm lg:text-seu-body text-site-fg-strong leading-relaxed">
               {t('realEstateSince')}
             </p>
           </FadeIn>
@@ -71,7 +73,7 @@ export default function LandingAboutSection() {
           <div className="relative flex items-center justify-center w-full lg:w-auto">
             <div
               ref={containerRef}
-              className="relative z-10 w-full lg:w-[928px] h-[16rem] lg:h-[600px] rounded-xl overflow-hidden bg-secondary-black ring-1 ring-site-border-soft shadow-[0_0_60px_20px_var(--site-bg)]"
+              className="relative z-10 w-full lg:w-[928px] h-[16rem] lg:h-[600px] rounded-xl overflow-hidden bg-secondary-black ring-1 ring-site-border-soft shadow-[0_0_30px_8px_var(--site-bg)]"
             >
               {isVisible && (
                 <video
@@ -103,7 +105,11 @@ export default function LandingAboutSection() {
           {/* Orbits — positioned from the flex row, centered on the video */}
           <OrbitalRings />
 
-          <FadeIn direction="right" delay={150} className="lg:flex-1 lg:max-w-xs lg:text-right">
+          <FadeIn
+            direction="right"
+            delay={150}
+            className="lg:flex-1 lg:max-w-xs lg:text-right"
+          >
             <p className="text-seu-body-sm lg:text-seu-body text-site-fg-strong leading-relaxed">
               {t('companyDescription')}
             </p>

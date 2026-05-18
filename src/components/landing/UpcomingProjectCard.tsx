@@ -19,7 +19,7 @@ export default function UpcomingProjectCard({
   return (
     <div
       className={cn(
-        'relative w-full max-w-xl h-[350px] rounded-xl overflow-hidden',
+        'relative w-full max-w-xl h-[350px] rounded-xl overflow-hidden border border-site-border-soft hover:border-primary-orange/20 transition-colors duration-500 hover-lift',
         className
       )}
     >
@@ -31,7 +31,7 @@ export default function UpcomingProjectCard({
       )}
 
       {/* Edge vignette for smooth background transition */}
-      <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_40px_10px_var(--site-bg)]" />
+      <div className="site-vignette absolute inset-0 shadow-[inset_0_0_40px_10px_var(--site-bg)]" />
       {/* Fog overlay effect */}
       <div className="absolute inset-0 bg-gradient-to-t from-site-bg/90 via-transparent to-site-bg/40" />
 

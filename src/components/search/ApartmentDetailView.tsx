@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import {
   ApartmentDetailHeader,
   ApartmentMetaHeader,
@@ -12,6 +13,7 @@ import {
 import { ApartmentFloorPlan } from './apartment-detail/ApartmentFloorPlan';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
+import RequestCallDialog from './RequestCallDialog';
 
 interface Apartment {
   id: string | number;
@@ -37,6 +39,8 @@ interface ApartmentDetailViewProps {
 
 export function ApartmentDetailView({ apartment }: ApartmentDetailViewProps) {
   const t = useTranslations('search');
+  const [requestCallOpen, setRequestCallOpen] = useState(false);
+
   return (
     <div className="px-5 sm:px-10 max-w-[1920px] mx-auto w-full">
       <ApartmentDetailHeader />
@@ -64,6 +68,7 @@ export function ApartmentDetailView({ apartment }: ApartmentDetailViewProps) {
           <Button
             type="button"
             size="lg"
+            onClick={() => setRequestCallOpen(true)}
             className="bg-primary-orange hover:bg-primary-orange/90 text-white font-montserrat font-medium text-seu-body px-10 h-12 rounded-lg shadow-sm shadow-primary-orange/20 mb-8"
           >
             {t('requestCall')}
@@ -88,6 +93,8 @@ export function ApartmentDetailView({ apartment }: ApartmentDetailViewProps) {
           block={apartment.block}
         />
       </div>
+
+      <RequestCallDialog open={requestCallOpen} onOpenChange={setRequestCallOpen} />
     </div>
   );
 }

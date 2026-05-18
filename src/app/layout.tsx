@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono, Montserrat } from 'next/font/google';
+import { Geist, Geist_Mono, Montserrat, Noto_Sans_Georgian } from 'next/font/google';
 import { getLocale } from 'next-intl/server';
 import './globals.css';
 import React from 'react';
@@ -19,6 +19,11 @@ const montserrat = Montserrat({
   subsets: ['latin'],
 });
 
+const notoSansGeorgian = Noto_Sans_Georgian({
+  variable: '--font-noto-georgian',
+  subsets: ['georgian'],
+});
+
 export const metadata: Metadata = {
   title: 'SEU Development | Premium Real Estate in Georgia',
   description:
@@ -32,9 +37,9 @@ export default async function RootLayout({
 }>) {
   const locale = await getLocale();
   return (
-    <html lang={locale} suppressHydrationWarning={true} data-scroll-behavior="smooth">
+    <html lang={locale} data-locale={locale} suppressHydrationWarning={true} data-scroll-behavior="smooth">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} antialiased min-h-dvh bg-site-bg transition-colors duration-300`}
+        className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} ${notoSansGeorgian.variable} antialiased min-h-dvh bg-site-bg transition-colors duration-300`}
       >
         {children}
       </body>

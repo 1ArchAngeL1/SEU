@@ -56,6 +56,7 @@ export default function ProjectForm({
     nameEn: initialData?.name?.en ?? '',
     descriptionKa: initialData?.description?.ka ?? '',
     descriptionEn: initialData?.description?.en ?? '',
+    benefits: initialData?.benefits ?? '',
     address: initialData?.location?.address ?? '',
     city: initialData?.location?.city ?? '',
     district: initialData?.location?.district ?? '',
@@ -70,6 +71,7 @@ export default function ProjectForm({
     mainImage: initialData?.mainImage ?? '',
     renderImage: initialData?.renderImage ?? '',
     videoUrl: initialData?.videoUrl ?? '',
+    googleMapLink: initialData?.googleMapLink ?? '',
     priceCurrency: initialData?.priceRange?.currency ?? 'USD',
     minPrice: initialData?.priceRange?.minPrice?.toString() ?? '',
     maxPrice: initialData?.priceRange?.maxPrice?.toString() ?? '',
@@ -77,6 +79,10 @@ export default function ProjectForm({
       initialData?.priceRange?.minPricePerSqm?.toString() ?? '',
     maxPricePerSqm:
       initialData?.priceRange?.maxPricePerSqm?.toString() ?? '',
+    minSizeApartment:
+      initialData?.minSizeApartment?.toString() ?? '',
+    maxSizeApartment:
+      initialData?.maxSizeApartment?.toString() ?? '',
     isActive: initialData?.isActive ?? true,
     isFeatured: initialData?.isFeatured ?? false,
   });
@@ -103,6 +109,7 @@ export default function ProjectForm({
         ka: form.descriptionKa.trim() || null,
         en: form.descriptionEn.trim() || null,
       },
+      benefits: form.benefits.trim() || undefined,
       location: {
         address: form.address.trim(),
         city: form.city.trim() || null,
@@ -120,6 +127,11 @@ export default function ProjectForm({
       mainImage: form.mainImage.trim() || null,
       renderImage: form.renderImage.trim() || null,
       videoUrl: form.videoUrl.trim() || null,
+      googleMapLink: form.googleMapLink.trim() || null,
+      minSizeApartment:
+        form.minSizeApartment !== '' ? Number(form.minSizeApartment) : undefined,
+      maxSizeApartment:
+        form.maxSizeApartment !== '' ? Number(form.maxSizeApartment) : undefined,
       priceRange: {
         currency: form.priceCurrency,
         minPrice: form.minPrice !== '' ? Number(form.minPrice) : null,
@@ -179,6 +191,7 @@ export default function ProjectForm({
           value={{
             descriptionKa: form.descriptionKa,
             descriptionEn: form.descriptionEn,
+            benefits: form.benefits,
           }}
           update={sectionUpdate<ProjectDescriptionSectionValue>()}
         />
@@ -196,6 +209,8 @@ export default function ProjectForm({
             maxPrice: form.maxPrice,
             minPricePerSqm: form.minPricePerSqm,
             maxPricePerSqm: form.maxPricePerSqm,
+            minSizeApartment: form.minSizeApartment,
+            maxSizeApartment: form.maxSizeApartment,
           }}
           update={sectionUpdate<ProjectPricingSectionValue>()}
         />
@@ -208,6 +223,7 @@ export default function ProjectForm({
             renderImage: form.renderImage,
             images: form.images,
             videoUrl: form.videoUrl,
+            googleMapLink: form.googleMapLink,
           }}
           update={sectionUpdate<ProjectMediaSectionValue>()}
         />

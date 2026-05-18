@@ -2,7 +2,10 @@
 
 import { use, useState, useMemo, useRef, useCallback } from 'react';
 import { useLocale } from 'next-intl';
-import { Loader2, ChevronLeft, Building2 } from 'lucide-react';
+import { Loader2, Building2 } from 'lucide-react';
+import BackButton from '@/components/BackButton';
+import ContactForm from '@/components/ContactForm';
+import ContactPanel from '@/components/ContactPanel';
 import { Link, useRouter } from '@/i18n/navigation';
 import { useBuilding } from '@/hooks/queries/use-buildings';
 import { useFloorsByBuilding } from '@/hooks/queries/use-floors';
@@ -63,13 +66,7 @@ export default function VisualSearchBuildingPage({
     return (
       <main className="bg-site-bg pt-8 pb-16 lg:pt-12 lg:pb-24">
         <div className="max-w-[1920px] mx-auto px-5 lg:px-10">
-          <Link
-            href={`/visual-search/${projectId}`}
-            className="inline-flex items-center gap-1.5 font-montserrat text-seu-caption text-site-fg border border-site-border-soft rounded-full px-4 py-1.5 hover:bg-site-bg-hover transition-colors mb-6 lg:mb-8"
-          >
-            <ChevronLeft className="size-3.5" />
-            Back
-          </Link>
+          <BackButton href={`/visual-search/${projectId}`} className="mb-6 lg:mb-8" />
           {building && (
             <h1 className="font-bodoni text-seu-title text-site-fg-strong mb-8 lg:mb-12">
               {pickLocale(building.name, locale)}
@@ -106,13 +103,7 @@ export default function VisualSearchBuildingPage({
         <div className="max-w-[1920px] mx-auto px-5 lg:px-10">
           {/* Header row */}
           <div className="flex items-center justify-between mb-6 lg:mb-8">
-            <Link
-              href={`/visual-search/${projectId}`}
-              className="inline-flex items-center gap-1.5 font-montserrat text-seu-caption text-site-fg border border-site-border-soft rounded-full px-4 py-1.5 hover:bg-site-bg-hover transition-colors backdrop-blur-sm"
-            >
-              <ChevronLeft className="size-3.5" />
-              Back
-            </Link>
+            <BackButton href={`/visual-search/${projectId}`} />
 
             {building && (
               <div className="text-right">
@@ -135,7 +126,7 @@ export default function VisualSearchBuildingPage({
           {renderImage && (
             <div className="flex flex-col items-center">
                 <div
-                  className="relative mx-auto rounded-2xl overflow-hidden shadow-[0_0_60px_20px_var(--site-bg)] ring-1 ring-site-border-soft w-full"
+                  className="relative mx-auto rounded-2xl overflow-hidden shadow-[0_0_30px_8px_var(--site-bg)] ring-1 ring-site-border-soft w-full"
                   style={{
                     maxHeight: '75vh',
                     maxWidth: imgNatural
@@ -154,7 +145,7 @@ export default function VisualSearchBuildingPage({
                   />
 
                   {/* Soft vignette edges */}
-                  <div className="absolute inset-0 pointer-events-none rounded-2xl shadow-[inset_0_0_60px_20px_var(--site-bg)]" />
+                  <div className="site-vignette absolute inset-0 rounded-2xl shadow-[inset_0_0_60px_20px_var(--site-bg)]" />
 
                   <svg
                     viewBox="0 0 100 100"
@@ -247,6 +238,14 @@ export default function VisualSearchBuildingPage({
 
             </div>
           )}
+        </div>
+      </div>
+
+      {/* Contact section */}
+      <div className="bg-site-bg px-5 lg:px-10 py-12 lg:py-20">
+        <div className="max-w-[1920px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
+          <ContactForm className="max-w-xl" />
+          <ContactPanel className="max-w-xl lg:justify-self-end" />
         </div>
       </div>
     </main>

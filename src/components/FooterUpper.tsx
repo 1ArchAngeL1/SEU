@@ -15,7 +15,9 @@ export default function FooterUpper() {
   ];
 
   return (
-    <nav className="w-full py-10 lg:py-0 lg:h-30 bg-site-footer-bg lg:bg-site-bg lg:border-t lg:border-b lg:border-site-border flex items-center">
+    <nav className="relative w-full py-10 lg:py-0 lg:h-30 bg-site-footer-bg lg:bg-site-bg lg:border-b lg:border-site-border flex items-center">
+      {/* Top gradient border */}
+      <div className="absolute top-0 left-0 right-0 site-divider" />
       <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-0 justify-evenly w-full">
         {links.map((link) => (
           <Link

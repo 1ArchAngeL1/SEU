@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl';
 export default function FooterLower() {
   const t = useTranslations('footer');
   return (
-    <div className="w-full bg-site-footer-bg py-12 lg:py-0 lg:h-82 flex flex-col lg:grid lg:grid-cols-3 items-center gap-8 lg:gap-0 px-5 lg:px-10">
+    <div className="relative w-full bg-site-footer-bg py-12 lg:py-0 lg:h-82 flex flex-col lg:grid lg:grid-cols-3 items-center gap-8 lg:gap-0 px-5 lg:px-10 site-noise">
       {/* Social Icons */}
       <div className="flex items-center gap-10 lg:gap-18 justify-self-start lg:order-none order-last">
         <Link href="#" className="hover:opacity-80 transition-opacity">

@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import { Label } from '@/components/ui/label';
 import { labelClass } from './styles';
 
-const ROOM_OPTIONS = [1, 2, 3, 4, 5];
+const ROOM_OPTIONS = [0, 1, 2, 3, 4, 5];
 
 export type RoomSelectorProps = {
   selected: number[];
@@ -20,9 +20,10 @@ export default function RoomSelector({
   return (
     <div>
       <Label className={labelClass}>{t('rooms')}</Label>
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         {ROOM_OPTIONS.map((num) => {
           const active = selected.includes(num);
+          const isStudio = num === 0;
           return (
             <button
               key={num}
@@ -35,13 +36,14 @@ export default function RoomSelector({
                 )
               }
               className={cn(
-                'size-10 rounded-md font-montserrat text-seu-caption transition-colors border',
+                'h-10 rounded-md font-montserrat text-seu-caption transition-colors border',
+                isStudio ? 'px-3' : 'size-10',
                 active
                   ? 'bg-dark-green text-white border-dark-green'
                   : 'bg-transparent text-dark-green border-secondary-grey/50 hover:border-dark-green'
               )}
             >
-              {num}
+              {isStudio ? t('studio') : num}
             </button>
           );
         })}

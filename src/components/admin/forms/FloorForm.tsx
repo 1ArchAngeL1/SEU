@@ -34,7 +34,6 @@ export default function FloorForm({
   submitLabel = 'Save',
 }: FloorFormProps) {
   const isEdit = !!initialData;
-  const [polygonDirty, setPolygonDirty] = useState(false);
   const [floorNumber, setFloorNumber] = useState(
     initialData?.floorNumber.toString() ??
       (defaultFloorNumber !== undefined ? String(defaultFloorNumber) : '')
@@ -49,38 +48,31 @@ export default function FloorForm({
     entries: initialData?.polygon?.length
       ? [{ raw: initialData.polygon.map((pt) => `${pt.x},${pt.y}`).join(','), label: '' }]
       : [],
-    imageWidth: '',
-    imageHeight: '',
   });
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   function handlePolygonChange(val: PolygonEditorValue) {
-    setPolygonDirty(true);
     setPolygonEditor(val);
   }
 
   function buildPolygonFields(): Record<string, unknown> {
     const validEntries = polygonEditor.entries.filter((e) => e.raw.trim());
     if (validEntries.length > 0) {
-      if (polygonDirty) {
-        const imgW = Number(polygonEditor.imageWidth);
-        const imgH = Number(polygonEditor.imageHeight);
-        if (imgW > 0 && imgH > 0) {
-          return {
-            rawPolygon: validEntries[0].raw.replace(/\s+/g, ','),
-            imageWidth: imgW,
-            imageHeight: imgH,
-          };
-        }
-      } else if (initialData?.polygon?.length) {
-        return { polygon: initialData.polygon };
+      const nums = validEntries[0].raw
+        .replace(/\s+/g, ',')
+        .split(',')
+        .map((s) => parseFloat(s.trim()))
+        .filter((n) => !isNaN(n));
+      const points: { x: number; y: number }[] = [];
+      for (let i = 0; i + 1 < nums.length; i += 2) {
+        points.push({ x: nums[i], y: nums[i + 1] });
       }
+      return { polygon: points };
     } else {
       return { polygon: [] as { x: number; y: number }[] };
     }
-    return {};
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -98,15 +90,6 @@ export default function FloorForm({
     if (!isEdit && existingFloorNumbers.includes(num)) {
       setError(`Floor ${num} already exists in this building`);
       return;
-    }
-    const hasPolygons = polygonEditor.entries.some((e) => e.raw.trim());
-    if (hasPolygons && polygonDirty) {
-      const imgW = Number(polygonEditor.imageWidth);
-      const imgH = Number(polygonEditor.imageHeight);
-      if (!imgW || !imgH) {
-        setError('Enter the source image width and height for polygon coordinate conversion.');
-        return;
-      }
     }
     setLoading(true);
     try {

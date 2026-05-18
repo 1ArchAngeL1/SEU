@@ -1,10 +1,11 @@
 'use client';
 
-import { Field, Textarea } from '../form-primitives';
+import { Field, Input, Textarea } from '../form-primitives';
 
 export interface ProjectDescriptionSectionValue {
   descriptionKa: string;
   descriptionEn: string;
+  benefits: string;
 }
 
 interface Props {
@@ -30,6 +31,13 @@ export default function ProjectDescriptionSection({ value, update }: Props) {
           value={value.descriptionEn}
           onChange={(e) => update('descriptionEn', e.target.value)}
           placeholder="English description"
+        />
+      </Field>
+      <Field label="Benefits">
+        <Input
+          value={value.benefits}
+          onChange={(e) => update('benefits', e.target.value)}
+          placeholder="e.g. Pool, Gym, Parking"
         />
       </Field>
     </div>

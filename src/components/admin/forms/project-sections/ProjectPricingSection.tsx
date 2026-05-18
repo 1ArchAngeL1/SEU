@@ -12,6 +12,8 @@ export interface ProjectPricingSectionValue {
   maxPrice: string;
   minPricePerSqm: string;
   maxPricePerSqm: string;
+  minSizeApartment: string;
+  maxSizeApartment: string;
 }
 
 interface Props {
@@ -103,6 +105,26 @@ export default function ProjectPricingSection({ value, update }: Props) {
             min="0"
             value={value.maxPricePerSqm}
             onChange={(e) => update('maxPricePerSqm', e.target.value)}
+          />
+        </Field>
+      </Section>
+      <Section title="Apartment sizes (m²)" cols={2}>
+        <Field label="Min size">
+          <Input
+            type="number"
+            min="0"
+            step="0.01"
+            value={value.minSizeApartment}
+            onChange={(e) => update('minSizeApartment', e.target.value)}
+          />
+        </Field>
+        <Field label="Max size">
+          <Input
+            type="number"
+            min="0"
+            step="0.01"
+            value={value.maxSizeApartment}
+            onChange={(e) => update('maxSizeApartment', e.target.value)}
           />
         </Field>
       </Section>

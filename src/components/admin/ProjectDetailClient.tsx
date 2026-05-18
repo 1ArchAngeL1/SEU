@@ -14,6 +14,7 @@ import {
 import StatusBadge from './StatusBadge';
 import StatCard from './StatCard';
 import BuildingCard from './BuildingCard';
+import ApartmentTypesPanel from './ApartmentTypesPanel';
 import ProjectForm from './forms/ProjectForm';
 import BuildingForm from './forms/BuildingForm';
 import {
@@ -232,6 +233,11 @@ export default function ProjectDetailClient({
           ))}
         </div>
       )}
+
+      {/* Apartment types panel */}
+      <div className="mt-10">
+        <ApartmentTypesPanel projectId={projectId} />
+      </div>
 
       <Sheet open={editProjectOpen} onOpenChange={setEditProjectOpen}>
         <SheetContent side="right" className="w-full sm:max-w-2xl flex flex-col p-0">

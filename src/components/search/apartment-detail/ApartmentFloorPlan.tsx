@@ -65,7 +65,7 @@ export function ApartmentFloorPlan({
         : floorPlanImages.threeD;
 
   return (
-    <div className="flex-1 bg-site-bg-card rounded-2xl overflow-hidden flex flex-col min-h-[400px] lg:min-h-[640px] shadow-site">
+    <div className="flex-1 bg-white rounded-2xl overflow-hidden flex flex-col min-h-[400px] lg:min-h-[640px] shadow-site">
       {/* Tabs + Compass */}
       <div className="flex items-center justify-between px-6 py-5">
         <div className="flex gap-2">
@@ -79,8 +79,8 @@ export function ApartmentFloorPlan({
                 className={cn(
                   'px-4 lg:px-6 h-9 rounded-lg font-montserrat text-seu-caption lg:text-seu-body-sm transition-colors border',
                   active
-                    ? 'bg-site-bg text-site-fg border-site-bg'
-                    : 'bg-transparent text-site-fg border-site-border-strong hover:bg-site-bg-hover hover:border-site-fg-muted'
+                    ? 'bg-dark-green text-white border-dark-green'
+                    : 'bg-transparent text-dark-green border-dark-green/30 hover:bg-dark-green/5 hover:border-dark-green/60'
                 )}
               >
                 {mode}
@@ -103,7 +103,7 @@ export function ApartmentFloorPlan({
               className="max-h-[480px] object-contain"
             />
             {/* Soft edge fade into background */}
-            <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_30px_12px_var(--site-bg-card)]" />
+            <div className="site-vignette absolute inset-0 shadow-[inset_0_0_30px_12px_#ffffff]" />
           </div>
         ) : (
           <div className="w-full h-full min-h-[480px] border-2 border-dashed border-site-border-soft rounded-xl flex flex-col items-center justify-center gap-3">

@@ -29,7 +29,7 @@ export const OngoingProjectCard = ({
   return (
     <div
       className={cn(
-        'relative w-full h-[280px] lg:h-[500px] rounded-2xl overflow-hidden group hover-lift',
+        'relative w-full h-[280px] lg:h-[500px] rounded-2xl overflow-hidden group hover-lift border border-site-border-soft hover:border-primary-orange/20 transition-colors duration-500',
         className
       )}
     >
@@ -41,7 +41,7 @@ export const OngoingProjectCard = ({
       )}
 
       {/* Edge vignette for smooth background transition */}
-      <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_40px_10px_var(--site-bg)]" />
+      <div className="site-vignette absolute inset-0 shadow-[inset_0_0_40px_10px_var(--site-bg)]" />
       {/* Left gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" />
 

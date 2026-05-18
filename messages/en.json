@@ -1,4 +1,7 @@
 {
+  "common": {
+    "back": "Back"
+  },
   "header": {
     "searchApartment": "Search Apartment",
     "visualSearch": "Visual Search",
@@ -22,6 +25,7 @@
     "fromPlaceholder": "From 0",
     "toPlaceholder": "To 250+",
     "bedrooms": "Bedrooms",
+    "studio": "Studio",
     "search": "Search",
     "clear": "Clear",
     "ongoing": "Ongoing",
@@ -54,6 +58,7 @@
     "sending": "Sending…",
     "submit": "Contact",
     "thankYou": "Thanks — we'll be in touch",
+    "errorMessage": "Something went wrong. Please try again.",
     "email": "Info@Seudevelopment.ge",
     "phone": "+995 511 333 445",
     "address": "Tbilisi, Jikia st"
@@ -72,6 +77,7 @@
     "filterApartments": "Filter Apartments",
     "sizeM2": "Size m2",
     "rooms": "Rooms",
+    "studio": "Studio",
     "price": "Price",
     "searchBtn": "Search",
     "clearFilters": "Clear filters",
@@ -108,7 +114,11 @@
     "noRoomDetails": "No room details available",
     "benefits": "Benefits",
     "sizeFromError": "Size \"from\" must be ≤ \"to\"",
-    "priceFromError": "Price \"from\" must be ≤ \"to\""
+    "priceFromError": "Price \"from\" must be ≤ \"to\"",
+    "apartmentTypes": "Apartment Types.",
+    "bedroomOne": "{count} Bedroom",
+    "bedroomMany": "{count} Bedrooms",
+    "projectVideo": "Project Video"
   },
   "benefitsList": {
     "b1": "Up to 2 hectares of recreational space;",
@@ -152,6 +162,15 @@
     "title": "SEU CARD",
     "description": "When buying property in any of the company's projects, clients will receive an exclusive personalized SEU card. Residents will be able to use the card at the company's partner establishments, taking advantage of exclusive conditions and discounts. You can see the full list of our partners below:",
     "partners": "PARTNERS."
+  },
+  "news": {
+    "seuDevelopment": "SEU DEVELOPMENT",
+    "title": "News",
+    "featured": "International Business Forum",
+    "featuredDesc": "SEU Development participated in the International Business Forum, showcasing our latest projects and vision for the future of real estate in Georgia.",
+    "readMore": "Read More",
+    "noNews": "No news articles yet.",
+    "loading": "Loading news..."
   },
   "policy": {
     "title": "PRIVACY POLICY"

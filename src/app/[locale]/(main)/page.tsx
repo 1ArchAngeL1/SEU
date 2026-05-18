@@ -10,11 +10,17 @@ export default function Home() {
   return (
     <main className={'bg-site-bg'}>
       <LandingHero />
+      <div className="site-divider" />
       <LandingAboutSection />
+      <div className="site-divider" />
       <OngoingSection />
+      <div className="site-divider" />
       <HowItWorksSection />
+      <div className="site-divider" />
       <SeuPartners />
+      <div className="site-divider" />
       <LandingAbout />
+      <div className="site-divider" />
       <LandingContactSection />
     </main>
   );

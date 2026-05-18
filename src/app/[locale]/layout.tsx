@@ -3,6 +3,7 @@ import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import QueryProvider from '@/components/providers/QueryProvider';
+import React from 'react';
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));

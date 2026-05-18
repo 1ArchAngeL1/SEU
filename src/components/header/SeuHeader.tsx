@@ -55,6 +55,7 @@ export default function SeuHeader() {
               alt="SEU Development"
               width={52}
               height={46}
+              className="dark-icon"
             />
             <div className={'flex flex-col justify-between py-1'}>
               <p

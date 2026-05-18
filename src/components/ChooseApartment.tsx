@@ -16,7 +16,7 @@ export type ChooseApartmentProps = {
   onReset?: () => void;
 };
 
-const BEDROOM_OPTIONS = [1, 2, 3, 4, 5, 6];
+const BEDROOM_OPTIONS = [0, 1, 2, 3, 4, 5, 6];
 
 export default function ChooseApartment({
   className,
@@ -91,24 +91,28 @@ export default function ChooseApartment({
         <label className="block text-seu-body-sm text-secondary-grey mb-3">
           Bedooms
         </label>
-        <div className="flex gap-3">
-          {BEDROOM_OPTIONS.map((num) => (
-            <button
-              key={num}
-              type="button"
-              onClick={() =>
-                setSelectedBedrooms(selectedBedrooms === num ? null : num)
-              }
-              className={cn(
-                'w-12 h-12 rounded-lg font-montserrat text-seu-body-sm transition-colors cursor-pointer',
-                selectedBedrooms === num
-                  ? 'bg-primary-orange text-white'
-                  : 'bg-pale-gray/26 text-pale-gray hover:bg-secondary-black/80'
-              )}
-            >
-              {num}
-            </button>
-          ))}
+        <div className="flex flex-wrap gap-3">
+          {BEDROOM_OPTIONS.map((num) => {
+            const isStudio = num === 0;
+            return (
+              <button
+                key={num}
+                type="button"
+                onClick={() =>
+                  setSelectedBedrooms(selectedBedrooms === num ? null : num)
+                }
+                className={cn(
+                  'h-12 rounded-lg font-montserrat text-seu-body-sm transition-colors cursor-pointer',
+                  isStudio ? 'px-4' : 'w-12',
+                  selectedBedrooms === num
+                    ? 'bg-primary-orange text-white'
+                    : 'bg-pale-gray/26 text-pale-gray hover:bg-secondary-black/80'
+                )}
+              >
+                {isStudio ? 'Studio' : num}
+              </button>
+            );
+          })}
         </div>
       </div>
 

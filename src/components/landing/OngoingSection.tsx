@@ -21,7 +21,7 @@ export default function OngoingSection() {
   if (projects.length === 0) return null;
 
   return (
-    <section className="bg-site-bg py-20">
+    <section className="relative bg-site-bg py-20 site-noise">
       <div className="max-w-[1920px] mx-auto px-5 lg:px-10">
         {/* Title */}
         <FadeIn>

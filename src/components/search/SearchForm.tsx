@@ -21,7 +21,7 @@ export type SearchFormProps = {
   onClear?: () => void;
 };
 
-const ROOM_OPTIONS = [1, 2, 3, 4, 5];
+const ROOM_OPTIONS = [0, 1, 2, 3, 4, 5];
 
 function toNum(v: string): number | undefined {
   const t = v.trim();
@@ -93,6 +93,9 @@ export default function SearchForm({
     } else if (selectedRooms.length > 1) {
       filter.minBedrooms = Math.min(...selectedRooms);
       filter.maxBedrooms = Math.max(...selectedRooms);
+    }
+    if (selectedRooms.includes(0)) {
+      filter.type = 'living';
     }
     onSearch?.(filter);
   }

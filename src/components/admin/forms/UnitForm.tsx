@@ -69,7 +69,6 @@ export default function UnitForm({
   submitLabel = 'Save',
   footerVariant = 'inline',
 }: UnitFormProps) {
-  const [polygonDirty, setPolygonDirty] = useState(false);
   const [form, setForm] = useState({
     // Basics
     unitNumber: initialData?.unitNumber ?? initialUnitNumber ?? '',
@@ -112,8 +111,6 @@ export default function UnitForm({
       entries: initialData?.polygon?.length
         ? [{ raw: initialData.polygon.map((pt) => `${pt.x},${pt.y}`).join(','), label: '' }]
         : [],
-      imageWidth: '',
-      imageHeight: '',
     } as PolygonEditorValue,
 
     // Description
@@ -142,7 +139,6 @@ export default function UnitForm({
   const [error, setError] = useState('');
 
   function update<K extends keyof typeof form>(k: K, v: (typeof form)[K]) {
-    if (k === 'polygonEditor') setPolygonDirty(true);
     setForm((p) => ({ ...p, [k]: v }));
   }
 
@@ -192,21 +188,20 @@ export default function UnitForm({
       },
     };
 
-    // Polygon handling
+    // Polygon: parse normalized coordinates directly
     const pe = form.polygonEditor;
     const validEntries = pe.entries.filter((e) => e.raw.trim());
     if (validEntries.length > 0) {
-      if (polygonDirty) {
-        const imgW = Number(pe.imageWidth);
-        const imgH = Number(pe.imageHeight);
-        if (imgW > 0 && imgH > 0) {
-          payload.rawPolygon = validEntries[0].raw.replace(/\s+/g, ',');
-          payload.imageWidth = imgW;
-          payload.imageHeight = imgH;
-        }
-      } else if (initialData?.polygon?.length) {
-        payload.polygon = initialData.polygon;
+      const nums = validEntries[0].raw
+        .replace(/\s+/g, ',')
+        .split(',')
+        .map((s) => parseFloat(s.trim()))
+        .filter((n) => !isNaN(n));
+      const points: { x: number; y: number }[] = [];
+      for (let i = 0; i + 1 < nums.length; i += 2) {
+        points.push({ x: nums[i], y: nums[i + 1] });
       }
+      payload.polygon = points;
     } else {
       payload.polygon = [];
     }
@@ -222,14 +217,6 @@ export default function UnitForm({
     if (form.floor === '') return setError('Floor is required');
     if (!form.totalSize) return setError('Total size is required');
     if (!form.amount) return setError('Price amount is required');
-    const hasPolygonEntries = form.polygonEditor.entries.some((e) => e.raw.trim());
-    if (hasPolygonEntries && polygonDirty) {
-      const imgW = Number(form.polygonEditor.imageWidth);
-      const imgH = Number(form.polygonEditor.imageHeight);
-      if (!imgW || !imgH) {
-        return setError('Enter the source image width and height for polygon coordinate conversion.');
-      }
-    }
     for (const [i, room] of roomsList.entries()) {
       if (!room.name.trim()) return setError(`Room ${i + 1}: name is required`);
     }

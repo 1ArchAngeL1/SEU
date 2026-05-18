@@ -51,8 +51,8 @@ export default function ApartmentCard({
     >
       <Card
         className={cn(
-          'relative w-full h-[400px] lg:h-[480px] overflow-hidden p-0 rounded-2xl border border-site-border-soft bg-site-bg-card shadow-none transition-all duration-300 text-site-fg-strong flex flex-col',
-          'hover:border-primary-orange/70 hover:shadow-lg hover:shadow-primary-orange/10 hover:-translate-y-1',
+          'relative w-full h-[400px] lg:h-[480px] overflow-hidden p-0 rounded-2xl border border-site-border-soft bg-site-bg-card shadow-none transition-all duration-300 text-site-fg-strong flex flex-col site-card-glow',
+          'hover:border-primary-orange/50 hover:shadow-lg hover:shadow-primary-orange/10 hover:-translate-y-1',
           className
         )}
       >
@@ -83,7 +83,7 @@ export default function ApartmentCard({
                 className="object-contain transition-transform duration-500 group-hover:scale-[1.03]"
               />
               {/* Soft edge fade into card background */}
-              <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_30px_12px_var(--site-bg-card)]" />
+              <div className="site-vignette absolute inset-0 shadow-[inset_0_0_30px_12px_var(--site-bg-card)]" />
             </>
           ) : (
             <div className="size-32 rounded-full bg-site-bg-hover border border-site-border-soft flex items-center justify-center text-site-fg-dim">

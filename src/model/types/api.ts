@@ -90,6 +90,10 @@ export interface Project {
   renderImage?: string;
   videoUrl?: string;
   priceRange?: PriceRange;
+  googleMapLink?: string;
+  minSizeApartment?: number;
+  maxSizeApartment?: number;
+  benefits?: string;
   isActive: boolean;
   isFeatured: boolean;
   createdAt: string;
@@ -284,6 +288,10 @@ export type CreateProjectInput = {
   renderImage?: string;
   videoUrl?: string;
   priceRange?: PriceRange;
+  googleMapLink?: string | null;
+  minSizeApartment?: number;
+  maxSizeApartment?: number;
+  benefits?: string;
   isActive?: boolean;
   isFeatured?: boolean;
 };
@@ -451,3 +459,75 @@ export type CreatePartnerInput = {
 };
 
 export type UpdatePartnerInput = Partial<CreatePartnerInput>;
+
+export type ContactStatus = 'open' | 'closed';
+
+export interface Contact {
+  id: string;
+  name: string;
+  phone: string;
+  email?: string | null;
+  status: ContactStatus;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type CreateContactInput = {
+  name: string;
+  phone: string;
+  email?: string;
+};
+
+export type UpdateContactStatusInput = {
+  status: ContactStatus;
+};
+
+export interface NewsArticle {
+  id: string;
+  header: string;
+  description: string;
+  image: string[];
+  tags: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type CreateNewsInput = {
+  header: string;
+  description: string;
+  image?: string[];
+  tags?: string[];
+};
+
+export type UpdateNewsInput = Partial<CreateNewsInput>;
+
+export interface NewsFilter {
+  q?: string;
+}
+
+export interface ApartmentType {
+  id: string;
+  project: string;
+  name?: LocalizedString;
+  bedrooms: number;
+  sizeFrom: number;
+  sizeTo: number;
+  image?: string;
+  description?: LocalizedString;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type CreateApartmentTypeInput = {
+  project: string;
+  name?: LocalizedString;
+  bedrooms: number;
+  sizeFrom: number;
+  sizeTo: number;
+  image?: string;
+  description?: LocalizedString;
+  isActive?: boolean;
+};
+
+export type UpdateApartmentTypeInput = Partial<Omit<CreateApartmentTypeInput, 'project'>>;

@@ -52,16 +52,16 @@ export default function PolicyPage() {
       </div>
 
       {/* Light Content */}
-      <div className="bg-site-bg-alt py-10 lg:py-16">
+      <div className="bg-pale-gray py-10 lg:py-16">
         <div className="max-w-[1920px] mx-auto px-5 lg:px-10 flex flex-col gap-10">
           {sections.map((section, i) => (
             <FadeIn key={i} delay={i * 100}>
               {section.title && (
-                <h2 className="font-[--font-bodoni] font-normal text-seu-subheading lg:text-seu-heading leading-tight text-site-fg mb-4">
+                <h2 className="font-[--font-bodoni] font-normal text-seu-subheading lg:text-seu-heading leading-tight text-dark-green mb-4">
                   {section.title}
                 </h2>
               )}
-              <p className="font-montserrat font-normal text-seu-body-sm lg:text-seu-body-lg leading-7 text-site-fg">
+              <p className="font-montserrat font-normal text-seu-body-sm lg:text-seu-body-lg leading-7 text-dark-green/80">
                 {section.content}
               </p>
               {section.bullets && (
@@ -69,7 +69,7 @@ export default function PolicyPage() {
                   {section.bullets.map((bullet, j) => (
                     <li
                       key={j}
-                      className="font-montserrat font-normal text-seu-body-sm lg:text-seu-body-lg leading-7 text-site-fg"
+                      className="font-montserrat font-normal text-seu-body-sm lg:text-seu-body-lg leading-7 text-dark-green/80"
                     >
                       {bullet}
                     </li>
@@ -77,7 +77,7 @@ export default function PolicyPage() {
                 </ul>
               )}
               {section.note && (
-                <p className="mt-4 font-montserrat font-medium text-seu-body-sm lg:text-seu-body leading-7 text-site-fg-muted italic">
+                <p className="mt-4 font-montserrat font-medium text-seu-body-sm lg:text-seu-body leading-7 text-dark-green/50 italic">
                   {section.note}
                 </p>
               )}

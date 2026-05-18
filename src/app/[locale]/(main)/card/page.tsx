@@ -3,7 +3,7 @@ import CardPartners from '@/components/card/CardPartners';
 
 export default function CardPage() {
   return (
-    <main className="bg-site-bg-alt">
+    <main className="bg-pale-gray">
       <CardHero />
       <CardPartners />
     </main>

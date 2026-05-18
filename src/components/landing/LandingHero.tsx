@@ -123,7 +123,7 @@ export default function LandingHero() {
               <span className="font-montserrat font-medium text-seu-caption lg:text-seu-body-sm text-pale-gray tracking-wider uppercase">
                 {t('visualSearch')}
               </span>
-              <div className="size-16 lg:size-20 rounded-full border border-pale-gray/30 bg-site-bg/50 backdrop-blur flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:border-primary-orange/60 group-hover:bg-primary-orange/20">
+              <div className="size-16 lg:size-20 rounded-full border border-pale-gray/30 bg-dark-green/50 backdrop-blur flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:border-primary-orange/60 group-hover:bg-primary-orange/20">
                 <Image
                   src="/common/svgs/Group 169.svg"
                   alt="Visual search"

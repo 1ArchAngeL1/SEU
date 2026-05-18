@@ -8,16 +8,16 @@ import FadeIn from '@/components/FadeIn';
 export default function LandingAbout() {
   const t = useTranslations('landing');
   return (
-    <section className="bg-site-bg-alt py-16 lg:py-24">
+    <section className="relative bg-pale-gray py-16 lg:py-24">
       <div className="max-w-[1920px] mx-auto px-5 lg:px-10">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-20">
           {/* Left - Text Content */}
           <FadeIn direction="left" className="flex-1 max-w-xl">
-            <h2 className="font-bodoni text-seu-title lg:text-seu-title-lg text-site-fg mb-8">
+            <h2 className="font-bodoni text-seu-title lg:text-seu-title-lg text-dark-green mb-8">
               {t('aboutSeu')}
             </h2>
 
-            <div className="space-y-6 text-seu-body text-site-fg-muted leading-relaxed">
+            <div className="space-y-6 text-seu-body text-dark-green/70 leading-relaxed">
               <p>
                 {t('aboutText1')}
               </p>
@@ -42,7 +42,7 @@ export default function LandingAbout() {
           {/* Right - Logo */}
           <FadeIn direction="right" delay={200} className="flex-1 flex items-center justify-center lg:justify-end lg:mr-52">
             <Image
-              src="/common/svgs/SEUcolored.svg"
+              src="/common/pngs/seu-logo.png"
               alt="SEU Development Logo"
               width={400}
               height={400}

@@ -4,7 +4,7 @@ import FadeIn from '@/components/FadeIn';
 
 export const LandingContactSection = () => {
   return (
-    <div className={'bg-site-bg w-full py-16 lg:py-24'}>
+    <div className={'relative bg-site-bg w-full py-16 lg:py-24 site-noise site-glow-orange'}>
       <div className="max-w-[1920px] mx-auto px-5 lg:px-10 flex flex-col lg:flex-row gap-12 lg:gap-0 lg:justify-between">
         <FadeIn direction="left">
           <ContactForm className={'max-w-2xl'} />

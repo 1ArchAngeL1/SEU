@@ -31,6 +31,9 @@ module.exports = {
         'seu-teal': '#0d2e2e',
         'seu-teal-light': '#1a3a3a',
         'seu-dark-gray': '#F4F0E91A',
+        // News card frame
+        'news-frame': '#1B232E',
+        'news-frame-border': '#3A4452',
         'seu-white': '#ffffff',
         'seu-gray': '#6b7280',
         'seu-light-gray': '#9ca3af',
@@ -113,15 +116,6 @@ module.exports = {
         '2xl': 'calc(var(--radius) + 8px)',
         '3xl': 'calc(var(--radius) + 12px)',
         '4xl': 'calc(var(--radius) + 16px)',
-      },
-      animation: {
-        'infinite-scroll': 'infinite-scroll 20s linear infinite',
-      },
-      keyframes: {
-        'infinite-scroll': {
-          from: { transform: 'translate(0)' },
-          to: { transform: 'translateX(-2133px)' },
-        },
       },
     },
   },

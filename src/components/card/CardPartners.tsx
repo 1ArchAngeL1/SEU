@@ -13,7 +13,7 @@ export default function CardPartners() {
     <div className="py-20">
       <div className="max-w-[1920px] mx-auto px-5 lg:px-10">
         <FadeIn>
-          <h2 className="font-[--font-bodoni] font-normal text-seu-heading lg:text-seu-title-lg leading-tight lg:leading-[4.1875rem] text-site-fg mb-8 lg:mb-12">
+          <h2 className="font-[--font-bodoni] font-normal text-seu-heading lg:text-seu-title-lg leading-tight lg:leading-[4.1875rem] text-dark-green mb-8 lg:mb-12">
             {t('partners')}
           </h2>
         </FadeIn>

@@ -1,4 +1,5 @@
 import { API_BASE_URL, ApiRequestError } from '@/lib/api-client';
+import { getToken } from '@/lib/auth';
 
 export interface UploadedFile {
   uuid: string;
@@ -25,7 +26,10 @@ export const filesService = {
         method: 'POST',
         body: fd,
         signal,
-        headers: { Accept: 'application/json' },
+        headers: {
+          Accept: 'application/json',
+          ...(getToken() ? { Authorization: `Bearer ${getToken()}` } : {}),
+        },
       });
     } catch (e) {
       throw new ApiRequestError(

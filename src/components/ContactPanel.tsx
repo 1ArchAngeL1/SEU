@@ -6,10 +6,13 @@ import { useTranslations } from 'next-intl';
 
 export type ContactPanelProps = {
   className?: string;
+  /** Use on pale-gray backgrounds so headings are dark */
+  lightBg?: boolean;
 };
 
 export default function ContactPanel({
   className,
+  lightBg = false,
 }: ContactPanelProps) {
   const t = useTranslations('contact');
   return (
@@ -17,19 +20,22 @@ export default function ContactPanel({
       {/* Heading */}
       <div className="mb-10">
         <div className="flex items-center gap-3 mb-4">
-          <span className="w-10 h-0.5 rounded-full bg-primary-orange" />
-          <span className="font-montserrat font-semibold text-seu-caption-sm uppercase tracking-[0.2em] text-primary-orange">
+          <span className="w-10 h-0.5 rounded-full bg-primary-orange animate-[growRight_0.6s_cubic-bezier(0.16,1,0.3,1)_0.2s_both]" />
+          <span className="font-montserrat font-semibold text-seu-caption-sm uppercase tracking-[0.2em] text-primary-orange animate-[fadeInUp_0.6s_cubic-bezier(0.16,1,0.3,1)_0.3s_both]">
             {t('title')}
           </span>
         </div>
         <h2
-          className="font-[--font-bodoni] font-normal text-seu-title lg:text-seu-title-lg leading-none text-site-fg-strong"
+          className={cn(
+            'font-[--font-bodoni] font-normal text-seu-title lg:text-seu-title-lg leading-none animate-[fadeInUp_0.8s_cubic-bezier(0.16,1,0.3,1)_0.4s_both]',
+            lightBg ? 'text-dark-green' : 'text-site-fg-strong'
+          )}
         >
-          {t('address')}
+          {t('title')}
         </h2>
       </div>
 
-      <div className="rounded-2xl overflow-hidden border border-site-border bg-site-bg-card">
+      <div className="rounded-2xl overflow-hidden border border-site-border bg-site-bg-card site-card-glow animate-[fadeInUp_0.7s_cubic-bezier(0.16,1,0.3,1)_0.5s_both]">
         {/* Contact info cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-site-border">
           {/* Email */}
@@ -88,7 +94,7 @@ export default function ContactPanel({
         <div className="border-t border-site-border">
           <iframe
             title="SEU Development Location"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2978.8!2d44.793!3d41.7196!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40440cd7e164810d%3A0x4523b1f1b8e1b2a0!2sJikia%20St%2C%20Tbilisi!5e0!3m2!1sen!2sge!4v1700000000000"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2978.0132234790544!2d44.70223969070919!3d41.72023350118791!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4044739d4971ed9f%3A0x2f6c473c5bc487b8!2sSEU%20Development!5e0!3m2!1sen!2sge!4v1778605383057!5m2!1sen!2sge"
             width="100%"
             height="280"
             style={{ border: 0 }}

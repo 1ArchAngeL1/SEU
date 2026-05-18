@@ -39,6 +39,7 @@ export function MobileMenuSheet({
             alt="Menu"
             width={24}
             height={18}
+            className="dark-icon"
           />
         </button>
       </SheetTrigger>

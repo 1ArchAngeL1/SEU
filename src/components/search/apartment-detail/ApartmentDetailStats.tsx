@@ -39,7 +39,7 @@ export function ApartmentDetailStats({
       <StatCell label={t('totalSize')} value={`${totalSize} ${t('sqm')}`} />
       <StatCell label={t('mainSize')} value={`${mainSize} ${t('sqm')}`} />
       <StatCell label={t('openSpace')} value={`${openSpace} ${t('sqm')}`} />
-      <StatCell label={t('bedroom')} value={rooms} />
+      <StatCell label={t('bedroom')} value={rooms === 0 ? t('studio') : rooms} />
     </div>
   );
 }

@@ -2,7 +2,10 @@
 
 import { use, useState, useMemo, useRef, useCallback } from 'react';
 import { useLocale } from 'next-intl';
-import { Loader2, ChevronLeft, ChevronUp, ChevronDown, ChevronRight } from 'lucide-react';
+import { Loader2, ChevronUp, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
+import BackButton from '@/components/BackButton';
+import ContactForm from '@/components/ContactForm';
+import ContactPanel from '@/components/ContactPanel';
 import { Link, useRouter } from '@/i18n/navigation';
 import {
   useBuilding,
@@ -122,13 +125,7 @@ export default function VisualSearchFloorPage({
         <div className="lg:hidden">
           {/* Back + Block + Floor nav row */}
           <div className="flex items-center justify-between mb-4">
-            <Link
-              href={`/visual-search/${projectId}/${buildingId}`}
-              className="inline-flex items-center gap-1 font-montserrat text-seu-caption text-site-fg"
-            >
-              <ChevronLeft className="size-4" />
-              Back
-            </Link>
+            <BackButton href={`/visual-search/${projectId}/${buildingId}`} />
 
             {building && (
               <h1 className="font-bodoni text-seu-body-lg text-site-fg-strong">
@@ -217,13 +214,7 @@ export default function VisualSearchFloorPage({
 
         {/* ===== DESKTOP HEADER ===== */}
         <div className="hidden lg:block">
-          <Link
-            href={`/visual-search/${projectId}/${buildingId}`}
-            className="inline-flex items-center gap-1.5 font-montserrat text-seu-caption text-site-fg border border-site-border-soft rounded-full px-4 py-1.5 hover:bg-site-bg-hover transition-colors"
-          >
-            <ChevronLeft className="size-3.5" />
-            Back
-          </Link>
+          <BackButton href={`/visual-search/${projectId}/${buildingId}`} />
 
           {/* Tabs */}
           <div className="flex items-center justify-center gap-8 mt-6 mb-8">
@@ -265,7 +256,7 @@ export default function VisualSearchFloorPage({
               <>
                 {renderImage ? (
                   <div
-                    className="relative w-full mx-auto shadow-[0_0_60px_20px_var(--site-bg)]"
+                    className="relative w-full mx-auto shadow-[0_0_30px_8px_var(--site-bg)]"
                     style={{
                       maxHeight: '70vh',
                       ...(imgNatural ? { aspectRatio: `${imgNatural.w} / ${imgNatural.h}` } : {}),
@@ -383,7 +374,9 @@ export default function VisualSearchFloorPage({
                             <span className="text-site-fg-muted">{unit.totalSize} m²</span>
                             {unit.bedrooms !== undefined && (
                               <span className="text-site-fg-dim">
-                                {unit.bedrooms} bed{unit.bedrooms !== 1 ? 's' : ''}
+                                {unit.bedrooms === 0
+                                  ? 'Studio'
+                                  : `${unit.bedrooms} bed${unit.bedrooms !== 1 ? 's' : ''}`}
                               </span>
                             )}
                           </div>
@@ -448,7 +441,7 @@ export default function VisualSearchFloorPage({
                 <>
                   {renderImage ? (
                     <div
-                      className="relative w-full max-w-3xl mx-auto shadow-[0_0_60px_20px_var(--site-bg)]"
+                      className="relative w-full max-w-3xl mx-auto shadow-[0_0_30px_8px_var(--site-bg)]"
                       style={{
                         maxHeight: '70vh',
                         ...(imgNatural ? { aspectRatio: `${imgNatural.w} / ${imgNatural.h}` } : {}),
@@ -683,6 +676,14 @@ export default function VisualSearchFloorPage({
             )}
           </div>
         )}
+      </div>
+
+      {/* Contact section */}
+      <div className="bg-site-bg px-5 lg:px-10 py-12 lg:py-20">
+        <div className="max-w-[1920px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
+          <ContactForm className="max-w-xl" />
+          <ContactPanel className="max-w-xl lg:justify-self-end" />
+        </div>
       </div>
     </main>
   );

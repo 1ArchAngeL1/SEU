@@ -85,19 +85,13 @@ export default function BuildingForm({
             label: '',
           }]
         : [],
-      imageWidth: '',
-      imageHeight: '',
     } as PolygonEditorValue,
     isActive: initialData?.isActive ?? true,
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Track whether polygon was edited (to distinguish % values from pixel values)
-  const [polygonDirty, setPolygonDirty] = useState(false);
-
   function update<K extends keyof typeof form>(k: K, v: (typeof form)[K]) {
-    if (k === 'polygonEditor') setPolygonDirty(true);
     setForm((p) => ({ ...p, [k]: v }));
   }
 
@@ -141,25 +135,21 @@ export default function BuildingForm({
       images: form.images,
     };
 
-    // Polygon: send rawPolygon + dimensions to backend for conversion
+    // Polygon: parse normalized coordinates directly
     const pe = form.polygonEditor;
     const validEntries = pe.entries.filter((e) => e.raw.trim());
     if (validEntries.length > 0) {
-      if (polygonDirty) {
-        // User edited — send as rawPolygon for backend to convert
-        const imgW = Number(pe.imageWidth);
-        const imgH = Number(pe.imageHeight);
-        if (imgW > 0 && imgH > 0) {
-          payload.rawPolygon = validEntries[0].raw.replace(/\s+/g, ',');
-          payload.imageWidth = imgW;
-          payload.imageHeight = imgH;
-        }
-      } else if (initialData?.polygon?.length) {
-        // Unmodified — send existing percentage values as-is
-        payload.polygon = initialData.polygon;
+      const nums = validEntries[0].raw
+        .replace(/\s+/g, ',')
+        .split(',')
+        .map((s) => parseFloat(s.trim()))
+        .filter((n) => !isNaN(n));
+      const points: { x: number; y: number }[] = [];
+      for (let i = 0; i + 1 < nums.length; i += 2) {
+        points.push({ x: nums[i], y: nums[i + 1] });
       }
+      payload.polygon = points;
     } else {
-      // All entries removed — clear polygon
       payload.polygon = [];
     }
 
@@ -183,17 +173,6 @@ export default function BuildingForm({
       setError('Provide a name in Georgian or English');
       tabs.setActive('basics');
       return;
-    }
-    // Validate: if polygon was edited, image dimensions are required
-    const hasPolygonEntries = form.polygonEditor.entries.some((e) => e.raw.trim());
-    if (hasPolygonEntries && polygonDirty) {
-      const imgW = Number(form.polygonEditor.imageWidth);
-      const imgH = Number(form.polygonEditor.imageHeight);
-      if (!imgW || !imgH) {
-        setError('Enter the source image width and height for polygon coordinate conversion.');
-        tabs.setActive('media');
-        return;
-      }
     }
     setLoading(true);
     try {

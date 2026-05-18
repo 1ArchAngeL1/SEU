@@ -30,16 +30,16 @@ export default function AboutPartners() {
           </p>
 
           {isLoading ? (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {Array.from({ length: 4 }).map((_, i) => (
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+              {Array.from({ length: 8 }).map((_, i) => (
                 <div
                   key={i}
-                  className="h-56 rounded-2xl bg-site-bg-hover animate-pulse"
+                  className="h-40 rounded-2xl bg-site-bg-hover animate-pulse"
                 />
               ))}
             </div>
           ) : partners.length === 0 ? null : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
               {partners.map((partner, i) => (
                 <FadeIn key={partner.id} delay={(i % 4) * 80} duration={500}>
                   <PartnerCard

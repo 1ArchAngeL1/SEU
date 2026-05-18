@@ -7,10 +7,6 @@ import type { PolygonEntry } from '@/model/types/api';
 
 export interface PolygonEditorValue {
   entries: PolygonEntry[];
-  /** Source image width in pixels (the image the coordinates were measured on). */
-  imageWidth: string;
-  /** Source image height in pixels. */
-  imageHeight: string;
 }
 
 interface PolygonsEditorProps {
@@ -75,31 +71,6 @@ export default function PolygonsEditor({
 
       {expanded && (
         <div className="space-y-3">
-          <div className="grid grid-cols-2 gap-2">
-            <Field label="Source image width (px)" hint="Width of the image you measured coords on">
-              <Input
-                type="number"
-                min="1"
-                value={value.imageWidth}
-                onChange={(e) =>
-                  onChange({ ...value, imageWidth: e.target.value })
-                }
-                placeholder="e.g. 3840"
-              />
-            </Field>
-            <Field label="Source image height (px)" hint="Height of the same image">
-              <Input
-                type="number"
-                min="1"
-                value={value.imageHeight}
-                onChange={(e) =>
-                  onChange({ ...value, imageHeight: e.target.value })
-                }
-                placeholder="e.g. 2160"
-              />
-            </Field>
-          </div>
-
           {value.entries.length > 0 && (
             <div className="space-y-3">
               {value.entries.map((entry, i) => {
@@ -128,7 +99,7 @@ export default function PolygonsEditor({
                     <Input
                       value={entry.raw}
                       onChange={(e) => updateEntry(i, { raw: e.target.value })}
-                      placeholder="x1,y1,x2,y2,x3,y3,x4,y4  (pixel coordinates)"
+                      placeholder="x1,y1,x2,y2,x3,y3,x4,y4  (normalized 0-100)"
                       className="font-mono text-seu-caption-sm"
                     />
                     <Input

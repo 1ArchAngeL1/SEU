@@ -184,11 +184,11 @@ export default function HowItWorksSection() {
   const [activeStep, setActiveStep] = useState(0);
 
   return (
-    <section className="bg-site-bg-alt py-20 lg:py-28 overflow-hidden">
+    <section className="relative bg-site-bg py-20 lg:py-28 overflow-hidden">
       <div className="max-w-[1920px] mx-auto px-5 lg:px-10">
         {/* Header */}
         <FadeIn className="mb-12 lg:mb-20">
-          <h2 className="font-bodoni text-seu-heading lg:text-seu-title text-site-fg mb-4">
+          <h2 className="font-bodoni text-seu-heading lg:text-seu-title text-site-fg-strong mb-4">
             {t('title')}
           </h2>
           <p className="font-montserrat text-seu-body-sm lg:text-seu-body text-site-fg-muted max-w-2xl">
@@ -201,7 +201,7 @@ export default function HowItWorksSection() {
           <FadeIn direction="left" className="shrink-0">
             <div className="relative mx-auto">
               {/* Phone frame */}
-              <div className="relative w-[240px] h-[490px] lg:w-[280px] lg:h-[572px] rounded-[2.5rem] lg:rounded-[3rem] border-[6px] border-site-fg/15 bg-black shadow-[0_0_80px_20px_var(--site-fg-dim)] overflow-hidden">
+              <div className="relative w-[240px] h-[490px] lg:w-[280px] lg:h-[572px] rounded-[2.5rem] lg:rounded-[3rem] border-[6px] border-white/10 bg-black shadow-[0_20px_80px_rgba(0,0,0,0.4)] overflow-hidden">
                 {/* Dynamic notch */}
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 lg:w-28 h-5 lg:h-6 bg-black rounded-b-2xl z-20" />
 
@@ -230,8 +230,8 @@ export default function HowItWorksSection() {
                     className={cn(
                       'group flex items-start gap-4 lg:gap-5 p-4 lg:p-6 rounded-xl lg:rounded-2xl border text-left transition-all duration-300',
                       isActive
-                        ? 'bg-site-bg border-primary-orange/40 shadow-lg shadow-primary-orange/5'
-                        : 'bg-transparent border-site-border-soft hover:bg-site-bg hover:border-site-border-strong'
+                        ? 'bg-site-bg-elevated border-primary-orange/30 shadow-lg shadow-primary-orange/10'
+                        : 'bg-transparent border-site-border-soft hover:bg-site-bg-elevated/50 hover:border-site-border-strong'
                     )}
                   >
                     {/* Step number + icon */}
@@ -240,7 +240,7 @@ export default function HowItWorksSection() {
                         'size-12 lg:size-14 rounded-xl shrink-0 flex items-center justify-center transition-all duration-300',
                         isActive
                           ? 'bg-primary-orange text-white shadow-md shadow-primary-orange/30'
-                          : 'bg-site-bg-hover text-site-fg-dim group-hover:text-site-fg'
+                          : 'bg-white/5 text-site-fg-muted group-hover:text-site-fg'
                       )}
                     >
                       <Icon className="size-5 lg:size-6" />
@@ -252,7 +252,7 @@ export default function HowItWorksSection() {
                         <span
                           className={cn(
                             'font-montserrat text-seu-caption-sm uppercase tracking-wider transition-colors',
-                            isActive ? 'text-primary-orange' : 'text-site-fg-dim'
+                            isActive ? 'text-primary-orange' : 'text-site-fg-muted/50'
                           )}
                         >
                           {t('step', { n: i + 1 })}
@@ -261,7 +261,7 @@ export default function HowItWorksSection() {
                       <h3
                         className={cn(
                           'font-bodoni text-seu-subheading lg:text-seu-heading transition-colors leading-tight',
-                          isActive ? 'text-site-fg-strong' : 'text-site-fg'
+                          isActive ? 'text-site-fg-strong' : 'text-site-fg/80'
                         )}
                       >
                         {t(`steps.${i}.title`)}

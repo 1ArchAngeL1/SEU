@@ -2,6 +2,7 @@
 
 import ContactForm from '@/components/ContactForm';
 import ContactPanel from '@/components/ContactPanel';
+import FadeIn from '@/components/FadeIn';
 import { useTranslations } from 'next-intl';
 
 const ContactPage = () => {
@@ -9,29 +10,19 @@ const ContactPage = () => {
   return (
     <>
       {/* ===== MOBILE ===== */}
-      <div className="lg:hidden flex flex-col flex-1">
-        {/* Diagonal split section — form area */}
-        <div className="relative flex-1 overflow-hidden">
-          {/* Light bg (top-left triangle) */}
-          <div
-            className="absolute inset-0 bg-site-bg-alt"
-            style={{ clipPath: 'polygon(0 0, 100% 0, 0 65%)' }}
-          />
-          {/* Dark bg (bottom-right triangle) */}
-          <div
-            className="absolute inset-0 bg-site-bg"
-            style={{ clipPath: 'polygon(100% 0, 100% 100%, 0 100%, 0 65%)' }}
-          />
-
-          {/* Content */}
-          <div className="relative z-10 px-5 pt-8 pb-10">
-            <ContactForm className="max-w-xl" variant="mobile-diagonal" />
-          </div>
+      <div className="lg:hidden flex flex-col flex-1 bg-dark-green">
+        {/* Form area */}
+        <div className="px-5 pt-8 pb-10">
+          <FadeIn direction="up" duration={800}>
+            <ContactForm className="max-w-xl" />
+          </FadeIn>
         </div>
 
-        {/* Contact info panel — dark section below */}
-        <div className="bg-site-bg px-5 pt-6 pb-10">
-          <ContactPanel className="max-w-xl" />
+        {/* Contact info panel */}
+        <div className="px-5 pt-6 pb-10">
+          <FadeIn direction="up" delay={200} duration={800}>
+            <ContactPanel className="max-w-xl" />
+          </FadeIn>
         </div>
       </div>
 
@@ -44,18 +35,23 @@ const ContactPage = () => {
         />
         {/* Light section — opposite diagonal */}
         <div
-          className="absolute inset-0 bg-site-bg-alt"
+          className="absolute inset-0 bg-pale-gray"
           style={{ clipPath: 'polygon(90% 0, 100% 0, 100% 100%, 5% 100%)' }}
         />
         {/* Content layer */}
         <div className="relative z-10 h-full flex flex-row flex-1 overflow-hidden">
           <div className="flex-1 flex items-start justify-start pt-16 pl-10">
-            <ContactForm className="max-w-2xl" />
+            <FadeIn direction="left" duration={900}>
+              <ContactForm className="max-w-2xl" />
+            </FadeIn>
           </div>
           <div className="flex-1 flex items-end justify-end pb-16 pr-10">
-            <ContactPanel
-              className="max-w-2xl"
-            />
+            <FadeIn direction="right" delay={300} duration={900}>
+              <ContactPanel
+                className="max-w-2xl"
+                lightBg
+              />
+            </FadeIn>
           </div>
         </div>
       </div>

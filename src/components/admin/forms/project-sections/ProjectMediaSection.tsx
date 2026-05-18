@@ -9,6 +9,7 @@ export interface ProjectMediaSectionValue {
   renderImage: string;
   images: string[];
   videoUrl: string;
+  googleMapLink: string;
 }
 
 interface Props {
@@ -45,6 +46,13 @@ export default function ProjectMediaSection({ value, update }: Props) {
           value={value.videoUrl}
           onChange={(e) => update('videoUrl', e.target.value)}
           placeholder="https://youtube.com/…"
+        />
+      </Field>
+      <Field label="Google Maps Link" hint="Embed URL for the project location map">
+        <Input
+          value={value.googleMapLink}
+          onChange={(e) => update('googleMapLink', e.target.value)}
+          placeholder="https://www.google.com/maps/embed?pb=…"
         />
       </Field>
     </div>
