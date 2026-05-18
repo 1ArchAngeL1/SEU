@@ -12,7 +12,7 @@
 
 # testing
 /coverage
-/public/video
+/public/video/*
 # next.js
 /.next/
 /out/
