@@ -26,10 +26,10 @@ export default function PartnerCard({
   const hasContact = mail || phone || address || facebookLink;
 
   return (
-    <div className="group relative w-full h-40 lg:h-44 rounded-2xl overflow-hidden bg-dark-green hover-lift border border-white/10 shadow-site">
+    <div className="group relative w-full h-52 lg:h-60 rounded-2xl overflow-hidden bg-dark-green hover-lift border border-white/10 shadow-site">
       <div className="flex h-full">
         {/* Left — Logo area */}
-        <div className="relative w-28 lg:w-36 shrink-0 flex items-center justify-center bg-linear-to-br from-white/5 to-white/[0.02] border-r border-white/10 p-3 lg:p-4">
+        <div className="relative w-44 lg:w-56 shrink-0 flex items-center justify-center bg-linear-to-br from-white/5 to-white/[0.02] border-r border-white/10 p-3 lg:p-5">
           {logoId ? (
             <Image
               src={fileUrl(logoId)}
@@ -58,17 +58,17 @@ export default function PartnerCard({
 
           {/* Hover overlay — slides from left over the logo */}
           {hasContact && (
-            <div className="absolute inset-0 bg-dark-green flex flex-col items-stretch justify-center gap-2 px-3 py-4 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out">
+            <div className="absolute inset-0 bg-dark-green flex flex-col items-stretch justify-center gap-2.5 px-4 py-5 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out">
               {mail && (
                 <a
                   href={`mailto:${mail}`}
                   title={mail}
-                  className="flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors"
+                  className="flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-white/5 transition-colors"
                 >
-                  <span className="size-7 shrink-0 rounded-lg bg-primary-green grid place-items-center shadow-sm shadow-primary-green/30">
-                    <Mail className="size-3.5 text-white" />
+                  <span className="size-9 shrink-0 rounded-lg bg-primary-green grid place-items-center shadow-sm shadow-primary-green/30">
+                    <Mail className="size-4 text-white" />
                   </span>
-                  <span className="font-montserrat text-seu-caption-sm text-pale-gray truncate">
+                  <span className="font-montserrat text-seu-caption text-pale-gray truncate">
                     {mail}
                   </span>
                 </a>
@@ -77,22 +77,22 @@ export default function PartnerCard({
                 <a
                   href={`tel:${phone}`}
                   title={phone}
-                  className="flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors"
+                  className="flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-white/5 transition-colors"
                 >
-                  <span className="size-7 shrink-0 rounded-lg bg-primary-green grid place-items-center shadow-sm shadow-primary-green/30">
-                    <Phone className="size-3.5 text-white" />
+                  <span className="size-9 shrink-0 rounded-lg bg-primary-green grid place-items-center shadow-sm shadow-primary-green/30">
+                    <Phone className="size-4 text-white" />
                   </span>
-                  <span className="font-montserrat text-seu-caption-sm text-pale-gray">
+                  <span className="font-montserrat text-seu-caption text-pale-gray">
                     {phone}
                   </span>
                 </a>
               )}
               {address && (
-                <div className="flex items-center gap-2.5 px-2 py-1.5">
-                  <span className="size-7 shrink-0 rounded-lg bg-primary-green grid place-items-center shadow-sm shadow-primary-green/30">
-                    <MapPin className="size-3.5 text-white" />
+                <div className="flex items-center gap-3 px-2 py-2">
+                  <span className="size-9 shrink-0 rounded-lg bg-primary-green grid place-items-center shadow-sm shadow-primary-green/30">
+                    <MapPin className="size-4 text-white" />
                   </span>
-                  <span className="font-montserrat text-seu-caption-sm text-pale-gray truncate">
+                  <span className="font-montserrat text-seu-caption text-pale-gray truncate">
                     {address}
                   </span>
                 </div>
@@ -103,12 +103,12 @@ export default function PartnerCard({
                   target="_blank"
                   rel="noopener noreferrer"
                   title="Facebook"
-                  className="flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors"
+                  className="flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-white/5 transition-colors"
                 >
-                  <span className="size-7 shrink-0 rounded-lg bg-primary-green grid place-items-center shadow-sm shadow-primary-green/30">
-                    <ExternalLink className="size-3.5 text-white" />
+                  <span className="size-9 shrink-0 rounded-lg bg-primary-green grid place-items-center shadow-sm shadow-primary-green/30">
+                    <ExternalLink className="size-4 text-white" />
                   </span>
-                  <span className="font-montserrat text-seu-caption-sm text-pale-gray">
+                  <span className="font-montserrat text-seu-caption text-pale-gray">
                     Facebook
                   </span>
                 </a>
