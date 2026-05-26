@@ -383,7 +383,7 @@ export default function VisualSearchProjectPage({
 
       {isLoading && (
         <div className="flex items-center justify-center py-32">
-          <Loader2 className="size-8 text-primary-orange animate-spin" />
+          <Loader2 className="size-8 text-primary-green animate-spin" />
         </div>
       )}
 
@@ -496,7 +496,7 @@ export default function VisualSearchProjectPage({
                   const building = buildings.find((b) => b.id === activeId);
                   if (building) handleBuildingClick(building);
                 }}
-                className="font-montserrat text-seu-caption text-primary-orange hover:underline"
+                className="font-montserrat text-seu-caption text-primary-green hover:underline"
               >
                 View →
               </button>
@@ -590,7 +590,7 @@ export default function VisualSearchProjectPage({
                     </p>
                     <div className="flex items-center gap-4 font-montserrat text-seu-caption mt-1">
                       {b.block && (
-                        <span className="text-primary-orange font-medium">Block {b.block}</span>
+                        <span className="text-primary-green font-medium">Block {b.block}</span>
                       )}
                       {b.totalUnits > 0 && (
                         <span className="text-secondary-grey">{b.totalUnits} apartments</span>

@@ -14,7 +14,6 @@ function Input({
         // Layout
         'flex w-full min-w-0 rounded-lg h-10 px-3',
         'font-montserrat font-medium text-seu-caption text-admin-fg',
-        // Surface — gradient flips with theme via custom utility
         'bg-admin-input-gradient border border-admin-border shadow-admin',
         // Placeholder
         'placeholder:text-admin-fg-dim placeholder:font-normal',

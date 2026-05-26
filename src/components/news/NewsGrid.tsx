@@ -37,7 +37,7 @@ function NewsCard({
             onClick();
           }
         }}
-        className="group rounded-lg border border-news-frame-border bg-pale-gray/15 cursor-pointer hover-lift h-full pt-3 px-3 pb-5 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-orange/60"
+        className="group rounded-lg border border-news-frame-border bg-pale-gray/15 cursor-pointer hover-lift h-full pt-3 px-3 pb-5 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-green/60"
       >
         {/* Title */}
         <div className="px-1 pb-2.5">

@@ -19,7 +19,7 @@ export type ApartmentCardProps = {
 
 function statusBadgeClass(s: UnitStatus): string {
   if (s === 'available')
-    return 'bg-primary-orange text-white border-primary-orange';
+    return 'bg-primary-green text-white border-primary-green';
   if (s === 'reserved')
     return 'bg-amber-500/90 text-white border-amber-500';
   if (s === 'sold') return 'bg-rose-500/90 text-white border-rose-500';
@@ -47,12 +47,12 @@ export default function ApartmentCard({
     <Link
       href={`/search/${data.id}`}
       onClick={onClick}
-      className="group block focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-orange/50 rounded-2xl"
+      className="group block focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-green/50 rounded-2xl"
     >
       <Card
         className={cn(
           'relative w-full h-[400px] lg:h-[480px] overflow-hidden p-0 rounded-2xl border border-site-border-soft bg-site-bg-card shadow-none transition-all duration-300 text-site-fg-strong flex flex-col site-card-glow',
-          'hover:border-primary-orange/50 hover:shadow-lg hover:shadow-primary-orange/10 hover:-translate-y-1',
+          'hover:border-primary-green/50 hover:shadow-lg hover:shadow-primary-green/10 hover:-translate-y-1',
           className
         )}
       >
@@ -66,7 +66,7 @@ export default function ApartmentCard({
               #{data.unitNumber}
             </p>
           </div>
-          <span className="size-11 rounded-full bg-site-bg-hover backdrop-blur-md border border-site-border-soft flex items-center justify-center text-site-fg-strong transition-all group-hover:bg-primary-orange group-hover:border-primary-orange group-hover:scale-110">
+          <span className="size-11 rounded-full bg-site-bg-hover backdrop-blur-md border border-site-border-soft flex items-center justify-center text-site-fg-strong transition-all group-hover:bg-primary-green group-hover:border-primary-green group-hover:scale-110">
             <ArrowUpRight className="size-5" />
           </span>
         </div>

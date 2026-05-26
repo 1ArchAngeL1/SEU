@@ -21,7 +21,7 @@ export const textareaClass = inputClass + ' min-h-[5rem] py-2 resize-y h-auto';
 export const labelClass =
   'text-seu-caption-sm text-admin-fg-muted font-montserrat font-medium';
 export const btnPrimary =
-  'bg-gradient-to-b from-primary-orange to-primary-orange/85 text-white font-montserrat font-medium text-seu-caption px-6 py-2 rounded-lg shadow-md shadow-primary-orange/25 hover:shadow-lg hover:shadow-primary-orange/30 hover:from-primary-orange hover:to-primary-orange transition-all disabled:opacity-50';
+  'bg-gradient-to-b from-primary-green to-primary-green/85 text-white font-montserrat font-medium text-seu-caption px-6 py-2 rounded-lg shadow-md shadow-primary-green/25 hover:shadow-lg hover:shadow-primary-green/30 hover:from-primary-green hover:to-primary-green transition-all disabled:opacity-50';
 export const btnGhost =
   'text-admin-fg-muted hover:text-admin-fg hover:bg-admin-hover font-montserrat text-seu-caption transition-colors px-3 py-2 rounded-md';
 
@@ -79,7 +79,7 @@ export function Switch({
         <span
           className={cn(
             'w-9 h-5 rounded-full transition-colors',
-            'bg-admin-deep peer-checked:bg-primary-orange',
+            'bg-admin-deep peer-checked:bg-primary-green',
             'after:content-[""] after:absolute after:top-0.5 after:left-0.5',
             'after:bg-white after:rounded-full after:size-4',
             'after:shadow-md after:transition-transform',
@@ -115,7 +115,7 @@ export function Tabs({
           className={cn(
             'px-3.5 py-1.5 rounded-md font-montserrat font-medium text-seu-caption-sm whitespace-nowrap transition-all',
             active === t.id
-              ? 'bg-admin-elevated-gradient text-admin-fg border border-primary-orange/30 shadow-sm shadow-primary-orange/10'
+              ? 'bg-admin-elevated-gradient text-admin-fg border border-primary-green/30 shadow-sm shadow-primary-green/10'
               : 'text-admin-fg-muted hover:text-admin-fg hover:bg-admin-hover border border-transparent'
           )}
         >

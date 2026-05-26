@@ -45,7 +45,7 @@ export default function AdminLoginPage() {
         className="pointer-events-none absolute top-[-20%] left-[-10%] w-[40rem] h-[40rem] rounded-full opacity-[0.07]"
         style={{
           background:
-            'radial-gradient(circle, var(--primary-orange) 0%, transparent 70%)',
+            'radial-gradient(circle, var(--primary-green) 0%, transparent 70%)',
         }}
       />
       <div
@@ -63,7 +63,7 @@ export default function AdminLoginPage() {
           {/* Header with brand accent */}
           <div className="relative px-8 pt-10 pb-8 text-center">
             {/* Logo */}
-            <div className="mx-auto mb-6 size-16 rounded-2xl bg-gradient-to-br from-primary-orange to-primary-orange/70 grid place-items-center shadow-admin-accent ring-1 ring-primary-orange/40">
+            <div className="mx-auto mb-6 size-16 rounded-2xl bg-gradient-to-br from-primary-green to-primary-green/70 grid place-items-center shadow-admin-accent ring-1 ring-primary-green/40">
               <span className="font-[--font-bodoni] text-white text-[2rem] leading-none">
                 S
               </span>
@@ -108,7 +108,7 @@ export default function AdminLoginPage() {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="admin"
-                  className="w-full h-12 pl-11 pr-4 rounded-xl bg-admin-input-gradient border border-admin-border text-admin-fg placeholder:text-admin-fg-dim font-montserrat text-seu-caption focus:outline-none focus:ring-2 focus:ring-primary-orange/30 focus:border-primary-orange/50 transition-all"
+                  className="w-full h-12 pl-11 pr-4 rounded-xl bg-admin-input-gradient border border-admin-border text-admin-fg placeholder:text-admin-fg-dim font-montserrat text-seu-caption focus:outline-none focus:ring-2 focus:ring-primary-green/30 focus:border-primary-green/50 transition-all"
                 />
               </div>
             </div>
@@ -130,7 +130,7 @@ export default function AdminLoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
-                  className="w-full h-12 pl-11 pr-12 rounded-xl bg-admin-input-gradient border border-admin-border text-admin-fg placeholder:text-admin-fg-dim font-montserrat text-seu-caption focus:outline-none focus:ring-2 focus:ring-primary-orange/30 focus:border-primary-orange/50 transition-all"
+                  className="w-full h-12 pl-11 pr-12 rounded-xl bg-admin-input-gradient border border-admin-border text-admin-fg placeholder:text-admin-fg-dim font-montserrat text-seu-caption focus:outline-none focus:ring-2 focus:ring-primary-green/30 focus:border-primary-green/50 transition-all"
                 />
                 <button
                   type="button"
@@ -150,7 +150,7 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full h-12 rounded-xl bg-gradient-to-r from-primary-orange to-primary-orange/85 text-white font-montserrat font-semibold text-seu-caption tracking-wide shadow-admin-accent hover:shadow-[0_8px_24px] hover:shadow-primary-orange/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
+              className="w-full h-12 rounded-xl bg-gradient-to-r from-primary-green to-primary-green/85 text-white font-montserrat font-semibold text-seu-caption tracking-wide shadow-admin-accent hover:shadow-[0_8px_24px] hover:shadow-primary-green/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group"
             >
               <span className="relative z-10">
                 {loading ? (
@@ -162,7 +162,7 @@ export default function AdminLoginPage() {
                   'Sign In'
                 )}
               </span>
-              <span className="absolute inset-0 bg-gradient-to-r from-primary-orange/0 via-white/10 to-primary-orange/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+              <span className="absolute inset-0 bg-gradient-to-r from-primary-green/0 via-white/10 to-primary-green/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
             </button>
           </form>
         </div>

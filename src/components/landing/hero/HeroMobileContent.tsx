@@ -42,7 +42,7 @@ export default function HeroMobileContent({
       <button
         type="button"
         onClick={handleFindApartment}
-        className="w-full bg-primary-orange text-white font-montserrat font-medium text-seu-body py-4 rounded-xl hover:bg-primary-orange/85 transition-colors"
+        className="w-full bg-primary-green text-white font-montserrat font-medium text-seu-body py-4 rounded-xl hover:bg-primary-green/85 transition-colors"
       >
         {t('findApartment')}
       </button>
@@ -66,7 +66,7 @@ export default function HeroMobileContent({
                 className={cn(
                   'size-2 rounded-full transition-all',
                   index === active
-                    ? 'bg-primary-orange'
+                    ? 'bg-primary-green'
                     : 'bg-white/35'
                 )}
                 aria-label={`Show image ${index + 1}`}

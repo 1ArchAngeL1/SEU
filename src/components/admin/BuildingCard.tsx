@@ -32,7 +32,7 @@ export default function BuildingCard({
   const cardClass = cn(
     'group relative block rounded-2xl border border-admin-border bg-admin-card-gradient overflow-hidden text-left w-full',
     'shadow-admin',
-    'transition-all hover:border-primary-orange/50 hover:shadow-admin-lg hover:-translate-y-0.5',
+    'transition-all hover:border-primary-green/50 hover:shadow-admin-lg hover:-translate-y-0.5',
     className
   );
 
@@ -97,7 +97,7 @@ export default function BuildingCard({
           </div>
           <div className="h-1.5 rounded-full bg-admin-input overflow-hidden">
             <div
-              className="h-full bg-primary-orange transition-all"
+              className="h-full bg-primary-green transition-all"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -107,7 +107,7 @@ export default function BuildingCard({
           <span className="font-montserrat text-seu-caption-sm text-admin-fg-muted pt-3">
             {occupancy}% occupied
           </span>
-          <span className="flex items-center gap-1 font-montserrat text-seu-caption-sm text-primary-orange pt-3 group-hover:translate-x-0.5 transition-transform">
+          <span className="flex items-center gap-1 font-montserrat text-seu-caption-sm text-primary-green pt-3 group-hover:translate-x-0.5 transition-transform">
             {ctaLabel}
             <ArrowRight className="size-3.5" />
           </span>

@@ -488,7 +488,7 @@ export default function PolygonEditorPage() {
         <div
           onDragOver={(e) => e.preventDefault()}
           onDrop={handleDrop}
-          className="border-2 border-dashed border-admin-border rounded-2xl p-20 text-center hover:border-primary-orange/50 transition-colors cursor-pointer"
+          className="border-2 border-dashed border-admin-border rounded-2xl p-20 text-center hover:border-primary-green/50 transition-colors cursor-pointer"
           onClick={() => {
             const input = document.createElement('input');
             input.type = 'file';
@@ -523,7 +523,7 @@ export default function PolygonEditorPage() {
             className={cn(
               'flex items-center gap-1.5 px-3 py-1.5 rounded-md font-montserrat text-seu-caption-sm transition-all',
               tool === 'select'
-                ? 'bg-admin-elevated-gradient text-admin-fg border border-primary-orange/30 shadow-sm'
+                ? 'bg-admin-elevated-gradient text-admin-fg border border-primary-green/30 shadow-sm'
                 : 'text-admin-fg-muted hover:text-admin-fg border border-transparent'
             )}
             title="Select & Move (V)"
@@ -536,7 +536,7 @@ export default function PolygonEditorPage() {
             className={cn(
               'flex items-center gap-1.5 px-3 py-1.5 rounded-md font-montserrat text-seu-caption-sm transition-all',
               tool === 'draw'
-                ? 'bg-admin-elevated-gradient text-admin-fg border border-primary-orange/30 shadow-sm'
+                ? 'bg-admin-elevated-gradient text-admin-fg border border-primary-green/30 shadow-sm'
                 : 'text-admin-fg-muted hover:text-admin-fg border border-transparent'
             )}
             title="Draw Polygon (B)"
@@ -552,7 +552,7 @@ export default function PolygonEditorPage() {
           className={cn(
             'flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-montserrat text-seu-caption-sm transition-all',
             ortho
-              ? 'bg-primary-orange/15 text-primary-orange border border-primary-orange/30'
+              ? 'bg-primary-green/15 text-primary-green border border-primary-green/30'
               : 'text-admin-fg-muted hover:text-admin-fg'
           )}
           title="Right-angle mode (R)"
@@ -566,7 +566,7 @@ export default function PolygonEditorPage() {
         {/* Polygon actions */}
         <button
           onClick={addNewPolygon}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-montserrat text-seu-caption-sm text-primary-orange hover:bg-primary-orange/10 transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-montserrat text-seu-caption-sm text-primary-green hover:bg-primary-green/10 transition-colors"
           title="New polygon"
         >
           <Plus className="size-3.5" />
@@ -922,7 +922,7 @@ export default function PolygonEditorPage() {
                 className={cn(
                   'rounded-lg border p-3 transition-all cursor-pointer',
                   polygon.id === activeId
-                    ? 'border-primary-orange/40 bg-primary-orange/5 shadow-sm'
+                    ? 'border-primary-green/40 bg-primary-green/5 shadow-sm'
                     : 'border-admin-border-soft bg-admin-deep/30 hover:border-admin-border'
                 )}
                 onClick={() => setActiveId(polygon.id)}
@@ -1013,7 +1013,7 @@ export default function PolygonEditorPage() {
                 onClick={copyAll}
                 className={cn(
                   'w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-montserrat font-medium text-seu-caption transition-all',
-                  'bg-gradient-to-b from-primary-orange to-primary-orange/85 text-white shadow-md shadow-primary-orange/25 hover:shadow-lg'
+                  'bg-gradient-to-b from-primary-green to-primary-green/85 text-white shadow-md shadow-primary-green/25 hover:shadow-lg'
                 )}
               >
                 {copied === 'all' ? (

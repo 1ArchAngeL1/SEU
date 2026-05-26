@@ -33,7 +33,7 @@ export default function LandingAbout() {
 
             <Link
               href="/contact"
-              className="inline-block mt-10 bg-primary-orange text-white font-montserrat font-medium text-seu-body px-16 py-3 rounded-lg hover:bg-primary-orange/85 transition-colors"
+              className="inline-block mt-10 bg-primary-green text-white font-montserrat font-medium text-seu-body px-16 py-3 rounded-lg hover:bg-primary-green/85 transition-colors"
             >
               {t('contact')}
             </Link>

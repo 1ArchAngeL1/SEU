@@ -109,7 +109,7 @@ export default function ContactsPage() {
               className={cn(
                 'px-4 py-2 font-montserrat text-seu-caption-sm transition-all duration-200',
                 statusFilter === tab.value
-                  ? 'bg-primary-orange text-white shadow-md shadow-primary-orange/25'
+                  ? 'bg-primary-green text-white shadow-md shadow-primary-green/25'
                   : 'bg-admin-input-gradient text-admin-fg-muted hover:text-admin-fg hover:bg-admin-hover'
               )}
             >
@@ -189,7 +189,7 @@ export default function ContactsPage() {
                 <Phone className="size-4 shrink-0 text-admin-fg-dim sm:hidden" />
                 <a
                   href={`tel:${contact.phone.replace(/\s/g, '')}`}
-                  className="font-montserrat text-seu-caption text-admin-fg hover:text-primary-orange transition-colors truncate"
+                  className="font-montserrat text-seu-caption text-admin-fg hover:text-primary-green transition-colors truncate"
                 >
                   {contact.phone}
                 </a>
@@ -201,7 +201,7 @@ export default function ContactsPage() {
                 {contact.email ? (
                   <a
                     href={`mailto:${contact.email}`}
-                    className="font-montserrat text-seu-caption text-admin-fg hover:text-primary-orange transition-colors truncate"
+                    className="font-montserrat text-seu-caption text-admin-fg hover:text-primary-green transition-colors truncate"
                   >
                     {contact.email}
                   </a>

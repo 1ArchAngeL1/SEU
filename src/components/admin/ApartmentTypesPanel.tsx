@@ -97,7 +97,7 @@ export default function ApartmentTypesPanel({
     <div className="rounded-2xl border border-admin-border bg-admin-card-gradient shadow-admin overflow-hidden">
       <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-admin-border-soft">
         <div className="flex items-center gap-2.5">
-          <span className="size-9 rounded-lg bg-gradient-to-br from-primary-orange/25 to-primary-orange/10 border border-primary-orange/40 grid place-items-center text-primary-orange shadow-sm shadow-primary-orange/20">
+          <span className="size-9 rounded-lg bg-gradient-to-br from-primary-green/25 to-primary-green/10 border border-primary-green/40 grid place-items-center text-primary-green shadow-sm shadow-primary-green/20">
             <Bed className="size-4" />
           </span>
           <div>
@@ -111,7 +111,7 @@ export default function ApartmentTypesPanel({
         </div>
         <button
           onClick={openCreate}
-          className="bg-gradient-to-b from-primary-orange to-primary-orange/85 text-white font-montserrat font-medium text-seu-caption-sm px-3 py-1.5 rounded-lg shadow-md shadow-primary-orange/25 hover:shadow-lg hover:shadow-primary-orange/30 transition-all flex items-center gap-1.5"
+          className="bg-gradient-to-b from-primary-green to-primary-green/85 text-white font-montserrat font-medium text-seu-caption-sm px-3 py-1.5 rounded-lg shadow-md shadow-primary-green/25 hover:shadow-lg hover:shadow-primary-green/30 transition-all flex items-center gap-1.5"
         >
           <Plus className="size-3.5" />
           Add type

@@ -25,7 +25,7 @@ import {
 } from '@/hooks/queries/use-users';
 
 const btnPrimary =
-  'bg-gradient-to-b from-primary-orange to-primary-orange/85 text-white font-montserrat font-medium text-seu-caption px-4 py-2 rounded-lg shadow-md shadow-primary-orange/25 hover:shadow-lg hover:shadow-primary-orange/30 transition-all flex items-center gap-2';
+  'bg-gradient-to-b from-primary-green to-primary-green/85 text-white font-montserrat font-medium text-seu-caption px-4 py-2 rounded-lg shadow-md shadow-primary-green/25 hover:shadow-lg hover:shadow-primary-green/30 transition-all flex items-center gap-2';
 
 export default function UsersPage() {
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -142,8 +142,8 @@ export default function UsersPage() {
                 >
                   <td className="px-5 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="size-9 rounded-lg bg-gradient-to-br from-primary-orange/20 to-primary-orange/5 border border-primary-orange/20 grid place-items-center">
-                        <User className="size-4 text-primary-orange" />
+                      <div className="size-9 rounded-lg bg-gradient-to-br from-primary-green/20 to-primary-green/5 border border-primary-green/20 grid place-items-center">
+                        <User className="size-4 text-primary-green" />
                       </div>
                       <span className="font-montserrat font-medium text-seu-body-sm text-admin-fg">
                         {u.username}
@@ -209,7 +209,7 @@ export default function UsersPage() {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="Enter username"
-                  className="w-full h-11 pl-11 pr-4 rounded-xl bg-admin-input-gradient border border-admin-border text-admin-fg placeholder:text-admin-fg-dim font-montserrat text-seu-caption focus:outline-none focus:ring-2 focus:ring-primary-orange/30 focus:border-primary-orange/50 transition-all"
+                  className="w-full h-11 pl-11 pr-4 rounded-xl bg-admin-input-gradient border border-admin-border text-admin-fg placeholder:text-admin-fg-dim font-montserrat text-seu-caption focus:outline-none focus:ring-2 focus:ring-primary-green/30 focus:border-primary-green/50 transition-all"
                 />
               </div>
             </div>
@@ -232,7 +232,7 @@ export default function UsersPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter password"
-                  className="w-full h-11 pl-11 pr-12 rounded-xl bg-admin-input-gradient border border-admin-border text-admin-fg placeholder:text-admin-fg-dim font-montserrat text-seu-caption focus:outline-none focus:ring-2 focus:ring-primary-orange/30 focus:border-primary-orange/50 transition-all"
+                  className="w-full h-11 pl-11 pr-12 rounded-xl bg-admin-input-gradient border border-admin-border text-admin-fg placeholder:text-admin-fg-dim font-montserrat text-seu-caption focus:outline-none focus:ring-2 focus:ring-primary-green/30 focus:border-primary-green/50 transition-all"
                 />
                 <button
                   type="button"
@@ -259,7 +259,7 @@ export default function UsersPage() {
               <button
                 type="submit"
                 disabled={createMut.isPending}
-                className="flex-1 h-11 rounded-xl bg-gradient-to-r from-primary-orange to-primary-orange/85 text-white font-montserrat font-semibold text-seu-caption shadow-md shadow-primary-orange/25 hover:shadow-lg hover:shadow-primary-orange/30 transition-all disabled:opacity-50"
+                className="flex-1 h-11 rounded-xl bg-gradient-to-r from-primary-green to-primary-green/85 text-white font-montserrat font-semibold text-seu-caption shadow-md shadow-primary-green/25 hover:shadow-lg hover:shadow-primary-green/30 transition-all disabled:opacity-50"
               >
                 {createMut.isPending ? 'Creating...' : 'Create User'}
               </button>

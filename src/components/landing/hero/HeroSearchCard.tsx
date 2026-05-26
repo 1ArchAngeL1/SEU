@@ -102,7 +102,7 @@ export default function HeroSearchCard() {
                     'rounded-lg font-montserrat text-seu-caption transition-colors',
                     isStudio ? 'col-span-2 h-full' : 'aspect-square',
                     isActive
-                      ? 'bg-primary-orange text-white'
+                      ? 'bg-primary-green text-white'
                       : 'bg-white/8 text-secondary-grey hover:text-pale-gray'
                   )}
                 >
@@ -118,7 +118,7 @@ export default function HeroSearchCard() {
           <button
             type="button"
             onClick={handleSearch}
-            className="bg-primary-orange text-white font-montserrat font-medium text-seu-caption px-7 py-2.5 rounded-xl hover:bg-primary-orange/85 transition-colors"
+            className="bg-primary-green text-white font-montserrat font-medium text-seu-caption px-7 py-2.5 rounded-xl hover:bg-primary-green/85 transition-colors"
           >
             {t('search')}
           </button>

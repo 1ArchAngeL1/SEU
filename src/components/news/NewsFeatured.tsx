@@ -33,7 +33,7 @@ export default function NewsFeatured({ article }: NewsFeaturedProps) {
           <div className="absolute inset-0 bg-gradient-to-r from-dark-green/80 to-transparent" />
 
           <div className="relative z-10 flex items-center h-full px-8 lg:px-16">
-            <h2 className="font-[--font-bodoni] font-normal text-seu-heading lg:text-seu-title text-primary-orange italic max-w-2xl">
+            <h2 className="font-[--font-bodoni] font-normal text-seu-heading lg:text-seu-title text-primary-green italic max-w-2xl">
               {article.header}
             </h2>
           </div>

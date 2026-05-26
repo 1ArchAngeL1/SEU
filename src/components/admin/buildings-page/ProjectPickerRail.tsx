@@ -38,8 +38,8 @@ export default function ProjectPickerRail({
       </div>
       <div className="rounded-2xl border border-admin-border bg-admin-card-gradient shadow-admin overflow-hidden">
         <div className="px-4 py-3 border-b border-admin-border-soft flex items-center gap-2">
-          <span className="size-7 rounded-md bg-primary-orange/15 border border-primary-orange/30 grid place-items-center shadow-sm shadow-primary-orange/10">
-            <Building2 className="size-3.5 text-primary-orange" />
+          <span className="size-7 rounded-md bg-primary-green/15 border border-primary-green/30 grid place-items-center shadow-sm shadow-primary-green/10">
+            <Building2 className="size-3.5 text-primary-green" />
           </span>
           <span className="font-montserrat text-seu-caption-sm text-admin-fg uppercase tracking-wider">
             Projects
@@ -69,7 +69,7 @@ export default function ProjectPickerRail({
                     className={cn(
                       'w-full text-left px-4 py-3 border-l-2 transition-colors',
                       isActive
-                        ? 'border-primary-orange bg-primary-orange/5'
+                        ? 'border-primary-green bg-primary-green/5'
                         : 'border-transparent hover:bg-admin-hover'
                     )}
                   >

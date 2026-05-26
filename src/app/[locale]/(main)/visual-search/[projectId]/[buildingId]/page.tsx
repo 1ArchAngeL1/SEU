@@ -2,7 +2,7 @@
 
 import { use, useState, useMemo, useRef, useCallback } from 'react';
 import { useLocale } from 'next-intl';
-import { Loader2, Building2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import BackButton from '@/components/BackButton';
 import ContactForm from '@/components/ContactForm';
 import ContactPanel from '@/components/ContactPanel';
@@ -119,7 +119,7 @@ export default function VisualSearchBuildingPage({
 
           {isLoading && (
             <div className="flex items-center justify-center py-32">
-              <Loader2 className="size-8 text-primary-orange animate-spin" />
+              <Loader2 className="size-8 text-primary-green animate-spin" />
             </div>
           )}
 
@@ -203,38 +203,6 @@ export default function VisualSearchBuildingPage({
                     );
                   })()}
                 </div>
-
-                {/* Building stats bar */}
-                {building && (
-                  <div className="flex items-center justify-center gap-8 mt-6">
-                    {building.totalSize && (
-                      <div className="flex items-center gap-2">
-                        <Building2 className="size-4 text-site-fg-muted" />
-                        <span className="font-montserrat text-seu-caption text-site-fg-muted">
-                          {building.totalSize.toLocaleString()} m²
-                        </span>
-                      </div>
-                    )}
-                    {building.constructionProgress !== undefined && building.constructionProgress > 0 && (
-                      <div className="flex items-center gap-2">
-                        <div className="w-20 h-1.5 bg-site-bg-hover rounded-full overflow-hidden">
-                          <div
-                            className="h-full bg-success-green rounded-full transition-all duration-700"
-                            style={{ width: `${building.constructionProgress}%` }}
-                          />
-                        </div>
-                        <span className="font-montserrat text-seu-caption text-site-fg-muted">
-                          {building.constructionProgress}%
-                        </span>
-                      </div>
-                    )}
-                    {building.status && (
-                      <span className="font-montserrat text-seu-caption text-site-fg-muted capitalize">
-                        {building.status.replace(/_/g, ' ')}
-                      </span>
-                    )}
-                  </div>
-                )}
 
             </div>
           )}

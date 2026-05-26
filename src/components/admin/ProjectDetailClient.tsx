@@ -74,7 +74,7 @@ export default function ProjectDetailClient({
         </p>
         <Link
           href="/admin/projects"
-          className="inline-block mt-4 text-primary-orange font-montserrat text-seu-caption hover:underline"
+          className="inline-block mt-4 text-primary-green font-montserrat text-seu-caption hover:underline"
         >
           ← Back to projects
         </Link>
@@ -207,7 +207,7 @@ export default function ProjectDetailClient({
         </div>
         <button
           onClick={() => setNewBuildingOpen(true)}
-          className="bg-primary-orange text-white font-montserrat font-medium text-seu-caption px-4 py-2 rounded-lg hover:bg-primary-orange/85 transition-colors flex items-center gap-2"
+          className="bg-primary-green text-white font-montserrat font-medium text-seu-caption px-4 py-2 rounded-lg hover:bg-primary-green/85 transition-colors flex items-center gap-2"
         >
           <Plus className="size-4" />
           New Building

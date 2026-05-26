@@ -220,7 +220,7 @@ export default function BuildingDetailClient({
         </p>
         <Link
           href="/admin/buildings"
-          className="inline-block mt-4 text-primary-orange font-montserrat text-seu-caption hover:underline"
+          className="inline-block mt-4 text-primary-green font-montserrat text-seu-caption hover:underline"
         >
           ← Back to buildings
         </Link>

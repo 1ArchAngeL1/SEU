@@ -11,4 +11,4 @@ export const contentClass =
   'bg-white! text-dark-green! border-secondary-grey/40 backdrop-blur-none shadow-lg shadow-black/10';
 
 export const itemClass =
-  'text-dark-green! data-[highlighted]:bg-pale-gray! data-[highlighted]:text-dark-green! data-[state=checked]:bg-primary-orange/10! data-[state=checked]:text-dark-green!';
+  'text-dark-green! data-[highlighted]:bg-pale-gray! data-[highlighted]:text-dark-green! data-[state=checked]:bg-primary-green/10! data-[state=checked]:text-dark-green!';

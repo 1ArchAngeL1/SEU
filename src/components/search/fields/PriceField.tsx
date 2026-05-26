@@ -40,8 +40,8 @@ export default function PriceField({
               className={cn(
                 'px-2.5 py-0.5 rounded-md font-montserrat text-[0.7rem] font-medium transition-colors',
                 currency === c
-                  ? 'bg-primary-orange text-white'
-                  : 'text-secondary-grey hover:text-dark-green'
+                  ? 'bg-black text-white'
+                  : 'text-secondary-grey hover:text-black'
               )}
             >
               {c}

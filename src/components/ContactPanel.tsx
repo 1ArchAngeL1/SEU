@@ -8,32 +8,31 @@ export type ContactPanelProps = {
   className?: string;
   /** Use on pale-gray backgrounds so headings are dark */
   lightBg?: boolean;
+  /** Hide the built-in heading (dash + title) */
+  hideHeader?: boolean;
 };
 
 export default function ContactPanel({
   className,
   lightBg = false,
+  hideHeader = false,
 }: ContactPanelProps) {
   const t = useTranslations('contact');
   return (
     <div className={cn('w-full', className)}>
       {/* Heading */}
-      <div className="mb-10">
-        <div className="flex items-center gap-3 mb-4">
-          <span className="w-10 h-0.5 rounded-full bg-primary-orange animate-[growRight_0.6s_cubic-bezier(0.16,1,0.3,1)_0.2s_both]" />
-          <span className="font-montserrat font-semibold text-seu-caption-sm uppercase tracking-[0.2em] text-primary-orange animate-[fadeInUp_0.6s_cubic-bezier(0.16,1,0.3,1)_0.3s_both]">
+      {!hideHeader && (
+        <div className="mb-10">
+          <h2
+            className={cn(
+              'font-[--font-bodoni] font-normal text-seu-title lg:text-seu-title-lg leading-none animate-[fadeInUp_0.8s_cubic-bezier(0.16,1,0.3,1)_0.4s_both]',
+              lightBg ? 'text-dark-green' : 'text-site-fg-strong'
+            )}
+          >
             {t('title')}
-          </span>
+          </h2>
         </div>
-        <h2
-          className={cn(
-            'font-[--font-bodoni] font-normal text-seu-title lg:text-seu-title-lg leading-none animate-[fadeInUp_0.8s_cubic-bezier(0.16,1,0.3,1)_0.4s_both]',
-            lightBg ? 'text-dark-green' : 'text-site-fg-strong'
-          )}
-        >
-          {t('title')}
-        </h2>
-      </div>
+      )}
 
       <div className="rounded-2xl overflow-hidden border border-site-border bg-site-bg-card site-card-glow animate-[fadeInUp_0.7s_cubic-bezier(0.16,1,0.3,1)_0.5s_both]">
         {/* Contact info cards */}
@@ -43,7 +42,7 @@ export default function ContactPanel({
             href={`mailto:${t('email')}`}
             className="group flex items-center gap-4 p-5 hover:bg-site-bg-hover transition-colors"
           >
-            <span className="size-10 shrink-0 rounded-xl bg-primary-orange grid place-items-center shadow-sm shadow-primary-orange/30 group-hover:scale-110 transition-transform">
+            <span className="size-10 shrink-0 rounded-xl bg-primary-green grid place-items-center shadow-sm shadow-primary-green/30 group-hover:scale-110 transition-transform">
               <Mail className="size-5 text-white" />
             </span>
             <div className="min-w-0">
@@ -61,7 +60,7 @@ export default function ContactPanel({
             href={`tel:${t('phone').replace(/\s/g, '')}`}
             className="group flex items-center gap-4 p-5 hover:bg-site-bg-hover transition-colors"
           >
-            <span className="size-10 shrink-0 rounded-xl bg-primary-orange grid place-items-center shadow-sm shadow-primary-orange/30 group-hover:scale-110 transition-transform">
+            <span className="size-10 shrink-0 rounded-xl bg-primary-green grid place-items-center shadow-sm shadow-primary-green/30 group-hover:scale-110 transition-transform">
               <Phone className="size-5 text-white" />
             </span>
             <div className="min-w-0">
@@ -76,7 +75,7 @@ export default function ContactPanel({
 
           {/* Address */}
           <div className="flex items-center gap-4 p-5">
-            <span className="size-10 shrink-0 rounded-xl bg-primary-orange grid place-items-center shadow-sm shadow-primary-orange/30">
+            <span className="size-10 shrink-0 rounded-xl bg-primary-green grid place-items-center shadow-sm shadow-primary-green/30">
               <MapPin className="size-5 text-white" />
             </span>
             <div className="min-w-0">

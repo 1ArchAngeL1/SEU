@@ -14,8 +14,8 @@ export default function Home() {
       <LandingAboutSection />
       <div className="site-divider" />
       <OngoingSection />
-      <div className="site-divider" />
-      <HowItWorksSection />
+      {/*<div className="site-divider" />*/}
+      {/*<HowItWorksSection />*/}
       <div className="site-divider" />
       <SeuPartners />
       <div className="site-divider" />

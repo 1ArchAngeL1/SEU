@@ -32,8 +32,8 @@ const accentMap = {
     value: 'text-sky-300',
   },
   default: {
-    icon: 'bg-primary-orange text-white',
-    stripe: 'bg-primary-orange',
+    icon: 'bg-primary-green text-white',
+    stripe: 'bg-primary-green',
     value: 'text-admin-fg',
   },
 };
@@ -67,7 +67,7 @@ export default function StatCard({
                 ? 'shadow-rose-500/50'
                 : accent === 'sky'
                   ? 'shadow-sky-500/50'
-                  : 'shadow-primary-orange/50'
+                  : 'shadow-primary-green/50'
         )}
       />
       <div className="flex items-start justify-between mb-3 pl-2">

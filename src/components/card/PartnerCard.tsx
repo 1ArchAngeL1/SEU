@@ -51,7 +51,7 @@ export default function PartnerCard({
 
           {/* Discount badge */}
           {discountPercentage != null && discountPercentage > 0 && (
-            <span className="absolute top-3 left-3 bg-primary-orange text-white font-montserrat font-bold text-seu-caption-sm px-2 py-0.5 rounded-md shadow-md shadow-primary-orange/30">
+            <span className="absolute top-3 left-3 bg-primary-green text-white font-montserrat font-bold text-seu-caption-sm px-2 py-0.5 rounded-md shadow-md shadow-primary-green/30">
               -{discountPercentage}%
             </span>
           )}
@@ -65,7 +65,7 @@ export default function PartnerCard({
                   title={mail}
                   className="flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors"
                 >
-                  <span className="size-7 shrink-0 rounded-lg bg-primary-orange grid place-items-center shadow-sm shadow-primary-orange/30">
+                  <span className="size-7 shrink-0 rounded-lg bg-primary-green grid place-items-center shadow-sm shadow-primary-green/30">
                     <Mail className="size-3.5 text-white" />
                   </span>
                   <span className="font-montserrat text-seu-caption-sm text-pale-gray truncate">
@@ -79,7 +79,7 @@ export default function PartnerCard({
                   title={phone}
                   className="flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors"
                 >
-                  <span className="size-7 shrink-0 rounded-lg bg-primary-orange grid place-items-center shadow-sm shadow-primary-orange/30">
+                  <span className="size-7 shrink-0 rounded-lg bg-primary-green grid place-items-center shadow-sm shadow-primary-green/30">
                     <Phone className="size-3.5 text-white" />
                   </span>
                   <span className="font-montserrat text-seu-caption-sm text-pale-gray">
@@ -89,7 +89,7 @@ export default function PartnerCard({
               )}
               {address && (
                 <div className="flex items-center gap-2.5 px-2 py-1.5">
-                  <span className="size-7 shrink-0 rounded-lg bg-primary-orange grid place-items-center shadow-sm shadow-primary-orange/30">
+                  <span className="size-7 shrink-0 rounded-lg bg-primary-green grid place-items-center shadow-sm shadow-primary-green/30">
                     <MapPin className="size-3.5 text-white" />
                   </span>
                   <span className="font-montserrat text-seu-caption-sm text-pale-gray truncate">
@@ -105,7 +105,7 @@ export default function PartnerCard({
                   title="Facebook"
                   className="flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors"
                 >
-                  <span className="size-7 shrink-0 rounded-lg bg-primary-orange grid place-items-center shadow-sm shadow-primary-orange/30">
+                  <span className="size-7 shrink-0 rounded-lg bg-primary-green grid place-items-center shadow-sm shadow-primary-green/30">
                     <ExternalLink className="size-3.5 text-white" />
                   </span>
                   <span className="font-montserrat text-seu-caption-sm text-pale-gray">

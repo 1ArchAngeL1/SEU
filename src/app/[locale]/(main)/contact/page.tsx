@@ -14,14 +14,14 @@ const ContactPage = () => {
         {/* Form area */}
         <div className="px-5 pt-8 pb-10">
           <FadeIn direction="up" duration={800}>
-            <ContactForm className="max-w-xl" />
+            <ContactForm className="max-w-2xl" />
           </FadeIn>
         </div>
 
         {/* Contact info panel */}
         <div className="px-5 pt-6 pb-10">
           <FadeIn direction="up" delay={200} duration={800}>
-            <ContactPanel className="max-w-xl" />
+            <ContactPanel className="max-w-2xl" />
           </FadeIn>
         </div>
       </div>
@@ -40,17 +40,14 @@ const ContactPage = () => {
         />
         {/* Content layer */}
         <div className="relative z-10 h-full flex flex-row flex-1 overflow-hidden">
-          <div className="flex-1 flex items-start justify-start pt-16 pl-10">
-            <FadeIn direction="left" duration={900}>
-              <ContactForm className="max-w-2xl" />
+          <div className="flex-1 flex items-start justify-start pt-16 px-10">
+            <FadeIn direction="left" duration={900} className="w-full max-w-2xl">
+              <ContactForm />
             </FadeIn>
           </div>
-          <div className="flex-1 flex items-end justify-end pb-16 pr-10">
-            <FadeIn direction="right" delay={300} duration={900}>
-              <ContactPanel
-                className="max-w-2xl"
-                lightBg
-              />
+          <div className="flex-1 flex items-end justify-end pb-16 px-10">
+            <FadeIn direction="right" delay={300} duration={900} className="w-full max-w-2xl">
+              <ContactPanel lightBg />
             </FadeIn>
           </div>
         </div>

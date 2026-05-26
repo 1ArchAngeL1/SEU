@@ -23,7 +23,7 @@ export const LanguageSwitcher = () => {
     <div className="relative flex items-center h-10 border border-site-border-soft rounded-[10px] px-[0.175rem] bg-site-bg-hover">
       {/* Sliding pill */}
       <div
-        className={`absolute top-[0.175rem] h-8 w-16 rounded-[8px] bg-primary-orange border border-primary-orange/60 transition-transform duration-300 ease-in-out ${
+        className={`absolute top-[0.175rem] h-8 w-16 rounded-[8px] bg-primary-green border border-primary-green/60 transition-transform duration-300 ease-in-out ${
           activeLocale === 'ka' ? 'translate-x-[calc(100%+0.175rem)]' : 'translate-x-0'
         }`}
       />

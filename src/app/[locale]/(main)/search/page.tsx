@@ -88,7 +88,7 @@ export default function SearchPage() {
       <div className="relative bg-site-bg site-noise">
         {unitsQ.isLoading ? (
           <div className="flex flex-col items-center justify-center gap-3 py-24">
-            <Loader2 className="size-6 text-primary-orange animate-spin" />
+            <Loader2 className="size-6 text-primary-green animate-spin" />
             <span className="font-montserrat text-seu-body-sm text-site-fg-dim">
               {t('loading')}
             </span>

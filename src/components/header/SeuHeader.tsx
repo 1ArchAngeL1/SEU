@@ -9,10 +9,7 @@ import { HeaderTextLink } from '@/components/header/HeaderTextLink';
 import { SeuLogoLink } from '@/components/header/SeuLogoLink';
 import { LanguageSwitcher } from '@/components/header/LanguageSwitcher';
 import { HeaderContactUs } from '@/components/header/HeaderContactUs';
-import { SiteThemeToggle } from '@/components/header/SiteThemeToggle';
 import { MobileMenuSheet } from '@/components/header/MobileMenuSheet';
-
-export type HeaderVariant = 'dark' | 'light';
 
 export default function SeuHeader() {
   const pathname = usePathname();
@@ -55,7 +52,6 @@ export default function SeuHeader() {
               alt="SEU Development"
               width={52}
               height={46}
-              className="dark-icon"
             />
             <div className={'flex flex-col justify-between py-1'}>
               <p
@@ -101,10 +97,9 @@ export default function SeuHeader() {
           ))}
         </div>
 
-        {/* Desktop contact + lang + theme */}
+        {/* Desktop contact + lang */}
         <div className="hidden lg:flex items-center justify-center gap-5">
           <HeaderContactUs />
-          <SiteThemeToggle />
           <LanguageSwitcher />
         </div>
 

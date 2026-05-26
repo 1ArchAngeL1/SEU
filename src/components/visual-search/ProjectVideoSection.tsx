@@ -50,7 +50,7 @@ export function ProjectVideoSection() {
                 playsInline
                 onEnded={() => setIsPlaying(false)}
               >
-                <source src="/video/seu_video.mp4" type="video/mp4" />
+                <source src="/video/SEU%20VARKETILI.mp4" type="video/mp4" />
               </video>
             )}
 
@@ -60,7 +60,7 @@ export function ProjectVideoSection() {
               aria-label={isPlaying ? 'Pause video' : 'Play video'}
               className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors group"
             >
-              <div className="w-16 h-16 rounded-full bg-primary-orange flex items-center justify-center group-hover:scale-110 transition-transform">
+              <div className="w-16 h-16 rounded-full bg-primary-green flex items-center justify-center group-hover:scale-110 transition-transform">
                 {isPlaying ? (
                   <Pause className="w-6 h-6 text-white" />
                 ) : (

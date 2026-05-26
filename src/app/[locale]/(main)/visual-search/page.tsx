@@ -29,7 +29,7 @@ export default function VisualSearchPage() {
 
       {projectsQ.isLoading && (
         <div className="flex items-center justify-center py-32">
-          <Loader2 className="size-8 text-primary-orange animate-spin" />
+          <Loader2 className="size-8 text-primary-green animate-spin" />
         </div>
       )}
 

@@ -42,10 +42,10 @@ export default function RequestCallDialog({
           {/* Header */}
           <div className="mb-7 pr-10">
             <div className="flex items-center gap-3 mb-3">
-              <span className="size-9 rounded-full bg-primary-orange/15 border border-primary-orange/30 grid place-items-center text-primary-orange">
+              <span className="size-9 rounded-full bg-primary-green/15 border border-primary-green/30 grid place-items-center text-primary-green">
                 <Phone className="size-4" />
               </span>
-              <span className="font-montserrat font-semibold text-seu-caption-sm uppercase tracking-[0.2em] text-primary-orange">
+              <span className="font-montserrat font-semibold text-seu-caption-sm uppercase tracking-[0.2em] text-primary-green">
                 {t('submit')}
               </span>
             </div>

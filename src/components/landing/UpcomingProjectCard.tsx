@@ -19,7 +19,7 @@ export default function UpcomingProjectCard({
   return (
     <div
       className={cn(
-        'relative w-full max-w-xl h-[350px] rounded-xl overflow-hidden border border-site-border-soft hover:border-primary-orange/20 transition-colors duration-500 hover-lift',
+        'relative w-full max-w-xl h-[350px] rounded-xl overflow-hidden border border-site-border-soft hover:border-primary-green/20 transition-colors duration-500 hover-lift',
         className
       )}
     >

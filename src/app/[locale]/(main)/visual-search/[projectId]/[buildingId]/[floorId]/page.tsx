@@ -26,7 +26,7 @@ function toSvgPoints(polygon: PolygonPoint[]): string {
 const STATUS_COLORS: Record<string, { bg: string; text: string }> = {
   reserved: { bg: 'bg-blue', text: 'text-white' },
   sold: { bg: 'bg-red', text: 'text-white' },
-  available: { bg: 'bg-primary-orange', text: 'text-white' },
+  available: { bg: 'bg-primary-green', text: 'text-white' },
   not_for_sale: { bg: 'bg-secondary-grey', text: 'text-white' },
 };
 
@@ -174,7 +174,7 @@ export default function VisualSearchFloorPage({
                     className={cn(
                       'shrink-0 px-4 py-1.5 rounded-full font-montserrat text-seu-caption-sm transition-colors border',
                       isActive
-                        ? 'bg-primary-orange border-primary-orange text-white'
+                        ? 'bg-primary-green border-primary-green text-white'
                         : 'border-site-border-soft text-site-fg-muted'
                     )}
                   >
@@ -245,7 +245,7 @@ export default function VisualSearchFloorPage({
 
         {isLoading && (
           <div className="flex items-center justify-center py-32">
-            <Loader2 className="size-8 text-primary-orange animate-spin" />
+            <Loader2 className="size-8 text-primary-green animate-spin" />
           </div>
         )}
 
@@ -294,12 +294,10 @@ export default function VisualSearchFloorPage({
                           >
                             <polygon
                               points={toSvgPoints(unit.polygon!)}
-                              fill={isHovered ? 'rgba(255,107,53,0.25)' : 'rgba(255,107,53,0.08)'}
-                              stroke={isHovered ? '#FF6B35' : 'rgba(255,107,53,0.3)'}
-                              strokeWidth={isHovered ? 1.5 : 0.5}
-                              vectorEffect="non-scaling-stroke"
+                              fill={isHovered ? 'rgba(46,204,113,0.25)' : 'rgba(46,204,113,0.04)'}
+                              stroke="none"
                               filter={isHovered ? 'url(#glow-m)' : undefined}
-                              className="transition-all duration-300 ease-out"
+                              className="transition-all duration-500 ease-out"
                             />
                           </g>
                         );
@@ -354,7 +352,7 @@ export default function VisualSearchFloorPage({
                         <button
                           key={unit.id}
                           onClick={() => handleUnitClick(unit)}
-                          className="bg-site-bg-hover border border-site-border-soft rounded-xl p-4 text-left hover:border-primary-orange/40 transition-colors"
+                          className="bg-site-bg-hover border border-site-border-soft rounded-xl p-4 text-left hover:border-primary-green/40 transition-colors"
                         >
                           <div className="flex items-center justify-between mb-2">
                             <span className="font-montserrat font-semibold text-seu-body-sm text-site-fg-strong">
@@ -381,7 +379,7 @@ export default function VisualSearchFloorPage({
                             )}
                           </div>
                           {unit.price && (
-                            <p className="font-montserrat text-seu-caption-sm text-primary-orange font-medium mt-1.5">
+                            <p className="font-montserrat text-seu-caption-sm text-primary-green font-medium mt-1.5">
                               {unit.price.currency} {unit.price.amount?.toLocaleString()}
                             </p>
                           )}
@@ -482,26 +480,11 @@ export default function VisualSearchFloorPage({
                             >
                               <polygon
                                 points={toSvgPoints(unit.polygon!)}
-                                fill={
-                                  isHovered ? 'rgba(255,107,53,0.2)' : 'transparent'
-                                }
-                                stroke={isHovered ? '#FF6B35' : 'transparent'}
-                                strokeWidth={isHovered ? 1.5 : 0}
-                                vectorEffect="non-scaling-stroke"
+                                fill={isHovered ? 'rgba(46,204,113,0.25)' : 'rgba(46,204,113,0.04)'}
+                                stroke="none"
                                 filter={isHovered ? 'url(#glow)' : undefined}
-                                className="transition-all duration-300 ease-out"
+                                className="transition-all duration-500 ease-out"
                               />
-                              {isHovered && (
-                                <polygon
-                                  points={toSvgPoints(unit.polygon!)}
-                                  fill="transparent"
-                                  stroke="rgba(255,255,255,0.4)"
-                                  strokeWidth={0.5}
-                                  vectorEffect="non-scaling-stroke"
-                                  strokeDasharray="2 2"
-                                  className="animate-[dash_8s_linear_infinite]"
-                                />
-                              )}
                             </g>
                           );
                         })}
@@ -544,7 +527,7 @@ export default function VisualSearchFloorPage({
                             const u = units.find((u) => u.id === hoveredId);
                             if (!u) return null;
                             return (
-                              <div className="bg-site-bg/90 backdrop-blur-md border border-primary-orange/40 rounded-xl px-6 py-4 shadow-lg">
+                              <div className="bg-site-bg/90 backdrop-blur-md border border-success-green/30 rounded-xl px-6 py-4 shadow-lg">
                                 <p className="font-montserrat font-semibold text-seu-body text-site-fg-strong">
                                   Unit {u.unitNumber}
                                 </p>
@@ -558,7 +541,7 @@ export default function VisualSearchFloorPage({
                                     </span>
                                   )}
                                   {u.price && (
-                                    <span className="text-primary-orange font-medium">
+                                    <span className="text-primary-green font-medium">
                                       {u.price.currency}{' '}
                                       {u.price.amount?.toLocaleString()}
                                     </span>
@@ -606,7 +589,7 @@ export default function VisualSearchFloorPage({
                           <button
                             key={unit.id}
                             onClick={() => handleUnitClick(unit)}
-                            className="bg-site-bg-hover border border-site-border-soft rounded-xl p-5 text-left hover:border-primary-orange/40 transition-colors"
+                            className="bg-site-bg-hover border border-site-border-soft rounded-xl p-5 text-left hover:border-primary-green/40 transition-colors"
                           >
                             <div className="flex items-center justify-between mb-3">
                               <span className="font-montserrat font-semibold text-seu-body text-site-fg-strong">
@@ -633,7 +616,7 @@ export default function VisualSearchFloorPage({
                               )}
                             </div>
                             {unit.price && (
-                              <p className="font-montserrat text-seu-caption text-primary-orange font-medium mt-2">
+                              <p className="font-montserrat text-seu-caption text-primary-green font-medium mt-2">
                                 {unit.price.currency}{' '}
                                 {unit.price.amount?.toLocaleString()}
                               </p>

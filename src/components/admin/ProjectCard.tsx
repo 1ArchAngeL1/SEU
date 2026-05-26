@@ -32,7 +32,7 @@ export default function ProjectCard({
   const occupancy = total > 0 ? Math.round((sold / total) * 100) : 0;
 
   return (
-    <div className="group/card relative rounded-2xl border border-admin-border-soft bg-admin-card overflow-hidden hover:border-primary-orange/40 hover:shadow-admin-lg transition-all">
+    <div className="group/card relative rounded-2xl border border-admin-border-soft bg-admin-card overflow-hidden hover:border-primary-green/40 hover:shadow-admin-lg transition-all">
       <button
         type="button"
         onClick={onOpen}
@@ -90,7 +90,7 @@ export default function ProjectCard({
               </div>
               <div className="h-1.5 rounded-full bg-admin-input overflow-hidden">
                 <div
-                  className="h-full bg-gradient-to-r from-primary-orange to-primary-orange/70 transition-all"
+                  className="h-full bg-gradient-to-r from-primary-green to-primary-green/70 transition-all"
                   style={{ width: `${occupancy}%` }}
                 />
               </div>
@@ -100,7 +100,7 @@ export default function ProjectCard({
             <span className="font-montserrat text-seu-caption-sm text-admin-fg-muted pt-3">
               Open project
             </span>
-            <ArrowRight className="size-3.5 text-primary-orange mt-3 group-hover/card:translate-x-1 transition-transform" />
+            <ArrowRight className="size-3.5 text-primary-green mt-3 group-hover/card:translate-x-1 transition-transform" />
           </div>
         </div>
       </button>

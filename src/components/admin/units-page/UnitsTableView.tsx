@@ -108,7 +108,7 @@ export default function UnitsTableView({
                         </button>
                         <Link
                           href={`/admin/buildings/${buildingId}`}
-                          className="text-primary-orange/80 hover:text-primary-orange transition-colors p-1"
+                          className="text-primary-green/80 hover:text-primary-green transition-colors p-1"
                           title="Open building"
                         >
                           <ExternalLink className="size-4" />

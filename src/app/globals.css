@@ -20,7 +20,11 @@
   --secondary-grey: #a19c92;
   --navy-green: #003253;
   --pale-gray: #f4f0e9;
-  --primary-orange: #ff6b35;
+  --primary-green: #2ecc71;
+  --primary-green-rgb: 46, 204, 113;
+  /* CSS filter chain that tints a black SVG to --primary-green.
+     Use via the .tint-primary-green utility on monochrome SVG <img>. */
+  --primary-green-filter: brightness(0) saturate(100%) invert(72%) sepia(38%) saturate(813%) hue-rotate(86deg) brightness(91%) contrast(85%);
   --success-green: #2ecc71;
   --black: #040303;
   --unnamed-color-15201d: #15201d;
@@ -47,8 +51,8 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  /* shadcn tokens mapped to SEU brand so <Button> defaults to brand orange */
-  --primary: var(--primary-orange);
+  /* shadcn tokens mapped to SEU brand so <Button> defaults to brand green */
+  --primary: var(--primary-green);
   --primary-foreground: #ffffff;
   --secondary: var(--pale-gray);
   --secondary-foreground: var(--dark-green);
@@ -59,7 +63,7 @@
   --destructive: var(--red);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: rgba(255, 107, 53, 0.45);
+  --ring: rgba(var(--primary-green-rgb), 0.45);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -106,52 +110,8 @@
   --site-footer-bg: #040303;
 
   /* Accent glow tokens */
-  --site-glow-orange: rgba(255, 107, 53, 0.08);
+  --site-glow-green: rgba(var(--primary-green-rgb), 0.08);
   --site-glow-teal: rgba(0, 135, 163, 0.06);
-}
-
-/* ============================================================
- * Light theme for the public site
- * Applied via [data-site-theme="light"] on <html>
- * ============================================================ */
-[data-site-theme='light'] {
-  /* ── Backgrounds ── warm stone & cream ── */
-  --site-bg: #F0EDE7;
-  --site-bg-alt: #F5F2EC;
-  --site-bg-card: #F5F2EC;
-  --site-bg-elevated: #F8F4EE;
-  --site-bg-input: rgba(13, 20, 29, 0.035);
-  --site-bg-hover: rgba(255, 107, 53, 0.05);
-
-  /* ── Foregrounds ── warm charcoal tones ── */
-  --site-fg: #2D2A26;
-  --site-fg-strong: #1A1714;
-  --site-fg-muted: #8A847C;
-  --site-fg-dim: rgba(45, 42, 38, 0.40);
-
-  /* ── Borders ── soft stone ── */
-  --site-border: rgba(161, 156, 146, 0.22);
-  --site-border-soft: rgba(161, 156, 146, 0.10);
-  --site-border-strong: rgba(161, 156, 146, 0.38);
-
-  /* ── Inputs ── */
-  --site-input-border: rgba(161, 156, 146, 0.28);
-  --site-input-text: #2D2A26;
-
-  /* ── Shadows ── warm-toned, soft depth ── */
-  --site-shadow: 0 1px 3px rgba(45, 42, 38, 0.06), 0 2px 8px rgba(45, 42, 38, 0.04);
-  --site-shadow-lg: 0 12px 32px rgba(45, 42, 38, 0.10), 0 4px 12px rgba(255, 107, 53, 0.03);
-
-  /* ── Overlays ── */
-  --site-overlay: rgba(250, 248, 244, 0.65);
-  --site-overlay-strong: rgba(250, 248, 244, 0.85);
-
-  /* ── Footer stays dark for contrast ── */
-  --site-footer-bg: #0d141d;
-
-  /* ── Accent glows ── more vivid on light ── */
-  --site-glow-orange: rgba(255, 107, 53, 0.06);
-  --site-glow-teal: rgba(0, 135, 163, 0.04);
 }
 
 @theme inline {
@@ -163,7 +123,7 @@
   --color-secondary-grey: var(--secondary-grey);
   --color-navy-green: var(--navy-green);
   --color-pale-gray: var(--pale-gray);
-  --color-primary-orange: var(--primary-orange);
+  --color-primary-green: var(--primary-green);
   --color-success-green: var(--success-green);
   --color-black: var(--black);
   /* Legacy colors */
@@ -197,7 +157,7 @@
   --color-site-input-border: var(--site-input-border);
   --color-site-input-text: var(--site-input-text);
   --color-site-footer-bg: var(--site-footer-bg);
-  --color-site-glow-orange: var(--site-glow-orange);
+  --color-site-glow-green: var(--site-glow-green);
   --color-site-glow-teal: var(--site-glow-teal);
 
   --color-sidebar-ring: var(--sidebar-ring);
@@ -258,7 +218,7 @@ body {
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: var(--primary-orange);
+  --primary: var(--primary-green);
   --primary-foreground: #ffffff;
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
@@ -269,7 +229,7 @@ body {
   --destructive: var(--red);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: rgba(255, 107, 53, 0.45);
+  --ring: rgba(var(--primary-green-rgb), 0.45);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
@@ -320,11 +280,9 @@ body {
 }
 
 /* ============================================================
- * Admin theme tokens — switched by [data-admin-theme="dark|light"]
- * Scoped: only nodes inside the admin shell read these vars,
- * so the public site is unaffected.
+ * Admin theme tokens — dark only
  * ============================================================ */
-[data-admin-theme='dark'] {
+:root {
   /* Map shadcn tokens to admin dark palette so portaled components
      (Sheet, Dialog, Popover, etc.) render correctly in dark mode. */
   --background: #0d141d;
@@ -336,12 +294,12 @@ body {
   --muted: #162033;
   --muted-foreground: #a19c92;
   --border: rgba(51, 65, 85, 0.8);
-  --ring: rgba(255, 107, 53, 0.3);
-  --accent: #ff6b35;
+  --ring: rgba(var(--primary-green-rgb), 0.3);
+  --accent: var(--primary-green);
   --accent-foreground: #ffffff;
 
   --admin-bg: #070d14;
-  --admin-bg-pattern: radial-gradient(900px circle at 0% 0%, rgba(255, 107, 53, 0.06), transparent 50%),
+  --admin-bg-pattern: radial-gradient(900px circle at 0% 0%, rgba(var(--primary-green-rgb), 0.06), transparent 50%),
     radial-gradient(700px circle at 100% 100%, rgba(13, 135, 163, 0.05), transparent 55%);
 
   --admin-card: linear-gradient(180deg, #101926 0%, #0b1320 100%);
@@ -361,15 +319,15 @@ body {
   --admin-fg-muted: #a19c92;
   --admin-fg-dim: rgba(161, 156, 146, 0.6);
 
-  --admin-accent: #ff6b35;
-  --admin-accent-strong: #ff6b35;
-  --admin-accent-soft: rgba(255, 107, 53, 0.15);
-  --admin-accent-ring: rgba(255, 107, 53, 0.3);
+  --admin-accent: var(--primary-green);
+  --admin-accent-strong: var(--primary-green);
+  --admin-accent-soft: rgba(var(--primary-green-rgb), 0.15);
+  --admin-accent-ring: rgba(var(--primary-green-rgb), 0.3);
 
   --admin-overlay: rgba(0, 0, 0, 0.6);
   --admin-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   --admin-shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.5);
-  --admin-shadow-accent: 0 6px 16px rgba(255, 107, 53, 0.25);
+  --admin-shadow-accent: 0 6px 16px rgba(var(--primary-green-rgb), 0.25);
 
   /* Status palettes — used by StatusBadge and accent stripes */
   --admin-emerald-bg: linear-gradient(180deg, rgba(52, 211, 153, 0.18) 0%, rgba(16, 185, 129, 0.06) 100%);
@@ -401,8 +359,15 @@ body {
   --admin-danger-text: rgb(254, 205, 211);
 }
 
+/* ============================================================
+ * Scoped light-admin override.
+ * NOT a theme switcher — public-site sections that sit on a light
+ * background (e.g. the search filter) opt-in with
+ * `data-admin-theme="light"` so shadcn primitives (Select chevron,
+ * popover surface, etc.) render against the cream bg instead of
+ * inheriting the dark admin tokens from :root.
+ * ============================================================ */
 [data-admin-theme='light'] {
-  /* Map shadcn tokens for portaled components in light mode */
   --background: #ffffff;
   --foreground: #0f172a;
   --card: #ffffff;
@@ -412,21 +377,17 @@ body {
   --muted: #f1f5f9;
   --muted-foreground: #475569;
   --border: rgba(203, 213, 225, 0.95);
-  --ring: rgba(255, 107, 53, 0.35);
-  --accent: #ea5a2c;
+  --ring: rgba(var(--primary-green-rgb), 0.35);
+  --accent: var(--primary-green);
   --accent-foreground: #ffffff;
 
   --admin-bg: #f4f6fa;
-  --admin-bg-pattern: radial-gradient(900px circle at 0% 0%, rgba(255, 107, 53, 0.05), transparent 55%),
-    radial-gradient(700px circle at 100% 100%, rgba(13, 135, 163, 0.04), transparent 60%);
-
   --admin-card: linear-gradient(180deg, #ffffff 0%, #fafbfd 100%);
   --admin-card-solid: #ffffff;
   --admin-input: linear-gradient(180deg, #ffffff 0%, #f5f7fa 100%);
   --admin-input-solid: #ffffff;
   --admin-deep: #eef1f5;
   --admin-hover: #f1f4f8;
-  --admin-elevated: linear-gradient(180deg, #fff7f2 0%, #ffeee5 100%);
 
   --admin-border: rgba(203, 213, 225, 0.95);
   --admin-border-soft: rgba(226, 232, 240, 0.95);
@@ -437,43 +398,12 @@ body {
   --admin-fg-muted: #475569;
   --admin-fg-dim: rgba(71, 85, 105, 0.6);
 
-  --admin-accent: #ea5a2c;
-  --admin-accent-strong: #d6491e;
-  --admin-accent-soft: rgba(255, 107, 53, 0.12);
-  --admin-accent-ring: rgba(255, 107, 53, 0.35);
+  --admin-accent: var(--primary-green);
+  --admin-accent-strong: var(--primary-green);
+  --admin-accent-soft: rgba(var(--primary-green-rgb), 0.12);
+  --admin-accent-ring: rgba(var(--primary-green-rgb), 0.35);
 
-  --admin-overlay: rgba(15, 23, 42, 0.4);
   --admin-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
-  --admin-shadow-lg: 0 12px 28px rgba(15, 23, 42, 0.12);
-  --admin-shadow-accent: 0 6px 16px rgba(255, 107, 53, 0.25);
-
-  --admin-emerald-bg: linear-gradient(180deg, rgba(16, 185, 129, 0.12) 0%, rgba(16, 185, 129, 0.04) 100%);
-  --admin-emerald-border: rgba(16, 185, 129, 0.5);
-  --admin-emerald-text: rgb(6, 95, 70);
-  --admin-emerald-dot: rgb(16, 185, 129);
-
-  --admin-amber-bg: linear-gradient(180deg, rgba(217, 119, 6, 0.12) 0%, rgba(217, 119, 6, 0.04) 100%);
-  --admin-amber-border: rgba(217, 119, 6, 0.5);
-  --admin-amber-text: rgb(146, 64, 14);
-  --admin-amber-dot: rgb(217, 119, 6);
-
-  --admin-rose-bg: linear-gradient(180deg, rgba(225, 29, 72, 0.12) 0%, rgba(225, 29, 72, 0.04) 100%);
-  --admin-rose-border: rgba(225, 29, 72, 0.5);
-  --admin-rose-text: rgb(159, 18, 57);
-  --admin-rose-dot: rgb(225, 29, 72);
-
-  --admin-sky-bg: linear-gradient(180deg, rgba(2, 132, 199, 0.12) 0%, rgba(2, 132, 199, 0.04) 100%);
-  --admin-sky-border: rgba(2, 132, 199, 0.5);
-  --admin-sky-text: rgb(7, 89, 133);
-  --admin-sky-dot: rgb(2, 132, 199);
-
-  --admin-warning-shell: rgba(217, 119, 6, 0.08);
-  --admin-warning-border: rgba(217, 119, 6, 0.4);
-  --admin-warning-text: rgb(146, 64, 14);
-
-  --admin-danger-shell: rgba(225, 29, 72, 0.08);
-  --admin-danger-border: rgba(225, 29, 72, 0.45);
-  --admin-danger-text: rgb(159, 18, 57);
 }
 
 /* Map admin tokens into Tailwind utility namespace.
@@ -496,7 +426,7 @@ body {
 }
 
 /* Gradient surfaces — the bg-* tokens above can only carry solid colors,
-   so gradient-aware utilities live here. They flip with the theme. */
+   so gradient-aware utilities live here. */
 .bg-admin-card-gradient {
   background: var(--admin-card);
 }
@@ -624,6 +554,11 @@ img {
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Tints a monochrome (black) SVG to --primary-green via filter chain. */
+.tint-primary-green {
+  filter: var(--primary-green-filter);
+}
+
 /* Site theme shadows */
 .shadow-site {
   box-shadow: var(--site-shadow);
@@ -650,22 +585,22 @@ img {
 }
 
 /* Ambient glow — radial highlight behind hero elements */
-.site-glow-orange {
-  background-image: radial-gradient(600px ellipse at 20% 50%, var(--site-glow-orange), transparent 70%);
+.site-glow-green {
+  background-image: radial-gradient(600px ellipse at 20% 50%, var(--site-glow-green), transparent 70%);
 }
 .site-glow-teal {
   background-image: radial-gradient(500px ellipse at 80% 30%, var(--site-glow-teal), transparent 70%);
 }
 .site-glow-center {
   background-image:
-    radial-gradient(800px ellipse at 50% 40%, var(--site-glow-orange), transparent 60%),
+    radial-gradient(800px ellipse at 50% 40%, var(--site-glow-green), transparent 60%),
     radial-gradient(600px ellipse at 70% 60%, var(--site-glow-teal), transparent 65%);
 }
 
 /* Gradient section divider */
 .site-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--site-border-strong), var(--primary-orange, #ff6b35) 50%, var(--site-border-strong), transparent);
+  background: linear-gradient(90deg, transparent, var(--site-border-strong), var(--primary-green, var(--primary-green)) 50%, var(--site-border-strong), transparent);
   opacity: 0.5;
 }
 
@@ -678,7 +613,7 @@ img {
   position: absolute;
   inset: -1px;
   border-radius: inherit;
-  background: linear-gradient(135deg, rgba(255, 107, 53, 0.15), transparent 40%, transparent 60%, rgba(0, 135, 163, 0.1));
+  background: linear-gradient(135deg, rgba(var(--primary-green-rgb), 0.15), transparent 40%, transparent 60%, rgba(0, 135, 163, 0.1));
   z-index: -1;
   opacity: 0;
   transition: opacity 0.4s ease;
@@ -695,59 +630,10 @@ img {
 
 /* Input focus glow */
 .site-input-glow:focus {
-  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1), 0 0 20px -4px rgba(255, 107, 53, 0.15);
+  box-shadow: 0 0 0 3px rgba(var(--primary-green-rgb), 0.1), 0 0 20px -4px rgba(var(--primary-green-rgb), 0.15);
 }
 
-/* ============================================================
- * Light theme refinements
- * ============================================================ */
-
-/* Kill noise overlay on light — it only adds texture to dark surfaces */
-[data-site-theme='light'] .site-noise::before {
-  display: none;
-}
-
-/* Kill ambient glow backgrounds on light — they look ghostly */
-[data-site-theme='light'] .site-glow-orange,
-[data-site-theme='light'] .site-glow-teal,
-[data-site-theme='light'] .site-glow-center {
-  background-image: none;
-}
-
-/* Card glow: use a clean warm shadow instead of gradient border */
-[data-site-theme='light'] .site-card-glow::before {
-  display: none;
-}
-[data-site-theme='light'] .site-card-glow:hover {
-  box-shadow: 0 4px 16px rgba(45, 42, 38, 0.08);
-}
-
-/* Hover-lift: clean shadow, no colored glow */
-[data-site-theme='light'] .hover-lift:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(45, 42, 38, 0.12);
-}
-
-/* Input focus: simple orange ring */
-[data-site-theme='light'] .site-input-glow:focus {
-  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.12);
-}
-
-/* Divider: subtle warm line */
-[data-site-theme='light'] .site-divider {
-  background: linear-gradient(90deg, transparent, rgba(161, 156, 146, 0.30), rgba(255, 107, 53, 0.20) 50%, rgba(161, 156, 146, 0.30), transparent);
-  opacity: 0.5;
-}
-
-/* Invert white SVG icons/logos to dark in light mode */
-[data-site-theme='light'] .dark-icon {
-  filter: brightness(0) saturate(100%);
-}
-
-/* Vignette overlay — hidden in light mode where it fogs images */
+/* Vignette overlay */
 .site-vignette {
   pointer-events: none;
-}
-[data-site-theme='light'] .site-vignette {
-  display: none;
 }

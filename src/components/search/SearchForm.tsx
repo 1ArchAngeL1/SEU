@@ -182,14 +182,15 @@ export default function SearchForm({
           <div className="flex items-center gap-6 pt-7">
             <Button
               type="submit"
-              className="bg-primary-orange hover:bg-primary-orange/90 text-white font-montserrat font-medium text-seu-caption h-10 px-8 rounded-md shadow-none"
+              style={{ color: '#ffffff' }}
+              className="bg-black hover:bg-black/90 font-montserrat font-medium text-seu-caption h-10 px-8 rounded-md shadow-none"
             >
               {t('searchBtn')}
             </Button>
             <button
               type="button"
               onClick={handleClear}
-              className="font-montserrat text-seu-caption text-dark-green hover:text-primary-orange transition-colors"
+              className="font-montserrat text-seu-caption text-dark-green hover:text-black transition-colors"
             >
               {t('clearFilters')}
             </button>

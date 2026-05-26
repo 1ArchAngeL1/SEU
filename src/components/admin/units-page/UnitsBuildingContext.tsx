@@ -104,7 +104,7 @@ export default function UnitsBuildingContext({
     <div className="space-y-5">
       {/* Building hero header */}
       <div className="rounded-2xl border border-admin-border-soft bg-admin-card-gradient p-5 sm:p-6 relative overflow-hidden">
-        <div className="absolute -top-16 -right-16 size-48 rounded-full bg-primary-orange/10 blur-3xl pointer-events-none" />
+        <div className="absolute -top-16 -right-16 size-48 rounded-full bg-primary-green/10 blur-3xl pointer-events-none" />
         <div className="relative flex items-end justify-between gap-4 flex-wrap">
           <div className="flex items-center gap-4 min-w-0">
             <div className="size-14 rounded-xl border border-admin-border bg-admin-input grid place-items-center font-[--font-bodoni] text-seu-heading text-admin-fg leading-none shrink-0">
@@ -197,7 +197,7 @@ export default function UnitsBuildingContext({
               className={cn(
                 'flex items-center gap-1.5 px-3 py-1.5 rounded-md font-montserrat font-medium text-seu-caption-sm transition-all',
                 view === id
-                  ? 'bg-admin-elevated-gradient text-admin-fg border border-primary-orange/30 shadow-sm shadow-primary-orange/10'
+                  ? 'bg-admin-elevated-gradient text-admin-fg border border-primary-green/30 shadow-sm shadow-primary-green/10'
                   : 'text-admin-fg-muted hover:text-admin-fg hover:bg-admin-hover border border-transparent'
               )}
             >
@@ -230,7 +230,7 @@ export default function UnitsBuildingContext({
           </div>
           <button
             onClick={onAddFloor}
-            className="font-montserrat text-seu-caption-sm bg-primary-orange text-white px-3 py-1.5 rounded-md hover:bg-primary-orange/85 transition-colors flex items-center gap-1 shrink-0"
+            className="font-montserrat text-seu-caption-sm bg-primary-green text-white px-3 py-1.5 rounded-md hover:bg-primary-green/85 transition-colors flex items-center gap-1 shrink-0"
           >
             <Plus className="size-3.5" />
             Add floor

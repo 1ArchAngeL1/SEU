@@ -104,7 +104,7 @@ export default function FloorsPanel({
     <div className="rounded-2xl border border-admin-border bg-admin-card-gradient shadow-admin overflow-hidden">
       <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-admin-border-soft">
         <div className="flex items-center gap-2.5">
-          <span className="size-9 rounded-lg bg-gradient-to-br from-primary-orange/25 to-primary-orange/10 border border-primary-orange/40 grid place-items-center text-primary-orange shadow-sm shadow-primary-orange/20">
+          <span className="size-9 rounded-lg bg-gradient-to-br from-primary-green/25 to-primary-green/10 border border-primary-green/40 grid place-items-center text-primary-green shadow-sm shadow-primary-green/20">
             <Layers className="size-4" />
           </span>
           <div>
@@ -118,7 +118,7 @@ export default function FloorsPanel({
         </div>
         <button
           onClick={openCreate}
-          className="bg-gradient-to-b from-primary-orange to-primary-orange/85 text-white font-montserrat font-medium text-seu-caption-sm px-3 py-1.5 rounded-lg shadow-md shadow-primary-orange/25 hover:shadow-lg hover:shadow-primary-orange/30 transition-all flex items-center gap-1.5"
+          className="bg-gradient-to-b from-primary-green to-primary-green/85 text-white font-montserrat font-medium text-seu-caption-sm px-3 py-1.5 rounded-lg shadow-md shadow-primary-green/25 hover:shadow-lg hover:shadow-primary-green/30 transition-all flex items-center gap-1.5"
         >
           <Plus className="size-3.5" />
           Add floor
@@ -148,7 +148,7 @@ export default function FloorsPanel({
                 className={cn(
                   'flex items-center gap-3 px-5 py-3 transition-colors group',
                   isSelected
-                    ? 'bg-gradient-to-r from-primary-orange/15 to-transparent border-l-2 border-primary-orange'
+                    ? 'bg-gradient-to-r from-primary-green/15 to-transparent border-l-2 border-primary-green'
                     : 'hover:bg-admin-hover cursor-pointer border-l-2 border-transparent'
                 )}
                 onClick={() => onSelectFloor?.(f.floorNumber)}
@@ -157,7 +157,7 @@ export default function FloorsPanel({
                   className={cn(
                     'size-10 shrink-0 rounded-lg border grid place-items-center font-[--font-bodoni] text-seu-subheading tabular-nums leading-none shadow-sm',
                     isSelected
-                      ? 'border-primary-orange/50 bg-primary-orange/15 text-admin-fg shadow-primary-orange/15'
+                      ? 'border-primary-green/50 bg-primary-green/15 text-admin-fg shadow-primary-green/15'
                       : isBasement
                         ? 'border-amber-500/30 bg-amber-500/10 text-amber-200 shadow-admin'
                         : 'border-admin-border bg-admin-input-gradient text-admin-fg-muted shadow-admin'

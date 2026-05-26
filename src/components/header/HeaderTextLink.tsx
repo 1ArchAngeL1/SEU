@@ -31,7 +31,7 @@ export const HeaderTextLink = ({
       {/* Animated underline */}
       <span
         className={cn(
-          'absolute left-4 right-4 -bottom-1.5 h-[2px] bg-primary-orange transition-transform duration-300 ease-out origin-left',
+          'absolute left-4 right-4 -bottom-1.5 h-[2px] bg-primary-green transition-transform duration-300 ease-out origin-left',
           isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
         )}
       />

@@ -62,7 +62,7 @@ export default function PolygonsEditor({
         <button
           type="button"
           onClick={addPolygon}
-          className="flex items-center gap-1 font-montserrat text-seu-caption-sm text-primary-orange hover:text-primary-orange/80 transition-colors"
+          className="flex items-center gap-1 font-montserrat text-seu-caption-sm text-primary-green hover:text-primary-green/80 transition-colors"
         >
           <Plus className="size-3.5" />
           Add

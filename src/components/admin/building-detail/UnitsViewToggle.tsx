@@ -12,7 +12,7 @@ const btnToggle = (active: boolean) =>
   cn(
     'flex items-center gap-1.5 px-3 py-1.5 rounded-md font-montserrat font-medium text-seu-caption-sm transition-colors',
     active
-      ? 'bg-primary-orange/15 text-admin-fg border border-primary-orange/30'
+      ? 'bg-primary-green/15 text-admin-fg border border-primary-green/30'
       : 'text-admin-fg-muted hover:text-admin-fg border border-transparent'
   );
 

@@ -36,7 +36,7 @@ import { cn } from '@/lib/utils';
 import type { Project, CreateProjectInput } from '@/model/types/api';
 
 const btnPrimary =
-  'bg-gradient-to-b from-primary-orange to-primary-orange/85 text-white font-montserrat font-medium text-seu-caption px-4 py-2 rounded-lg shadow-md shadow-primary-orange/25 hover:shadow-lg hover:shadow-primary-orange/30 transition-all flex items-center gap-2';
+  'bg-gradient-to-b from-primary-green to-primary-green/85 text-white font-montserrat font-medium text-seu-caption px-4 py-2 rounded-lg shadow-md shadow-primary-green/25 hover:shadow-lg hover:shadow-primary-green/30 transition-all flex items-center gap-2';
 const btnPage =
   'px-3 py-1.5 border border-admin-border-soft bg-admin-input-gradient rounded-lg text-seu-caption-sm text-admin-fg disabled:opacity-30 hover:bg-admin-hover transition-colors';
 
@@ -130,7 +130,7 @@ export default function ProjectsPage() {
               className={cn(
                 'flex items-center gap-1.5 px-3 py-1.5 rounded-md font-montserrat font-medium text-seu-caption-sm transition-all',
                 layout === id
-                  ? 'bg-admin-elevated-gradient text-admin-fg border border-primary-orange/30 shadow-sm shadow-primary-orange/10'
+                  ? 'bg-admin-elevated-gradient text-admin-fg border border-primary-green/30 shadow-sm shadow-primary-green/10'
                   : 'text-admin-fg-muted hover:text-admin-fg hover:bg-admin-hover border border-transparent'
               )}
             >
@@ -172,10 +172,10 @@ export default function ProjectsPage() {
           ))}
           <button
             onClick={openCreate}
-            className="rounded-2xl border border-dashed border-admin-border bg-admin-card/40 p-6 text-center hover:border-primary-orange/60 hover:bg-primary-orange/5 transition-colors flex flex-col items-center justify-center min-h-[16rem] group"
+            className="rounded-2xl border border-dashed border-admin-border bg-admin-card/40 p-6 text-center hover:border-primary-green/60 hover:bg-primary-green/5 transition-colors flex flex-col items-center justify-center min-h-[16rem] group"
           >
-            <span className="size-12 rounded-full border border-admin-border group-hover:border-primary-orange/60 grid place-items-center mb-3 transition-colors">
-              <Plus className="size-5 text-admin-fg-muted group-hover:text-primary-orange transition-colors" />
+            <span className="size-12 rounded-full border border-admin-border group-hover:border-primary-green/60 grid place-items-center mb-3 transition-colors">
+              <Plus className="size-5 text-admin-fg-muted group-hover:text-primary-green transition-colors" />
             </span>
             <span className="font-montserrat text-seu-caption text-admin-fg-muted group-hover:text-admin-fg transition-colors">
               New project
@@ -246,7 +246,7 @@ export default function ProjectsPage() {
                       >
                         <Trash2 className="size-4" />
                       </button>
-                      <ArrowRight className="size-4 text-admin-fg-dim group-hover:text-primary-orange transition-colors ml-1 self-center" />
+                      <ArrowRight className="size-4 text-admin-fg-dim group-hover:text-primary-green transition-colors ml-1 self-center" />
                     </div>
                   </td>
                 </tr>

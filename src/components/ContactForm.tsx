@@ -1,7 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { CheckCircle2, User, Phone, Mail, Send, AlertCircle } from 'lucide-react';
+import {
+  CheckCircle2,
+  User,
+  Phone,
+  Mail,
+  Send,
+  AlertCircle,
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
 import { useCreateContact } from '@/hooks/queries/use-contacts';
@@ -51,29 +58,39 @@ export default function ContactForm({
   };
 
   const inputBase =
-    'w-full bg-site-bg-input border border-site-input-border rounded-xl pl-12 pr-6 py-4 font-montserrat font-medium text-seu-body-sm text-site-input-text placeholder-site-fg-dim focus:outline-none focus:border-primary-orange/60 site-input-glow transition-all';
+    'w-full bg-site-bg-input border border-site-input-border rounded-xl pl-12 pr-6 py-4 font-montserrat font-medium text-seu-body-sm text-site-input-text placeholder-site-fg-dim focus:outline-none focus:border-primary-green/60 site-input-glow transition-all';
 
   const fields = [
-    { icon: User, type: 'text' as const, placeholder: t('namePlaceholder'), key: 'name' as const },
-    { icon: Phone, type: 'tel' as const, placeholder: t('phonePlaceholder'), key: 'phone' as const, required: true },
-    { icon: Mail, type: 'email' as const, placeholder: t('emailPlaceholder'), key: 'email' as const },
+    {
+      icon: User,
+      type: 'text' as const,
+      placeholder: t('namePlaceholder'),
+      key: 'name' as const,
+    },
+    {
+      icon: Phone,
+      type: 'tel' as const,
+      placeholder: t('phonePlaceholder'),
+      key: 'phone' as const,
+      required: true,
+    },
+    {
+      icon: Mail,
+      type: 'email' as const,
+      placeholder: t('emailPlaceholder'),
+      key: 'email' as const,
+    },
   ];
 
   return (
-    <div className={cn('w-full', className)}>
+    <div className={cn('w-full mx-auto', className)}>
       {/* Heading */}
       {!hideHeader && (
         <div className="mb-10">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="w-10 h-0.5 rounded-full bg-primary-orange animate-[growRight_0.6s_cubic-bezier(0.16,1,0.3,1)_0.2s_both]" />
-            <span className="font-montserrat font-semibold text-seu-caption-sm uppercase tracking-[0.2em] text-primary-orange animate-[fadeInUp_0.6s_cubic-bezier(0.16,1,0.3,1)_0.3s_both]">
-              {t('submit')}
-            </span>
-          </div>
           <h2
             className={cn(
-              "font-[--font-bodoni] font-normal text-seu-title lg:text-seu-title-lg leading-none animate-[fadeInUp_0.8s_cubic-bezier(0.16,1,0.3,1)_0.4s_both]",
-              lightBg ? "text-dark-green" : "text-site-fg-strong"
+              'font-[--font-bodoni] font-normal text-seu-title lg:text-seu-title-lg leading-none animate-[fadeInUp_0.8s_cubic-bezier(0.16,1,0.3,1)_0.4s_both]',
+              lightBg ? 'text-dark-green' : 'text-site-fg-strong'
             )}
           >
             {t('requestsCall')}
@@ -83,7 +100,7 @@ export default function ContactForm({
 
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-5 w-full max-w-[28rem]"
+        className="flex flex-col gap-5 w-full mx-auto"
       >
         {fields.map((field, i) => {
           const Icon = field.icon;
@@ -94,7 +111,7 @@ export default function ContactForm({
               style={{ animationDelay: `${500 + i * 100}ms` }}
             >
               <span className="absolute left-4 top-1/2 -translate-y-1/2 size-5 grid place-items-center pointer-events-none">
-                <Icon className="size-5 text-site-fg-muted group-focus-within:text-primary-orange transition-colors" />
+                <Icon className="size-5 text-site-fg-muted group-focus-within:text-primary-green transition-colors" />
               </span>
               <input
                 type={field.type}
@@ -115,7 +132,7 @@ export default function ContactForm({
             <button
               type="submit"
               disabled={createContact.isPending}
-              className="flex items-center gap-3 bg-primary-orange text-white font-montserrat font-medium text-seu-body px-10 py-3.5 rounded-xl shadow-lg shadow-primary-orange/25 hover:shadow-xl hover:shadow-primary-orange/30 hover:bg-primary-orange/90 active:scale-[0.98] transition-all disabled:opacity-60"
+              className="flex items-center gap-3 bg-primary-green text-white font-montserrat font-medium text-seu-body px-10 py-3.5 rounded-xl shadow-lg shadow-primary-green/25 hover:shadow-xl hover:shadow-primary-green/30 hover:bg-primary-green/90 active:scale-[0.98] transition-all disabled:opacity-60"
             >
               {createContact.isPending ? t('sending') : t('submit')}
               <Send className="size-4" />

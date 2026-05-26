@@ -30,7 +30,7 @@ import { fileUrl } from '@/lib/file-url';
 import type { NewsArticle, CreateNewsInput } from '@/model/types/api';
 
 const btnPrimary =
-  'bg-gradient-to-b from-primary-orange to-primary-orange/85 text-white font-montserrat font-medium text-seu-caption px-4 py-2 rounded-lg shadow-md shadow-primary-orange/25 hover:shadow-lg hover:shadow-primary-orange/30 transition-all flex items-center gap-2';
+  'bg-gradient-to-b from-primary-green to-primary-green/85 text-white font-montserrat font-medium text-seu-caption px-4 py-2 rounded-lg shadow-md shadow-primary-green/25 hover:shadow-lg hover:shadow-primary-green/30 transition-all flex items-center gap-2';
 const btnPage =
   'px-3 py-1.5 border border-admin-border-soft bg-admin-input-gradient rounded-lg text-seu-caption-sm text-admin-fg disabled:opacity-30 hover:bg-admin-hover transition-colors';
 
@@ -142,7 +142,7 @@ export default function AdminNewsPage() {
           {items.map((article) => (
             <div
               key={article.id}
-              className="rounded-2xl border border-admin-border-soft bg-admin-card-gradient overflow-hidden shadow-admin group hover:border-primary-orange/30 transition-colors"
+              className="rounded-2xl border border-admin-border-soft bg-admin-card-gradient overflow-hidden shadow-admin group hover:border-primary-green/30 transition-colors"
             >
               {/* Image area */}
               <div className="h-40 bg-admin-deep flex items-center justify-center border-b border-admin-border-soft overflow-hidden">
@@ -212,10 +212,10 @@ export default function AdminNewsPage() {
           {/* Add card */}
           <button
             onClick={openCreate}
-            className="rounded-2xl border border-dashed border-admin-border bg-admin-card/40 p-6 text-center hover:border-primary-orange/60 hover:bg-primary-orange/5 transition-colors flex flex-col items-center justify-center min-h-[16rem] group"
+            className="rounded-2xl border border-dashed border-admin-border bg-admin-card/40 p-6 text-center hover:border-primary-green/60 hover:bg-primary-green/5 transition-colors flex flex-col items-center justify-center min-h-[16rem] group"
           >
-            <span className="size-12 rounded-full border border-admin-border group-hover:border-primary-orange/60 grid place-items-center mb-3 transition-colors">
-              <Plus className="size-5 text-admin-fg-muted group-hover:text-primary-orange transition-colors" />
+            <span className="size-12 rounded-full border border-admin-border group-hover:border-primary-green/60 grid place-items-center mb-3 transition-colors">
+              <Plus className="size-5 text-admin-fg-muted group-hover:text-primary-green transition-colors" />
             </span>
             <span className="font-montserrat text-seu-caption text-admin-fg-muted group-hover:text-admin-fg transition-colors">
               New article

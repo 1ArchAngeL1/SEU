@@ -29,7 +29,7 @@ export const OngoingProjectCard = ({
   return (
     <div
       className={cn(
-        'relative w-full h-[280px] lg:h-[500px] rounded-2xl overflow-hidden group hover-lift border border-site-border-soft hover:border-primary-orange/20 transition-colors duration-500',
+        'relative w-full h-[280px] lg:h-[500px] rounded-2xl overflow-hidden group hover-lift border border-site-border-soft hover:border-primary-green/20 transition-colors duration-500',
         className
       )}
     >
@@ -48,7 +48,7 @@ export const OngoingProjectCard = ({
       {/* Badge - Top Right */}
       {badge && (
         <div className="absolute top-6 right-6">
-          <span className="px-3 py-1 bg-primary-orange text-white text-seu-caption-sm font-montserrat font-medium rounded">
+          <span className="px-3 py-1 bg-primary-green text-white text-seu-caption-sm font-montserrat font-medium rounded">
             {badge}
           </span>
         </div>
@@ -90,7 +90,7 @@ export const OngoingProjectCard = ({
           {location && (
             <div>
               <span className="text-secondary-grey">Location - </span>
-              <span className="text-primary-orange">{location}</span>
+              <span className="text-primary-green">{location}</span>
             </div>
           )}
           {hasSizeRange && (

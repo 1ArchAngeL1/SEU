@@ -17,7 +17,7 @@ export default function RootNotFound() {
         </p>
         <Link
           href="/"
-          className="font-montserrat font-medium text-seu-body-sm lg:text-seu-body text-pale-gray hover:text-primary-orange transition-colors"
+          className="font-montserrat font-medium text-seu-body-sm lg:text-seu-body text-pale-gray hover:text-primary-green transition-colors"
         >
           To home page
         </Link>

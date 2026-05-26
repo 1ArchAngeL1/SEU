@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { SeuLogoLink } from '@/components/header/SeuLogoLink';
 import { LanguageSwitcher } from '@/components/header/LanguageSwitcher';
-import { SiteThemeToggle } from '@/components/header/SiteThemeToggle';
 import {
   Sheet,
   SheetTrigger,
@@ -39,7 +38,6 @@ export function MobileMenuSheet({
             alt="Menu"
             width={24}
             height={18}
-            className="dark-icon"
           />
         </button>
       </SheetTrigger>
@@ -53,10 +51,10 @@ export function MobileMenuSheet({
         <SheetTitle className="sr-only">Navigation menu</SheetTitle>
 
         {/* Decorative accent line */}
-        <div className="absolute top-0 left-0 w-full h-0.5 bg-linear-to-r from-primary-orange via-primary-orange/40 to-transparent" />
+        <div className="absolute top-0 left-0 w-full h-0.5 bg-linear-to-r from-primary-green via-primary-green/40 to-transparent" />
 
         {/* Close button — top right */}
-        <SheetClose className="absolute top-6 right-6 size-10 rounded-full border border-site-border-soft flex items-center justify-center text-site-fg-dim hover:text-primary-orange hover:border-primary-orange/50 transition-colors">
+        <SheetClose className="absolute top-6 right-6 size-10 rounded-full border border-site-border-soft flex items-center justify-center text-site-fg-dim hover:text-primary-green hover:border-primary-green/50 transition-colors">
           <svg
             width="14"
             height="14"
@@ -98,7 +96,7 @@ export function MobileMenuSheet({
                 onClick={() => onOpenChange(false)}
                 className="group flex items-center justify-between py-4 border-b border-site-border-soft last:border-b-0"
               >
-                <span className="font-[--font-bodoni] text-seu-subheading text-site-fg uppercase tracking-[0.15rem] group-hover:text-primary-orange transition-colors">
+                <span className="font-[--font-bodoni] text-seu-subheading text-site-fg uppercase tracking-[0.15rem] group-hover:text-primary-green transition-colors">
                   {link.label}
                 </span>
                 <svg
@@ -108,7 +106,7 @@ export function MobileMenuSheet({
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="1.2"
-                  className="text-site-fg-muted group-hover:text-primary-orange group-hover:translate-x-1 transition-all"
+                  className="text-site-fg-muted group-hover:text-primary-green group-hover:translate-x-1 transition-all"
                 >
                   <path d="M6 3l5 5-5 5" />
                 </svg>
@@ -129,18 +127,15 @@ export function MobileMenuSheet({
             </p>
             <a
               href="tel:+995555000000"
-              className="font-montserrat text-seu-body-sm text-site-fg hover:text-primary-orange transition-colors"
+              className="font-montserrat text-seu-body-sm text-site-fg hover:text-primary-green transition-colors"
             >
               +995 555 000 000
             </a>
           </div>
 
-          {/* Lang switcher + theme + logo */}
+          {/* Lang switcher + logo */}
           <div className="flex items-end justify-between pt-2">
-            <div className="flex items-center gap-3">
-              <LanguageSwitcher />
-              <SiteThemeToggle />
-            </div>
+            <LanguageSwitcher />
             <SeuLogoLink />
           </div>
         </div>

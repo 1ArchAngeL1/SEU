@@ -170,7 +170,7 @@ export default function NewsArticleDialog({
             </h2>
 
             {/* Accent rule */}
-            <div className="h-px w-16 bg-gradient-to-r from-primary-orange to-transparent mb-7" />
+            <div className="h-px w-16 bg-gradient-to-r from-primary-green to-transparent mb-7" />
 
             {/* Description */}
             <p className="font-montserrat text-seu-body-sm sm:text-seu-body text-pale-gray/85 leading-relaxed whitespace-pre-line">
@@ -189,7 +189,7 @@ export default function NewsArticleDialog({
                       className={cn(
                         'relative shrink-0 w-24 h-16 rounded-md overflow-hidden border transition-all',
                         i === imgIdx
-                          ? 'border-primary-orange ring-2 ring-primary-orange/30'
+                          ? 'border-primary-green ring-2 ring-primary-green/30'
                           : 'border-pale-gray/15 opacity-60 hover:opacity-100'
                       )}
                       aria-label={`Image ${i + 1}`}

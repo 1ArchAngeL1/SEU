@@ -10,8 +10,8 @@ export default function FooterUpper() {
     { label: t('projects'), href: '#' },
     { label: t('seuCard'), href: '/card' },
     { label: t('privacyPolicy'), href: '/policy' },
-    { label: t('news'), href: '#' },
-    { label: t('about'), href: '#' },
+    { label: t('news'), href: '/news' },
+    { label: t('about'), href: '/about' },
   ];
 
   return (
