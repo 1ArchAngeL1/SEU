@@ -83,7 +83,7 @@ export default function ContactForm({
   ];
 
   return (
-    <div className={cn('w-full mx-auto', className)}>
+    <div className={cn('w-full', className)}>
       {/* Heading */}
       {!hideHeader && (
         <div className="mb-10">
@@ -100,7 +100,7 @@ export default function ContactForm({
 
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-5 w-full mx-auto"
+        className="flex flex-col gap-5 w-full"
       >
         {fields.map((field, i) => {
           const Icon = field.icon;

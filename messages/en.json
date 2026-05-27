@@ -115,7 +115,7 @@
     "benefits": "Benefits",
     "sizeFromError": "Size \"from\" must be ≤ \"to\"",
     "priceFromError": "Price \"from\" must be ≤ \"to\"",
-    "apartmentTypes": "Apartment Types.",
+    "apartmentTypes": "Apartment Types",
     "bedroomOne": "{count} Bedroom",
     "bedroomMany": "{count} Bedrooms",
     "projectVideo": "Project Video"
@@ -130,7 +130,7 @@
     "b7": "Tennis courts;",
     "b8": "Gym;",
     "b9": "There will be a lobby at the entrance to each building;",
-    "b10": "School."
+    "b10": "School"
   },
   "about": {
     "companyTeam": "The company's team",
@@ -144,8 +144,8 @@
     "ourTeam": "Our Team.",
     "meetOurLeaders": "Meet Our Leaders",
     "teamDescription": "Successfully completed projects by SEU Development include the old and new buildings of the Georgian National University, which house modern educational and exhibition facilities, as well as a business center in the suburbs of Tbilisi.",
-    "weAreHiring": "We Are Hiring.",
-    "benefitsWorking": "Benefits working with us.",
+    "weAreHiring": "We Are Hiring",
+    "benefitsWorking": "Benefits working with us",
     "hiringDescription": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
     "marketing": "Marketing",
     "marketingDesc1": "SEU Development has been operating in the real estate market since 2014",
@@ -155,7 +155,7 @@
     "marketingText4": "Students and alumni can benefit from counseling in the career development and alumni relations service, both in person and through email and telephone communications.",
     "marketingText5": "Career development and alumni national department is offering students and graduates career counseling. Sessions are conducted individually face to face, as well as in small and telephone communications.",
     "sendResume": "Send Resume",
-    "partners": "Partners.",
+    "partners": "Partners",
     "partnersCount": "80+ Partners trust us."
   },
   "card": {
