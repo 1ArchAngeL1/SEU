@@ -6,7 +6,7 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:4000/api';
 
 const nextConfig: NextConfig = {
-  allowedDevOrigins: ['192.168.100.5'],
+  allowedDevOrigins: ['seudevelopment.grena.ge'],
   async rewrites() {
     return [
       {
