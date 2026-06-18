@@ -106,8 +106,8 @@
     "floor": "სართული",
     "apartmentN": "ბინა N",
     "totalSize": "საერთო ფართი",
-    "mainSize": "ძირითადი ფართი",
-    "openSpace": "ღია სივრცე",
+    "mainSize": "საცხოვრებელი ფართი",
+    "openSpace": "საზაფხულო ფართი",
     "bedroom": "საძინებელი",
     "sqm": "კვ.მ",
     "m2": "მ²",
@@ -119,6 +119,19 @@
     "bedroomOne": "{count} საძინებელი",
     "bedroomMany": "{count} საძინებელი",
     "projectVideo": "პროექტის ვიდეო"
+  },
+  "roomTypes": {
+    "bedroom": "საძინებელი",
+    "living_room": "მისაღები",
+    "studio": "სტუდიო",
+    "kitchen": "სამზარეულო",
+    "bathroom": "სააბაზანო",
+    "toilet": "ტუალეტი",
+    "hall": "ჰოლი",
+    "balcony": "აივანი",
+    "terrace": "ტერასა",
+    "storage": "სათავსო",
+    "other": "ოთახი"
   },
   "benefitsList": {
     "b1": "2 ჰექტარამდე რეკრეაციული სივრცე;",

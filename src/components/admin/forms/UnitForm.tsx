@@ -217,12 +217,9 @@ export default function UnitForm({
     if (form.floor === '') return setError('Floor is required');
     if (!form.totalSize) return setError('Total size is required');
     if (!form.amount) return setError('Price amount is required');
-    for (const [i, room] of roomsList.entries()) {
-      if (!room.name.trim()) return setError(`Room ${i + 1}: name is required`);
-    }
     const cleanRooms: Room[] = roomsList.map((r) => ({
-      name: r.name.trim(),
       type: r.type,
+      ...(r.name?.trim() && { name: r.name.trim() }),
       ...(r.size !== undefined && { size: r.size }),
       ...(r.description?.trim() && { description: r.description.trim() }),
     }));

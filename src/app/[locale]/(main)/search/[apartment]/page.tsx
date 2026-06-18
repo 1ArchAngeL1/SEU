@@ -11,28 +11,6 @@ import { unitsService } from '@/service/units.service';
 import { pickLocale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
 
-type RoomIcon =
-  | 'bedroom'
-  | 'hall'
-  | 'balcony'
-  | 'bathroom'
-  | 'kitchen'
-  | 'storage'
-  | 'living'
-  | 'wc';
-
-function nameToIcon(name: string): RoomIcon {
-  const n = name.toLowerCase();
-  if (n.includes('bed')) return 'bedroom';
-  if (n.includes('living')) return 'living';
-  if (n.includes('kitchen')) return 'kitchen';
-  if (n.includes('bath') || n.includes('wc')) return 'bathroom';
-  if (n.includes('balcon') || n.includes('terrace')) return 'balcony';
-  if (n.includes('hall') || n.includes('corridor')) return 'hall';
-  if (n.includes('storage')) return 'storage';
-  return 'bedroom';
-}
-
 export default function ApartmentDetailPage({
   params,
 }: {
@@ -83,14 +61,11 @@ export default function ApartmentDetailPage({
             rooms: unit.bedrooms ?? 0,
             roomDetails: (Array.isArray(unit.rooms) ? unit.rooms : [])
               .filter((r): r is NonNullable<typeof r> => r != null && typeof r === 'object')
-              .map((r) => {
-                const name = pickLocale(r.name ?? '');
-                return {
-                  name,
-                  size: r.size ?? 0,
-                  icon: nameToIcon(name),
-                };
-              }),
+              .map((r) => ({
+                ...(r.name && { name: r.name }),
+                type: r.type,
+                size: r.size ?? 0,
+              })),
             floorPlanImages: {
               plan: unit.mainImage
                 ? fileUrl(unit.mainImage)

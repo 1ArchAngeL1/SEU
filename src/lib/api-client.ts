@@ -3,8 +3,7 @@ import { getToken, removeToken } from '@/lib/auth';
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
-export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
 
 export class ApiRequestError extends Error {
   status: number;
@@ -32,17 +31,18 @@ function buildUrl(
   params?: Record<string, string | number | boolean | undefined | null>
 ): string {
   const cleanPath = path.startsWith('/') ? path : `/${path}`;
-  const url = new URL(`${API_BASE_URL}${cleanPath}`);
+  const base = `${API_BASE_URL}${cleanPath}`;
 
-  if (params) {
-    Object.entries(params).forEach(([key, value]) => {
-      if (value !== undefined && value !== null && value !== '') {
-        url.searchParams.append(key, String(value));
-      }
-    });
-  }
+  if (!params) return base;
 
-  return url.toString();
+  const search = new URLSearchParams();
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '') {
+      search.append(key, String(value));
+    }
+  });
+  const qs = search.toString();
+  return qs ? `${base}?${qs}` : base;
 }
 
 async function rawRequest<TBody = unknown>(

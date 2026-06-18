@@ -294,7 +294,7 @@ export default function VisualSearchFloorPage({
                           >
                             <polygon
                               points={toSvgPoints(unit.polygon!)}
-                              fill={isHovered ? 'rgba(46,204,113,0.25)' : 'rgba(46,204,113,0.04)'}
+                              fill={isHovered ? 'rgba(46,204,113,0.5)' : 'rgba(13,20,29,0.45)'}
                               stroke="none"
                               filter={isHovered ? 'url(#glow-m)' : undefined}
                               className="transition-all duration-500 ease-out"
@@ -480,7 +480,7 @@ export default function VisualSearchFloorPage({
                             >
                               <polygon
                                 points={toSvgPoints(unit.polygon!)}
-                                fill={isHovered ? 'rgba(46,204,113,0.25)' : 'rgba(46,204,113,0.04)'}
+                                fill={isHovered ? 'rgba(46,204,113,0.5)' : 'rgba(13,20,29,0.45)'}
                                 stroke="none"
                                 filter={isHovered ? 'url(#glow)' : undefined}
                                 className="transition-all duration-500 ease-out"

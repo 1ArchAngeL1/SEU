@@ -85,7 +85,7 @@ export default function ChessBoard({
         const pos = idx + 1;
         const key = `${floor}-${pos}`;
         map.set(key, u);
-        labels.set(key, isBasement ? `P${pos}` : String(pos));
+        labels.set(key, isBasement ? `P${u.unitNumber}` : u.unitNumber);
         if (pos > maxPos) maxPos = pos;
       });
     }

@@ -8,6 +8,7 @@ import FormBlock from './FormBlock';
 const ROOM_TYPE_OPTIONS: Array<{ value: RoomType; label: string }> = [
   { value: 'bedroom', label: 'Bedroom' },
   { value: 'living_room', label: 'Living room' },
+  { value: 'studio', label: 'Studio' },
   { value: 'kitchen', label: 'Kitchen' },
   { value: 'bathroom', label: 'Bathroom' },
   { value: 'toilet', label: 'Toilet' },
@@ -24,7 +25,7 @@ interface UnitRoomsListSectionProps {
 }
 
 function emptyRoom(): Room {
-  return { name: '', type: 'bedroom' };
+  return { type: 'bedroom' };
 }
 
 export default function UnitRoomsListSection({
@@ -76,9 +77,9 @@ export default function UnitRoomsListSection({
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <Field label="Name">
+              <Field label="Name (optional)" hint="Leave empty to use the type label">
                 <Input
-                  value={room.name}
+                  value={room.name ?? ''}
                   onChange={(e) => updateRoom(index, { name: e.target.value })}
                   placeholder="e.g. Master bedroom"
                   maxLength={100}

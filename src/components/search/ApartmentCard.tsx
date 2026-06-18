@@ -41,7 +41,7 @@ export default function ApartmentCard({
     if (s === 'sold') return t('sold');
     return t('notForSale');
   }
-  const image = fileUrl(data.mainImage);
+  const image = fileUrl(data.threeDContent || data.mainImage);
 
   return (
     <Link

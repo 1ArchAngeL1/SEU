@@ -3,24 +3,17 @@ import createNextIntlPlugin from 'next-intl/plugin';
 
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
+const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:4000/api';
+
 const nextConfig: NextConfig = {
   allowedDevOrigins: ['192.168.100.5'],
-  images: {
-    dangerouslyAllowLocalIP: true,
-    remotePatterns: [
+  async rewrites() {
+    return [
       {
-        protocol: 'http',
-        hostname: 'localhost',
-        port: '4000',
-        pathname: '/api/files/**',
+        source: '/api/:path*',
+        destination: `${BACKEND_URL}/:path*`,
       },
-      {
-        protocol: 'http',
-        hostname: '192.168.100.5',
-        port: '4000',
-        pathname: '/api/files/**',
-      },
-    ],
+    ];
   },
 };
 

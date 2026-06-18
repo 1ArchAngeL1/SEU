@@ -36,6 +36,7 @@ export type FurnishingStatus =
 export type RoomType =
   | 'bedroom'
   | 'living_room'
+  | 'studio'
   | 'kitchen'
   | 'bathroom'
   | 'toilet'
@@ -46,7 +47,7 @@ export type RoomType =
   | 'other';
 
 export interface Room {
-  name: string;
+  name?: string;
   type: RoomType;
   size?: number;
   description?: string;

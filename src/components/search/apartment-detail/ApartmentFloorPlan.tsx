@@ -69,7 +69,7 @@ export function ApartmentFloorPlan({
       {/* Tabs + Compass */}
       <div className="flex items-center justify-between px-6 py-5">
         <div className="flex gap-2">
-          {(['3D', '2D', 'Plan'] as ViewMode[]).map((mode) => {
+          {(['2D', '3D', 'Plan'] as ViewMode[]).map((mode) => {
             const active = viewMode === mode;
             return (
               <button
