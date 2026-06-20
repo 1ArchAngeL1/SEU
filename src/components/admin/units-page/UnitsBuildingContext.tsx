@@ -121,10 +121,8 @@ export default function UnitsBuildingContext({
                 {pickLocalized(building.nameEn, building.nameKa) || `Block ${building.block}`} ·{' '}
                 {aboveGroundFloorCount} floor
                 {aboveGroundFloorCount !== 1 ? 's' : ''}
-                {building.basementFloors > 0 &&
-                  ` · ${building.basementFloors} basement`}
-                {(building.parkingSpaces ?? 0) > 0 &&
-                  ` · ${building.parkingSpaces} parking`}
+                {(building.basementLevels ?? 0) > 0 &&
+                  ` · ${building.basementLevels} basement level${building.basementLevels !== 1 ? 's' : ''}`}
               </p>
             </div>
           </div>
@@ -258,8 +256,8 @@ export default function UnitsBuildingContext({
         ) : (
           <ChessBoard
             units={units}
-            floorCount={fallbackFloorCount}
-            basementFloors={building.basementFloors}
+            floorsAboveGround={building.floorsAboveGround}
+            basementLevels={building.basementLevels}
             definedFloorNumbers={floors.map((f) => f.floorNumber)}
             onCellClick={onCellClick}
             onEmptyCellClick={onEmptyCellClick}

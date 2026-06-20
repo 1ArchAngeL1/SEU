@@ -72,11 +72,11 @@ export default function BuildingCard({
             {pickLocalized(building.nameEn, building.nameKa) || `Block ${building.block}`}
           </div>
           <div className="font-montserrat text-seu-caption-sm text-admin-fg-muted mt-1">
-            {building.basementFloors > 0
-              ? `${building.basementFloors} basement floor${building.basementFloors !== 1 ? 's' : ''}`
-              : 'Above ground'}
-            {(building.parkingSpaces ?? 0) > 0 &&
-              ` · ${building.parkingSpaces} parking`}
+            {building.floorsAboveGround > 0
+              ? `${building.floorsAboveGround} floor${building.floorsAboveGround !== 1 ? 's' : ''}`
+              : 'No floors yet'}
+            {(building.basementLevels ?? 0) > 0 &&
+              ` · ${building.basementLevels} basement level${building.basementLevels !== 1 ? 's' : ''}`}
           </div>
         </div>
 

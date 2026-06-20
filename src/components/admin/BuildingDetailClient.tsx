@@ -293,8 +293,8 @@ export default function BuildingDetailClient({
           ) : view === 'chess' ? (
             <ChessBoard
               units={units}
-              floorCount={fallbackFloorCount}
-              basementFloors={building.basementFloors}
+              floorsAboveGround={building.floorsAboveGround}
+              basementLevels={building.basementLevels}
               definedFloorNumbers={existingFloorNumbers}
               onCellClick={handleCellClick}
               onEmptyCellClick={handleEmptyCellClick}

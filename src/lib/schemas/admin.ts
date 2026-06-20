@@ -29,7 +29,8 @@ export const buildingSchema = z.object({
   addressEn: z.string().max(500).optional().or(z.literal('')),
   addressKa: z.string().max(500).optional().or(z.literal('')),
   floors: z.coerce.number().int().min(1, 'At least 1 floor').max(200),
-  basementFloors: z.coerce.number().int().min(0).max(20).optional(),
+  floorsAboveGround: z.coerce.number().int().min(0).max(200).optional(),
+  basementLevels: z.coerce.number().int().min(0).max(20).optional(),
   status: z.enum([
     'planning',
     'foundation',

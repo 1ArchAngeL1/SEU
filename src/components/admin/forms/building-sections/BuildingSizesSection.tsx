@@ -3,8 +3,8 @@
 import { Field, Input, Section } from '../form-primitives';
 
 export interface BuildingSizesSectionValue {
-  basementFloors: string;
-  parkingSpaces: string;
+  floorsAboveGround: string;
+  basementLevels: string;
   totalSize: string;
   livableArea: string;
   constructionProgress: string;
@@ -21,24 +21,27 @@ interface Props {
 export default function BuildingSizesSection({ value, update }: Props) {
   return (
     <div className="space-y-5">
-      <Section title="Basement & parking" cols={2}>
+      <Section title="Floors & basements" cols={2}>
         <Field
-          label="Basement floors"
-          hint="Above-ground floors are managed individually under the building."
+          label="Floors above ground"
+          hint="How many storeys the building has above ground."
         >
           <Input
             type="number"
             min="0"
-            value={value.basementFloors}
-            onChange={(e) => update('basementFloors', e.target.value)}
+            value={value.floorsAboveGround}
+            onChange={(e) => update('floorsAboveGround', e.target.value)}
           />
         </Field>
-        <Field label="Parking spaces">
+        <Field
+          label="Basement / parking levels"
+          hint="Underground floors used for parking or storage."
+        >
           <Input
             type="number"
             min="0"
-            value={value.parkingSpaces}
-            onChange={(e) => update('parkingSpaces', e.target.value)}
+            value={value.basementLevels}
+            onChange={(e) => update('basementLevels', e.target.value)}
           />
         </Field>
       </Section>

@@ -132,12 +132,12 @@ export interface Building {
   block: string;
   location?: BuildingLocation;
   status: BuildingStatus;
-  basementFloors: number;
+  floorsAboveGround: number;
   totalUnits: number;
   availableUnits: number;
   totalSize?: number;
   livableArea?: number;
-  parkingSpaces?: number;
+  basementLevels?: number;
   constructionProgress?: number;
   images?: string[];
   mainImage?: string;
@@ -309,11 +309,11 @@ export type CreateBuildingInput = {
   block: string;
   location?: BuildingLocation;
   status?: BuildingStatus;
-  basementFloors?: number;
+  floorsAboveGround?: number;
   totalUnits?: number;
   totalSize?: number;
   livableArea?: number;
-  parkingSpaces?: number;
+  basementLevels?: number;
   constructionProgress?: number;
   images?: string[];
   mainImage?: string;

@@ -10,14 +10,20 @@ import ChessLegend from './ChessLegend';
 
 interface ChessBoardProps {
   units: Unit[];
-  floorCount: number;
-  basementFloors?: number;
+  /**
+   * Above-ground floor count used by the fallback when no Floor records exist.
+   * Ignored once `definedFloorNumbers` is non-empty.
+   */
+  floorsAboveGround?: number;
+  /** Basement / parking levels (rendered below ground in the fallback). */
+  basementLevels?: number;
   /**
    * Registered Floor records' numbers. When provided (length > 0) the chess
    * grid renders ONLY these floors — in descending order, gaps allowed
    * (e.g. 15, 12, 11, 1). Units whose floor isn't registered are hidden.
-   * When empty, falls back to a contiguous 1..floorCount range so a brand-new
-   * building can be populated before any floors are formally registered.
+   * When empty, falls back to a contiguous span using floorsAboveGround +
+   * basementLevels so a brand-new building can be populated before any
+   * floors are formally registered.
    */
   definedFloorNumbers?: number[];
   onCellClick: (unit: Unit) => void;
@@ -26,8 +32,8 @@ interface ChessBoardProps {
 
 export default function ChessBoard({
   units,
-  floorCount,
-  basementFloors = 0,
+  floorsAboveGround = 0,
+  basementLevels = 0,
   definedFloorNumbers = [],
   onCellClick,
   onEmptyCellClick,
@@ -46,10 +52,10 @@ export default function ChessBoard({
       // Driven by registered Floor records. Sort descending — gaps preserved.
       floorList = [...new Set(definedFloorNumbers)].sort((a, b) => b - a);
     } else {
-      // Fallback: contiguous span based on the floorCount + basementFloors
-      // props so the grid is usable before any Floor record exists.
-      const top = Math.max(floorCount, 1);
-      const bottom = -Math.max(basementFloors, 0);
+      // Fallback: contiguous span using above-ground + basement counts so
+      // the grid is usable before any Floor record exists.
+      const top = Math.max(floorsAboveGround, 1);
+      const bottom = -Math.max(basementLevels, 0);
       floorList = [];
       for (let f = top; f >= 1; f--) floorList.push(f);
       for (let f = -1; f >= bottom; f--) floorList.push(f);
@@ -97,7 +103,7 @@ export default function ChessBoard({
       statusCounts: counts,
       floors: floorList,
     };
-  }, [units, floorCount, basementFloors, definedFloorNumbers]);
+  }, [units, floorsAboveGround, basementLevels, definedFloorNumbers]);
 
   const positions = useMemo(() => {
     const arr: number[] = [];

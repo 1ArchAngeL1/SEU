@@ -33,8 +33,8 @@ export default function BuildingDetailHero({
               {pickLocalized(building.nameEn, building.nameKa) || `Block ${building.block}`} ·{' '}
               {aboveGroundFloorCount} floor
               {aboveGroundFloorCount !== 1 ? 's' : ''}
-              {building.basementFloors > 0 &&
-                ` · ${building.basementFloors} basement`}
+              {(building.basementLevels ?? 0) > 0 &&
+                ` · ${building.basementLevels} basement`}
               {building.constructionProgress != null &&
                 ` · ${building.constructionProgress}% built`}
             </p>

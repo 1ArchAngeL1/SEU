@@ -70,10 +70,10 @@ export default function BuildingForm({
     addressEn: initialData?.location?.addressEn ?? '',
     addressKa: initialData?.location?.addressKa ?? '',
     status: (initialData?.status ?? 'planning') as BuildingStatus,
-    basementFloors: initialData?.basementFloors?.toString() ?? '0',
+    floorsAboveGround: initialData?.floorsAboveGround?.toString() ?? '0',
     totalSize: initialData?.totalSize?.toString() ?? '',
     livableArea: initialData?.livableArea?.toString() ?? '',
-    parkingSpaces: initialData?.parkingSpaces?.toString() ?? '0',
+    basementLevels: initialData?.basementLevels?.toString() ?? '0',
     constructionProgress:
       initialData?.constructionProgress?.toString() ?? '0',
     descriptionKa: initialData?.descriptionKa ?? '',
@@ -120,13 +120,13 @@ export default function BuildingForm({
         addressEn: form.addressEn.trim() || undefined,
         addressKa: form.addressKa.trim() || undefined,
       },
-      basementFloors:
-        form.basementFloors !== '' ? Number(form.basementFloors) : undefined,
+      floorsAboveGround:
+        form.floorsAboveGround !== '' ? Number(form.floorsAboveGround) : undefined,
       totalSize: form.totalSize !== '' ? Number(form.totalSize) : undefined,
       livableArea:
         form.livableArea !== '' ? Number(form.livableArea) : undefined,
-      parkingSpaces:
-        form.parkingSpaces !== '' ? Number(form.parkingSpaces) : undefined,
+      basementLevels:
+        form.basementLevels !== '' ? Number(form.basementLevels) : undefined,
       constructionProgress:
         form.constructionProgress !== ''
           ? Number(form.constructionProgress)
@@ -213,8 +213,8 @@ export default function BuildingForm({
       {tabs.active === 'sizes' && (
         <BuildingSizesSection
           value={{
-            basementFloors: form.basementFloors,
-            parkingSpaces: form.parkingSpaces,
+            floorsAboveGround: form.floorsAboveGround,
+            basementLevels: form.basementLevels,
             totalSize: form.totalSize,
             livableArea: form.livableArea,
             constructionProgress: form.constructionProgress,
