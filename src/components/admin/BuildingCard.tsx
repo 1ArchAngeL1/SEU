@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { Building2, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { pickLocale } from '@/lib/i18n-helpers';

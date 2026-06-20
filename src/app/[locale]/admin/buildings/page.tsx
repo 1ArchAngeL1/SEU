@@ -1,7 +1,8 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from '@/i18n/navigation';
 import { Plus } from 'lucide-react';
 import AdminPageHeader from '@/components/admin/AdminPageHeader';
 import BuildingForm from '@/components/admin/forms/BuildingForm';

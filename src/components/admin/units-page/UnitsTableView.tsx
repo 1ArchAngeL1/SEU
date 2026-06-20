@@ -1,7 +1,7 @@
 'use client';
 
 import { Trash2, ExternalLink, Pencil } from 'lucide-react';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import StatusBadge from '@/components/admin/StatusBadge';
 import type { Unit } from '@/model/types/api';
 import { btnPage, currencySymbol } from './styles';

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import Link from 'next/link';
+import { Link } from '@/i18n/navigation';
 import { Loader2 } from 'lucide-react';
 import ChessBoard from './chess/ChessBoard';
 import StoryView from './story/StoryView';
