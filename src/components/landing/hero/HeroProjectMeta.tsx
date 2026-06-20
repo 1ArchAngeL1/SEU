@@ -1,8 +1,8 @@
 'use client';
 
 import { ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import { pickLocale } from '@/lib/i18n-helpers';
+import { useLocale, useTranslations } from 'next-intl';
+import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { cn } from '@/lib/utils';
 import type { Project } from '@/model/types/api';
 
@@ -24,6 +24,7 @@ export default function HeroProjectMeta({
   onNext,
 }: HeroProjectMetaProps) {
   const t = useTranslations('status');
+  const locale = useLocale() as Locale;
   return (
     <div className="absolute bottom-0 left-0 right-0 z-10 hidden lg:flex flex-col animate-[fadeInUp_0.9s_cubic-bezier(0.16,1,0.3,1)_0.3s_both]">
       <div className="px-12 pb-8 flex items-end justify-between">
@@ -40,14 +41,15 @@ export default function HeroProjectMeta({
           </div>
 
           <h1 className="font-[--font-bodoni] text-seu-title-xl text-white leading-none uppercase">
-            {pickLocale(project.name)}
+            {pickLocalized(project.nameEn, project.nameKa, locale)}
           </h1>
 
           <div className="flex items-center gap-2 mt-1 font-montserrat text-seu-caption text-pale-gray/85">
             <MapPin className="size-4 shrink-0" />
             <span className="truncate">
-              {project.location.address}
-              {project.location.city && ` · ${project.location.city}`}
+              {pickLocalized(project.location.addressEn, project.location.addressKa, locale)}
+              {(project.location.cityEn || project.location.cityKa) &&
+                ` · ${pickLocalized(project.location.cityEn, project.location.cityKa, locale)}`}
             </span>
           </div>
         </div>

@@ -5,7 +5,8 @@ import { Field, Input, Textarea } from '../form-primitives';
 export interface ProjectDescriptionSectionValue {
   descriptionKa: string;
   descriptionEn: string;
-  benefits: string;
+  benefitsEn: string;
+  benefitsKa: string;
 }
 
 interface Props {
@@ -19,13 +20,6 @@ interface Props {
 export default function ProjectDescriptionSection({ value, update }: Props) {
   return (
     <div className="space-y-3">
-      <Field label="Description (Georgian)">
-        <Textarea
-          value={value.descriptionKa}
-          onChange={(e) => update('descriptionKa', e.target.value)}
-          placeholder="აღწერა ქართულად"
-        />
-      </Field>
       <Field label="Description (English)">
         <Textarea
           value={value.descriptionEn}
@@ -33,11 +27,25 @@ export default function ProjectDescriptionSection({ value, update }: Props) {
           placeholder="English description"
         />
       </Field>
-      <Field label="Benefits">
+      <Field label="Description (Georgian)">
+        <Textarea
+          value={value.descriptionKa}
+          onChange={(e) => update('descriptionKa', e.target.value)}
+          placeholder="აღწერა ქართულად"
+        />
+      </Field>
+      <Field label="Benefits (English)">
         <Input
-          value={value.benefits}
-          onChange={(e) => update('benefits', e.target.value)}
+          value={value.benefitsEn}
+          onChange={(e) => update('benefitsEn', e.target.value)}
           placeholder="e.g. Pool, Gym, Parking"
+        />
+      </Field>
+      <Field label="Benefits (Georgian)">
+        <Input
+          value={value.benefitsKa}
+          onChange={(e) => update('benefitsKa', e.target.value)}
+          placeholder="მაგ. აუზი, სპორტდარბაზი, პარკინგი"
         />
       </Field>
     </div>

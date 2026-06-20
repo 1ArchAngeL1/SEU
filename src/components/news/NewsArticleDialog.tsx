@@ -3,7 +3,9 @@
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, ImageIcon, X } from 'lucide-react';
 import { Dialog as DialogPrimitive } from 'radix-ui';
+import { useLocale } from 'next-intl';
 import { fileUrl } from '@/lib/file-url';
+import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { cn } from '@/lib/utils';
 import type { NewsArticle } from '@/model/types/api';
 
@@ -37,6 +39,7 @@ export default function NewsArticleDialog({
   onOpenChange,
 }: NewsArticleDialogProps) {
   const [imgIdx, setImgIdx] = useState(0);
+  const locale = useLocale() as Locale;
 
   useEffect(() => {
     if (open) setImgIdx(0);
@@ -48,7 +51,9 @@ export default function NewsArticleDialog({
     .map((id) => fileUrl(id))
     .filter(Boolean) as string[];
   const total = images.length;
-  const readTime = estimateReadTime(article.description);
+  const header = pickLocalized(article.headerEn, article.headerKa, locale);
+  const description = pickLocalized(article.descriptionEn, article.descriptionKa, locale);
+  const readTime = estimateReadTime(description);
   const date = formatDate(article.createdAt);
 
   function prev() {
@@ -74,10 +79,10 @@ export default function NewsArticleDialog({
         >
           {/* Hidden a11y title/description (Radix requires) */}
           <DialogPrimitive.Title className="sr-only">
-            {article.header}
+            {header}
           </DialogPrimitive.Title>
           <DialogPrimitive.Description className="sr-only">
-            {article.description.slice(0, 140)}
+            {description.slice(0, 140)}
           </DialogPrimitive.Description>
 
           {/* Close button */}
@@ -96,7 +101,7 @@ export default function NewsArticleDialog({
                 <img
                   key={images[imgIdx]}
                   src={images[imgIdx]}
-                  alt={article.header}
+                  alt={header}
                   className="absolute inset-0 w-full h-full object-cover animate-in fade-in duration-500"
                 />
                 {/* Bottom fade into the body */}
@@ -166,7 +171,7 @@ export default function NewsArticleDialog({
 
             {/* Header */}
             <h2 className="font-[--font-bodoni] text-seu-heading sm:text-seu-heading-lg lg:text-seu-title text-pale-gray leading-tight mb-6">
-              {article.header}
+              {header}
             </h2>
 
             {/* Accent rule */}
@@ -174,7 +179,7 @@ export default function NewsArticleDialog({
 
             {/* Description */}
             <p className="font-montserrat text-seu-body-sm sm:text-seu-body text-pale-gray/85 leading-relaxed whitespace-pre-line">
-              {article.description}
+              {description}
             </p>
 
             {/* Thumbnail strip when multiple images */}

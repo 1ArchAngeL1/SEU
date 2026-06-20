@@ -47,11 +47,14 @@ export default function AdminNewsPage() {
 
   const allItems = newsQ.data?.items ?? [];
   const items = search
-    ? allItems.filter(
-        (n) =>
-          n.header.toLowerCase().includes(search.toLowerCase()) ||
-          n.tags.some((t) => t.toLowerCase().includes(search.toLowerCase()))
-      )
+    ? allItems.filter((n) => {
+        const q = search.toLowerCase();
+        return (
+          n.headerEn.toLowerCase().includes(q) ||
+          n.headerKa.toLowerCase().includes(q) ||
+          n.tags.some((t) => t.toLowerCase().includes(q))
+        );
+      })
     : allItems;
   const totalPages = newsQ.data?.pagination.totalPages ?? 1;
   const total = newsQ.data?.pagination.total ?? 0;
@@ -150,7 +153,7 @@ export default function AdminNewsPage() {
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={fileUrl(article.image[0])}
-                    alt={article.header}
+                    alt={article.headerEn || article.headerKa}
                     className="w-full h-full object-cover"
                   />
                 ) : (
@@ -161,11 +164,14 @@ export default function AdminNewsPage() {
               {/* Content */}
               <div className="p-4 space-y-2">
                 <h3 className="font-[--font-bodoni] text-seu-body-lg text-admin-fg leading-tight line-clamp-2">
-                  {article.header}
+                  {article.headerEn}
                 </h3>
+                <h4 className="font-[--font-bodoni] text-seu-body text-admin-fg-muted leading-tight line-clamp-1">
+                  {article.headerKa}
+                </h4>
 
                 <p className="font-montserrat text-seu-caption-sm text-admin-fg-muted line-clamp-2">
-                  {article.description}
+                  {article.descriptionEn}
                 </p>
 
                 {article.tags.length > 0 && (

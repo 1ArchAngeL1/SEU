@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/sheet';
 import ApartmentTypeForm from './forms/ApartmentTypeForm';
 import { fileUrl } from '@/lib/file-url';
-import { pickLocale } from '@/lib/i18n-helpers';
+import { pickLocalized } from '@/lib/i18n-helpers';
 import {
   useApartmentTypesByProject,
   useCreateApartmentType,
@@ -35,7 +35,7 @@ interface ApartmentTypesPanelProps {
 }
 
 function bedroomLabel(t: ApartmentType): string {
-  const localized = pickLocale(t.name);
+  const localized = pickLocalized(t.nameEn, t.nameKa);
   if (localized) return localized;
   if (t.bedrooms === 0) return 'Studio';
   return `${t.bedrooms} Bedroom${t.bedrooms !== 1 ? 's' : ''}`;

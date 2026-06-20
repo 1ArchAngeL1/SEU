@@ -14,7 +14,7 @@ import StatCard from '@/components/admin/StatCard';
 import StatusBadge from '@/components/admin/StatusBadge';
 import { useAllProjects } from '@/hooks/queries/use-projects';
 import { useUnitsList } from '@/hooks/queries/use-units';
-import { pickLocale } from '@/lib/i18n-helpers';
+import { pickLocalized } from '@/lib/i18n-helpers';
 
 export default function AdminDashboard() {
   const projectsQ = useAllProjects();
@@ -155,7 +155,7 @@ export default function AdminDashboard() {
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-3 flex-wrap mb-1">
                     <span className="font-montserrat font-medium text-seu-body-sm text-admin-fg truncate">
-                      {pickLocale(p.name)}
+                      {pickLocalized(p.nameEn, p.nameKa)}
                     </span>
                     <StatusBadge status={p.status} />
                     {p.isFeatured && (
@@ -165,7 +165,7 @@ export default function AdminDashboard() {
                     )}
                   </div>
                   <div className="font-montserrat text-seu-caption-sm text-admin-fg-muted truncate">
-                    {p.location.address}
+                    {p.location.addressEn || p.location.addressKa}
                   </div>
                 </div>
                 <div className="flex items-center gap-6 shrink-0 text-seu-caption-sm font-montserrat">

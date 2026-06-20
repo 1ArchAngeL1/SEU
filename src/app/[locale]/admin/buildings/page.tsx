@@ -22,7 +22,7 @@ import {
   useUpdateBuilding,
 } from '@/hooks/queries/use-buildings';
 import { useAllProjects } from '@/hooks/queries/use-projects';
-import { pickLocale } from '@/lib/i18n-helpers';
+import { pickLocalized } from '@/lib/i18n-helpers';
 import type { Building, CreateBuildingInput } from '@/model/types/api';
 
 const btnPrimary =
@@ -50,8 +50,8 @@ export default function BuildingsPage() {
     if (!search.trim()) return projects;
     const q = search.trim().toLowerCase();
     return projects.filter((p) => {
-      const ka = p.name.ka?.toLowerCase() ?? '';
-      const en = p.name.en?.toLowerCase() ?? '';
+      const ka = p.nameKa?.toLowerCase() ?? '';
+      const en = p.nameEn?.toLowerCase() ?? '';
       return ka.includes(q) || en.includes(q);
     });
   }, [projects, search]);
@@ -92,7 +92,7 @@ export default function BuildingsPage() {
     e.preventDefault();
     if (
       !confirm(
-        `Delete Block ${b.block} (${pickLocale(b.name) || ''}) and all of its units?`
+        `Delete Block ${b.block} (${pickLocalized(b.nameEn, b.nameKa) || ''}) and all of its units?`
       )
     )
       return;
@@ -157,7 +157,7 @@ export default function BuildingsPage() {
             <SheetTitle>
               {editing
                 ? `Edit Block ${editing.block}`
-                : `New building in ${selectedProject ? pickLocale(selectedProject.name) : ''}`}
+                : `New building in ${selectedProject ? pickLocalized(selectedProject.nameEn, selectedProject.nameKa) : ''}`}
             </SheetTitle>
             <SheetDescription>
               {editing ? 'Update building details' : 'Add a new building to the project'}

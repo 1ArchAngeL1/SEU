@@ -31,7 +31,7 @@ import {
   useUpdateProject,
   useDeleteProject,
 } from '@/hooks/queries/use-projects';
-import { pickLocale } from '@/lib/i18n-helpers';
+import { pickLocalized } from '@/lib/i18n-helpers';
 import { cn } from '@/lib/utils';
 import type { Project, CreateProjectInput } from '@/model/types/api';
 
@@ -205,14 +205,14 @@ export default function ProjectsPage() {
                 >
                   <td className="p-3 text-admin-fg">
                     <div className="flex items-center gap-2">
-                      <span className="font-medium">{pickLocale(p.name)}</span>
+                      <span className="font-medium">{pickLocalized(p.nameEn, p.nameKa)}</span>
                       {p.isFeatured && (
                         <Star className="size-3 fill-amber-300 text-amber-300" />
                       )}
                     </div>
                   </td>
                   <td className="p-3 text-admin-fg-muted">
-                    {p.location.address}
+                    {p.location.addressEn || p.location.addressKa}
                   </td>
                   <td className="p-3">
                     <StatusBadge status={p.status} />

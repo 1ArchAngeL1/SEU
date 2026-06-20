@@ -3,7 +3,7 @@
 import { useLocale, useTranslations } from 'next-intl';
 import { OngoingProjectCard } from '@/components/landing/OngoingProjectCard';
 import { useProjectsList } from '@/hooks/queries/use-projects';
-import { pickLocale, type Locale } from '@/lib/i18n-helpers';
+import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
 import FadeIn from '@/components/FadeIn';
 
@@ -33,11 +33,11 @@ export default function OngoingSection() {
           {projects.map((project, i) => (
             <FadeIn key={project.id} delay={i * 150} duration={800}>
               <OngoingProjectCard
-                name={pickLocale(project.name, locale)}
+                name={pickLocalized(project.nameEn, project.nameKa, locale)}
                 location={
-                  project.location?.district ||
-                  project.location?.city ||
-                  project.location?.address
+                  pickLocalized(project.location?.districtEn, project.location?.districtKa, locale) ||
+                  pickLocalized(project.location?.cityEn, project.location?.cityKa, locale) ||
+                  pickLocalized(project.location?.addressEn, project.location?.addressKa, locale)
                 }
                 image={fileUrl(project.mainImage) || undefined}
                 badge={project.isFeatured ? 'FEATURED' : undefined}

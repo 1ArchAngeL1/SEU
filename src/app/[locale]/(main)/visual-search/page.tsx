@@ -7,7 +7,7 @@ import { Link } from '@/i18n/navigation';
 import ContactForm from '@/components/ContactForm';
 import ContactPanel from '@/components/ContactPanel';
 import { useProjectsList } from '@/hooks/queries/use-projects';
-import { type Locale, pickLocale } from '@/lib/i18n-helpers';
+import { type Locale, pickLocalized } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
 
 export default function VisualSearchPage() {
@@ -43,10 +43,10 @@ export default function VisualSearchPage() {
       <div className="flex flex-col">
         {projects.map((project) => {
           const image = fileUrl(project.mainImage);
-          const name = pickLocale(project.name, locale);
+          const name = pickLocalized(project.nameEn, project.nameKa, locale);
           const location =
-            project.location?.district ||
-            project.location?.city ||
+            pickLocalized(project.location?.districtEn, project.location?.districtKa, locale) ||
+            pickLocalized(project.location?.cityEn, project.location?.cityKa, locale) ||
             '';
           const totalUnits = project.totalUnits;
           const availableUnits = project.availableUnits;

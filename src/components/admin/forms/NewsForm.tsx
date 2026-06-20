@@ -25,8 +25,10 @@ export default function NewsForm({
   submitLabel,
 }: NewsFormProps) {
   const [form, setForm] = useState({
-    header: initialData?.header ?? '',
-    description: initialData?.description ?? '',
+    headerEn: initialData?.headerEn ?? '',
+    headerKa: initialData?.headerKa ?? '',
+    descriptionEn: initialData?.descriptionEn ?? '',
+    descriptionKa: initialData?.descriptionKa ?? '',
     image: initialData?.image ?? [] as string[],
     tags: initialData?.tags ?? [] as string[],
   });
@@ -60,20 +62,22 @@ export default function NewsForm({
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!form.header.trim()) {
-      setError('Header is required');
+    if (!form.headerEn.trim() || !form.headerKa.trim()) {
+      setError('Both English and Georgian headers are required');
       return;
     }
-    if (!form.description.trim()) {
-      setError('Description is required');
+    if (!form.descriptionEn.trim() || !form.descriptionKa.trim()) {
+      setError('Both English and Georgian descriptions are required');
       return;
     }
     setError('');
     setLoading(true);
     try {
       const payload: CreateNewsInput = {
-        header: form.header.trim(),
-        description: form.description.trim(),
+        headerEn: form.headerEn.trim(),
+        headerKa: form.headerKa.trim(),
+        descriptionEn: form.descriptionEn.trim(),
+        descriptionKa: form.descriptionKa.trim(),
         ...(form.image.length > 0 && { image: form.image }),
         ...(form.tags.length > 0 && { tags: form.tags }),
       };
@@ -88,18 +92,33 @@ export default function NewsForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <Section title="Content">
-        <Field label="Header *" className="sm:col-span-2">
+        <Field label="Header (English) *">
           <Input
-            value={form.header}
-            onChange={(e) => set('header', e.target.value)}
+            value={form.headerEn}
+            onChange={(e) => set('headerEn', e.target.value)}
             placeholder="News article headline"
           />
         </Field>
-        <Field label="Description *" className="sm:col-span-2">
+        <Field label="Header (Georgian) *">
+          <Input
+            value={form.headerKa}
+            onChange={(e) => set('headerKa', e.target.value)}
+            placeholder="სტატიის სათაური"
+          />
+        </Field>
+        <Field label="Description (English) *" className="sm:col-span-2">
           <Textarea
-            value={form.description}
-            onChange={(e) => set('description', e.target.value)}
+            value={form.descriptionEn}
+            onChange={(e) => set('descriptionEn', e.target.value)}
             placeholder="Full article content…"
+            rows={6}
+          />
+        </Field>
+        <Field label="Description (Georgian) *" className="sm:col-span-2">
+          <Textarea
+            value={form.descriptionKa}
+            onChange={(e) => set('descriptionKa', e.target.value)}
+            placeholder="სრული სტატია…"
             rows={6}
           />
         </Field>

@@ -24,12 +24,15 @@ export default function PartnerForm({
   submitLabel,
 }: PartnerFormProps) {
   const [form, setForm] = useState({
-    name: initialData?.name ?? '',
-    description: initialData?.description ?? '',
+    nameEn: initialData?.nameEn ?? '',
+    nameKa: initialData?.nameKa ?? '',
+    descriptionEn: initialData?.descriptionEn ?? '',
+    descriptionKa: initialData?.descriptionKa ?? '',
     logoId: initialData?.logoId ?? '',
     mail: initialData?.mail ?? '',
     phone: initialData?.phone ?? '',
-    address: initialData?.address ?? '',
+    addressEn: initialData?.addressEn ?? '',
+    addressKa: initialData?.addressKa ?? '',
     facebookLink: initialData?.facebookLink ?? '',
     discountPercentage: initialData?.discountPercentage ?? '',
   });
@@ -42,20 +45,23 @@ export default function PartnerForm({
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!form.name.trim()) {
-      setError('Name is required');
+    if (!form.nameEn.trim() || !form.nameKa.trim()) {
+      setError('Both English and Georgian names are required');
       return;
     }
     setError('');
     setLoading(true);
     try {
       const payload: CreatePartnerInput = {
-        name: form.name.trim(),
-        ...(form.description && { description: form.description.trim() }),
+        nameEn: form.nameEn.trim(),
+        nameKa: form.nameKa.trim(),
+        ...(form.descriptionEn && { descriptionEn: form.descriptionEn.trim() }),
+        ...(form.descriptionKa && { descriptionKa: form.descriptionKa.trim() }),
         ...(form.logoId && { logoId: form.logoId }),
         ...(form.mail && { mail: form.mail.trim() }),
         ...(form.phone && { phone: form.phone.trim() }),
-        ...(form.address && { address: form.address.trim() }),
+        ...(form.addressEn && { addressEn: form.addressEn.trim() }),
+        ...(form.addressKa && { addressKa: form.addressKa.trim() }),
         ...(form.facebookLink && { facebookLink: form.facebookLink.trim() }),
         ...(form.discountPercentage !== '' && {
           discountPercentage: Number(form.discountPercentage),
@@ -83,11 +89,18 @@ export default function PartnerForm({
       </Section>
 
       <Section title="Basic Info">
-        <Field label="Name *">
+        <Field label="Name (English) *">
           <Input
-            value={form.name}
-            onChange={(e) => set('name', e.target.value)}
+            value={form.nameEn}
+            onChange={(e) => set('nameEn', e.target.value)}
             placeholder="Partner name"
+          />
+        </Field>
+        <Field label="Name (Georgian) *">
+          <Input
+            value={form.nameKa}
+            onChange={(e) => set('nameKa', e.target.value)}
+            placeholder="პარტნიორის სახელი"
           />
         </Field>
         <Field label="Email">
@@ -105,11 +118,18 @@ export default function PartnerForm({
             placeholder="+995 ..."
           />
         </Field>
-        <Field label="Address">
+        <Field label="Address (English)">
           <Input
-            value={form.address}
-            onChange={(e) => set('address', e.target.value)}
+            value={form.addressEn}
+            onChange={(e) => set('addressEn', e.target.value)}
             placeholder="Partner address"
+          />
+        </Field>
+        <Field label="Address (Georgian)">
+          <Input
+            value={form.addressKa}
+            onChange={(e) => set('addressKa', e.target.value)}
+            placeholder="პარტნიორის მისამართი"
           />
         </Field>
       </Section>
@@ -134,12 +154,19 @@ export default function PartnerForm({
         </Field>
       </Section>
 
-      <Section title="Description" cols={1}>
-        <Field label="Description">
+      <Section title="Description">
+        <Field label="Description (English)">
           <Textarea
-            value={form.description}
-            onChange={(e) => set('description', e.target.value)}
+            value={form.descriptionEn}
+            onChange={(e) => set('descriptionEn', e.target.value)}
             placeholder="Brief description of the partner…"
+          />
+        </Field>
+        <Field label="Description (Georgian)">
+          <Textarea
+            value={form.descriptionKa}
+            onChange={(e) => set('descriptionKa', e.target.value)}
+            placeholder="პარტნიორის მოკლე აღწერა…"
           />
         </Field>
       </Section>

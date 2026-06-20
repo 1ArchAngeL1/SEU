@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import BuildingCard from '@/components/admin/BuildingCard';
 import StatusBadge from '@/components/admin/StatusBadge';
-import { pickLocale } from '@/lib/i18n-helpers';
+import { pickLocalized } from '@/lib/i18n-helpers';
 import type { Building, Project } from '@/model/types/api';
 import EmptyState from './EmptyState';
 
@@ -63,11 +63,11 @@ export default function BuildingsGridSection({
                   )}
                 </div>
                 <h2 className="font-[--font-bodoni] text-seu-heading-lg text-admin-fg leading-none">
-                  {pickLocale(selectedProject.name)}
+                  {pickLocalized(selectedProject.nameEn, selectedProject.nameKa)}
                 </h2>
                 <div className="flex items-center gap-1.5 mt-1.5 font-montserrat text-seu-caption text-admin-fg-muted">
                   <MapPin className="size-3.5" />
-                  <span>{selectedProject.location.address}</span>
+                  <span>{selectedProject.location.addressEn || selectedProject.location.addressKa}</span>
                 </div>
               </div>
               <button

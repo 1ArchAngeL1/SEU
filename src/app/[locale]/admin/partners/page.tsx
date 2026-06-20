@@ -48,9 +48,13 @@ export default function PartnersPage() {
 
   const allItems = partnersQ.data?.items ?? [];
   const items = search
-    ? allItems.filter((p) =>
-        p.name.toLowerCase().includes(search.toLowerCase())
-      )
+    ? allItems.filter((p) => {
+        const q = search.toLowerCase();
+        return (
+          p.nameEn.toLowerCase().includes(q) ||
+          p.nameKa.toLowerCase().includes(q)
+        );
+      })
     : allItems;
   const totalPages = partnersQ.data?.pagination.totalPages ?? 1;
   const total = partnersQ.data?.pagination.total ?? 0;
@@ -143,7 +147,7 @@ export default function PartnersPage() {
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={fileUrl(p.logoId)}
-                    alt={p.name}
+                    alt={p.nameEn || p.nameKa}
                     className="max-h-20 max-w-[80%] object-contain"
                   />
                 ) : (
@@ -154,12 +158,15 @@ export default function PartnersPage() {
               {/* Info */}
               <div className="p-4 space-y-2">
                 <h3 className="font-[--font-bodoni] text-seu-subheading text-admin-fg leading-tight">
-                  {p.name}
+                  {p.nameEn}
                 </h3>
+                <h4 className="font-[--font-bodoni] text-seu-body text-admin-fg-muted leading-tight">
+                  {p.nameKa}
+                </h4>
 
-                {p.description && (
+                {(p.descriptionEn || p.descriptionKa) && (
                   <p className="font-montserrat text-seu-caption-sm text-admin-fg-muted line-clamp-2">
-                    {p.description}
+                    {p.descriptionEn || p.descriptionKa}
                   </p>
                 )}
 
@@ -176,10 +183,10 @@ export default function PartnersPage() {
                       <span>{p.phone}</span>
                     </div>
                   )}
-                  {p.address && (
+                  {(p.addressEn || p.addressKa) && (
                     <div className="flex items-center gap-2 font-montserrat text-seu-caption-sm text-admin-fg-muted">
                       <MapPin className="size-3.5 shrink-0" />
-                      <span className="truncate">{p.address}</span>
+                      <span className="truncate">{p.addressEn || p.addressKa}</span>
                     </div>
                   )}
                 </div>

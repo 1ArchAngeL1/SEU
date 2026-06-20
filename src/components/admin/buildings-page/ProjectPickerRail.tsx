@@ -2,7 +2,7 @@
 
 import { Building2, Loader2, MapPin, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { pickLocale } from '@/lib/i18n-helpers';
+import { pickLocalized } from '@/lib/i18n-helpers';
 import { cn } from '@/lib/utils';
 import type { Project } from '@/model/types/api';
 
@@ -80,7 +80,7 @@ export default function ProjectPickerRail({
                           isActive ? 'text-admin-fg' : 'text-admin-fg-muted'
                         )}
                       >
-                        {pickLocale(p.name)}
+                        {pickLocalized(p.nameEn, p.nameKa)}
                       </span>
                       {p.isFeatured && (
                         <span className="text-amber-300 text-seu-caption-sm shrink-0">
@@ -90,7 +90,7 @@ export default function ProjectPickerRail({
                     </div>
                     <div className="flex items-center gap-2 mt-1 font-montserrat text-seu-caption-sm text-admin-fg-muted">
                       <MapPin className="size-3 shrink-0" />
-                      <span className="truncate">{p.location.address}</span>
+                      <span className="truncate">{p.location.addressEn || p.location.addressKa}</span>
                     </div>
                     <div className="flex items-center gap-3 mt-1.5 font-montserrat text-[0.65rem] text-admin-fg-dim uppercase tracking-wider">
                       <span>{p.totalBuildings ?? 0} blocks</span>

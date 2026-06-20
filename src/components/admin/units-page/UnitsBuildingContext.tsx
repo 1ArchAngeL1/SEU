@@ -17,7 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { pickLocale } from '@/lib/i18n-helpers';
+import { pickLocalized } from '@/lib/i18n-helpers';
 import { cn } from '@/lib/utils';
 import type {
   Building,
@@ -118,7 +118,7 @@ export default function UnitsBuildingContext({
                 <StatusBadge status={building.status} />
               </div>
               <p className="font-montserrat text-seu-caption text-admin-fg-muted">
-                {pickLocale(building.name) || `Block ${building.block}`} ·{' '}
+                {pickLocalized(building.nameEn, building.nameKa) || `Block ${building.block}`} ·{' '}
                 {aboveGroundFloorCount} floor
                 {aboveGroundFloorCount !== 1 ? 's' : ''}
                 {building.basementFloors > 0 &&

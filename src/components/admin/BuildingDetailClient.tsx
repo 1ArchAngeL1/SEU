@@ -20,7 +20,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet';
-import { pickLocale } from '@/lib/i18n-helpers';
+import { pickLocalized } from '@/lib/i18n-helpers';
 import { useBuilding } from '@/hooks/queries/use-buildings';
 import {
   useUnitsList,
@@ -92,7 +92,7 @@ export default function BuildingDetailClient({
       : building.project.id);
   const projectName =
     building && typeof building.project !== 'string'
-      ? pickLocale(building.project.name)
+      ? pickLocalized(building.project.nameEn, building.project.nameKa)
       : '';
 
   const stats = useMemo(() => {

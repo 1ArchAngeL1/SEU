@@ -2,8 +2,10 @@
 
 import { useState } from 'react';
 import { ImageIcon } from 'lucide-react';
+import { useLocale } from 'next-intl';
 import FadeIn from '@/components/FadeIn';
 import { fileUrl } from '@/lib/file-url';
+import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import NewsArticleDialog from './NewsArticleDialog';
 import type { NewsArticle } from '@/model/types/api';
 
@@ -16,14 +18,18 @@ function estimateReadTime(text: string): string {
 function NewsCard({
   article,
   index,
+  locale,
   onClick,
 }: {
   article: NewsArticle;
   index: number;
+  locale: Locale;
   onClick: () => void;
 }) {
   const hasImage = article.image.length > 0;
-  const readTime = estimateReadTime(article.description);
+  const header = pickLocalized(article.headerEn, article.headerKa, locale);
+  const description = pickLocalized(article.descriptionEn, article.descriptionKa, locale);
+  const readTime = estimateReadTime(description);
 
   return (
     <FadeIn delay={(index % 3) * 80} duration={500}>
@@ -42,7 +48,7 @@ function NewsCard({
         {/* Title */}
         <div className="px-1 pb-2.5">
           <h3 className="font-montserrat font-semibold text-seu-caption-sm text-site-fg leading-snug line-clamp-1">
-            {article.header}
+            {header}
           </h3>
         </div>
 
@@ -52,7 +58,7 @@ function NewsCard({
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={fileUrl(article.image[0])}
-              alt={article.header}
+              alt={header}
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
           ) : (
@@ -87,6 +93,7 @@ interface NewsGridProps {
 
 export default function NewsGrid({ articles }: NewsGridProps) {
   const [openArticle, setOpenArticle] = useState<NewsArticle | null>(null);
+  const locale = useLocale() as Locale;
 
   return (
     <div className="py-16 lg:py-24">
@@ -97,6 +104,7 @@ export default function NewsGrid({ articles }: NewsGridProps) {
               key={article.id}
               article={article}
               index={i}
+              locale={locale}
               onClick={() => setOpenArticle(article)}
             />
           ))}

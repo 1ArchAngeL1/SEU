@@ -3,7 +3,7 @@
 import { Loader2, Building2, Search, MapPin } from 'lucide-react';
 import BuildingCard from '@/components/admin/BuildingCard';
 import { Input } from '@/components/ui/input';
-import { pickLocale } from '@/lib/i18n-helpers';
+import { pickLocalized } from '@/lib/i18n-helpers';
 import { cn } from '@/lib/utils';
 import type { Building, Project } from '@/model/types/api';
 
@@ -68,12 +68,12 @@ export default function UnitsBuildingPicker({
                           isActive ? 'text-admin-fg' : 'text-admin-fg-muted'
                         )}
                       >
-                        {pickLocale(p.name)}
+                        {pickLocalized(p.nameEn, p.nameKa)}
                       </span>
                     </div>
                     <div className="flex items-center gap-1.5 mt-1 font-montserrat text-seu-caption-sm text-admin-fg-muted">
                       <MapPin className="size-3 shrink-0" />
-                      <span className="truncate">{p.location.address}</span>
+                      <span className="truncate">{p.location.addressEn || p.location.addressKa}</span>
                     </div>
                   </button>
                 </li>
@@ -99,7 +99,7 @@ export default function UnitsBuildingPicker({
             <Building2 className="size-10 text-admin-fg-dim mx-auto mb-4" />
             <p className="font-montserrat text-seu-body-sm text-admin-fg-muted mb-1">
               No buildings yet
-              {project ? ` in ${pickLocale(project.name)}` : ''}.
+              {project ? ` in ${pickLocalized(project.nameEn, project.nameKa)}` : ''}.
             </p>
             <p className="font-montserrat text-seu-caption text-admin-fg-muted">
               Add one from the Buildings tab to start placing units here.
@@ -111,7 +111,7 @@ export default function UnitsBuildingPicker({
               Buildings
               {project ? (
                 <span className="text-admin-fg-dim font-montserrat text-seu-caption-sm ml-2">
-                  · {pickLocale(project.name)}
+                  · {pickLocalized(project.nameEn, project.nameKa)}
                 </span>
               ) : null}
             </h2>

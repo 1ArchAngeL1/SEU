@@ -1,14 +1,16 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { Handshake } from 'lucide-react';
 import FadeIn from '@/components/FadeIn';
 import { useAllPartners } from '@/hooks/queries/use-partners';
 import { fileUrl } from '@/lib/file-url';
+import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import type { Partner } from '@/model/types/api';
 
-function PartnerTile({ partner }: { partner: Partner }) {
+function PartnerTile({ partner, locale }: { partner: Partner; locale: Locale }) {
   const src = fileUrl(partner.logoId);
+  const name = pickLocalized(partner.nameEn, partner.nameKa, locale);
   return (
     <div className="flex-shrink-0 mx-3">
       <div className="w-[213px] h-[100px] flex items-center justify-center border border-white/10 rounded-xl bg-dark-green px-6">
@@ -16,14 +18,14 @@ function PartnerTile({ partner }: { partner: Partner }) {
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={src}
-            alt={partner.name}
+            alt={name}
             className="max-h-[60px] max-w-full object-contain opacity-80 hover:opacity-100 transition-opacity"
           />
         ) : (
           <div className="flex items-center gap-2 text-secondary-grey">
             <Handshake className="size-5" />
             <span className="font-montserrat text-seu-caption-sm truncate max-w-[140px]">
-              {partner.name}
+              {name}
             </span>
           </div>
         )}
@@ -34,6 +36,7 @@ function PartnerTile({ partner }: { partner: Partner }) {
 
 export default function SeuPartners() {
   const t = useTranslations('landing');
+  const locale = useLocale() as Locale;
   const { data, isLoading } = useAllPartners();
   const partners = data ?? [];
 
@@ -61,11 +64,11 @@ export default function SeuPartners() {
         <div className="flex animate-infinite-scroll hover:paused will-change-transform backface-hidden">
           {/* First set */}
           {looped.map((partner, index) => (
-            <PartnerTile key={`first-${partner.id}-${index}`} partner={partner} />
+            <PartnerTile key={`first-${partner.id}-${index}`} partner={partner} locale={locale} />
           ))}
           {/* Duplicate set for seamless loop */}
           {looped.map((partner, index) => (
-            <PartnerTile key={`second-${partner.id}-${index}`} partner={partner} />
+            <PartnerTile key={`second-${partner.id}-${index}`} partner={partner} locale={locale} />
           ))}
         </div>
       </div>

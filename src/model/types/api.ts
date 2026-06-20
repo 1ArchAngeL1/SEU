@@ -1,8 +1,3 @@
-export type LocalizedString = {
-  ka?: string;
-  en?: string;
-};
-
 export type ProjectStatus =
   | 'planning'
   | 'presale'
@@ -47,10 +42,12 @@ export type RoomType =
   | 'other';
 
 export interface Room {
-  name?: string;
+  nameEn?: string;
+  nameKa?: string;
   type: RoomType;
   size?: number;
-  description?: string;
+  descriptionEn?: string;
+  descriptionKa?: string;
 }
 
 export type SyncRoomsInput = {
@@ -68,15 +65,20 @@ export interface PriceRange {
 }
 
 export interface ProjectLocation {
-  address: string;
-  city?: string;
-  district?: string;
+  addressEn: string;
+  addressKa: string;
+  cityEn?: string;
+  cityKa?: string;
+  districtEn?: string;
+  districtKa?: string;
 }
 
 export interface Project {
   id: string;
-  name: LocalizedString;
-  description?: LocalizedString;
+  nameEn: string;
+  nameKa: string;
+  descriptionEn?: string;
+  descriptionKa?: string;
   location: ProjectLocation;
   status: ProjectStatus;
   startDate?: string | null;
@@ -94,18 +96,12 @@ export interface Project {
   googleMapLink?: string;
   minSizeApartment?: number;
   maxSizeApartment?: number;
-  benefits?: string;
+  benefitsEn?: string;
+  benefitsKa?: string;
   isActive: boolean;
   isFeatured: boolean;
   createdAt: string;
   updatedAt: string;
-}
-
-export interface FloorPlan {
-  name: LocalizedString;
-  imageUrl?: string;
-  pdfUrl?: string;
-  description?: LocalizedString;
 }
 
 /** A single percentage-based polygon point (0-100) as stored by the backend. */
@@ -123,16 +119,19 @@ export interface PolygonEntry {
   label?: string;
 }
 
+export interface BuildingLocation {
+  addressEn?: string;
+  addressKa?: string;
+}
+
 export interface Building {
   id: string;
   project: string | Project;
-  name: LocalizedString;
+  nameEn: string;
+  nameKa: string;
   block: string;
-  location?: { address?: string };
+  location?: BuildingLocation;
   status: BuildingStatus;
-  // The backend no longer stores a `floors` count on the Building — the
-  // floor count is derived from the registered Floor[] records. Use
-  // `floors.length` from useFloorsByBuilding(buildingId) instead.
   basementFloors: number;
   totalUnits: number;
   availableUnits: number;
@@ -144,9 +143,8 @@ export interface Building {
   mainImage?: string;
   renderImage?: string;
   polygon?: PolygonPoint[];
-  /** Building DTO accepts floor plans, but they are not persisted in the schema. */
-  floorPlans?: FloorPlan[];
-  description?: LocalizedString;
+  descriptionEn?: string;
+  descriptionKa?: string;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
@@ -203,7 +201,8 @@ export interface Unit {
   block: string;
   floor: string | Floor;
   floorNumber: number;
-  entrance?: string;
+  entranceEn?: string;
+  entranceKa?: string;
   status: UnitStatus;
   type: UnitType;
   rooms?: Room[];
@@ -227,7 +226,8 @@ export interface Unit {
   virtualTourUrl?: string;
   renderImage?: string;
   polygon?: PolygonPoint[];
-  description?: LocalizedString;
+  descriptionEn?: string;
+  descriptionKa?: string;
   reservation?: UnitReservation | null;
   saleRecord?: UnitSaleRecord | null;
   isActive: boolean;
@@ -276,8 +276,10 @@ export interface UnitStats {
 }
 
 export type CreateProjectInput = {
-  name: LocalizedString;
-  description?: LocalizedString;
+  nameEn: string;
+  nameKa: string;
+  descriptionEn?: string;
+  descriptionKa?: string;
   location: ProjectLocation;
   status?: ProjectStatus;
   startDate?: string;
@@ -292,7 +294,8 @@ export type CreateProjectInput = {
   googleMapLink?: string | null;
   minSizeApartment?: number;
   maxSizeApartment?: number;
-  benefits?: string;
+  benefitsEn?: string;
+  benefitsKa?: string;
   isActive?: boolean;
   isFeatured?: boolean;
 };
@@ -301,9 +304,10 @@ export type UpdateProjectInput = Partial<CreateProjectInput>;
 
 export type CreateBuildingInput = {
   project: string;
-  name: LocalizedString;
+  nameEn: string;
+  nameKa: string;
   block: string;
-  location?: { address?: string };
+  location?: BuildingLocation;
   status?: BuildingStatus;
   basementFloors?: number;
   totalUnits?: number;
@@ -318,9 +322,8 @@ export type CreateBuildingInput = {
   rawPolygon?: string;
   imageWidth?: number;
   imageHeight?: number;
-  /** Accepted by the create DTO but not persisted by the building schema. */
-  floorPlans?: FloorPlan[];
-  description?: LocalizedString;
+  descriptionEn?: string;
+  descriptionKa?: string;
   isActive?: boolean;
 };
 
@@ -332,7 +335,8 @@ export type CreateUnitInput = {
   unitNumber: string;
   block: string;
   floorNumber: number;
-  entrance?: string;
+  entranceEn?: string;
+  entranceKa?: string;
   status?: UnitStatus;
   type: UnitType;
   rooms?: Room[];
@@ -359,7 +363,8 @@ export type CreateUnitInput = {
   rawPolygon?: string;
   imageWidth?: number;
   imageHeight?: number;
-  description?: LocalizedString;
+  descriptionEn?: string;
+  descriptionKa?: string;
   isActive?: boolean;
 };
 
@@ -437,12 +442,15 @@ export type SortDirection = 'asc' | 'desc';
 
 export interface Partner {
   id: string;
-  name: string;
-  description?: string;
+  nameEn: string;
+  nameKa: string;
+  descriptionEn?: string;
+  descriptionKa?: string;
   logoId?: string;
   mail?: string;
   phone?: string;
-  address?: string;
+  addressEn?: string;
+  addressKa?: string;
   facebookLink?: string;
   discountPercentage?: number;
   createdAt: string;
@@ -450,12 +458,15 @@ export interface Partner {
 }
 
 export type CreatePartnerInput = {
-  name: string;
-  description?: string;
+  nameEn: string;
+  nameKa: string;
+  descriptionEn?: string;
+  descriptionKa?: string;
   logoId?: string;
   mail?: string;
   phone?: string;
-  address?: string;
+  addressEn?: string;
+  addressKa?: string;
   facebookLink?: string;
   discountPercentage?: number;
 };
@@ -486,8 +497,10 @@ export type UpdateContactStatusInput = {
 
 export interface NewsArticle {
   id: string;
-  header: string;
-  description: string;
+  headerEn: string;
+  headerKa: string;
+  descriptionEn: string;
+  descriptionKa: string;
   image: string[];
   tags: string[];
   createdAt: string;
@@ -495,8 +508,10 @@ export interface NewsArticle {
 }
 
 export type CreateNewsInput = {
-  header: string;
-  description: string;
+  headerEn: string;
+  headerKa: string;
+  descriptionEn: string;
+  descriptionKa: string;
   image?: string[];
   tags?: string[];
 };
@@ -510,12 +525,14 @@ export interface NewsFilter {
 export interface ApartmentType {
   id: string;
   project: string;
-  name?: LocalizedString;
+  nameEn?: string;
+  nameKa?: string;
   bedrooms: number;
   sizeFrom: number;
   sizeTo: number;
   image?: string;
-  description?: LocalizedString;
+  descriptionEn?: string;
+  descriptionKa?: string;
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
@@ -523,12 +540,14 @@ export interface ApartmentType {
 
 export type CreateApartmentTypeInput = {
   project: string;
-  name?: LocalizedString;
+  nameEn?: string;
+  nameKa?: string;
   bedrooms: number;
   sizeFrom: number;
   sizeTo: number;
   image?: string;
-  description?: LocalizedString;
+  descriptionEn?: string;
+  descriptionKa?: string;
   isActive?: boolean;
 };
 

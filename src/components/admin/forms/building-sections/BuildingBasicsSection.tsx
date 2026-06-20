@@ -18,7 +18,8 @@ export interface BuildingBasicsSectionValue {
   nameEn: string;
   block: string;
   status: BuildingStatus;
-  address: string;
+  addressEn: string;
+  addressKa: string;
 }
 
 export interface BuildingProjectOption {
@@ -60,13 +61,6 @@ export default function BuildingBasicsSection({
         </Section>
       )}
       <Section title="Name">
-        <Field label="Name (Georgian)">
-          <Input
-            value={value.nameKa}
-            onChange={(e) => update('nameKa', e.target.value)}
-            placeholder="ბლოკი A"
-          />
-        </Field>
         <Field label="Name (English)">
           <Input
             value={value.nameEn}
@@ -74,8 +68,15 @@ export default function BuildingBasicsSection({
             placeholder="Block A"
           />
         </Field>
+        <Field label="Name (Georgian)">
+          <Input
+            value={value.nameKa}
+            onChange={(e) => update('nameKa', e.target.value)}
+            placeholder="ბლოკი A"
+          />
+        </Field>
       </Section>
-      <Section title="Identity" cols={3}>
+      <Section title="Identity" cols={2}>
         <Field label="Block code" hint="Single letter, e.g. A">
           <Input
             value={value.block}
@@ -91,11 +92,18 @@ export default function BuildingBasicsSection({
             options={BUILDING_STATUSES.map((s) => ({ value: s }))}
           />
         </Field>
-        <Field label="Address">
+        <Field label="Address (English)">
           <Input
-            value={value.address}
-            onChange={(e) => update('address', e.target.value)}
+            value={value.addressEn}
+            onChange={(e) => update('addressEn', e.target.value)}
             placeholder="optional override"
+          />
+        </Field>
+        <Field label="Address (Georgian)">
+          <Input
+            value={value.addressKa}
+            onChange={(e) => update('addressKa', e.target.value)}
+            placeholder="არასავალდებულო"
           />
         </Field>
       </Section>

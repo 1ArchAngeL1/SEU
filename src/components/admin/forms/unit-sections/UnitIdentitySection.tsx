@@ -16,7 +16,8 @@ export interface UnitIdentitySectionValue {
   unitNumber: string;
   block: string;
   floor: string;
-  entrance: string;
+  entranceEn: string;
+  entranceKa: string;
   type: UnitType;
   status: UnitStatus;
 }
@@ -60,11 +61,18 @@ export default function UnitIdentitySection({
             onChange={(e) => update('floor', e.target.value)}
           />
         </Field>
-        <Field label="Entrance">
+        <Field label="Entrance (English)">
           <Input
-            value={value.entrance}
-            onChange={(e) => update('entrance', e.target.value)}
+            value={value.entranceEn}
+            onChange={(e) => update('entranceEn', e.target.value)}
             placeholder="optional"
+          />
+        </Field>
+        <Field label="Entrance (Georgian)">
+          <Input
+            value={value.entranceKa}
+            onChange={(e) => update('entranceKa', e.target.value)}
+            placeholder="არასავალდებულო"
           />
         </Field>
         <Field label="Type">

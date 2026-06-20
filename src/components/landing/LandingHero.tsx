@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { useAllProjects } from '@/hooks/queries/use-projects';
-import { pickLocale } from '@/lib/i18n-helpers';
+import { pickLocalized } from '@/lib/i18n-helpers';
 import type { Project } from '@/model/types/api';
 
 import HeroSlideshow from './hero/HeroSlideshow';
@@ -96,7 +96,7 @@ export default function LandingHero() {
         gallery={gallery}
         active={active}
         projectId={project?.id}
-        projectName={project ? pickLocale(project.name) : undefined}
+        projectName={project ? pickLocalized(project.nameEn, project.nameKa) : undefined}
       />
 
       {/* Empty / loading state */}

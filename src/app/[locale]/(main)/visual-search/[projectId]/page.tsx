@@ -11,7 +11,7 @@ import { useProject } from '@/hooks/queries/use-projects';
 import { useBuildingsByProject } from '@/hooks/queries/use-buildings';
 import { ApartmentTypesSection } from '@/components/visual-search/ApartmentTypesSection';
 import { ProjectVideoSection } from '@/components/visual-search/ProjectVideoSection';
-import { pickLocale, type Locale } from '@/lib/i18n-helpers';
+import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
 import type { Building, PolygonPoint } from '@/model/types/api';
 
@@ -358,7 +358,7 @@ export default function VisualSearchProjectPage({
           <BackButton href="/visual-search" className="mb-10" />
           {project && (
             <h1 className="font-bodoni text-seu-title text-pale-gray mb-16">
-              {pickLocale(project.name, locale)}
+              {pickLocalized(project.nameEn, project.nameKa, locale)}
             </h1>
           )}
           <p className="text-secondary-grey font-montserrat text-seu-body text-center py-32">
@@ -376,7 +376,7 @@ export default function VisualSearchProjectPage({
         <BackButton href="/visual-search" className="mb-4" />
         {project && (
           <h1 className="font-bodoni text-seu-heading text-pale-gray mb-2">
-            {pickLocale(project.name, locale)}
+            {pickLocalized(project.nameEn, project.nameKa, locale)}
           </h1>
         )}
       </div>
@@ -405,7 +405,7 @@ export default function VisualSearchProjectPage({
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={renderImage}
-                alt={project ? pickLocale(project.name, locale) : 'Project render'}
+                alt={project ? pickLocalized(project.nameEn, project.nameKa, locale) : 'Project render'}
                 className="w-full h-auto block"
                 draggable={false}
               />
@@ -486,10 +486,10 @@ export default function VisualSearchProjectPage({
           {activeId && (
             <div className="lg:hidden flex items-center justify-between bg-secondary-black/50 px-4 py-3 border-b border-pale-gray/10">
               <p className="font-montserrat text-seu-body-sm text-pale-gray">
-                {pickLocale(
-                  buildings.find((b) => b.id === activeId)?.name ?? {},
-                  locale
-                )}
+                {(() => {
+                  const b = buildings.find((b) => b.id === activeId);
+                  return b ? pickLocalized(b.nameEn, b.nameKa, locale) : '';
+                })()}
               </p>
               <button
                 onClick={() => {
@@ -511,7 +511,7 @@ export default function VisualSearchProjectPage({
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={renderImage}
-              alt={project ? pickLocale(project.name, locale) : 'Project render'}
+              alt={project ? pickLocalized(project.nameEn, project.nameKa, locale) : 'Project render'}
               className="w-full h-auto block"
             />
 
@@ -563,7 +563,7 @@ export default function VisualSearchProjectPage({
               <BackButton href="/visual-search" variant="gray" />
               {project && (
                 <h1 className="font-bodoni text-seu-heading text-pale-gray leading-none uppercase mt-4">
-                  {pickLocale(project.name, locale)}
+                  {pickLocalized(project.nameEn, project.nameKa, locale)}
                 </h1>
               )}
             </div>
@@ -586,7 +586,7 @@ export default function VisualSearchProjectPage({
                 >
                   <div className="bg-dark-green/90 backdrop-blur-md border border-pale-gray/20 rounded-xl px-5 py-3 shadow-lg">
                     <p className="font-montserrat font-semibold text-seu-body-sm text-pale-gray whitespace-nowrap">
-                      {pickLocale(b.name, locale)}
+                      {pickLocalized(b.nameEn, b.nameKa, locale)}
                     </p>
                     <div className="flex items-center gap-4 font-montserrat text-seu-caption mt-1">
                       {b.block && (
@@ -617,7 +617,10 @@ export default function VisualSearchProjectPage({
                     </p>
                     <span className="size-1.5 rounded-full bg-secondary-grey/50" />
                     <p className="font-montserrat font-medium text-seu-caption-sm lg:text-seu-body-sm text-pale-gray text-center">
-                      {project.location?.district || project.location?.city || project.location?.address || '—'}
+                      {pickLocalized(project.location?.districtEn, project.location?.districtKa, locale) ||
+                        pickLocalized(project.location?.cityEn, project.location?.cityKa, locale) ||
+                        pickLocalized(project.location?.addressEn, project.location?.addressKa, locale) ||
+                        '—'}
                     </p>
                   </div>
 
@@ -663,8 +666,14 @@ export default function VisualSearchProjectPage({
       )}
 
       {/* Benefits + Gallery section */}
-      {project && (project.benefits || (project.images && project.images.length > 0)) && (
-        <BenefitsGallery benefits={project.benefits} images={project.images ?? []} />
+      {project &&
+        (project.benefitsEn ||
+          project.benefitsKa ||
+          (project.images && project.images.length > 0)) && (
+        <BenefitsGallery
+          benefits={pickLocalized(project.benefitsEn, project.benefitsKa, locale)}
+          images={project.images ?? []}
+        />
       )}
 
       {/* Apartment Types section */}

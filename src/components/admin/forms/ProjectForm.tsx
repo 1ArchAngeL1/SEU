@@ -52,14 +52,18 @@ export default function ProjectForm({
   const tabs = useTabs('basics');
 
   const [form, setForm] = useState({
-    nameKa: initialData?.name?.ka ?? '',
-    nameEn: initialData?.name?.en ?? '',
-    descriptionKa: initialData?.description?.ka ?? '',
-    descriptionEn: initialData?.description?.en ?? '',
-    benefits: initialData?.benefits ?? '',
-    address: initialData?.location?.address ?? '',
-    city: initialData?.location?.city ?? '',
-    district: initialData?.location?.district ?? '',
+    nameKa: initialData?.nameKa ?? '',
+    nameEn: initialData?.nameEn ?? '',
+    descriptionKa: initialData?.descriptionKa ?? '',
+    descriptionEn: initialData?.descriptionEn ?? '',
+    benefitsEn: initialData?.benefitsEn ?? '',
+    benefitsKa: initialData?.benefitsKa ?? '',
+    addressEn: initialData?.location?.addressEn ?? '',
+    addressKa: initialData?.location?.addressKa ?? '',
+    cityEn: initialData?.location?.cityEn ?? '',
+    cityKa: initialData?.location?.cityKa ?? '',
+    districtEn: initialData?.location?.districtEn ?? '',
+    districtKa: initialData?.location?.districtKa ?? '',
     status: (initialData?.status ?? 'planning') as ProjectStatus,
     startDate: dateInputValue(initialData?.startDate),
     expectedCompletionDate: dateInputValue(
@@ -101,19 +105,19 @@ export default function ProjectForm({
 
   function buildPayload(): CreateProjectInput {
     const payload: CreateProjectInput = {
-      name: {
-        ka: form.nameKa.trim() || undefined,
-        en: form.nameEn.trim() || undefined,
-      },
-      description: {
-        ka: form.descriptionKa.trim() || undefined,
-        en: form.descriptionEn.trim() || undefined,
-      },
-      benefits: form.benefits.trim() || undefined,
+      nameEn: form.nameEn.trim(),
+      nameKa: form.nameKa.trim(),
+      descriptionEn: form.descriptionEn.trim() || undefined,
+      descriptionKa: form.descriptionKa.trim() || undefined,
+      benefitsEn: form.benefitsEn.trim() || undefined,
+      benefitsKa: form.benefitsKa.trim() || undefined,
       location: {
-        address: form.address.trim(),
-        city: form.city.trim() || undefined,
-        district: form.district.trim() || undefined,
+        addressEn: form.addressEn.trim(),
+        addressKa: form.addressKa.trim(),
+        cityEn: form.cityEn.trim() || undefined,
+        cityKa: form.cityKa.trim() || undefined,
+        districtEn: form.districtEn.trim() || undefined,
+        districtKa: form.districtKa.trim() || undefined,
       },
       status: form.status,
       isActive: form.isActive,
@@ -148,13 +152,13 @@ export default function ProjectForm({
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError('');
-    if (!form.nameKa && !form.nameEn) {
-      setError('Provide at least a Georgian or English name');
+    if (!form.nameEn.trim() || !form.nameKa.trim()) {
+      setError('Both English and Georgian names are required');
       tabs.setActive('basics');
       return;
     }
-    if (!form.address.trim()) {
-      setError('Address is required');
+    if (!form.addressEn.trim() || !form.addressKa.trim()) {
+      setError('Both English and Georgian addresses are required');
       tabs.setActive('basics');
       return;
     }
@@ -177,9 +181,12 @@ export default function ProjectForm({
           value={{
             nameKa: form.nameKa,
             nameEn: form.nameEn,
-            address: form.address,
-            city: form.city,
-            district: form.district,
+            addressEn: form.addressEn,
+            addressKa: form.addressKa,
+            cityEn: form.cityEn,
+            cityKa: form.cityKa,
+            districtEn: form.districtEn,
+            districtKa: form.districtKa,
             status: form.status,
           }}
           update={sectionUpdate<ProjectBasicsSectionValue>()}
@@ -191,7 +198,8 @@ export default function ProjectForm({
           value={{
             descriptionKa: form.descriptionKa,
             descriptionEn: form.descriptionEn,
-            benefits: form.benefits,
+            benefitsEn: form.benefitsEn,
+            benefitsKa: form.benefitsKa,
           }}
           update={sectionUpdate<ProjectDescriptionSectionValue>()}
         />

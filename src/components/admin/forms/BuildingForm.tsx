@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import { useLocale } from 'next-intl';
 import { useAllProjects } from '@/hooks/queries/use-projects';
-import { pickLocale } from '@/lib/i18n-helpers';
+import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { FormFooter, Tabs, useTabs } from './form-primitives';
 import type { PolygonEditorValue } from './PolygonsEditor';
 import BuildingBasicsSection, {
@@ -57,15 +58,17 @@ export default function BuildingForm({
   const tabs = useTabs('basics');
   const projectsQ = useAllProjects();
   const projects = useMemo(() => projectsQ.data ?? [], [projectsQ.data]);
+  const locale = useLocale() as Locale;
 
   const isEdit = !!initialData;
 
   const [form, setForm] = useState({
     project: fixedProjectId ?? projectIdOf(initialData) ?? '',
-    nameKa: initialData?.name?.ka ?? '',
-    nameEn: initialData?.name?.en ?? '',
+    nameKa: initialData?.nameKa ?? '',
+    nameEn: initialData?.nameEn ?? '',
     block: initialData?.block ?? '',
-    address: initialData?.location?.address ?? '',
+    addressEn: initialData?.location?.addressEn ?? '',
+    addressKa: initialData?.location?.addressKa ?? '',
     status: (initialData?.status ?? 'planning') as BuildingStatus,
     basementFloors: initialData?.basementFloors?.toString() ?? '0',
     totalSize: initialData?.totalSize?.toString() ?? '',
@@ -73,8 +76,8 @@ export default function BuildingForm({
     parkingSpaces: initialData?.parkingSpaces?.toString() ?? '0',
     constructionProgress:
       initialData?.constructionProgress?.toString() ?? '0',
-    descriptionKa: initialData?.description?.ka ?? '',
-    descriptionEn: initialData?.description?.en ?? '',
+    descriptionKa: initialData?.descriptionKa ?? '',
+    descriptionEn: initialData?.descriptionEn ?? '',
     mainImage: initialData?.mainImage ?? '',
     renderImage: initialData?.renderImage ?? '',
     images: initialData?.images ?? [],
@@ -108,14 +111,15 @@ export default function BuildingForm({
   function buildPayload(): CreateBuildingInput {
     const payload: CreateBuildingInput = {
       project: form.project,
-      name: {
-        ka: form.nameKa.trim() || undefined,
-        en: form.nameEn.trim() || undefined,
-      },
+      nameEn: form.nameEn.trim(),
+      nameKa: form.nameKa.trim(),
       block: form.block.trim().toUpperCase(),
       status: form.status,
       isActive: form.isActive,
-      location: { address: form.address.trim() || '' },
+      location: {
+        addressEn: form.addressEn.trim() || undefined,
+        addressKa: form.addressKa.trim() || undefined,
+      },
       basementFloors:
         form.basementFloors !== '' ? Number(form.basementFloors) : undefined,
       totalSize: form.totalSize !== '' ? Number(form.totalSize) : undefined,
@@ -127,16 +131,13 @@ export default function BuildingForm({
         form.constructionProgress !== ''
           ? Number(form.constructionProgress)
           : undefined,
-      description: {
-        ka: form.descriptionKa.trim() || undefined,
-        en: form.descriptionEn.trim() || undefined,
-      },
+      descriptionEn: form.descriptionEn.trim() || undefined,
+      descriptionKa: form.descriptionKa.trim() || undefined,
       mainImage: form.mainImage.trim() || undefined,
       renderImage: form.renderImage.trim() || undefined,
       images: form.images,
     };
 
-    // Polygon: parse normalized coordinates directly
     const pe = form.polygonEditor;
     const validEntries = pe.entries.filter((e) => e.raw.trim());
     if (validEntries.length > 0) {
@@ -170,8 +171,8 @@ export default function BuildingForm({
       tabs.setActive('basics');
       return;
     }
-    if (!form.nameKa && !form.nameEn) {
-      setError('Provide a name in Georgian or English');
+    if (!form.nameEn.trim() || !form.nameKa.trim()) {
+      setError('Both English and Georgian names are required');
       tabs.setActive('basics');
       return;
     }
@@ -197,13 +198,14 @@ export default function BuildingForm({
             nameEn: form.nameEn,
             block: form.block,
             status: form.status,
-            address: form.address,
+            addressEn: form.addressEn,
+            addressKa: form.addressKa,
           }}
           update={sectionUpdate<BuildingBasicsSectionValue>()}
           showProjectPicker={!fixedProjectId && !isEdit}
           projectOptions={projects.map((p) => ({
             id: p.id,
-            label: pickLocale(p.name),
+            label: pickLocalized(p.nameEn, p.nameKa, locale),
           }))}
         />
       )}

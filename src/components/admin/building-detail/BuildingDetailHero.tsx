@@ -1,6 +1,6 @@
 import { Plus } from 'lucide-react';
 import StatusBadge from '../StatusBadge';
-import { pickLocale } from '@/lib/i18n-helpers';
+import { pickLocalized } from '@/lib/i18n-helpers';
 import type { Building } from '@/model/types/api';
 
 interface BuildingDetailHeroProps {
@@ -30,7 +30,7 @@ export default function BuildingDetailHero({
               <StatusBadge status={building.status} />
             </div>
             <p className="text-seu-caption text-admin-fg-muted font-montserrat mt-1">
-              {pickLocale(building.name) || `Block ${building.block}`} ·{' '}
+              {pickLocalized(building.nameEn, building.nameKa) || `Block ${building.block}`} ·{' '}
               {aboveGroundFloorCount} floor
               {aboveGroundFloorCount !== 1 ? 's' : ''}
               {building.basementFloors > 0 &&

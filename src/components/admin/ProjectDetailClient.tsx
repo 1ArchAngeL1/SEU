@@ -33,7 +33,7 @@ import {
   useCreateBuilding,
 } from '@/hooks/queries/use-buildings';
 import { useUnitStats } from '@/hooks/queries/use-units';
-import { pickLocale } from '@/lib/i18n-helpers';
+import { pickLocalized } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
 import type {
   CreateBuildingInput,
@@ -110,7 +110,7 @@ export default function ProjectDetailClient({
           Projects
         </Link>
         <span className="text-admin-fg-dim">/</span>
-        <span className="text-admin-fg">{pickLocale(project.name)}</span>
+        <span className="text-admin-fg">{pickLocalized(project.nameEn, project.nameKa)}</span>
       </div>
 
       {/* Hero */}
@@ -120,7 +120,7 @@ export default function ProjectDetailClient({
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={fileUrl(project.mainImage)}
-              alt={pickLocale(project.name)}
+              alt={pickLocalized(project.nameEn, project.nameKa)}
               className="absolute inset-0 w-full h-full object-cover opacity-50"
             />
           ) : (
@@ -142,15 +142,16 @@ export default function ProjectDetailClient({
                 )}
               </div>
               <h1 className="font-[--font-bodoni] font-normal text-seu-title text-pale-gray leading-none">
-                {pickLocale(project.name)}
+                {pickLocalized(project.nameEn, project.nameKa)}
               </h1>
               <div className="flex items-center gap-2 font-montserrat text-seu-caption text-pale-gray/80">
                 <MapPin className="size-3.5" />
                 <span>
-                  {project.location.address}
-                  {project.location.city && ` · ${project.location.city}`}
-                  {project.location.district &&
-                    ` · ${project.location.district}`}
+                  {project.location.addressEn || project.location.addressKa}
+                  {(project.location.cityEn || project.location.cityKa) &&
+                    ` · ${project.location.cityEn || project.location.cityKa}`}
+                  {(project.location.districtEn || project.location.districtKa) &&
+                    ` · ${project.location.districtEn || project.location.districtKa}`}
                 </span>
               </div>
             </div>
@@ -183,13 +184,13 @@ export default function ProjectDetailClient({
       </div>
 
       {/* Description */}
-      {(project.description?.ka || project.description?.en) && (
+      {(project.descriptionEn || project.descriptionKa) && (
         <div className="rounded-2xl border border-admin-border-soft bg-admin-card p-5 mb-8">
           <h2 className="font-montserrat text-seu-caption-sm text-admin-fg-muted uppercase tracking-wider mb-2">
             About this project
           </h2>
           <p className="font-montserrat text-seu-body-sm text-admin-fg-muted whitespace-pre-line">
-            {pickLocale(project.description) ?? ''}
+            {pickLocalized(project.descriptionEn, project.descriptionKa) ?? ''}
           </p>
         </div>
       )}
@@ -259,7 +260,7 @@ export default function ProjectDetailClient({
       <Sheet open={newBuildingOpen} onOpenChange={setNewBuildingOpen}>
         <SheetContent side="right" className="w-full sm:max-w-2xl flex flex-col p-0">
           <SheetHeader>
-            <SheetTitle>New building in {pickLocale(project.name)}</SheetTitle>
+            <SheetTitle>New building in {pickLocalized(project.nameEn, project.nameKa)}</SheetTitle>
             <SheetDescription>Add a new building to this project</SheetDescription>
           </SheetHeader>
           <div className="flex-1 overflow-y-auto px-6 py-4">

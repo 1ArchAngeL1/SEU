@@ -1,7 +1,7 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
-import { pickLocale } from '@/lib/i18n-helpers';
+import { useLocale, useTranslations } from 'next-intl';
+import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -17,7 +17,7 @@ const ANY_PROJECT = '__any_project__';
 export type ProjectSelectProps = {
   value: string;
   onChange: (v: string) => void;
-  projects: Array<{ id: string; name: any }>;
+  projects: Array<{ id: string; nameEn: string; nameKa: string }>;
 };
 
 export default function ProjectSelect({
@@ -26,6 +26,7 @@ export default function ProjectSelect({
   projects,
 }: ProjectSelectProps) {
   const t = useTranslations('search');
+  const locale = useLocale() as Locale;
   return (
     <div>
       <Label className={labelClass}>{t('project')}</Label>
@@ -42,7 +43,7 @@ export default function ProjectSelect({
           </SelectItem>
           {projects.map((p) => (
             <SelectItem value={p.id} key={p.id} className={itemClass}>
-              {pickLocale(p.name)}
+              {pickLocalized(p.nameEn, p.nameKa, locale)}
             </SelectItem>
           ))}
         </SelectContent>

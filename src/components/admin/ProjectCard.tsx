@@ -9,7 +9,7 @@ import {
   Star,
 } from 'lucide-react';
 import StatusBadge from '@/components/admin/StatusBadge';
-import { pickLocale } from '@/lib/i18n-helpers';
+import { pickLocalized } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
 import { cn } from '@/lib/utils';
 import type { Project } from '@/model/types/api';
@@ -43,7 +43,7 @@ export default function ProjectCard({
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={fileUrl(project.mainImage)}
-              alt={pickLocale(project.name)}
+              alt={pickLocalized(project.nameEn, project.nameKa)}
               className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover/card:opacity-90 group-hover/card:scale-105 transition-all duration-500"
             />
           ) : (
@@ -63,11 +63,11 @@ export default function ProjectCard({
           </div>
           <div className="absolute bottom-3 left-3 right-3">
             <div className="font-[--font-bodoni] text-seu-heading text-pale-gray leading-tight drop-shadow-lg line-clamp-2">
-              {pickLocale(project.name)}
+              {pickLocalized(project.nameEn, project.nameKa)}
             </div>
             <div className="flex items-center gap-1.5 mt-1.5 font-montserrat text-seu-caption-sm text-pale-gray/85">
               <MapPin className="size-3" />
-              <span className="truncate">{project.location.address}</span>
+              <span className="truncate">{project.location.addressEn || project.location.addressKa}</span>
             </div>
           </div>
         </div>

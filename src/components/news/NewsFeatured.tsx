@@ -2,7 +2,9 @@
 
 import FadeIn from '@/components/FadeIn';
 import { ImageIcon } from 'lucide-react';
+import { useLocale } from 'next-intl';
 import { fileUrl } from '@/lib/file-url';
+import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import type { NewsArticle } from '@/model/types/api';
 
 interface NewsFeaturedProps {
@@ -11,6 +13,8 @@ interface NewsFeaturedProps {
 
 export default function NewsFeatured({ article }: NewsFeaturedProps) {
   const hasImage = article.image.length > 0;
+  const locale = useLocale() as Locale;
+  const header = pickLocalized(article.headerEn, article.headerKa, locale);
 
   return (
     <div className="max-w-[1920px] mx-auto px-5 lg:px-10 -mt-16 relative z-10">
@@ -21,7 +25,7 @@ export default function NewsFeatured({ article }: NewsFeaturedProps) {
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={fileUrl(article.image[0])}
-              alt={article.header}
+              alt={header}
               className="absolute inset-0 w-full h-full object-cover"
             />
           ) : (
@@ -34,7 +38,7 @@ export default function NewsFeatured({ article }: NewsFeaturedProps) {
 
           <div className="relative z-10 flex items-center h-full px-8 lg:px-16">
             <h2 className="font-[--font-bodoni] font-normal text-seu-heading lg:text-seu-title text-primary-green italic max-w-2xl">
-              {article.header}
+              {header}
             </h2>
           </div>
         </div>

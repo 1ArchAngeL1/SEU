@@ -3,7 +3,7 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
-import { pickLocale } from '@/lib/i18n-helpers';
+import { pickLocalized } from '@/lib/i18n-helpers';
 import { cn } from '@/lib/utils';
 import type { Project } from '@/model/types/api';
 
@@ -35,7 +35,7 @@ export default function HeroMobileContent({
     <div className="absolute bottom-0 left-0 right-0 z-10 px-5 pb-6 lg:hidden flex flex-col gap-4 animate-[fadeInUp_0.9s_cubic-bezier(0.16,1,0.3,1)_0.3s_both]">
       {/* Project name */}
       <h1 className="font-[--font-bodoni] text-seu-heading text-white leading-none uppercase">
-        {pickLocale(project.name)}
+        {pickLocalized(project.nameEn, project.nameKa)}
       </h1>
 
       {/* Find Apartment button */}

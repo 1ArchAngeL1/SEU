@@ -3,7 +3,7 @@
 import { Link } from '@/i18n/navigation';
 import { Building2, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { pickLocale } from '@/lib/i18n-helpers';
+import { pickLocalized } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
 import StatusBadge from './StatusBadge';
 import type { Building } from '@/model/types/api';
@@ -69,7 +69,7 @@ export default function BuildingCard({
       <div className="p-5 space-y-4">
         <div>
           <div className="font-montserrat text-seu-caption-sm text-admin-fg-muted uppercase tracking-wider">
-            {pickLocale(building.name) || `Block ${building.block}`}
+            {pickLocalized(building.nameEn, building.nameKa) || `Block ${building.block}`}
           </div>
           <div className="font-montserrat text-seu-caption-sm text-admin-fg-muted mt-1">
             {building.basementFloors > 0

@@ -9,7 +9,7 @@ import ContactPanel from '@/components/ContactPanel';
 import { Link, useRouter } from '@/i18n/navigation';
 import { useBuilding } from '@/hooks/queries/use-buildings';
 import { useFloorsByBuilding } from '@/hooks/queries/use-floors';
-import { pickLocale, type Locale } from '@/lib/i18n-helpers';
+import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
 import type { PolygonPoint } from '@/model/types/api';
 
@@ -69,7 +69,7 @@ export default function VisualSearchBuildingPage({
           <BackButton href={`/visual-search/${projectId}`} className="mb-6 lg:mb-8" />
           {building && (
             <h1 className="font-bodoni text-seu-title text-site-fg-strong mb-8 lg:mb-12">
-              {pickLocale(building.name, locale)}
+              {pickLocalized(building.nameEn, building.nameKa, locale)}
             </h1>
           )}
           <p className="text-site-fg-muted font-montserrat text-seu-body text-center py-32">
@@ -108,7 +108,7 @@ export default function VisualSearchBuildingPage({
             {building && (
               <div className="text-right">
                 <h1 className="font-bodoni text-seu-heading lg:text-seu-heading-lg text-site-fg-strong leading-none">
-                  {pickLocale(building.name, locale)}
+                  {pickLocalized(building.nameEn, building.nameKa, locale)}
                 </h1>
                 <p className="font-montserrat text-seu-caption text-site-fg-muted mt-1">
                   Block {building.block} · {sortedFloors.length} floors
@@ -139,7 +139,7 @@ export default function VisualSearchBuildingPage({
                   <img
                     ref={imgRef}
                     src={renderImage}
-                    alt={building ? pickLocale(building.name, locale) : 'Building render'}
+                    alt={building ? pickLocalized(building.nameEn, building.nameKa, locale) : 'Building render'}
                     className="w-full h-full object-contain block"
                     onLoad={handleImgLoad}
                   />

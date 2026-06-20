@@ -74,7 +74,8 @@ export default function UnitForm({
     unitNumber: initialData?.unitNumber ?? initialUnitNumber ?? '',
     block: initialData?.block ?? defaultBlock,
     floor: (initialData?.floorNumber ?? initialFloor ?? '').toString(),
-    entrance: initialData?.entrance ?? '',
+    entranceEn: initialData?.entranceEn ?? '',
+    entranceKa: initialData?.entranceKa ?? '',
     type: (initialData?.type ?? 'living') as UnitType,
     status: (initialData?.status ?? 'available') as UnitStatus,
 
@@ -114,8 +115,8 @@ export default function UnitForm({
     } as PolygonEditorValue,
 
     // Description
-    descriptionKa: initialData?.description?.ka ?? '',
-    descriptionEn: initialData?.description?.en ?? '',
+    descriptionKa: initialData?.descriptionKa ?? '',
+    descriptionEn: initialData?.descriptionEn ?? '',
 
     // Flags
     furnishingStatus: (initialData?.furnishingStatus ??
@@ -128,10 +129,12 @@ export default function UnitForm({
     return raw
       .filter((r): r is Room => r != null && typeof r === 'object')
       .map((r) => ({
-        name: typeof r.name === 'string' ? r.name : '',
+        nameEn: typeof r.nameEn === 'string' ? r.nameEn : '',
+        nameKa: typeof r.nameKa === 'string' ? r.nameKa : '',
         type: r.type ?? 'bedroom',
         ...(typeof r.size === 'number' && { size: r.size }),
-        ...(typeof r.description === 'string' && { description: r.description }),
+        ...(typeof r.descriptionEn === 'string' && { descriptionEn: r.descriptionEn }),
+        ...(typeof r.descriptionKa === 'string' && { descriptionKa: r.descriptionKa }),
       }));
   });
 
@@ -173,7 +176,8 @@ export default function UnitForm({
       },
       furnishingStatus: form.furnishingStatus,
       isActive: form.isActive,
-      entrance: form.entrance.trim() || undefined,
+      entranceEn: form.entranceEn.trim() || undefined,
+      entranceKa: form.entranceKa.trim() || undefined,
       mainImage: form.mainImage.trim() || undefined,
       images: form.images,
       floorPlanImage: form.floorPlanImage.trim() || undefined,
@@ -182,10 +186,8 @@ export default function UnitForm({
       videoTourUrl: form.videoTourUrl.trim() || undefined,
       virtualTourUrl: form.virtualTourUrl.trim() || undefined,
       renderImage: form.renderImage.trim() || undefined,
-      description: {
-        ka: form.descriptionKa.trim() || undefined,
-        en: form.descriptionEn.trim() || undefined,
-      },
+      descriptionEn: form.descriptionEn.trim() || undefined,
+      descriptionKa: form.descriptionKa.trim() || undefined,
     };
 
     // Polygon: parse normalized coordinates directly
@@ -219,9 +221,11 @@ export default function UnitForm({
     if (!form.amount) return setError('Price amount is required');
     const cleanRooms: Room[] = roomsList.map((r) => ({
       type: r.type,
-      ...(r.name?.trim() && { name: r.name.trim() }),
+      ...(r.nameEn?.trim() && { nameEn: r.nameEn.trim() }),
+      ...(r.nameKa?.trim() && { nameKa: r.nameKa.trim() }),
       ...(r.size !== undefined && { size: r.size }),
-      ...(r.description?.trim() && { description: r.description.trim() }),
+      ...(r.descriptionEn?.trim() && { descriptionEn: r.descriptionEn.trim() }),
+      ...(r.descriptionKa?.trim() && { descriptionKa: r.descriptionKa.trim() }),
     }));
     setLoading(true);
     try {
@@ -254,7 +258,8 @@ export default function UnitForm({
             unitNumber: form.unitNumber,
             block: form.block,
             floor: form.floor,
-            entrance: form.entrance,
+            entranceEn: form.entranceEn,
+            entranceKa: form.entranceKa,
             type: form.type,
             status: form.status,
           }}

@@ -77,11 +77,19 @@ export default function UnitRoomsListSection({
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <Field label="Name (optional)" hint="Leave empty to use the type label">
+              <Field label="Name (English)" hint="Leave empty to use the type label">
                 <Input
-                  value={room.name ?? ''}
-                  onChange={(e) => updateRoom(index, { name: e.target.value })}
+                  value={room.nameEn ?? ''}
+                  onChange={(e) => updateRoom(index, { nameEn: e.target.value })}
                   placeholder="e.g. Master bedroom"
+                  maxLength={100}
+                />
+              </Field>
+              <Field label="Name (Georgian)" hint="ცარიელი დატოვებაში ტიპის სახელი გამოჩნდება">
+                <Input
+                  value={room.nameKa ?? ''}
+                  onChange={(e) => updateRoom(index, { nameKa: e.target.value })}
+                  placeholder="მაგ. სამთავრო საძინებელი"
                   maxLength={100}
                 />
               </Field>
@@ -107,11 +115,20 @@ export default function UnitRoomsListSection({
                   }}
                 />
               </Field>
-              <Field label="Description">
+              <Field label="Description (English)">
                 <Input
-                  value={room.description ?? ''}
+                  value={room.descriptionEn ?? ''}
                   onChange={(e) =>
-                    updateRoom(index, { description: e.target.value || undefined })
+                    updateRoom(index, { descriptionEn: e.target.value || undefined })
+                  }
+                  maxLength={500}
+                />
+              </Field>
+              <Field label="Description (Georgian)">
+                <Input
+                  value={room.descriptionKa ?? ''}
+                  onChange={(e) =>
+                    updateRoom(index, { descriptionKa: e.target.value || undefined })
                   }
                   maxLength={500}
                 />

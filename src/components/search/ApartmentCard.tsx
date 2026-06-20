@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { ArrowUpRight, Maximize2, Building2, Layers, ImageIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Link } from '@/i18n/navigation';
-import { pickLocale } from '@/lib/i18n-helpers';
+import { pickLocalized } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -33,7 +33,7 @@ export default function ApartmentCard({
 }: ApartmentCardProps) {
   const t = useTranslations('search');
   const projectName =
-    typeof data.project === 'string' ? '' : pickLocale(data.project.name);
+    typeof data.project === 'string' ? '' : pickLocalized(data.project.nameEn, data.project.nameKa);
 
   function statusLabel(s: UnitStatus): string {
     if (s === 'available') return t('available');

@@ -1,6 +1,6 @@
 'use client';
 
-import { pickLocale } from '@/lib/i18n-helpers';
+import { pickLocalized } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
 import { cn } from '@/lib/utils';
 

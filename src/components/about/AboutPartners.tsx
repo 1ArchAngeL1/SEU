@@ -2,11 +2,13 @@
 
 import FadeIn from '@/components/FadeIn';
 import PartnerCard from '@/components/card/PartnerCard';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useAllPartners } from '@/hooks/queries/use-partners';
+import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 
 export default function AboutPartners() {
   const t = useTranslations('about');
+  const locale = useLocale() as Locale;
   const { data: partners = [], isLoading } = useAllPartners();
 
   return (
@@ -43,12 +45,12 @@ export default function AboutPartners() {
               {partners.map((partner, i) => (
                 <FadeIn key={partner.id} delay={(i % 4) * 80} duration={500}>
                   <PartnerCard
-                    name={partner.name}
+                    name={pickLocalized(partner.nameEn, partner.nameKa, locale)}
                     logoId={partner.logoId}
-                    description={partner.description}
+                    description={pickLocalized(partner.descriptionEn, partner.descriptionKa, locale)}
                     mail={partner.mail}
                     phone={partner.phone}
-                    address={partner.address}
+                    address={pickLocalized(partner.addressEn, partner.addressKa, locale)}
                     facebookLink={partner.facebookLink}
                     discountPercentage={partner.discountPercentage}
                   />

@@ -49,7 +49,7 @@ import {
   useUpdateFloor,
   useDeleteFloor,
 } from '@/hooks/queries/use-floors';
-import { pickLocale } from '@/lib/i18n-helpers';
+import { pickLocalized } from '@/lib/i18n-helpers';
 import type {
   CreateFloorInput,
   CreateUnitInput,
@@ -153,8 +153,8 @@ export default function UnitsPage() {
     if (!projectSearch.trim()) return projects;
     const q = projectSearch.trim().toLowerCase();
     return projects.filter((p) => {
-      const ka = p.name.ka?.toLowerCase() ?? '';
-      const en = p.name.en?.toLowerCase() ?? '';
+      const ka = p.nameKa?.toLowerCase() ?? '';
+      const en = p.nameEn?.toLowerCase() ?? '';
       return ka.includes(q) || en.includes(q);
     });
   }, [projects, projectSearch]);
@@ -314,7 +314,7 @@ export default function UnitsPage() {
           <SelectContent>
             {projects.map((p) => (
               <SelectItem key={p.id} value={p.id}>
-                {pickLocale(p.name)}
+                {pickLocalized(p.nameEn, p.nameKa)}
               </SelectItem>
             ))}
           </SelectContent>

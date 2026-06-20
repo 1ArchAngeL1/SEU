@@ -14,7 +14,7 @@ import {
 import { useFloor, useFloorsByBuilding } from '@/hooks/queries/use-floors';
 import { useProject } from '@/hooks/queries/use-projects';
 import { useUnitsList } from '@/hooks/queries/use-units';
-import { pickLocale, type Locale } from '@/lib/i18n-helpers';
+import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
 import { cn } from '@/lib/utils';
 import type { PolygonPoint, Unit } from '@/model/types/api';
@@ -329,10 +329,11 @@ export default function VisualSearchFloorPage({
                     No floor plan available for this floor.
                   </p>
                 )}
-                {location?.address && (
+                {(location?.addressEn || location?.addressKa) && (
                   <p className="font-montserrat text-seu-caption text-site-fg-muted mt-4 tracking-wider text-center">
-                    {location.address}
-                    {location.city && ` · ${location.city}`}
+                    {pickLocalized(location.addressEn, location.addressKa, locale)}
+                    {(location.cityEn || location.cityKa) &&
+                      ` · ${pickLocalized(location.cityEn, location.cityKa, locale)}`}
                   </p>
                 )}
               </>
@@ -560,10 +561,11 @@ export default function VisualSearchFloorPage({
                   )}
 
                   {/* Location text */}
-                  {location?.address && (
+                  {(location?.addressEn || location?.addressKa) && (
                     <p className="font-montserrat text-seu-caption text-site-fg-muted mt-6 tracking-wider">
-                      {location.address}
-                      {location.city && ` · ${location.city}`}
+                      {pickLocalized(location.addressEn, location.addressKa, locale)}
+                      {(location.cityEn || location.cityKa) &&
+                        ` · ${pickLocalized(location.cityEn, location.cityKa, locale)}`}
                     </p>
                   )}
                 </>

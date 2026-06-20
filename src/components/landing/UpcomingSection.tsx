@@ -3,7 +3,7 @@
 import { useLocale, useTranslations } from 'next-intl';
 import UpcomingProjectCard from './UpcomingProjectCard';
 import { useProjectsList } from '@/hooks/queries/use-projects';
-import { pickLocale, type Locale } from '@/lib/i18n-helpers';
+import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
 
 function formatStartDate(iso: string | null | undefined): string | undefined {
@@ -45,7 +45,7 @@ export default function UpcomingSection() {
               className={`flex ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}
             >
               <UpcomingProjectCard
-                name={pickLocale(project.name, locale)}
+                name={pickLocalized(project.nameEn, project.nameKa, locale)}
                 startDate={formatStartDate(
                   project.startDate ?? project.expectedCompletionDate
                 )}

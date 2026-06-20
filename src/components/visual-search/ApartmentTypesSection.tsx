@@ -4,7 +4,7 @@ import { ChevronRight, ImageIcon } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { useApartmentTypesByProject } from '@/hooks/queries/use-apartment-types';
-import { pickLocale, type Locale } from '@/lib/i18n-helpers';
+import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
 import type { ApartmentType } from '@/model/types/api';
 
@@ -50,7 +50,7 @@ export function ApartmentTypesSection({ projectId }: ApartmentTypesSectionProps)
         <ul className="divide-y divide-pale-gray/10">
           {items.map((type) => {
             const image = fileUrl(type.image);
-            const label = pickLocale(type.name, locale) || defaultName(type);
+            const label = pickLocalized(type.nameEn, type.nameKa, locale) || defaultName(type);
             const size = formatSize(type.sizeFrom, type.sizeTo);
             const href = searchHref(projectId, type);
 

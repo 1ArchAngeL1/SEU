@@ -30,14 +30,14 @@ export default function ApartmentTypeForm({
   submitLabel,
 }: ApartmentTypeFormProps) {
   const [form, setForm] = useState({
-    nameKa: initialData?.name?.ka ?? '',
-    nameEn: initialData?.name?.en ?? '',
+    nameKa: initialData?.nameKa ?? '',
+    nameEn: initialData?.nameEn ?? '',
     bedrooms: initialData?.bedrooms?.toString() ?? '0',
     sizeFrom: initialData?.sizeFrom?.toString() ?? '',
     sizeTo: initialData?.sizeTo?.toString() ?? '',
     image: initialData?.image ?? '',
-    descriptionKa: initialData?.description?.ka ?? '',
-    descriptionEn: initialData?.description?.en ?? '',
+    descriptionKa: initialData?.descriptionKa ?? '',
+    descriptionEn: initialData?.descriptionEn ?? '',
     isActive: initialData?.isActive ?? true,
   });
   const [loading, setLoading] = useState(false);
@@ -73,33 +73,16 @@ export default function ApartmentTypeForm({
     setError('');
     setLoading(true);
     try {
-      const name =
-        form.nameKa.trim() || form.nameEn.trim()
-          ? {
-              ...(form.nameKa.trim() && { ka: form.nameKa.trim() }),
-              ...(form.nameEn.trim() && { en: form.nameEn.trim() }),
-            }
-          : undefined;
-      const description =
-        form.descriptionKa.trim() || form.descriptionEn.trim()
-          ? {
-              ...(form.descriptionKa.trim() && {
-                ka: form.descriptionKa.trim(),
-              }),
-              ...(form.descriptionEn.trim() && {
-                en: form.descriptionEn.trim(),
-              }),
-            }
-          : undefined;
-
       const payload: CreateApartmentTypeInput = {
         project: projectId,
         bedrooms,
         sizeFrom,
         sizeTo,
         isActive: form.isActive,
-        ...(name && { name }),
-        ...(description && { description }),
+        ...(form.nameEn.trim() && { nameEn: form.nameEn.trim() }),
+        ...(form.nameKa.trim() && { nameKa: form.nameKa.trim() }),
+        ...(form.descriptionEn.trim() && { descriptionEn: form.descriptionEn.trim() }),
+        ...(form.descriptionKa.trim() && { descriptionKa: form.descriptionKa.trim() }),
         ...(form.image && { image: form.image }),
       };
       await onSubmit(payload);
@@ -124,18 +107,18 @@ export default function ApartmentTypeForm({
       </Section>
 
       <Section title="Name">
-        <Field label="Name (Georgian)" hint="e.g. სტუდიო, 1 საძინებელი">
-          <Input
-            value={form.nameKa}
-            onChange={(e) => set('nameKa', e.target.value)}
-            placeholder="სტუდიო"
-          />
-        </Field>
         <Field label="Name (English)" hint="e.g. Studio, 1 Bedroom">
           <Input
             value={form.nameEn}
             onChange={(e) => set('nameEn', e.target.value)}
             placeholder="Studio"
+          />
+        </Field>
+        <Field label="Name (Georgian)" hint="e.g. სტუდიო, 1 საძინებელი">
+          <Input
+            value={form.nameKa}
+            onChange={(e) => set('nameKa', e.target.value)}
+            placeholder="სტუდიო"
           />
         </Field>
       </Section>
