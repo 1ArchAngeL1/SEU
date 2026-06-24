@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Check, ClipboardPaste, Copy } from 'lucide-react';
 import { btnGhost, btnPrimary } from './form-primitives';
 import type { PolygonEditorValue } from './PolygonsEditor';
 import type {
@@ -140,9 +141,96 @@ export default function UnitForm({
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [copyStatus, setCopyStatus] = useState<'idle' | 'copied'>('idle');
+  const [pasteStatus, setPasteStatus] = useState<'idle' | 'pasted'>('idle');
 
   function update<K extends keyof typeof form>(k: K, v: (typeof form)[K]) {
     setForm((p) => ({ ...p, [k]: v }));
+  }
+
+  // Keys excluded from copy/paste — they're location-specific and must remain
+  // unique per unit (or are tied to a unit's position on the floor plan).
+  const FEATURE_EXCLUDED_KEYS = [
+    'unitNumber',
+    'block',
+    'floor',
+    'polygonEditor',
+  ] as const;
+
+  async function handleCopyFeatures() {
+    setError('');
+    const excluded = new Set<string>(FEATURE_EXCLUDED_KEYS);
+    const payload: Record<string, unknown> = { roomsList };
+    for (const [key, value] of Object.entries(form)) {
+      if (excluded.has(key)) continue;
+      payload[key] = value;
+    }
+    try {
+      await navigator.clipboard.writeText(JSON.stringify(payload, null, 2));
+      setCopyStatus('copied');
+      setTimeout(() => setCopyStatus('idle'), 1500);
+    } catch (e) {
+      setError(
+        'Failed to copy: ' + (e instanceof Error ? e.message : 'clipboard unavailable')
+      );
+    }
+  }
+
+  async function handlePasteFeatures() {
+    setError('');
+    let text: string;
+    try {
+      text = await navigator.clipboard.readText();
+    } catch (e) {
+      setError(
+        'Failed to read clipboard: ' +
+          (e instanceof Error ? e.message : 'clipboard unavailable')
+      );
+      return;
+    }
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(text);
+    } catch {
+      setError('Clipboard does not contain valid JSON');
+      return;
+    }
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+      setError('Pasted JSON must be an object');
+      return;
+    }
+    const data = parsed as Record<string, unknown>;
+    setForm((prev) => {
+      const next = { ...prev } as Record<string, unknown>;
+      for (const key of Object.keys(prev)) {
+        if ((FEATURE_EXCLUDED_KEYS as readonly string[]).includes(key)) continue;
+        if (!(key in data)) continue;
+        const incoming = data[key];
+        if (incoming === null || incoming === undefined) continue;
+        next[key] = incoming;
+      }
+      return next as typeof prev;
+    });
+    if (Array.isArray(data.roomsList)) {
+      setRoomsList(
+        (data.roomsList as unknown[])
+          .filter((r): r is Record<string, unknown> => !!r && typeof r === 'object')
+          .map((r) => ({
+            nameEn: typeof r.nameEn === 'string' ? r.nameEn : '',
+            nameKa: typeof r.nameKa === 'string' ? r.nameKa : '',
+            type: (r.type as Room['type']) ?? 'bedroom',
+            ...(typeof r.size === 'number' && { size: r.size }),
+            ...(typeof r.descriptionEn === 'string' && {
+              descriptionEn: r.descriptionEn,
+            }),
+            ...(typeof r.descriptionKa === 'string' && {
+              descriptionKa: r.descriptionKa,
+            }),
+          }))
+      );
+    }
+    setPasteStatus('pasted');
+    setTimeout(() => setPasteStatus('idle'), 1500);
   }
 
   function sectionUpdate<V extends Partial<typeof form>>() {
@@ -253,6 +341,43 @@ export default function UnitForm({
             : 'space-y-7'
         )}
       >
+        <div className="flex items-center justify-end gap-2">
+          <span className="font-montserrat text-seu-caption-sm text-admin-fg-dim mr-auto">
+            Reuse features across units — copies everything except unit
+            number, block, floor, and polygon.
+          </span>
+          <button
+            type="button"
+            onClick={handleCopyFeatures}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-admin-border bg-admin-input-gradient hover:border-admin-border-strong text-admin-fg-muted hover:text-admin-fg font-montserrat text-seu-caption-sm transition-colors"
+          >
+            {copyStatus === 'copied' ? (
+              <>
+                <Check className="size-3.5" /> Copied
+              </>
+            ) : (
+              <>
+                <Copy className="size-3.5" /> Copy JSON
+              </>
+            )}
+          </button>
+          <button
+            type="button"
+            onClick={handlePasteFeatures}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-admin-border bg-admin-input-gradient hover:border-admin-border-strong text-admin-fg-muted hover:text-admin-fg font-montserrat text-seu-caption-sm transition-colors"
+          >
+            {pasteStatus === 'pasted' ? (
+              <>
+                <Check className="size-3.5" /> Pasted
+              </>
+            ) : (
+              <>
+                <ClipboardPaste className="size-3.5" /> Paste JSON
+              </>
+            )}
+          </button>
+        </div>
+
         <UnitIdentitySection
           value={{
             unitNumber: form.unitNumber,
