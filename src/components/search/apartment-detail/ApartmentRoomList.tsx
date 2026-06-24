@@ -10,7 +10,6 @@ import {
   Package,
   Sofa,
   Sun,
-  Waves,
 } from 'lucide-react';
 import type { RoomType } from '@/model/types/api';
 
@@ -22,7 +21,9 @@ export interface RoomDetail {
 
 function RoomIcon({ type }: { type: RoomType }) {
   const cls = 'size-5 text-site-fg-dim flex-shrink-0';
-  switch (type) {
+  // Legacy data may still carry the removed 'toilet' type; treat it as bathroom.
+  const normalized: RoomType = (type as string) === 'toilet' ? 'bathroom' : type;
+  switch (normalized) {
     case 'bedroom':
       return <BedDouble className={cls} />;
     case 'living_room':
@@ -33,8 +34,6 @@ function RoomIcon({ type }: { type: RoomType }) {
       return <ChefHat className={cls} />;
     case 'bathroom':
       return <Droplets className={cls} />;
-    case 'toilet':
-      return <Waves className={cls} />;
     case 'hall':
       return <DoorOpen className={cls} />;
     case 'balcony':

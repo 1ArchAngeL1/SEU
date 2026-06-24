@@ -34,7 +34,6 @@ export type RoomType =
   | 'studio'
   | 'kitchen'
   | 'bathroom'
-  | 'toilet'
   | 'hall'
   | 'balcony'
   | 'terrace'

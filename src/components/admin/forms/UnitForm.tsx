@@ -148,23 +148,9 @@ export default function UnitForm({
     setForm((p) => ({ ...p, [k]: v }));
   }
 
-  // Keys excluded from copy/paste — they're location-specific and must remain
-  // unique per unit (or are tied to a unit's position on the floor plan).
-  const FEATURE_EXCLUDED_KEYS = [
-    'unitNumber',
-    'block',
-    'floor',
-    'polygonEditor',
-  ] as const;
-
   async function handleCopyFeatures() {
     setError('');
-    const excluded = new Set<string>(FEATURE_EXCLUDED_KEYS);
-    const payload: Record<string, unknown> = { roomsList };
-    for (const [key, value] of Object.entries(form)) {
-      if (excluded.has(key)) continue;
-      payload[key] = value;
-    }
+    const payload: Record<string, unknown> = { ...form, roomsList };
     try {
       await navigator.clipboard.writeText(JSON.stringify(payload, null, 2));
       setCopyStatus('copied');
@@ -203,7 +189,6 @@ export default function UnitForm({
     setForm((prev) => {
       const next = { ...prev } as Record<string, unknown>;
       for (const key of Object.keys(prev)) {
-        if ((FEATURE_EXCLUDED_KEYS as readonly string[]).includes(key)) continue;
         if (!(key in data)) continue;
         const incoming = data[key];
         if (incoming === null || incoming === undefined) continue;
@@ -343,8 +328,8 @@ export default function UnitForm({
       >
         <div className="flex items-center justify-end gap-2">
           <span className="font-montserrat text-seu-caption-sm text-admin-fg-dim mr-auto">
-            Reuse features across units — copies everything except unit
-            number, block, floor, and polygon.
+            Reuse data across units — copies every property, including
+            unit number, block, floor, polygon, and image IDs.
           </span>
           <button
             type="button"

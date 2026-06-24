@@ -5,27 +5,51 @@ import type { Room, RoomType } from '@/model/types/api';
 import { btnGhost, Field, FormSelect, Input } from '../form-primitives';
 import FormBlock from './FormBlock';
 
-const ROOM_TYPE_OPTIONS: Array<{ value: RoomType; label: string }> = [
-  { value: 'bedroom', label: 'Bedroom' },
-  { value: 'living_room', label: 'Living room' },
-  { value: 'studio', label: 'Studio' },
-  { value: 'kitchen', label: 'Kitchen' },
-  { value: 'bathroom', label: 'Bathroom' },
-  { value: 'toilet', label: 'Toilet' },
-  { value: 'hall', label: 'Hall' },
-  { value: 'balcony', label: 'Balcony' },
-  { value: 'terrace', label: 'Terrace' },
-  { value: 'storage', label: 'Storage' },
-  { value: 'other', label: 'Other' },
-];
+const ROOM_TYPE_LABELS: Record<RoomType, { en: string; ka: string }> = {
+  bedroom: { en: 'Bedroom', ka: 'საძინებელი' },
+  living_room: { en: 'Living Room', ka: 'მისაღები' },
+  studio: { en: 'Studio', ka: 'სტუდიო' },
+  kitchen: { en: 'Kitchen', ka: 'სამზარეულო' },
+  bathroom: { en: 'Bathroom', ka: 'სველი წერტილი' },
+  hall: { en: 'Hall', ka: 'ჰოლი' },
+  balcony: { en: 'Balcony', ka: 'აივანი' },
+  terrace: { en: 'Terrace', ka: 'ტერასა' },
+  storage: { en: 'Storage', ka: 'სათავსო' },
+  other: { en: 'Room', ka: 'ოთახი' },
+};
+
+const ROOM_TYPE_OPTIONS: Array<{ value: RoomType; label: string }> = (
+  Object.keys(ROOM_TYPE_LABELS) as RoomType[]
+).map((value) => ({ value, label: ROOM_TYPE_LABELS[value].en }));
+
+function escapeRegex(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+// A name "looks auto-generated" for the given type if it's empty, equals the
+// type label, or matches "Label N" (e.g. "Bedroom 2"). Used to decide whether
+// a name should be regenerated when the type changes — manual edits are kept.
+function isAutoName(name: string | undefined, type: RoomType, lang: 'en' | 'ka'): boolean {
+  if (!name) return true;
+  const label = ROOM_TYPE_LABELS[type][lang];
+  return name === label || new RegExp(`^${escapeRegex(label)} \\d+$`).test(name);
+}
+
+function autoNameFor(
+  type: RoomType,
+  rooms: Room[],
+  excludeIndex: number
+): { nameEn: string; nameKa: string } {
+  const sameTypeBefore = rooms.filter((r, i) => i !== excludeIndex && r.type === type).length;
+  const { en, ka } = ROOM_TYPE_LABELS[type];
+  if (sameTypeBefore === 0) return { nameEn: en, nameKa: ka };
+  const suffix = sameTypeBefore + 1;
+  return { nameEn: `${en} ${suffix}`, nameKa: `${ka} ${suffix}` };
+}
 
 interface UnitRoomsListSectionProps {
   value: Room[];
   onChange: (next: Room[]) => void;
-}
-
-function emptyRoom(): Room {
-  return { type: 'bedroom' };
 }
 
 export default function UnitRoomsListSection({
@@ -33,7 +57,18 @@ export default function UnitRoomsListSection({
   onChange,
 }: UnitRoomsListSectionProps) {
   function updateRoom(index: number, patch: Partial<Room>) {
+    const current = value[index];
     const next = value.map((room, i) => (i === index ? { ...room, ...patch } : room));
+    if (patch.type && current && patch.type !== current.type) {
+      const target = next[index];
+      if (
+        isAutoName(target.nameEn, current.type, 'en') &&
+        isAutoName(target.nameKa, current.type, 'ka')
+      ) {
+        const generated = autoNameFor(patch.type, next, index);
+        next[index] = { ...target, ...generated };
+      }
+    }
     onChange(next);
   }
 
@@ -42,7 +77,9 @@ export default function UnitRoomsListSection({
   }
 
   function addRoom() {
-    onChange([...value, emptyRoom()]);
+    const type: RoomType = 'bedroom';
+    const generated = autoNameFor(type, value, value.length);
+    onChange([...value, { type, ...generated }]);
   }
 
   return (
