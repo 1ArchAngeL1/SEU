@@ -303,26 +303,34 @@ export default function VisualSearchFloorPage({
                         );
                       })}
                     </svg>
-                    {/* Status labels */}
-                    {units
-                      .filter((u) => u.polygon && u.polygon.length >= 3 && u.status !== 'available')
-                      .map((unit) => {
-                        const center = getPolygonCenter(unit.polygon!);
-                        const colors = STATUS_COLORS[unit.status] ?? STATUS_COLORS.available;
-                        return (
-                          <div
-                            key={`label-m-${unit.id}`}
-                            className={cn(
-                              'absolute pointer-events-none rounded-full px-2 py-0.5 font-montserrat text-[0.55rem] font-medium -translate-x-1/2 -translate-y-1/2',
-                              colors.bg,
-                              colors.text
-                            )}
-                            style={{ left: `${center.x}%`, top: `${center.y}%` }}
-                          >
-                            {STATUS_LABELS[unit.status] ?? unit.status}
-                          </div>
-                        );
-                      })}
+                    {/* Apartment number (+ status) centered on each unit */}
+                    {unitsWithPolygons.map((unit) => {
+                      const center = getPolygonCenter(unit.polygon!);
+                      const isAvailable = unit.status === 'available';
+                      const colors = STATUS_COLORS[unit.status] ?? STATUS_COLORS.available;
+                      return (
+                        <div
+                          key={`label-m-${unit.id}`}
+                          className="absolute pointer-events-none -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-1"
+                          style={{ left: `${center.x}%`, top: `${center.y}%` }}
+                        >
+                          <span className="font-bodoni leading-none tracking-wide text-seu-body-lg text-pale-gray drop-shadow-[0_2px_4px_rgba(0,0,0,0.55)]">
+                            {unit.unitNumber}
+                          </span>
+                          {!isAvailable && (
+                            <span
+                              className={cn(
+                                'rounded-full px-2 py-0.5 font-montserrat text-[0.5rem] font-medium uppercase tracking-wider shadow-sm',
+                                colors.bg,
+                                colors.text
+                              )}
+                            >
+                              {STATUS_LABELS[unit.status] ?? unit.status}
+                            </span>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 ) : (
                   <p className="text-site-fg-muted font-montserrat text-seu-body text-center py-16">
@@ -491,35 +499,46 @@ export default function VisualSearchFloorPage({
                         })}
                       </svg>
 
-                      {/* Status labels on units */}
-                      {units
-                        .filter(
-                          (u) =>
-                            u.polygon &&
-                            u.polygon.length >= 3 &&
-                            u.status !== 'available'
-                        )
-                        .map((unit) => {
-                          const center = getPolygonCenter(unit.polygon!);
-                          const colors =
-                            STATUS_COLORS[unit.status] ?? STATUS_COLORS.available;
-                          return (
-                            <div
-                              key={`label-${unit.id}`}
+                      {/* Apartment number (+ status) centered on each unit */}
+                      {unitsWithPolygons.map((unit) => {
+                        const center = getPolygonCenter(unit.polygon!);
+                        const isHovered = hoveredId === unit.id;
+                        const isAvailable = unit.status === 'available';
+                        const colors =
+                          STATUS_COLORS[unit.status] ?? STATUS_COLORS.available;
+                        return (
+                          <div
+                            key={`label-${unit.id}`}
+                            className="absolute pointer-events-none -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-1.5"
+                            style={{
+                              left: `${center.x}%`,
+                              top: `${center.y}%`,
+                            }}
+                          >
+                            <span
                               className={cn(
-                                'absolute pointer-events-none rounded-full px-3 py-1 font-montserrat text-[0.65rem] font-medium tracking-wide -translate-x-1/2 -translate-y-1/2',
-                                colors.bg,
-                                colors.text
+                                'font-bodoni leading-none tracking-wide transition-all duration-500 ease-out drop-shadow-[0_2px_4px_rgba(0,0,0,0.55)]',
+                                isHovered
+                                  ? 'text-seu-heading-lg text-white scale-105'
+                                  : 'text-seu-heading text-pale-gray'
                               )}
-                              style={{
-                                left: `${center.x}%`,
-                                top: `${center.y}%`,
-                              }}
                             >
-                              {STATUS_LABELS[unit.status] ?? unit.status}
-                            </div>
-                          );
-                        })}
+                              {unit.unitNumber}
+                            </span>
+                            {!isAvailable && (
+                              <span
+                                className={cn(
+                                  'rounded-full px-2.5 py-0.5 font-montserrat text-[0.6rem] font-medium uppercase tracking-wider shadow-sm',
+                                  colors.bg,
+                                  colors.text
+                                )}
+                              >
+                                {STATUS_LABELS[unit.status] ?? unit.status}
+                              </span>
+                            )}
+                          </div>
+                        );
+                      })}
 
                       {/* Hovered unit info tooltip */}
                       {hoveredId && (

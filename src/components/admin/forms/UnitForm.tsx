@@ -291,7 +291,6 @@ export default function UnitForm({
     if (!form.block.trim()) return setError('Block is required');
     if (form.floor === '') return setError('Floor is required');
     if (!form.totalSize) return setError('Total size is required');
-    if (!form.amount) return setError('Price amount is required');
     const cleanRooms: Room[] = roomsList.map((r) => ({
       type: r.type,
       ...(r.nameEn?.trim() && { nameEn: r.nameEn.trim() }),
