@@ -2,7 +2,7 @@
 
 import { use, useEffect } from 'react';
 import { notFound } from 'next/navigation';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { ApartmentDetailView } from '@/components/search/ApartmentDetailView';
 import { Benefits } from '@/components/search/Benefits';
 import { SimilarApartments } from '@/components/search/SimilarApartments';
@@ -19,6 +19,7 @@ export default function ApartmentDetailPage({
 }) {
   const { apartment: id } = use(params);
   const locale = useLocale() as Locale;
+  const tCommon = useTranslations('common');
   const unitQ = useUnit(id);
 
   useEffect(() => {
@@ -31,7 +32,7 @@ export default function ApartmentDetailPage({
     return (
       <div className="bg-site-bg min-h-screen flex items-center justify-center">
         <span className="font-montserrat text-seu-body text-site-fg">
-          Loading…
+          {tCommon('loading')}
         </span>
       </div>
     );

@@ -1,7 +1,7 @@
 'use client';
 
 import { use, useState, useRef, useCallback, useEffect } from 'react';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { Loader2, ZoomIn, ZoomOut, Maximize, ChevronLeft, ChevronRight } from 'lucide-react';
 import BackButton from '@/components/BackButton';
 import ContactForm from '@/components/ContactForm';
@@ -234,6 +234,7 @@ function usePanZoom() {
 
 
 function BenefitsGallery({ benefits, images }: { benefits?: string; images: string[] }) {
+  const t = useTranslations('visualSearch');
   const [current, setCurrent] = useState(0);
   const galleryImages = images.map((img) => fileUrl(img)).filter(Boolean) as string[];
   const total = galleryImages.length;
@@ -256,7 +257,7 @@ function BenefitsGallery({ benefits, images }: { benefits?: string; images: stri
         {benefitLines.length > 0 && (
           <div>
             <h2 className="font-bodoni text-seu-subheading lg:text-seu-heading text-pale-gray mb-6 lg:mb-8">
-              Benefits
+              {t('benefits')}
             </h2>
             <ul className="space-y-2">
               {benefitLines.map((line, i) => (
@@ -278,7 +279,7 @@ function BenefitsGallery({ benefits, images }: { benefits?: string; images: stri
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={galleryImages[current]}
-                alt={`Gallery ${current + 1}`}
+                alt={t('alt.gallery', { n: current + 1 })}
                 className="w-full h-full object-cover"
               />
               {/* Side fade overlays */}
@@ -325,6 +326,7 @@ export default function VisualSearchProjectPage({
 }) {
   const { projectId } = use(params);
   const locale = useLocale() as Locale;
+  const t = useTranslations('visualSearch');
   const router = useRouter();
 
   const projectQ = useProject(projectId);
@@ -362,7 +364,7 @@ export default function VisualSearchProjectPage({
             </h1>
           )}
           <p className="text-secondary-grey font-montserrat text-seu-body text-center py-32">
-            No render image available for this project.
+            {t('noProjectRender')}
           </p>
         </div>
       </main>
@@ -405,7 +407,7 @@ export default function VisualSearchProjectPage({
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={renderImage}
-                alt={project ? pickLocalized(project.nameEn, project.nameKa, locale) : 'Project render'}
+                alt={project ? pickLocalized(project.nameEn, project.nameKa, locale) : t('alt.projectRender')}
                 className="w-full h-auto block"
                 draggable={false}
               />
@@ -477,7 +479,7 @@ export default function VisualSearchProjectPage({
             {/* Hint overlay */}
             <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-dark-green/80 backdrop-blur rounded-full px-4 py-2 pointer-events-none animate-[fadeOut_3s_2s_forwards] opacity-100">
               <p className="font-montserrat text-seu-caption-sm text-pale-gray whitespace-nowrap">
-                Drag to explore · Tap building to select
+                {t('dragHint')}
               </p>
             </div>
           </div>
@@ -498,7 +500,7 @@ export default function VisualSearchProjectPage({
                 }}
                 className="font-montserrat text-seu-caption text-primary-green hover:underline"
               >
-                View →
+                {t('view')} →
               </button>
             </div>
           )}
@@ -511,7 +513,7 @@ export default function VisualSearchProjectPage({
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={renderImage}
-              alt={project ? pickLocalized(project.nameEn, project.nameKa, locale) : 'Project render'}
+              alt={project ? pickLocalized(project.nameEn, project.nameKa, locale) : t('alt.projectRender')}
               className="w-full h-auto block"
             />
 
@@ -571,7 +573,7 @@ export default function VisualSearchProjectPage({
             {/* Top-right — choose block */}
             <div className="absolute top-0 right-0 px-10 pt-8 z-10">
               <h2 className="font-bodoni text-seu-heading text-pale-gray uppercase tracking-wide">
-                Choose Block
+                {t('chooseBlock')}
               </h2>
             </div>
 
@@ -590,10 +592,10 @@ export default function VisualSearchProjectPage({
                     </p>
                     <div className="flex items-center gap-4 font-montserrat text-seu-caption mt-1">
                       {b.block && (
-                        <span className="text-primary-green font-medium">Block {b.block}</span>
+                        <span className="text-primary-green font-medium">{t('block')} {b.block}</span>
                       )}
                       {b.totalUnits > 0 && (
-                        <span className="text-secondary-grey">{b.totalUnits} apartments</span>
+                        <span className="text-secondary-grey">{t('apartmentsCount', { count: b.totalUnits })}</span>
                       )}
                       {b.constructionProgress !== undefined && b.constructionProgress > 0 && (
                         <span className="text-secondary-grey">{b.constructionProgress}%</span>
@@ -613,7 +615,7 @@ export default function VisualSearchProjectPage({
                   {/* Location */}
                   <div className="flex flex-col items-center gap-2 lg:gap-3 px-3 lg:px-4">
                     <p className="font-montserrat text-[0.65rem] lg:text-seu-caption-sm text-secondary-grey tracking-wider">
-                      Location
+                      {t('location')}
                     </p>
                     <span className="size-1.5 rounded-full bg-secondary-grey/50" />
                     <p className="font-montserrat font-medium text-seu-caption-sm lg:text-seu-body-sm text-pale-gray text-center">
@@ -627,12 +629,15 @@ export default function VisualSearchProjectPage({
                   {/* Apartment Sizes */}
                   <div className="flex flex-col items-center gap-2 lg:gap-3 px-3 lg:px-4">
                     <p className="font-montserrat text-[0.65rem] lg:text-seu-caption-sm text-secondary-grey tracking-wider">
-                      Apartment Sizes
+                      {t('apartmentSizes')}
                     </p>
                     <span className="size-1.5 rounded-full bg-secondary-grey/50" />
                     <p className="font-montserrat font-medium text-seu-caption-sm lg:text-seu-body-sm text-pale-gray text-center">
                       {project.minSizeApartment != null
-                        ? `From ${project.minSizeApartment} m²  To ${project.maxSizeApartment ?? '—'} m²`
+                        ? t('sizeRange', {
+                            from: project.minSizeApartment,
+                            to: project.maxSizeApartment ?? '—',
+                          })
                         : '—'}
                     </p>
                   </div>
@@ -640,7 +645,7 @@ export default function VisualSearchProjectPage({
                   {/* Number of Buildings */}
                   <div className="flex flex-col items-center gap-2 lg:gap-3 px-3 lg:px-4">
                     <p className="font-montserrat text-[0.65rem] lg:text-seu-caption-sm text-secondary-grey tracking-wider">
-                      Number of blocks
+                      {t('numberOfBlocks')}
                     </p>
                     <span className="size-1.5 rounded-full bg-secondary-grey/50" />
                     <p className="font-montserrat font-medium text-seu-caption-sm lg:text-seu-body-sm text-pale-gray">
@@ -651,7 +656,7 @@ export default function VisualSearchProjectPage({
                   {/* Total Apartments */}
                   <div className="flex flex-col items-center gap-2 lg:gap-3 px-3 lg:px-4">
                     <p className="font-montserrat text-[0.65rem] lg:text-seu-caption-sm text-secondary-grey tracking-wider">
-                      Apartments
+                      {t('apartments')}
                     </p>
                     <span className="size-1.5 rounded-full bg-secondary-grey/50" />
                     <p className="font-montserrat font-medium text-seu-caption-sm lg:text-seu-body-sm text-pale-gray">

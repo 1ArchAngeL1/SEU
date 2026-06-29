@@ -3,16 +3,15 @@
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, ImageIcon, X } from 'lucide-react';
 import { Dialog as DialogPrimitive } from 'radix-ui';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { fileUrl } from '@/lib/file-url';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { cn } from '@/lib/utils';
 import type { NewsArticle } from '@/model/types/api';
 
-function estimateReadTime(text: string): string {
+function estimateReadMinutes(text: string): number {
   const words = text.trim().split(/\s+/).filter(Boolean).length;
-  const minutes = Math.max(1, Math.ceil(words / 200));
-  return `${minutes} min read`;
+  return Math.max(1, Math.ceil(words / 200));
 }
 
 function formatDate(iso: string): string {
@@ -40,6 +39,8 @@ export default function NewsArticleDialog({
 }: NewsArticleDialogProps) {
   const [imgIdx, setImgIdx] = useState(0);
   const locale = useLocale() as Locale;
+  const t = useTranslations('common');
+  const tNews = useTranslations('news');
 
   useEffect(() => {
     if (open) setImgIdx(0);
@@ -53,7 +54,7 @@ export default function NewsArticleDialog({
   const total = images.length;
   const header = pickLocalized(article.headerEn, article.headerKa, locale);
   const description = pickLocalized(article.descriptionEn, article.descriptionKa, locale);
-  const readTime = estimateReadTime(description);
+  const readTime = tNews('minRead', { minutes: estimateReadMinutes(description) });
   const date = formatDate(article.createdAt);
 
   function prev() {
@@ -88,7 +89,7 @@ export default function NewsArticleDialog({
           {/* Close button */}
           <DialogPrimitive.Close
             className="absolute top-4 right-4 z-20 size-9 rounded-full bg-dark-green/70 backdrop-blur border border-pale-gray/20 grid place-items-center text-pale-gray hover:bg-dark-green hover:border-pale-gray/40 transition-colors"
-            aria-label="Close"
+            aria-label={t('close')}
           >
             <X className="size-4" />
           </DialogPrimitive.Close>
@@ -111,14 +112,14 @@ export default function NewsArticleDialog({
                   <>
                     <button
                       onClick={prev}
-                      aria-label="Previous image"
+                      aria-label={t('previousImage')}
                       className="absolute left-3 top-1/2 -translate-y-1/2 size-10 rounded-full bg-dark-green/70 backdrop-blur border border-pale-gray/20 grid place-items-center text-pale-gray hover:bg-dark-green transition-colors"
                     >
                       <ChevronLeft className="size-4" />
                     </button>
                     <button
                       onClick={next}
-                      aria-label="Next image"
+                      aria-label={t('nextImage')}
                       className="absolute right-3 top-1/2 -translate-y-1/2 size-10 rounded-full bg-dark-green/70 backdrop-blur border border-pale-gray/20 grid place-items-center text-pale-gray hover:bg-dark-green transition-colors"
                     >
                       <ChevronRight className="size-4" />
@@ -197,7 +198,7 @@ export default function NewsArticleDialog({
                           ? 'border-primary-green ring-2 ring-primary-green/30'
                           : 'border-pale-gray/15 opacity-60 hover:opacity-100'
                       )}
-                      aria-label={`Image ${i + 1}`}
+                      aria-label={t('imageN', { n: i + 1 })}
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img

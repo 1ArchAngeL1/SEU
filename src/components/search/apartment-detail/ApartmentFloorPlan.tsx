@@ -57,6 +57,8 @@ export function ApartmentFloorPlan({
   const t = useTranslations('search');
   const [viewMode, setViewMode] = useState<ViewMode>('Plan');
 
+  const modeLabel = (mode: ViewMode) => (mode === 'Plan' ? t('plan') : mode);
+
   const floorPlanSrc =
     viewMode === 'Plan'
       ? floorPlanImages.plan
@@ -83,7 +85,7 @@ export function ApartmentFloorPlan({
                     : 'bg-transparent text-dark-green border-dark-green/30 hover:bg-dark-green/5 hover:border-dark-green/60'
                 )}
               >
-                {mode}
+                {modeLabel(mode)}
               </button>
             );
           })}
@@ -99,7 +101,7 @@ export function ApartmentFloorPlan({
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={floorPlanSrc}
-              alt={`${viewMode} floor plan — Apt ${apartmentNumber}`}
+              alt={`${modeLabel(viewMode)} ${t('floorPlan')} — ${t('apt')} ${apartmentNumber}`}
               className="max-h-[480px] object-contain"
             />
             {/* Soft edge fade into background */}
@@ -109,10 +111,10 @@ export function ApartmentFloorPlan({
           <div className="w-full h-full min-h-[480px] border-2 border-dashed border-site-border-soft rounded-xl flex flex-col items-center justify-center gap-3">
             <FileText className="w-10 h-10 text-site-fg-dim" />
             <p className="font-montserrat text-seu-body-sm text-site-fg-dim">
-              {viewMode} {t('floorPlan')}
+              {modeLabel(viewMode)} {t('floorPlan')}
             </p>
             <p className="font-montserrat text-seu-caption-sm text-site-fg-dim">
-              {complex} · {t('block')} {block} · Apt {apartmentNumber}
+              {complex} · {t('block')} {block} · {t('apt')} {apartmentNumber}
             </p>
           </div>
         )}

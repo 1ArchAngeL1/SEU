@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { SeuLogoLink } from '@/components/header/SeuLogoLink';
 import { LanguageSwitcher } from '@/components/header/LanguageSwitcher';
@@ -25,17 +26,18 @@ export function MobileMenuSheet({
   links,
   contactLabel,
 }: MobileMenuSheetProps) {
+  const t = useTranslations('header');
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetTrigger asChild className="lg:hidden">
         <button
           type="button"
           className="flex items-center justify-center p-2"
-          aria-label="Open menu"
+          aria-label={t('openMenu')}
         >
           <Image
             src="/common/svgs/menu-hamburger_broken.svg"
-            alt="Menu"
+            alt={t('menu')}
             width={24}
             height={18}
           />
@@ -48,7 +50,7 @@ export function MobileMenuSheet({
         aria-describedby={undefined}
         className="w-full bg-site-bg border-none flex flex-col justify-between p-0 overflow-hidden"
       >
-        <SheetTitle className="sr-only">Navigation menu</SheetTitle>
+        <SheetTitle className="sr-only">{t('navigationMenu')}</SheetTitle>
 
         {/* Decorative accent line */}
         <div className="absolute top-0 left-0 w-full h-0.5 bg-linear-to-r from-primary-green via-primary-green/40 to-transparent" />

@@ -2,17 +2,16 @@
 
 import { useState } from 'react';
 import { ImageIcon } from 'lucide-react';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import FadeIn from '@/components/FadeIn';
 import { fileUrl } from '@/lib/file-url';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import NewsArticleDialog from './NewsArticleDialog';
 import type { NewsArticle } from '@/model/types/api';
 
-function estimateReadTime(text: string): string {
+function estimateReadMinutes(text: string): number {
   const words = text.trim().split(/\s+/).length;
-  const minutes = Math.max(1, Math.ceil(words / 200));
-  return `${minutes} min read`;
+  return Math.max(1, Math.ceil(words / 200));
 }
 
 function NewsCard({
@@ -26,10 +25,11 @@ function NewsCard({
   locale: Locale;
   onClick: () => void;
 }) {
+  const t = useTranslations('news');
   const hasImage = article.image.length > 0;
   const header = pickLocalized(article.headerEn, article.headerKa, locale);
   const description = pickLocalized(article.descriptionEn, article.descriptionKa, locale);
-  const readTime = estimateReadTime(description);
+  const readTime = t('minRead', { minutes: estimateReadMinutes(description) });
 
   return (
     <FadeIn delay={(index % 3) * 80} duration={500}>

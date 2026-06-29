@@ -1,9 +1,11 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Pause, Play } from 'lucide-react';
 
 export function ProjectVideoSection() {
+  const t = useTranslations('common');
   const [isPlaying, setIsPlaying] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -57,7 +59,7 @@ export function ProjectVideoSection() {
             <button
               type="button"
               onClick={togglePlay}
-              aria-label={isPlaying ? 'Pause video' : 'Play video'}
+              aria-label={isPlaying ? t('pauseVideo') : t('playVideo')}
               className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors group"
             >
               <div className="w-16 h-16 rounded-full bg-primary-green flex items-center justify-center group-hover:scale-110 transition-transform">

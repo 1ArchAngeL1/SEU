@@ -1,7 +1,7 @@
 'use client';
 
 import { use, useState, useMemo, useRef, useCallback } from 'react';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { Loader2 } from 'lucide-react';
 import BackButton from '@/components/BackButton';
 import ContactForm from '@/components/ContactForm';
@@ -30,6 +30,7 @@ export default function VisualSearchBuildingPage({
 }) {
   const { projectId, buildingId } = use(params);
   const locale = useLocale() as Locale;
+  const t = useTranslations('visualSearch');
   const router = useRouter();
 
   const buildingQ = useBuilding(buildingId);
@@ -73,7 +74,7 @@ export default function VisualSearchBuildingPage({
             </h1>
           )}
           <p className="text-site-fg-muted font-montserrat text-seu-body text-center py-32">
-            No render image available for this building.
+            {t('noBuildingRender')}
           </p>
         </div>
       </main>
@@ -111,7 +112,10 @@ export default function VisualSearchBuildingPage({
                   {pickLocalized(building.nameEn, building.nameKa, locale)}
                 </h1>
                 <p className="font-montserrat text-seu-caption text-site-fg-muted mt-1">
-                  Block {building.block} · {sortedFloors.length} floors
+                  {t('blockFloors', {
+                    block: building.block,
+                    floors: sortedFloors.length,
+                  })}
                 </p>
               </div>
             )}
@@ -139,7 +143,7 @@ export default function VisualSearchBuildingPage({
                   <img
                     ref={imgRef}
                     src={renderImage}
-                    alt={building ? pickLocalized(building.nameEn, building.nameKa, locale) : 'Building render'}
+                    alt={building ? pickLocalized(building.nameEn, building.nameKa, locale) : t('alt.buildingRender')}
                     className="w-full h-full object-contain block"
                     onLoad={handleImgLoad}
                   />
@@ -193,10 +197,10 @@ export default function VisualSearchBuildingPage({
                       >
                         <div className="bg-site-bg/90 backdrop-blur-md border border-success-green/30 rounded-xl px-4 py-2.5 shadow-lg mb-2">
                           <p className="font-montserrat font-semibold text-seu-body-sm text-site-fg-strong whitespace-nowrap">
-                            Floor {hoveredFloor.floorNumber}
+                            {t('floorN', { n: hoveredFloor.floorNumber })}
                           </p>
                           <p className="font-montserrat text-seu-caption text-success-green mt-0.5">
-                            Click to explore
+                            {t('clickToExplore')}
                           </p>
                         </div>
                       </div>

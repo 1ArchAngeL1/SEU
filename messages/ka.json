@@ -1,6 +1,15 @@
 {
   "common": {
-    "back": "უკან"
+    "back": "უკან",
+    "loading": "იტვირთება…",
+    "previousPage": "წინა გვერდი",
+    "nextPage": "შემდეგი გვერდი",
+    "close": "დახურვა",
+    "previousImage": "წინა სურათი",
+    "nextImage": "შემდეგი სურათი",
+    "imageN": "სურათი {n}",
+    "playVideo": "ვიდეოს ჩართვა",
+    "pauseVideo": "ვიდეოს დაპაუზება"
   },
   "header": {
     "searchApartment": "ბინის ძებნა",
@@ -10,7 +19,10 @@
     "about": "ჩვენ შესახებ",
     "contactUs": "კონტაქტი",
     "en": "EN",
-    "ge": "GE"
+    "ge": "GE",
+    "openMenu": "მენიუს გახსნა",
+    "menu": "მენიუ",
+    "navigationMenu": "ნავიგაციის მენიუ"
   },
   "metadata": {
     "title": "SEU Development | პრემიუმ უძრავი ქონება საქართველოში",
@@ -30,6 +42,11 @@
     "clear": "გასუფთავება",
     "ongoing": "მიმდინარე",
     "upcoming": "მომავალი",
+    "locationLabel": "მდებარეობა",
+    "sizeLabel": "ფართი",
+    "sizeRangeM": "{from} მ-დან {to} მ-მდე",
+    "starting": "იწყება: {date}",
+    "heroImageAlt": "{name} — სურათი {n}",
     "aboutSeu": "სეუს შესახებ",
     "aboutText1": "SEU Development უძრავი ქონების ბაზარზე 2014 წლიდან ოპერირებს.",
     "aboutText2": "კომპანიის გუნდი, რომელიც გამოცდილ პროფესიონალებს აერთიანებს, ზრუნავს მუდმივ განვითარებაზე, ახორციელებს მშენებლობის მაღალ სტანდარტებს და იყენებს ინოვაციურ და თანამედროვე მიდგომებს, რომლებიც ევროპულ სტანდარტებს აკმაყოფილებს.",
@@ -104,6 +121,8 @@
     "seePresentation": "პრეზენტაციის ნახვა",
     "pdf": "PDF",
     "floor": "სართული",
+    "apt": "ბინა",
+    "plan": "გეგმა",
     "apartmentN": "ბინა N",
     "totalSize": "საერთო ფართი",
     "mainSize": "საცხოვრებელი ფართი",
@@ -182,7 +201,8 @@
     "featuredDesc": "SEU Development მონაწილეობდა საერთაშორისო ბიზნეს ფორუმში, სადაც წარმოადგინა უახლესი პროექტები და ხედვა საქართველოში უძრავი ქონების მომავლის შესახებ.",
     "readMore": "ვრცლად",
     "noNews": "სიახლეები ჯერ არ არის",
-    "loading": "სიახლეები იტვირთება..."
+    "loading": "სიახლეები იტვირთება...",
+    "minRead": "{minutes} წთ საკითხავი"
   },
   "policy": {
     "title": "კონფიდენციალურობის პოლიტიკა"
@@ -214,5 +234,45 @@
     "screenBuildingLabel": "აირჩიეთ კორპუსი",
     "screenFloorLabel": "აირჩიეთ სართული",
     "screenApartmentLabel": "აირჩიეთ ბინა"
+  },
+  "visualSearch": {
+    "benefits": "უპირატესობები",
+    "chooseBlock": "აირჩიეთ ბლოკი",
+    "block": "ბლოკი",
+    "blocks": "ბლოკები",
+    "floor": "სართული",
+    "floorN": "სართული {n}",
+    "floorPlan": "სართულის გეგმა",
+    "gridView": "ცხრილი",
+    "unit": "ბინა",
+    "view": "ნახვა",
+    "location": "მდებარეობა",
+    "apartments": "ბინები",
+    "apartmentsCount": "{count} ბინა",
+    "apartmentSizes": "ბინების ფართი",
+    "numberOfBlocks": "ბლოკების რაოდენობა",
+    "clickToExplore": "დააწკაპუნეთ სანახავად",
+    "dragHint": "გადაათრიეთ დასათვალიერებლად · შეეხეთ კორპუსს ასარჩევად",
+    "sizeRange": "{from} მ²-დან {to} მ²-მდე",
+    "blockFloors": "ბლოკი {block} · {floors} სართული",
+    "blockAndFloor": "ბლოკი {block} — სართული {floor}",
+    "noProjectRender": "ამ პროექტისთვის რენდერის სურათი არ არის ხელმისაწვდომი.",
+    "noBuildingRender": "ამ კორპუსისთვის რენდერის სურათი არ არის ხელმისაწვდომი.",
+    "noFloorPlan": "ამ სართულისთვის გეგმა არ არის ხელმისაწვდომი.",
+    "noUnits": "ამ სართულზე ბინები არ არის.",
+    "beds": "{count, plural, =0 {სტუდიო} one {# საძინებელი} other {# საძინებელი}}",
+    "baths": "{count, plural, one {# სველი წერტილი} other {# სველი წერტილი}}",
+    "status": {
+      "available": "ხელმისაწვდომი",
+      "reserved": "დაჯავშნილი",
+      "sold": "გაყიდული",
+      "not_for_sale": "არ იყიდება"
+    },
+    "alt": {
+      "projectRender": "პროექტის რენდერი",
+      "buildingRender": "კორპუსის რენდერი",
+      "gallery": "გალერეა {n}",
+      "floorPlan": "სართულის გეგმა"
+    }
   }
 }

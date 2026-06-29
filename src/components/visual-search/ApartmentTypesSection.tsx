@@ -8,9 +8,9 @@ import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
 import type { ApartmentType } from '@/model/types/api';
 
-function formatSize(from: number, to: number): string {
-  if (from === to) return `${from} M2`;
-  return `${from}-${to} M2`;
+function formatSize(from: number, to: number, unit: string): string {
+  if (from === to) return `${from} ${unit}`;
+  return `${from}-${to} ${unit}`;
 }
 
 function searchHref(projectId: string, t: ApartmentType): string {
@@ -51,7 +51,7 @@ export function ApartmentTypesSection({ projectId }: ApartmentTypesSectionProps)
           {items.map((type) => {
             const image = fileUrl(type.image);
             const label = pickLocalized(type.nameEn, type.nameKa, locale) || defaultName(type);
-            const size = formatSize(type.sizeFrom, type.sizeTo);
+            const size = formatSize(type.sizeFrom, type.sizeTo, tSearch('m2'));
             const href = searchHref(projectId, type);
 
             return (

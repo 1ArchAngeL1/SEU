@@ -1,6 +1,6 @@
 'use client';
 
-import { pickLocalized } from '@/lib/i18n-helpers';
+import { useTranslations } from 'next-intl';
 import { fileUrl } from '@/lib/file-url';
 import { cn } from '@/lib/utils';
 
@@ -17,6 +17,7 @@ export default function HeroSlideshow({
   projectId,
   projectName,
 }: HeroSlideshowProps) {
+  const t = useTranslations('landing');
   return (
     <div className="absolute inset-0">
       {gallery.map((src, i) => {
@@ -34,7 +35,7 @@ export default function HeroSlideshow({
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={url}
-              alt={projectName ? `${projectName} — image ${i + 1}` : ''}
+              alt={projectName ? t('heroImageAlt', { name: projectName, n: i + 1 }) : ''}
               className={cn(
                 'absolute inset-0 w-full h-full object-cover transition-transform duration-[8000ms] ease-out',
                 isActive ? 'scale-105' : 'scale-100'

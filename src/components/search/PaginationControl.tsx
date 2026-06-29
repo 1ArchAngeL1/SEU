@@ -1,6 +1,7 @@
 'use client';
 
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
@@ -53,6 +54,8 @@ export function PaginationControl({
   totalPages,
   onPageChange,
 }: PaginationControlProps) {
+  const t = useTranslations('common');
+
   if (totalPages <= 1) return null;
 
   const pages = getPageNumbers(currentPage, totalPages);
@@ -67,7 +70,7 @@ export function PaginationControl({
         variant="outline"
         disabled={!canPrev}
         onClick={() => canPrev && onPageChange(currentPage - 1)}
-        aria-label="Previous page"
+        aria-label={t('previousPage')}
         className={cn(baseBtnClass, navBtnClass, 'size-11')}
       >
         <ChevronLeft className="size-4" />
@@ -106,7 +109,7 @@ export function PaginationControl({
         variant="outline"
         disabled={!canNext}
         onClick={() => canNext && onPageChange(currentPage + 1)}
-        aria-label="Next page"
+        aria-label={t('nextPage')}
         className={cn(baseBtnClass, navBtnClass, 'size-11')}
       >
         <ChevronRight className="size-4" />

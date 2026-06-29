@@ -1,6 +1,15 @@
 {
   "common": {
-    "back": "Back"
+    "back": "Back",
+    "loading": "Loading…",
+    "previousPage": "Previous page",
+    "nextPage": "Next page",
+    "close": "Close",
+    "previousImage": "Previous image",
+    "nextImage": "Next image",
+    "imageN": "Image {n}",
+    "playVideo": "Play video",
+    "pauseVideo": "Pause video"
   },
   "header": {
     "searchApartment": "Search Apartment",
@@ -10,7 +19,10 @@
     "about": "About",
     "contactUs": "Contact us",
     "en": "EN",
-    "ge": "GE"
+    "ge": "GE",
+    "openMenu": "Open menu",
+    "menu": "Menu",
+    "navigationMenu": "Navigation menu"
   },
   "metadata": {
     "title": "SEU Development | Premium Real Estate in Georgia",
@@ -30,6 +42,11 @@
     "clear": "Clear",
     "ongoing": "Ongoing",
     "upcoming": "Upcoming .",
+    "locationLabel": "Location",
+    "sizeLabel": "Size",
+    "sizeRangeM": "From {from} m To {to} m",
+    "starting": "STARTING: {date}",
+    "heroImageAlt": "{name} — image {n}",
     "aboutSeu": "About SEU Development",
     "aboutText1": "SEU Development has been operating in the real estate market since 2014.",
     "aboutText2": "The company's team, consisting of experienced professionals who care about continuous development, implements high construction standards and uses innovative and modern approaches that meet European standards.",
@@ -104,6 +121,8 @@
     "seePresentation": "SEE PRESENTATION",
     "pdf": "PDF",
     "floor": "Floor",
+    "apt": "Apt",
+    "plan": "Plan",
     "apartmentN": "Apartment N",
     "totalSize": "Total Size",
     "mainSize": "Living Area",
@@ -182,7 +201,8 @@
     "featuredDesc": "SEU Development participated in the International Business Forum, showcasing our latest projects and vision for the future of real estate in Georgia.",
     "readMore": "Read More",
     "noNews": "No news articles yet.",
-    "loading": "Loading news..."
+    "loading": "Loading news...",
+    "minRead": "{minutes} min read"
   },
   "policy": {
     "title": "PRIVACY POLICY"
@@ -214,5 +234,45 @@
     "screenBuildingLabel": "Select building",
     "screenFloorLabel": "Pick a floor",
     "screenApartmentLabel": "Choose apartment"
+  },
+  "visualSearch": {
+    "benefits": "Benefits",
+    "chooseBlock": "Choose Block",
+    "block": "Block",
+    "blocks": "Blocks",
+    "floor": "Floor",
+    "floorN": "Floor {n}",
+    "floorPlan": "Floor Plan",
+    "gridView": "Grid View",
+    "unit": "Unit",
+    "view": "View",
+    "location": "Location",
+    "apartments": "Apartments",
+    "apartmentsCount": "{count} apartments",
+    "apartmentSizes": "Apartment Sizes",
+    "numberOfBlocks": "Number of blocks",
+    "clickToExplore": "Click to explore",
+    "dragHint": "Drag to explore · Tap building to select",
+    "sizeRange": "From {from} m² To {to} m²",
+    "blockFloors": "Block {block} · {floors} floors",
+    "blockAndFloor": "Block {block} — Floor {floor}",
+    "noProjectRender": "No render image available for this project.",
+    "noBuildingRender": "No render image available for this building.",
+    "noFloorPlan": "No floor plan available for this floor.",
+    "noUnits": "No units on this floor.",
+    "beds": "{count, plural, =0 {Studio} one {# bed} other {# beds}}",
+    "baths": "{count, plural, one {# bath} other {# baths}}",
+    "status": {
+      "available": "Available",
+      "reserved": "Reserved",
+      "sold": "Sold",
+      "not_for_sale": "Not for sale"
+    },
+    "alt": {
+      "projectRender": "Project render",
+      "buildingRender": "Building render",
+      "gallery": "Gallery {n}",
+      "floorPlan": "Floor plan"
+    }
   }
 }

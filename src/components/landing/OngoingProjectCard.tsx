@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 
 export type OngoingProjectCardProps = {
@@ -24,8 +25,7 @@ export const OngoingProjectCard = ({
   image,
   badge,
 }: OngoingProjectCardProps) => {
-  const hasSizeRange =
-    typeof sizeFrom === 'number' && typeof sizeTo === 'number';
+  const t = useTranslations('landing');
   return (
     <div
       className={cn(
@@ -89,15 +89,15 @@ export const OngoingProjectCard = ({
         <div className="flex items-center gap-4 lg:gap-8 text-seu-caption-sm lg:text-seu-caption">
           {location && (
             <div>
-              <span className="text-secondary-grey">Location - </span>
+              <span className="text-secondary-grey">{t('locationLabel')} - </span>
               <span className="text-primary-green">{location}</span>
             </div>
           )}
-          {hasSizeRange && (
+          {typeof sizeFrom === 'number' && typeof sizeTo === 'number' && (
             <div>
-              <span className="text-secondary-grey">Size - </span>
+              <span className="text-secondary-grey">{t('sizeLabel')} - </span>
               <span className="text-white">
-                From {sizeFrom} m To {sizeTo} m
+                {t('sizeRangeM', { from: sizeFrom, to: sizeTo })}
               </span>
             </div>
           )}

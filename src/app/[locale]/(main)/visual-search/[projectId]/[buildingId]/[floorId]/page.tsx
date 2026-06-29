@@ -1,7 +1,7 @@
 'use client';
 
 import { use, useState, useMemo, useRef, useCallback } from 'react';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { Loader2, ChevronUp, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import BackButton from '@/components/BackButton';
 import ContactForm from '@/components/ContactForm';
@@ -30,13 +30,6 @@ const STATUS_COLORS: Record<string, { bg: string; text: string }> = {
   not_for_sale: { bg: 'bg-secondary-grey', text: 'text-white' },
 };
 
-const STATUS_LABELS: Record<string, string> = {
-  reserved: 'Reserved',
-  sold: 'Sold',
-  available: 'Available',
-  not_for_sale: 'Not for sale',
-};
-
 function getPolygonCenter(polygon: PolygonPoint[]): { x: number; y: number } {
   const cx = polygon.reduce((sum, pt) => sum + pt.x, 0) / polygon.length;
   const cy = polygon.reduce((sum, pt) => sum + pt.y, 0) / polygon.length;
@@ -50,6 +43,7 @@ export default function VisualSearchFloorPage({
 }) {
   const { projectId, buildingId, floorId } = use(params);
   const locale = useLocale() as Locale;
+  const t = useTranslations('visualSearch');
   const router = useRouter();
 
   const buildingQ = useBuilding(buildingId);
@@ -129,7 +123,7 @@ export default function VisualSearchFloorPage({
 
             {building && (
               <h1 className="font-bodoni text-seu-body-lg text-site-fg-strong">
-                Block {building.block}
+                {t('block')} {building.block}
               </h1>
             )}
 
@@ -148,7 +142,7 @@ export default function VisualSearchFloorPage({
                   {floor?.floorNumber ?? '—'}
                 </span>
                 <span className="font-montserrat text-[0.6rem] text-site-fg-muted uppercase tracking-wider">
-                  Floor
+                  {t('floor')}
                 </span>
               </div>
               <button
@@ -196,7 +190,7 @@ export default function VisualSearchFloorPage({
                   : 'text-site-fg-muted'
               )}
             >
-              Floor Plan
+              {t('floorPlan')}
             </button>
             <button
               onClick={() => setActiveTab('grid')}
@@ -207,7 +201,7 @@ export default function VisualSearchFloorPage({
                   : 'text-site-fg-muted'
               )}
             >
-              Grid View
+              {t('gridView')}
             </button>
           </div>
         </div>
@@ -227,7 +221,7 @@ export default function VisualSearchFloorPage({
                   : 'text-site-fg-muted hover:text-site-fg-dim'
               )}
             >
-              Floor Plan
+              {t('floorPlan')}
             </button>
             <button
               onClick={() => setActiveTab('grid')}
@@ -238,7 +232,7 @@ export default function VisualSearchFloorPage({
                   : 'text-site-fg-muted hover:text-site-fg-dim'
               )}
             >
-              Grid View
+              {t('gridView')}
             </button>
           </div>
         </div>
@@ -266,7 +260,7 @@ export default function VisualSearchFloorPage({
                     <img
                       ref={imgRef}
                       src={renderImage}
-                      alt={floor ? `Floor ${floor.floorNumber}` : 'Floor plan'}
+                      alt={floor ? t('floorN', { n: floor.floorNumber }) : t('alt.floorPlan')}
                       className="w-full h-full object-contain block rounded-lg"
                       onLoad={handleImgLoad}
                     />
@@ -325,7 +319,7 @@ export default function VisualSearchFloorPage({
                                 colors.text
                               )}
                             >
-                              {STATUS_LABELS[unit.status] ?? unit.status}
+                              {t(`status.${unit.status}`)}
                             </span>
                           )}
                         </div>
@@ -334,7 +328,7 @@ export default function VisualSearchFloorPage({
                   </div>
                 ) : (
                   <p className="text-site-fg-muted font-montserrat text-seu-body text-center py-16">
-                    No floor plan available for this floor.
+                    {t('noFloorPlan')}
                   </p>
                 )}
                 {(location?.addressEn || location?.addressKa) && (
@@ -351,7 +345,7 @@ export default function VisualSearchFloorPage({
               <>
                 {units.length === 0 ? (
                   <p className="text-site-fg-muted font-montserrat text-seu-body text-center py-16">
-                    No units on this floor.
+                    {t('noUnits')}
                   </p>
                 ) : (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -365,7 +359,7 @@ export default function VisualSearchFloorPage({
                         >
                           <div className="flex items-center justify-between mb-2">
                             <span className="font-montserrat font-semibold text-seu-body-sm text-site-fg-strong">
-                              Unit {unit.unitNumber}
+                              {t('unit')} {unit.unitNumber}
                             </span>
                             <span
                               className={cn(
@@ -374,16 +368,14 @@ export default function VisualSearchFloorPage({
                                 colors.text
                               )}
                             >
-                              {STATUS_LABELS[unit.status] ?? unit.status}
+                              {t(`status.${unit.status}`)}
                             </span>
                           </div>
                           <div className="flex items-center gap-3 font-montserrat text-seu-caption-sm">
                             <span className="text-site-fg-muted">{unit.totalSize} m²</span>
                             {unit.bedrooms !== undefined && (
                               <span className="text-site-fg-dim">
-                                {unit.bedrooms === 0
-                                  ? 'Studio'
-                                  : `${unit.bedrooms} bed${unit.bedrooms !== 1 ? 's' : ''}`}
+                                {t('beds', { count: unit.bedrooms })}
                               </span>
                             )}
                           </div>
@@ -409,7 +401,7 @@ export default function VisualSearchFloorPage({
             <div className="flex flex-col items-start shrink-0 w-24">
               {building && (
                 <h1 className="font-bodoni text-seu-heading text-site-fg-strong mb-6 whitespace-nowrap">
-                  Block {building.block}
+                  {t('block')} {building.block}
                 </h1>
               )}
 
@@ -428,7 +420,7 @@ export default function VisualSearchFloorPage({
                     {floor?.floorNumber ?? '—'}
                   </span>
                   <span className="font-montserrat text-seu-caption-sm text-site-fg-muted mt-1">
-                    Floor
+                    {t('floor')}
                   </span>
                 </div>
                 <button
@@ -458,7 +450,7 @@ export default function VisualSearchFloorPage({
                       <img
                         ref={imgRef}
                         src={renderImage}
-                        alt={floor ? `Floor ${floor.floorNumber}` : 'Floor plan'}
+                        alt={floor ? t('floorN', { n: floor.floorNumber }) : t('alt.floorPlan')}
                         className="w-full h-full object-contain block"
                         onLoad={handleImgLoad}
                       />
@@ -533,7 +525,7 @@ export default function VisualSearchFloorPage({
                                   colors.text
                                 )}
                               >
-                                {STATUS_LABELS[unit.status] ?? unit.status}
+                                {t(`status.${unit.status}`)}
                               </span>
                             )}
                           </div>
@@ -549,7 +541,7 @@ export default function VisualSearchFloorPage({
                             return (
                               <div className="bg-site-bg/90 backdrop-blur-md border border-success-green/30 rounded-xl px-6 py-4 shadow-lg">
                                 <p className="font-montserrat font-semibold text-seu-body text-site-fg-strong">
-                                  Unit {u.unitNumber}
+                                  {t('unit')} {u.unitNumber}
                                 </p>
                                 <div className="flex items-center gap-4 font-montserrat text-seu-caption mt-1">
                                   <span className="text-site-fg-muted">
@@ -557,14 +549,12 @@ export default function VisualSearchFloorPage({
                                   </span>
                                   {u.bedrooms !== undefined && (
                                     <span className="text-site-fg-dim">
-                                      {u.bedrooms === 0
-                                        ? 'Studio'
-                                        : `${u.bedrooms} bed${u.bedrooms !== 1 ? 's' : ''}`}
+                                      {t('beds', { count: u.bedrooms })}
                                     </span>
                                   )}
                                   {u.bathrooms !== undefined && (
                                     <span className="text-site-fg-dim">
-                                      {u.bathrooms} bath{u.bathrooms !== 1 ? 's' : ''}
+                                      {t('baths', { count: u.bathrooms })}
                                     </span>
                                   )}
                                 </div>
@@ -576,7 +566,7 @@ export default function VisualSearchFloorPage({
                     </div>
                   ) : (
                     <p className="text-site-fg-muted font-montserrat text-seu-body text-center py-20">
-                      No floor plan available for this floor.
+                      {t('noFloorPlan')}
                     </p>
                   )}
 
@@ -595,12 +585,15 @@ export default function VisualSearchFloorPage({
                 <>
                   {building && (
                     <h2 className="font-bodoni text-seu-heading text-site-fg-strong mb-6 self-start">
-                      Block {building.block} — Floor {floor?.floorNumber}
+                      {t('blockAndFloor', {
+                        block: building.block,
+                        floor: floor?.floorNumber ?? '',
+                      })}
                     </h2>
                   )}
                   {units.length === 0 ? (
                     <p className="text-site-fg-muted font-montserrat text-seu-body text-center py-20">
-                      No units on this floor.
+                      {t('noUnits')}
                     </p>
                   ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
@@ -615,7 +608,7 @@ export default function VisualSearchFloorPage({
                           >
                             <div className="flex items-center justify-between mb-3">
                               <span className="font-montserrat font-semibold text-seu-body text-site-fg-strong">
-                                Unit {unit.unitNumber}
+                                {t('unit')} {unit.unitNumber}
                               </span>
                               <span
                                 className={cn(
@@ -624,7 +617,7 @@ export default function VisualSearchFloorPage({
                                   colors.text
                                 )}
                               >
-                                {STATUS_LABELS[unit.status] ?? unit.status}
+                                {t(`status.${unit.status}`)}
                               </span>
                             </div>
                             <div className="flex items-center gap-4 font-montserrat text-seu-caption">
@@ -633,7 +626,7 @@ export default function VisualSearchFloorPage({
                               </span>
                               {unit.bedrooms !== undefined && (
                                 <span className="text-site-fg-dim">
-                                  {unit.bedrooms} bed{unit.bedrooms !== 1 ? 's' : ''}
+                                  {t('beds', { count: unit.bedrooms })}
                                 </span>
                               )}
                             </div>
@@ -656,7 +649,7 @@ export default function VisualSearchFloorPage({
             {allBuildings.length > 1 && (
               <div className="shrink-0 w-40">
                 <h3 className="font-bodoni text-seu-body text-site-fg mb-4 text-right">
-                  Blocks
+                  {t('blocks')}
                 </h3>
                 <div className="grid grid-cols-2 gap-2">
                   {allBuildings.map((b) => {

@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 
 export type UpcomingProjectCardProps = {
@@ -16,6 +17,7 @@ export default function UpcomingProjectCard({
   startDate,
   image,
 }: UpcomingProjectCardProps) {
+  const t = useTranslations('landing');
   return (
     <div
       className={cn(
@@ -58,7 +60,7 @@ export default function UpcomingProjectCard({
                 d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
               />
             </svg>
-            STARTING: {startDate}
+            {t('starting', { date: startDate })}
           </p>
         )}
         <h3 className="font-bodoni text-seu-heading-lg text-white">{name}</h3>
