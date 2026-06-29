@@ -2,21 +2,26 @@
 
 import { useState, useEffect } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { useLocaleTransition } from '@/components/header/LocaleTransitionContext';
+import { useRouter, usePathname } from '@/i18n/navigation';
 
 export const LanguageSwitcher = () => {
   const locale = useLocale();
   const t = useTranslations('header');
-  const { switchLocale } = useLocaleTransition();
+  const router = useRouter();
+  const pathname = usePathname();
   const [activeLocale, setActiveLocale] = useState(locale);
 
+  // Re-sync the pill once the navigation has actually switched the locale.
   useEffect(() => {
     setActiveLocale(locale);
   }, [locale]);
 
   const handleSwitch = (newLocale: 'en' | 'ka') => {
-    setActiveLocale(newLocale);
-    switchLocale(newLocale);
+    if (newLocale === locale) return;
+    setActiveLocale(newLocale); // optimistic: slide the pill immediately
+    // Stay on the current page, just swap the locale. `pathname` from
+    // next-intl is already locale-stripped, so this preserves the route.
+    router.replace(pathname, { locale: newLocale });
   };
 
   return (
