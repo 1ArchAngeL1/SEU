@@ -314,7 +314,7 @@ export default function VisualSearchFloorPage({
                           className="absolute pointer-events-none -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-1"
                           style={{ left: `${center.x}%`, top: `${center.y}%` }}
                         >
-                          <span className="font-bodoni leading-none tracking-wide text-seu-body-lg text-pale-gray drop-shadow-[0_2px_4px_rgba(0,0,0,0.55)]">
+                          <span className="font-bodoni leading-none tracking-wide text-seu-body-lg text-pale-gray flex items-center justify-center h-10 min-w-10 px-2.5 rounded-full border border-pale-gray/25 bg-dark-green/65 backdrop-blur-md shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
                             {unit.unitNumber}
                           </span>
                           {!isAvailable && (
@@ -517,10 +517,10 @@ export default function VisualSearchFloorPage({
                           >
                             <span
                               className={cn(
-                                'font-bodoni leading-none tracking-wide transition-all duration-500 ease-out drop-shadow-[0_2px_4px_rgba(0,0,0,0.55)]',
+                                'font-bodoni leading-none tracking-wide transition-all duration-500 ease-out flex items-center justify-center h-14 min-w-14 px-3 rounded-full border backdrop-blur-md shadow-[0_4px_12px_rgba(0,0,0,0.5)]',
                                 isHovered
-                                  ? 'text-seu-heading-lg text-white scale-105'
-                                  : 'text-seu-heading text-pale-gray'
+                                  ? 'text-seu-heading-lg text-white scale-105 bg-primary-green/40 border-white/50'
+                                  : 'text-seu-heading text-pale-gray bg-dark-green/65 border-pale-gray/25'
                               )}
                             >
                               {unit.unitNumber}
