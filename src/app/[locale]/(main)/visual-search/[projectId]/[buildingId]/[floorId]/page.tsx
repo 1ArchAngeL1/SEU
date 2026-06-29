@@ -557,13 +557,14 @@ export default function VisualSearchFloorPage({
                                   </span>
                                   {u.bedrooms !== undefined && (
                                     <span className="text-site-fg-dim">
-                                      {u.bedrooms} bed{u.bedrooms !== 1 ? 's' : ''}
+                                      {u.bedrooms === 0
+                                        ? 'Studio'
+                                        : `${u.bedrooms} bed${u.bedrooms !== 1 ? 's' : ''}`}
                                     </span>
                                   )}
-                                  {u.price && (
-                                    <span className="text-primary-green font-medium">
-                                      {u.price.currency}{' '}
-                                      {u.price.amount?.toLocaleString()}
+                                  {u.bathrooms !== undefined && (
+                                    <span className="text-site-fg-dim">
+                                      {u.bathrooms} bath{u.bathrooms !== 1 ? 's' : ''}
                                     </span>
                                   )}
                                 </div>
