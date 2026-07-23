@@ -42,6 +42,7 @@
     "clear": "Clear",
     "ongoing": "Ongoing",
     "upcoming": "Upcoming .",
+    "finished": "Finished",
     "locationLabel": "Location",
     "sizeLabel": "Size",
     "sizeRangeM": "From {from} m To {to} m",

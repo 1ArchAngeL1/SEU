@@ -42,6 +42,7 @@
     "clear": "გასუფთავება",
     "ongoing": "მიმდინარე",
     "upcoming": "მომავალი",
+    "finished": "დასრულებული",
     "locationLabel": "მდებარეობა",
     "sizeLabel": "ფართი",
     "sizeRangeM": "{from} მ-დან {to} მ-მდე",
