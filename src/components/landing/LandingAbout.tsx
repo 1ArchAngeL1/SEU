@@ -18,17 +18,9 @@ export default function LandingAbout() {
             </h2>
 
             <div className="space-y-6 text-seu-body text-dark-green/70 leading-relaxed">
-              <p>
-                {t('aboutText1')}
-              </p>
-
-              <p>
-                {t('aboutText2')}
-              </p>
-
-              <p>
-                {t('aboutText3')}
-              </p>
+              {(t.raw('aboutParagraphs') as string[]).map((paragraph, i) => (
+                <p key={i}>{paragraph}</p>
+              ))}
             </div>
 
             <Link
