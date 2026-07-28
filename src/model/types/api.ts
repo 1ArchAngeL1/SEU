@@ -472,6 +472,29 @@ export type CreatePartnerInput = {
 
 export type UpdatePartnerInput = Partial<CreatePartnerInput>;
 
+export interface LandingPartner {
+  id: string;
+  nameEn: string;
+  nameKa: string;
+  logoId?: string;
+  websiteLink?: string;
+  descriptionEn?: string;
+  descriptionKa?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type CreateLandingPartnerInput = {
+  nameEn: string;
+  nameKa: string;
+  logoId?: string;
+  websiteLink?: string;
+  descriptionEn?: string;
+  descriptionKa?: string;
+};
+
+export type UpdateLandingPartnerInput = Partial<CreateLandingPartnerInput>;
+
 export type ContactStatus = 'open' | 'closed';
 
 export interface Contact {

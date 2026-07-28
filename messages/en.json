@@ -275,5 +275,9 @@
       "gallery": "Gallery {n}",
       "floorPlan": "Floor plan"
     }
+  },
+  "landingPartners": {
+    "title": "Our Partners",
+    "subtitle": "Brands and organizations we proudly work with"
   }
 }
