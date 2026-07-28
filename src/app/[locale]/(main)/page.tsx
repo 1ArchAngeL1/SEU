@@ -3,7 +3,6 @@ import LandingAboutSection from '@/components/landing/LandingAboutSection';
 import OngoingSection from '@/components/landing/OngoingSection';
 import FinishedSection from '@/components/landing/FinishedSection';
 import LandingAbout from '@/components/landing/LandingAbout';
-import SeuPartners from '@/components/landing/SeuPartners';
 import LandingPartnersSection from '@/components/landing/LandingPartnersSection';
 import { LandingContactSection } from '@/components/landing/LandingContactSection';
 
@@ -19,8 +18,6 @@ export default function Home() {
       <FinishedSection />
       {/*<div className="site-divider" />*/}
       {/*<HowItWorksSection />*/}
-      <div className="site-divider" />
-      <SeuPartners />
       <div className="site-divider" />
       <LandingPartnersSection />
       <div className="site-divider" />
