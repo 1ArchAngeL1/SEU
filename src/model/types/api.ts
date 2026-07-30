@@ -517,6 +517,28 @@ export type UpdateContactStatusInput = {
   status: ContactStatus;
 };
 
+export type ResumeStatus = 'new' | 'reviewed';
+
+export interface Resume {
+  id: string;
+  fileId: string;
+  fileName: string;
+  position?: string | null;
+  status: ResumeStatus;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type CreateResumeInput = {
+  fileId: string;
+  fileName: string;
+  position?: string;
+};
+
+export type UpdateResumeStatusInput = {
+  status: ResumeStatus;
+};
+
 export interface NewsArticle {
   id: string;
   headerEn: string;

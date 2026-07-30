@@ -1,28 +1,27 @@
 'use client';
 
 import Image from 'next/image';
-import { User } from 'lucide-react';
 import FadeIn from '@/components/FadeIn';
 import { useTranslations } from 'next-intl';
 
-const TEAM_MEMBERS = [
-  { name: 'Kate Asyeladze', position: 'Marketing Lead' },
-  { name: 'Kate Asyeladze', position: 'Marketing Lead' },
-];
+// TEMPORARY: team members hidden — render logo-only cards until real
+// member photos/names/positions are provided.
+const TEAM_MEMBERS = [{}, {}];
 
 export default function AboutTeam() {
   const t = useTranslations('about');
   return (
     <div className="relative py-20 lg:py-28 overflow-hidden">
-      {/* PLACEHOLDER: IMAGE - Team section background */}
-      <div className="absolute inset-x-0 top-0 bottom-16 bg-secondary-black/60 flex items-center justify-center">
+      {/* Team section background */}
+      <div className="absolute inset-x-0 top-0 bottom-16">
         <Image
-          src="/common/svgs/SEUcolored.svg"
+          src="/about/ourteam.jpg"
           alt="Team background"
-          width={120}
-          height={120}
-          className="opacity-30"
+          fill
+          className="object-cover"
         />
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-secondary-black/60" />
       </div>
 
       {/* Fade gradient on top */}
@@ -44,21 +43,17 @@ export default function AboutTeam() {
 
           {/* Right - Team Members */}
           <div className="flex-1 flex gap-4 lg:gap-6 justify-center lg:justify-end">
-            {TEAM_MEMBERS.map((member, index) => (
+            {TEAM_MEMBERS.map((_, index) => (
               <FadeIn key={index} delay={index * 150} direction="up">
-                <div className="w-40 lg:w-56 rounded-lg bg-site-bg overflow-hidden hover-lift">
-                  {/* PLACEHOLDER: IMAGE - Team member photo */}
-                  <div className="w-full h-44 lg:h-64 bg-secondary-black/40 flex items-center justify-center">
-                    <User className="w-12 h-12 text-site-fg-dim" />
-                  </div>
-                  <div className="px-4 py-4 text-center">
-                    <p className="font-montserrat font-semibold text-seu-caption text-site-fg uppercase tracking-wider">
-                      {member.name}
-                    </p>
-                    <p className="font-montserrat font-normal text-seu-caption-sm text-site-fg-dim mt-1">
-                      {member.position}
-                    </p>
-                  </div>
+                {/* TEMPORARY: logo-only card (no name/position) */}
+                <div className="w-40 lg:w-56 h-52 lg:h-80 rounded-lg bg-site-bg overflow-hidden hover-lift flex items-center justify-center p-8">
+                  <Image
+                    src="/common/pngs/seu-logo-green.png"
+                    alt="SEU Development"
+                    width={140}
+                    height={140}
+                    className="w-20 h-20 lg:w-28 lg:h-28 object-contain opacity-90"
+                  />
                 </div>
               </FadeIn>
             ))}

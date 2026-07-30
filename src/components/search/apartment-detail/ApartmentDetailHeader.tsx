@@ -3,26 +3,26 @@
 import { useTranslations } from 'next-intl';
 import { FileText } from 'lucide-react';
 import BackButton from '@/components/BackButton';
+import { Link } from '@/i18n/navigation';
 
-export function ApartmentDetailHeader() {
+export function ApartmentDetailHeader({ apartmentId }: { apartmentId: string }) {
   const t = useTranslations('search');
 
   return (
     <div className="flex items-center justify-between mb-8 lg:mb-12">
       <BackButton />
 
-      <span className="hidden sm:block font-montserrat text-seu-caption text-site-fg/40 tracking-[0.2rem] uppercase">
-        {t('floorPlan')}
-      </span>
-
-      <button
-        type="button"
+      {/* Opens the per-apartment sales presentation (printable / save-as-PDF). */}
+      <Link
+        href={`/presentation/${apartmentId}`}
+        target="_blank"
+        rel="noopener noreferrer"
         className="inline-flex items-center gap-2 lg:gap-2.5 rounded-lg bg-navy-green hover:bg-navy-green/80 border border-site-border-soft text-site-fg font-montserrat text-seu-caption-sm lg:text-seu-caption px-3 lg:px-5 h-9 lg:h-10 transition-colors"
       >
         <FileText className="size-4" />
         <span className="hidden sm:inline">{t('seePresentation')}</span>
         <span className="sm:hidden">{t('pdf')}</span>
-      </button>
+      </Link>
     </div>
   );
 }

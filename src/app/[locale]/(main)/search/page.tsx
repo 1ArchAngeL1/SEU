@@ -51,7 +51,8 @@ export default function SearchPage() {
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState<UnitFilter>(initialFilter);
 
-  const unitsQ = useUnitsList(filter, { page, limit: ITEMS_PER_PAGE });
+  // Apartments (living units) first, then commercial and other unit types.
+  const unitsQ = useUnitsList(filter, { page, limit: ITEMS_PER_PAGE }, 'typePriority');
 
   function handleSearch(next: UnitFilter) {
     setFilter(next);
@@ -77,7 +78,7 @@ export default function SearchPage() {
       <div className="bg-pale-gray pt-8 lg:pt-12 pb-2">
         <div className="mx-auto">
           <h1 className="font-bodoni text-seu-heading lg:text-seu-title-xl text-dark-green mb-6 lg:mb-8 px-5 lg:px-10 max-w-[1920px] mx-auto">
-            {t('apartments')}
+            {t('chooseApartment')}
           </h1>
 
           <SearchForm initialFilter={initialFilter} onSearch={handleSearch} onClear={handleClear} />

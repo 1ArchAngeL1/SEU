@@ -3,6 +3,7 @@
 import { Link, usePathname } from '@/i18n/navigation';
 import {
   Building2,
+  FileText,
   FolderKanban,
   Handshake,
   Home,
@@ -31,6 +32,7 @@ const navItems = [
   { href: '/admin/landing-partners', label: 'Landing Partners', icon: Images },
   { href: '/admin/news', label: 'News', icon: Newspaper },
   { href: '/admin/contacts', label: 'Contacts', icon: MessageSquare },
+  { href: '/admin/resumes', label: 'Resumes', icon: FileText },
   { href: '/admin/polygon-editor', label: 'Polygon Editor', icon: PenTool },
   { href: '/admin/users', label: 'Users', icon: Users },
 ];

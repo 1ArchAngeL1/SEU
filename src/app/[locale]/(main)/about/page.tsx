@@ -2,7 +2,7 @@ import AboutHero from '@/components/about/AboutHero';
 import AboutMission from '@/components/about/AboutMission';
 import AboutTeam from '@/components/about/AboutTeam';
 import AboutHiring from '@/components/about/AboutHiring';
-import AboutPartners from '@/components/about/AboutPartners';
+import LandingPartnersSection from '@/components/landing/LandingPartnersSection';
 import ContactForm from '@/components/ContactForm';
 import ContactPanel from '@/components/ContactPanel';
 
@@ -21,7 +21,7 @@ export default function AboutPage() {
 
       {/* Partners + Contact */}
       <div className="bg-site-bg">
-        <AboutPartners />
+        <LandingPartnersSection />
 
         {/* Contact Section */}
         <div className="py-20 lg:py-28 border-t border-site-border">

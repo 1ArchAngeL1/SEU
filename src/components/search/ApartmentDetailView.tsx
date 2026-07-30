@@ -43,7 +43,7 @@ export function ApartmentDetailView({ apartment }: ApartmentDetailViewProps) {
 
   return (
     <div className="px-5 sm:px-10 max-w-[1920px] mx-auto w-full">
-      <ApartmentDetailHeader />
+      <ApartmentDetailHeader apartmentId={String(apartment.id)} />
 
       <div className="flex flex-col lg:flex-row gap-10 xl:gap-14 items-start">
         {/* ── Left: Info Panel ── */}
