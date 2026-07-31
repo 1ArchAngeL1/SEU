@@ -1,6 +1,5 @@
 'use client';
 
-import NewsHero from '@/components/news/NewsHero';
 import NewsFeatured from '@/components/news/NewsFeatured';
 import NewsGrid from '@/components/news/NewsGrid';
 import ContactForm from '@/components/ContactForm';
@@ -12,12 +11,13 @@ export default function NewsPage() {
   const { data: articles = [], isLoading } = useAllNews();
   const t = useTranslations('news');
 
-  const [featured, ...rest] = articles;
+  // The admin-configured main article drives the wide banner; if none is set,
+  // fall back to the newest article. Everything else goes in the grid.
+  const main = articles.find((a) => a.isMain) ?? articles[0];
+  const rest = main ? articles.filter((a) => a.id !== main.id) : articles;
 
   return (
     <main className="bg-site-bg">
-      <NewsHero />
-
       {isLoading ? (
         <div className="py-12 lg:py-16">
           <div className="max-w-[1920px] mx-auto px-5 lg:px-10 grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-5">
@@ -28,9 +28,11 @@ export default function NewsPage() {
         </div>
       ) : articles.length > 0 ? (
         <>
-          <div className="pt-6 lg:pt-10">
-            <NewsFeatured article={featured} />
-          </div>
+          {main && (
+            <div className="pt-6 lg:pt-10">
+              <NewsFeatured article={main} />
+            </div>
+          )}
           {rest.length > 0 && <NewsGrid articles={rest} />}
         </>
       ) : (

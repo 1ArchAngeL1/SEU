@@ -7,6 +7,7 @@ import {
   Field,
   FormFooter,
   Section,
+  Switch,
 } from '@/components/admin/forms/form-primitives';
 import FileUpload from '@/components/admin/forms/FileUpload';
 import type { NewsArticle, CreateNewsInput } from '@/model/types/api';
@@ -31,6 +32,7 @@ export default function NewsForm({
     descriptionKa: initialData?.descriptionKa ?? '',
     image: initialData?.image ?? [] as string[],
     tags: initialData?.tags ?? [] as string[],
+    isMain: initialData?.isMain ?? false,
   });
   const [tagInput, setTagInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -80,6 +82,7 @@ export default function NewsForm({
         descriptionKa: form.descriptionKa.trim(),
         ...(form.image.length > 0 && { image: form.image }),
         ...(form.tags.length > 0 && { tags: form.tags }),
+        isMain: form.isMain,
       };
       await onSubmit(payload);
     } catch (err) {
@@ -200,6 +203,18 @@ export default function NewsForm({
             </div>
           )}
         </Field>
+      </Section>
+
+      <Section title="News Page" cols={1}>
+        <Switch
+          label="Main banner article"
+          checked={form.isMain}
+          onChange={(v) => set('isMain', v)}
+        />
+        <p className="font-montserrat text-seu-caption-sm text-admin-fg-muted">
+          Shows this article as the wide banner at the top of the news page.
+          Turning it on for one article turns it off for the others.
+        </p>
       </Section>
 
       <FormFooter

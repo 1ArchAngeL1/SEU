@@ -550,6 +550,8 @@ export interface NewsArticle {
   descriptionKa: string;
   image: string[];
   tags: string[];
+  /** Shown as the wide main banner on the news page (at most one article). */
+  isMain: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -561,6 +563,7 @@ export type CreateNewsInput = {
   descriptionKa: string;
   image?: string[];
   tags?: string[];
+  isMain?: boolean;
 };
 
 export type UpdateNewsInput = Partial<CreateNewsInput>;
