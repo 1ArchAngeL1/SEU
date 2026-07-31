@@ -1,6 +1,7 @@
 'use client';
 
 import { useLocale, useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
 import { OngoingProjectCard } from '@/components/landing/OngoingProjectCard';
 import { useProjectsList } from '@/hooks/queries/use-projects';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
@@ -32,16 +33,22 @@ export default function OngoingSection() {
         <div className="flex flex-col gap-8">
           {projects.map((project, i) => (
             <FadeIn key={project.id} delay={i * 150} duration={800}>
-              <OngoingProjectCard
-                name={pickLocalized(project.nameEn, project.nameKa, locale)}
-                location={
-                  pickLocalized(project.location?.districtEn, project.location?.districtKa, locale) ||
-                  pickLocalized(project.location?.cityEn, project.location?.cityKa, locale) ||
-                  pickLocalized(project.location?.addressEn, project.location?.addressKa, locale)
-                }
-                image={fileUrl(project.mainImage) || undefined}
-                badge={project.isFeatured ? 'FEATURED' : undefined}
-              />
+              {/* Ongoing projects link to their apartments, filtered by project */}
+              <Link
+                href={`/search?project=${project.id}`}
+                className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-green/50 rounded-2xl"
+              >
+                <OngoingProjectCard
+                  name={pickLocalized(project.nameEn, project.nameKa, locale)}
+                  location={
+                    pickLocalized(project.location?.districtEn, project.location?.districtKa, locale) ||
+                    pickLocalized(project.location?.cityEn, project.location?.cityKa, locale) ||
+                    pickLocalized(project.location?.addressEn, project.location?.addressKa, locale)
+                  }
+                  image={fileUrl(project.mainImage) || undefined}
+                  badge={project.isFeatured ? 'FEATURED' : undefined}
+                />
+              </Link>
             </FadeIn>
           ))}
         </div>

@@ -32,10 +32,10 @@ export default function UpcomingProjectCard({
         <div className="absolute inset-0 bg-gradient-to-b from-secondary-black/80 via-site-bg to-navy-green/50" />
       )}
 
-      {/* Edge vignette for smooth background transition */}
-      <div className="site-vignette absolute inset-0 shadow-[inset_0_0_40px_10px_var(--site-bg)]" />
-      {/* Fog overlay effect */}
-      <div className="absolute inset-0 bg-gradient-to-t from-site-bg/90 via-transparent to-site-bg/40" />
+      {/* Edge vignette for smooth background transition — very slight */}
+      <div className="site-vignette absolute inset-0 shadow-[inset_0_0_22px_4px_var(--site-bg)]" />
+      {/* Fog overlay effect — lightened */}
+      <div className="absolute inset-0 bg-gradient-to-t from-site-bg/55 via-transparent to-site-bg/20" />
 
       {/* Content - Bottom */}
       <div className="absolute bottom-6 left-6 right-6">

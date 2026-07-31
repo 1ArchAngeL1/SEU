@@ -82,8 +82,8 @@ export default function ApartmentCard({
                 sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
                 className="object-contain transition-transform duration-500 group-hover:scale-[1.03]"
               />
-              {/* Soft edge fade into card background */}
-              <div className="site-vignette absolute inset-0 shadow-[inset_0_0_30px_12px_var(--site-bg-card)]" />
+              {/* Soft edge fade into card background — very slight */}
+              <div className="site-vignette absolute inset-0 shadow-[inset_0_0_16px_3px_var(--site-bg-card)]" />
             </>
           ) : (
             <div className="size-32 rounded-full bg-site-bg-hover border border-site-border-soft flex items-center justify-center text-site-fg-dim">

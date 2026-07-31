@@ -40,10 +40,10 @@ export const OngoingProjectCard = ({
         <div className="absolute inset-0 bg-gradient-to-br from-secondary-black via-site-bg to-navy-green" />
       )}
 
-      {/* Edge vignette for smooth background transition */}
-      <div className="site-vignette absolute inset-0 shadow-[inset_0_0_40px_10px_var(--site-bg)]" />
-      {/* Left gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" />
+      {/* Edge vignette for smooth background transition — very slight */}
+      <div className="site-vignette absolute inset-0 shadow-[inset_0_0_20px_3px_var(--site-bg)]" />
+      {/* Left gradient overlay — very slight, just enough for text legibility */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/45 via-black/10 to-transparent" />
 
       {/* Badge - Top Right */}
       {badge && (
