@@ -26,25 +26,15 @@ export default function NewsFeatured({ article }: NewsFeaturedProps) {
           href={`/news/${article.id}`}
           className="group relative block w-full h-[46dvh] min-h-[320px] lg:h-[58dvh] overflow-hidden rounded-xl border border-site-border-soft"
         >
-          {/* Whole image, never cropped: the full image sits (object-contain)
-              over a blurred, zoomed copy of itself so the letterbox area is
-              filled instead of empty. */}
+          {/* Full-width image anchored to the top, so the top is never
+              cropped — only the bottom is trimmed to fill the banner. */}
           {hasImage ? (
-            <>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={imageSrc}
-                alt=""
-                aria-hidden="true"
-                className="absolute inset-0 w-full h-full object-cover scale-125 blur-2xl"
-              />
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={imageSrc}
-                alt={header}
-                className="absolute inset-0 w-full h-full object-contain transition-transform duration-700 group-hover:scale-[1.03]"
-              />
-            </>
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={imageSrc}
+              alt={header}
+              className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+            />
           ) : (
             <div className="absolute inset-0 bg-secondary-black flex items-center justify-center">
               <ImageIcon className="w-14 h-14 text-pale-gray/15" />
