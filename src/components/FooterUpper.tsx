@@ -1,10 +1,11 @@
 'use client';
 
-import { Link } from '@/i18n/navigation';
+import { Link, usePathname } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
 
 export default function FooterUpper() {
   const t = useTranslations('footer');
+  const pathname = usePathname();
 
   const links = [
     { label: t('projects'), href: '#' },
@@ -23,6 +24,13 @@ export default function FooterUpper() {
           <Link
             key={link.label}
             href={link.href}
+            onClick={(e) => {
+              // Already on this page → scroll to top instead of a no-op navigation.
+              if (link.href !== '#' && pathname === link.href) {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
+            }}
             className="font-montserrat font-medium text-seu-body leading-[1.375rem] tracking-[0.169rem] text-site-fg hover:text-site-fg-muted transition-colors"
           >
             {link.label}
