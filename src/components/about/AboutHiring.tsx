@@ -121,12 +121,6 @@ export default function AboutHiring() {
               <p>{t('marketingText1')}</p>
 
               <p>{t('marketingText2')}</p>
-
-              <p>{t('marketingText3')}</p>
-
-              <p>{t('marketingText4')}</p>
-
-              <p>{t('marketingText5')}</p>
             </div>
           </FadeIn>
         </div>
