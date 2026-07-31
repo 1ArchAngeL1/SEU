@@ -91,7 +91,14 @@ export default function VisualSearchFloorPage({
     (u) => u.polygon && u.polygon.length >= 3
   );
 
+  // Only sellable apartments open a detail view. Sold units and any
+  // non-living unit (commercial, parking, storage) are not clickable.
+  function canOpenUnit(unit: Unit): boolean {
+    return unit.status !== 'sold' && unit.type === 'living';
+  }
+
   function handleUnitClick(unit: Unit) {
+    if (!canOpenUnit(unit)) return;
     router.push(`/search/${unit.id}`);
   }
 
@@ -283,7 +290,7 @@ export default function VisualSearchFloorPage({
                         return (
                           <g
                             key={unit.id}
-                            className="cursor-pointer"
+                            className={canOpenUnit(unit) ? 'cursor-pointer' : 'cursor-default'}
                             onClick={() => handleUnitClick(unit)}
                           >
                             <polygon
@@ -474,7 +481,7 @@ export default function VisualSearchFloorPage({
                           return (
                             <g
                               key={unit.id}
-                              className="cursor-pointer"
+                              className={canOpenUnit(unit) ? 'cursor-pointer' : 'cursor-default'}
                               onMouseEnter={() => setHoveredId(unit.id)}
                               onMouseLeave={() => setHoveredId(null)}
                               onClick={() => handleUnitClick(unit)}
