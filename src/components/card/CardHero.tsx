@@ -24,19 +24,19 @@ export default function CardHero() {
           <div className="relative">
             {/* Blurred background copy */}
             <Image
-              src="/common/pngs/seu-card.png"
+              src="/card/seu-card.png"
               alt=""
               width={363}
-              height={514}
+              height={579}
               aria-hidden
               className="absolute top-2 left-2 rounded-lg opacity-[0.46] blur-[37px] rotate-[5deg]"
             />
             {/* Card */}
             <Image
-              src="/common/pngs/seu-card.png"
+              src="/card/seu-card.png"
               alt="SEU Card"
               width={363}
-              height={514}
+              height={579}
               className="relative rounded-lg rotate-[5deg]"
             />
           </div>

@@ -189,31 +189,33 @@ export function ApartmentPresentation({ unit, project, floor }: ApartmentPresent
           <span className="flex-1 border-t border-dashed border-white/40" />
         </div>
 
-        {/* ── Floor plan: whole floor with this apartment highlighted ── */}
-        <div className="flex-1 flex items-center justify-center py-6 min-h-[60mm]">
-          {showFloorHighlight ? (
-            <FloorPlanWithUnit
-              src={floorImageSrc}
-              polygon={unitPolygon}
-              label={`${projectName} — ${ts('floor')} ${unit.floorNumber} — ${t('apartmentNo')} ${unit.unitNumber}`}
-            />
-          ) : floorPlanSrc ? (
-            // Fallback: standalone unit plan when the floor image / position
-            // isn't available.
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={floorPlanSrc}
-              alt={`${projectName} — ${t('apartmentNo')} ${unit.unitNumber}`}
-              className="max-h-[95mm] w-auto max-w-full object-contain"
-            />
-          ) : (
-            // PLACEHOLDER: IMAGE - apartment floor plan
-            <div className="w-full h-[75mm] bg-dark-green/5 rounded-lg flex items-center justify-center">
-              <span className="font-montserrat text-dark-green/40 text-sm">
+        {/* ── Floor plan: whole floor with this apartment highlighted.
+             Dark panel (like the site's floor viewer) so the white floor
+             renders stay visible on the white sheet. ── */}
+        <div className="flex-1 flex py-6 min-h-[60mm]">
+          <div className="flex-1 flex items-center justify-center rounded-lg bg-dark-green p-4 print-exact">
+            {showFloorHighlight ? (
+              <FloorPlanWithUnit
+                src={floorImageSrc}
+                polygon={unitPolygon}
+                label={`${projectName} — ${ts('floor')} ${unit.floorNumber} — ${t('apartmentNo')} ${unit.unitNumber}`}
+              />
+            ) : floorPlanSrc ? (
+              // Fallback: standalone unit plan when the floor image / position
+              // isn't available.
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={floorPlanSrc}
+                alt={`${projectName} — ${t('apartmentNo')} ${unit.unitNumber}`}
+                className="max-h-[95mm] w-auto max-w-full object-contain"
+              />
+            ) : (
+              // PLACEHOLDER: IMAGE - apartment floor plan
+              <span className="font-montserrat text-white/40 text-sm">
                 {ts('floorPlan')}
               </span>
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
         {/* ── Amenities + project render ── */}
