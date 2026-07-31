@@ -43,7 +43,7 @@ export default function NewsArticleView({ article }: { article: NewsArticle }) {
           <img
             src={heroImage}
             alt={header}
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover object-top"
           />
         ) : (
           <div className="absolute inset-0 bg-secondary-black flex items-center justify-center">

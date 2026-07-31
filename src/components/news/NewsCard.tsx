@@ -46,7 +46,7 @@ export default function NewsCard({ article, locale, index = 0 }: NewsCardProps) 
             <img
               src={fileUrl(article.image[0])}
               alt={header}
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
             />
           ) : (
             <div className="absolute inset-0 bg-secondary-black/60 flex items-center justify-center">
