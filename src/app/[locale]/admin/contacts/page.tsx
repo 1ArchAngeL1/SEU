@@ -57,7 +57,7 @@ export default function ContactsPage() {
   const items = search
     ? allItems.filter(
         (c) =>
-          c.name.toLowerCase().includes(search.toLowerCase()) ||
+          c.name?.toLowerCase().includes(search.toLowerCase()) ||
           c.phone.includes(search) ||
           c.email?.toLowerCase().includes(search.toLowerCase())
       )
@@ -180,7 +180,7 @@ export default function ContactsPage() {
               <div className="flex items-center gap-2.5 min-w-0">
                 <User className="size-4 shrink-0 text-admin-fg-dim" />
                 <span className="font-montserrat text-seu-caption text-admin-fg truncate">
-                  {contact.name}
+                  {contact.name?.trim() || '—'}
                 </span>
               </div>
 

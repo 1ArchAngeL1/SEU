@@ -55,7 +55,11 @@ export function ApartmentFloorPlan({
   block,
 }: ApartmentFloorPlanProps) {
   const t = useTranslations('search');
-  const [viewMode, setViewMode] = useState<ViewMode>('Plan');
+  // Open on the 3D view by default; fall back to 2D then Plan when the
+  // apartment has no 3D image, so it never opens to an empty view.
+  const [viewMode, setViewMode] = useState<ViewMode>(() =>
+    floorPlanImages.threeD ? '3D' : floorPlanImages.twoD ? '2D' : 'Plan'
+  );
 
   const modeLabel = (mode: ViewMode) => (mode === 'Plan' ? t('plan') : mode);
 

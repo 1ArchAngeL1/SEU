@@ -502,7 +502,7 @@ export type ContactStatus = 'open' | 'closed';
 
 export interface Contact {
   id: string;
-  name: string;
+  name?: string;
   phone: string;
   email?: string | null;
   status: ContactStatus;
@@ -511,7 +511,7 @@ export interface Contact {
 }
 
 export type CreateContactInput = {
-  name: string;
+  name?: string;
   phone: string;
   email?: string;
 };

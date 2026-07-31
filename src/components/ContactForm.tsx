@@ -44,8 +44,8 @@ export default function ContactForm({
 
     try {
       await createContact.mutateAsync({
-        name: formData.name.trim(),
         phone: formData.phone.trim(),
+        ...(formData.name.trim() ? { name: formData.name.trim() } : {}),
         ...(formData.email.trim() ? { email: formData.email.trim() } : {}),
       });
       setSubmitted(true);
