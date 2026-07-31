@@ -4,13 +4,14 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useLocale, useTranslations } from 'next-intl';
 import { Phone, Mail, MapPin } from 'lucide-react';
-import type { Project, Unit, RoomType } from '@/model/types/api';
+import type { Project, Unit, RoomType, Floor, PolygonPoint } from '@/model/types/api';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
 
 interface ApartmentPresentationProps {
   unit: Unit;
   project: Project | null | undefined;
+  floor?: Floor | null;
 }
 
 /**
@@ -20,7 +21,7 @@ interface ApartmentPresentationProps {
  * value (apartment specs, floor plan image, project render, location) is pulled
  * from the unit + its project.
  */
-export function ApartmentPresentation({ unit, project }: ApartmentPresentationProps) {
+export function ApartmentPresentation({ unit, project, floor }: ApartmentPresentationProps) {
   const locale = useLocale() as Locale;
   const t = useTranslations('presentation');
   const ts = useTranslations('search');
@@ -68,6 +69,13 @@ export function ApartmentPresentation({ unit, project }: ApartmentPresentationPr
     fileUrl(unit.floorPlanImage) ||
     fileUrl(unit.mainImage) ||
     fileUrl(unit.twoDContent);
+
+  // Prefer showing the whole-floor plan with this apartment's position
+  // highlighted (as in visual search) instead of the standalone unit plan.
+  const floorImageSrc =
+    fileUrl(floor?.renderImage) || fileUrl(floor?.floorImageId);
+  const unitPolygon = Array.isArray(unit.polygon) ? unit.polygon : [];
+  const showFloorHighlight = Boolean(floorImageSrc) && unitPolygon.length >= 3;
 
   const renderSrc = project
     ? fileUrl(project.renderImage) ||
@@ -181,9 +189,17 @@ export function ApartmentPresentation({ unit, project }: ApartmentPresentationPr
           <span className="flex-1 border-t border-dashed border-white/40" />
         </div>
 
-        {/* ── Floor plan ── */}
+        {/* ── Floor plan: whole floor with this apartment highlighted ── */}
         <div className="flex-1 flex items-center justify-center py-6 min-h-[60mm]">
-          {floorPlanSrc ? (
+          {showFloorHighlight ? (
+            <FloorPlanWithUnit
+              src={floorImageSrc}
+              polygon={unitPolygon}
+              label={`${projectName} — ${ts('floor')} ${unit.floorNumber} — ${t('apartmentNo')} ${unit.unitNumber}`}
+            />
+          ) : floorPlanSrc ? (
+            // Fallback: standalone unit plan when the floor image / position
+            // isn't available.
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={floorPlanSrc}
@@ -258,6 +274,45 @@ function Row({ label, value }: { label: string; value: string }) {
     <div className="flex items-baseline justify-between">
       <span>{label}</span>
       <span className="font-semibold">{value}</span>
+    </div>
+  );
+}
+
+function toSvgPoints(polygon: PolygonPoint[]): string {
+  return polygon.map((p) => `${p.x},${p.y}`).join(' ');
+}
+
+/**
+ * Whole-floor plan image with the current apartment's position filled in.
+ * The wrapper shrink-wraps the image so the overlaid SVG (0–100 normalized
+ * coordinates, `preserveAspectRatio="none"`) lines up exactly with it.
+ */
+function FloorPlanWithUnit({
+  src,
+  polygon,
+  label,
+}: {
+  src: string;
+  polygon: PolygonPoint[];
+  label: string;
+}) {
+  return (
+    <div className="presentation-floor relative inline-block max-w-full print-exact">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={src} alt={label} className="block max-h-[95mm] w-auto max-w-full" />
+      <svg
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+        className="absolute inset-0 h-full w-full print-exact"
+      >
+        <polygon
+          points={toSvgPoints(polygon)}
+          fill="rgba(46,204,113,0.45)"
+          stroke="rgb(46,204,113)"
+          strokeWidth="0.6"
+          strokeLinejoin="round"
+        />
+      </svg>
     </div>
   );
 }

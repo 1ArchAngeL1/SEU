@@ -7,6 +7,7 @@ import { Download } from 'lucide-react';
 import { ApartmentPresentation } from '@/components/presentation/ApartmentPresentation';
 import { useUnit } from '@/hooks/queries/use-units';
 import { useProject } from '@/hooks/queries/use-projects';
+import { useFloor } from '@/hooks/queries/use-floors';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 
 export default function ApartmentPresentationPage({
@@ -29,6 +30,13 @@ export default function ApartmentPresentationPage({
     : undefined;
   const projectQ = useProject(projectId);
 
+  const floorId = unit
+    ? typeof unit.floor === 'string'
+      ? unit.floor
+      : unit.floor?.id
+    : undefined;
+  const floorQ = useFloor(floorId);
+
   // Give the saved PDF a meaningful filename.
   useEffect(() => {
     if (!unit) return;
@@ -38,7 +46,11 @@ export default function ApartmentPresentationPage({
     document.title = `SEU — ${name} — ${t('apartmentNo')} ${unit.unitNumber}`.trim();
   }, [unit, projectQ.data, locale, t]);
 
-  if (unitQ.isLoading || (projectId && projectQ.isLoading)) {
+  if (
+    unitQ.isLoading ||
+    (projectId && projectQ.isLoading) ||
+    (floorId && floorQ.isLoading)
+  ) {
     return (
       <div className="min-h-dvh flex items-center justify-center bg-neutral-200">
         <span className="font-montserrat text-seu-body text-dark-green">
@@ -62,7 +74,7 @@ export default function ApartmentPresentationPage({
         {t('download')}
       </button>
 
-      <ApartmentPresentation unit={unit} project={projectQ.data} />
+      <ApartmentPresentation unit={unit} project={projectQ.data} floor={floorQ.data} />
 
       <style>{`
         @page { size: A4; margin: 0; }
