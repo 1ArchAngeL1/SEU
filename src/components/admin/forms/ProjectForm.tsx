@@ -89,6 +89,7 @@ export default function ProjectForm({
       initialData?.maxSizeApartment?.toString() ?? '',
     isActive: initialData?.isActive ?? true,
     isFeatured: initialData?.isFeatured ?? false,
+    isDefault: initialData?.isDefault ?? false,
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -122,6 +123,7 @@ export default function ProjectForm({
       status: form.status,
       isActive: form.isActive,
       isFeatured: form.isFeatured,
+      isDefault: form.isDefault,
       startDate: form.startDate || undefined,
       expectedCompletionDate: form.expectedCompletionDate || undefined,
       actualCompletionDate: form.actualCompletionDate || undefined,
@@ -239,7 +241,11 @@ export default function ProjectForm({
 
       {tabs.active === 'flags' && (
         <ProjectFlagsSection
-          value={{ isActive: form.isActive, isFeatured: form.isFeatured }}
+          value={{
+            isActive: form.isActive,
+            isFeatured: form.isFeatured,
+            isDefault: form.isDefault,
+          }}
           update={sectionUpdate<ProjectFlagsSectionValue>()}
         />
       )}

@@ -19,7 +19,7 @@ export default function MoreNews({ currentId }: { currentId: string }) {
         <h2 className="font-[--font-bodoni] font-normal text-seu-heading lg:text-seu-heading-lg text-site-fg-strong mb-8 lg:mb-10">
           {t('moreNews')}
         </h2>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-5">
           {others.map((article, i) => (
             <NewsCard key={article.id} article={article} index={i} locale={locale} />
           ))}

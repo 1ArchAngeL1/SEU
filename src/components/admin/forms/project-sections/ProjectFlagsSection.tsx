@@ -5,6 +5,7 @@ import { Switch } from '../form-primitives';
 export interface ProjectFlagsSectionValue {
   isActive: boolean;
   isFeatured: boolean;
+  isDefault: boolean;
 }
 
 interface Props {
@@ -29,7 +30,16 @@ export default function ProjectFlagsSection({ value, update }: Props) {
           checked={value.isFeatured}
           onChange={(v) => update('isFeatured', v)}
         />
+        <Switch
+          label="Default in search"
+          checked={value.isDefault}
+          onChange={(v) => update('isDefault', v)}
+        />
       </div>
+      <p className="font-montserrat text-seu-caption-sm text-secondary-grey">
+        “Default in search” pre-selects this project on the apartment search
+        page. Turning it on for one project turns it off for the others.
+      </p>
     </div>
   );
 }

@@ -8,6 +8,7 @@ import SearchForm from '@/components/search/SearchForm';
 import { ApartmentCardGridView } from '@/components/search/ApartmentCardGridView';
 import { PaginationControl } from '@/components/search/PaginationControl';
 import { useUnitsList } from '@/hooks/queries/use-units';
+import { useAllProjects } from '@/hooks/queries/use-projects';
 import type { UnitFilter, UnitType } from '@/model/types/api';
 
 const VALID_UNIT_TYPES: ReadonlyArray<UnitType> = ['living', 'commerce', 'parking', 'storage'];
@@ -21,8 +22,14 @@ function toNum(v: string | null): number | undefined {
 }
 
 export default function SearchPage() {
-  const t = useTranslations('search');
   const searchParams = useSearchParams();
+  const projectsQ = useAllProjects();
+
+  const urlProject = searchParams.get('project');
+  // We can resolve the starting project once the URL pins one, or once the
+  // projects list has settled (so we know the admin-configured default).
+  const projectsSettled = projectsQ.isSuccess || projectsQ.isError;
+  const ready = Boolean(urlProject) || projectsSettled;
 
   const initialFilter = useMemo<UnitFilter>(() => {
     const f: UnitFilter = { status: 'available' };
@@ -32,7 +39,6 @@ export default function SearchPage() {
     const minBedrooms = toNum(searchParams.get('minBedrooms'));
     const maxBedrooms = toNum(searchParams.get('maxBedrooms'));
     const typeParam = searchParams.get('type');
-    const projectParam = searchParams.get('project');
     const buildingParam = searchParams.get('building');
     if (minSize != null) f.minSize = minSize;
     if (maxSize != null) f.maxSize = maxSize;
@@ -42,11 +48,31 @@ export default function SearchPage() {
     if (typeParam && VALID_UNIT_TYPES.includes(typeParam as UnitType)) {
       f.type = typeParam as UnitType;
     }
-    if (projectParam) f.project = projectParam;
+    if (urlProject) {
+      f.project = urlProject;
+    } else {
+      // No project in the URL — fall back to the admin-configured default.
+      const defaultProject = (projectsQ.data ?? []).find((p) => p.isDefault);
+      if (defaultProject) f.project = defaultProject.id;
+    }
     if (buildingParam) f.building = buildingParam;
     return f;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [ready]);
+
+  if (!ready) {
+    return (
+      <div className="min-h-screen bg-pale-gray flex items-center justify-center py-24">
+        <Loader2 className="size-6 text-primary-green animate-spin" />
+      </div>
+    );
+  }
+
+  return <SearchPageContent initialFilter={initialFilter} />;
+}
+
+function SearchPageContent({ initialFilter }: { initialFilter: UnitFilter }) {
+  const t = useTranslations('search');
 
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState<UnitFilter>(initialFilter);

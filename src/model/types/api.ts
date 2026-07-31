@@ -99,6 +99,8 @@ export interface Project {
   benefitsKa?: string;
   isActive: boolean;
   isFeatured: boolean;
+  /** Pre-selected by default on the apartment search page (at most one project). */
+  isDefault: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -297,6 +299,7 @@ export type CreateProjectInput = {
   benefitsKa?: string;
   isActive?: boolean;
   isFeatured?: boolean;
+  isDefault?: boolean;
 };
 
 export type UpdateProjectInput = Partial<CreateProjectInput>;
