@@ -69,9 +69,6 @@ export default function LandingPartnersSection() {
           <h2 className="font-bodoni text-seu-heading lg:text-seu-title text-site-fg-strong uppercase tracking-wide">
             {t('title')}
           </h2>
-          <p className="mt-3 font-montserrat text-seu-body text-site-fg-muted max-w-2xl">
-            {t('subtitle')}
-          </p>
         </FadeIn>
 
         {isLoading ? (

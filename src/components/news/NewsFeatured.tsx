@@ -1,8 +1,9 @@
 'use client';
 
-import FadeIn from '@/components/FadeIn';
 import { ImageIcon } from 'lucide-react';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
+import FadeIn from '@/components/FadeIn';
 import { fileUrl } from '@/lib/file-url';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import type { NewsArticle } from '@/model/types/api';
@@ -12,36 +13,45 @@ interface NewsFeaturedProps {
 }
 
 export default function NewsFeatured({ article }: NewsFeaturedProps) {
-  const hasImage = article.image.length > 0;
+  const t = useTranslations('news');
   const locale = useLocale() as Locale;
+  const hasImage = article.image.length > 0;
   const header = pickLocalized(article.headerEn, article.headerKa, locale);
 
   return (
-    <div className="max-w-[1920px] mx-auto px-5 lg:px-10 -mt-16 relative z-10">
+    <div className="max-w-[1920px] mx-auto px-5 lg:px-10">
       <FadeIn>
-        <div className="relative w-full h-48 lg:h-72 rounded-xl overflow-hidden border border-site-border-soft">
+        <Link
+          href={`/news/${article.id}`}
+          className="group relative block w-full h-[46dvh] min-h-[320px] lg:h-[58dvh] overflow-hidden rounded-xl border border-site-border-soft"
+        >
           {/* Background image or placeholder */}
           {hasImage ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={fileUrl(article.image[0])}
               alt={header}
-              className="absolute inset-0 w-full h-full object-cover"
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
           ) : (
-            <div className="absolute inset-0 bg-secondary-black/80 flex items-center justify-center">
-              <ImageIcon className="w-12 h-12 text-site-fg-dim/15" />
+            <div className="absolute inset-0 bg-secondary-black flex items-center justify-center">
+              <ImageIcon className="w-14 h-14 text-pale-gray/15" />
             </div>
           )}
 
-          <div className="absolute inset-0 bg-gradient-to-r from-dark-green/80 to-transparent" />
+          {/* Legibility overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-dark-green/80 via-dark-green/25 to-dark-green/40" />
 
-          <div className="relative z-10 flex items-center h-full px-8 lg:px-16">
-            <h2 className="font-[--font-bodoni] font-normal text-seu-heading lg:text-seu-title text-primary-green italic max-w-2xl">
+          {/* Centered title + CTA */}
+          <div className="relative z-10 h-full flex flex-col items-center justify-center text-center gap-6 px-6">
+            <h2 className="font-[--font-bodoni] font-normal text-seu-title lg:text-seu-title-xl text-pale-gray max-w-4xl leading-tight">
               {header}
             </h2>
+            <span className="inline-flex items-center rounded-md bg-primary-orange px-6 py-3 font-montserrat font-semibold text-seu-caption uppercase tracking-widest text-white transition-transform duration-300 group-hover:-translate-y-0.5">
+              {t('readThisArticle')}
+            </span>
           </div>
-        </div>
+        </Link>
       </FadeIn>
     </div>
   );

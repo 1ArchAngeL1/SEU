@@ -22,6 +22,7 @@
   --pale-gray: #f4f0e9;
   --primary-green: #2ecc71;
   --primary-green-rgb: 46, 204, 113;
+  --primary-orange: #ff6b35;
   /* CSS filter chain that tints a black SVG to --primary-green.
      Use via the .tint-primary-green utility on monochrome SVG <img>. */
   --primary-green-filter: brightness(0) saturate(100%) invert(72%) sepia(38%) saturate(813%) hue-rotate(86deg) brightness(91%) contrast(85%);
@@ -124,6 +125,7 @@
   --color-navy-green: var(--navy-green);
   --color-pale-gray: var(--pale-gray);
   --color-primary-green: var(--primary-green);
+  --color-primary-orange: var(--primary-orange);
   --color-success-green: var(--success-green);
   --color-black: var(--black);
   /* Legacy colors */

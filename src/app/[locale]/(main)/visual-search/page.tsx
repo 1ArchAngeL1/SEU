@@ -9,6 +9,15 @@ import ContactPanel from '@/components/ContactPanel';
 import { useProjectsList } from '@/hooks/queries/use-projects';
 import { type Locale, pickLocalized } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
+import type { ProjectStatus } from '@/model/types/api';
+
+// Only ongoing projects are shown in visual search — finished ones
+// (completed / sold out / archived) are hidden.
+const ONGOING_STATUSES: ProjectStatus[] = [
+  'planning',
+  'presale',
+  'under_construction',
+];
 
 export default function VisualSearchPage() {
   const locale = useLocale() as Locale;
@@ -16,7 +25,9 @@ export default function VisualSearchPage() {
   const tStatus = useTranslations('status');
   const projectsQ = useProjectsList({ isActive: true }, { page: 1, limit: 50 });
 
-  const projects = projectsQ.data?.items ?? [];
+  const projects = (projectsQ.data?.items ?? []).filter((project) =>
+    ONGOING_STATUSES.includes(project.status),
+  );
 
   return (
     <main className="bg-dark-green min-h-screen">
