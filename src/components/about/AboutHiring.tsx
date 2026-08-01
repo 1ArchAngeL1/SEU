@@ -55,7 +55,7 @@ export default function AboutHiring() {
         <div className="flex flex-col lg:flex-row gap-0">
           {/* Left - Title, Resume upload & Info Box */}
           <FadeIn direction="left" className="w-full lg:w-1/2 flex flex-col justify-between pr-0 lg:pr-20">
-            <div>
+            <div className="mb-12 lg:mb-16">
               <h2 className="font-[--font-bodoni] font-normal text-seu-title text-dark-green uppercase mb-4">
                 {t('weAreHiring')}
               </h2>
