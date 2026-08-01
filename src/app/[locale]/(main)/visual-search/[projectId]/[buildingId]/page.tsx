@@ -216,8 +216,8 @@ export default function VisualSearchBuildingPage({
       {/* Contact section */}
       <div className="bg-site-bg px-5 lg:px-10 py-12 lg:py-20">
         <div className="max-w-[1920px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
-          <ContactForm className="max-w-xl" />
-          <ContactPanel className="max-w-xl lg:justify-self-end" />
+          <ContactForm className="max-w-2xl" />
+          <ContactPanel className="max-w-2xl lg:justify-self-end" />
         </div>
       </div>
     </main>

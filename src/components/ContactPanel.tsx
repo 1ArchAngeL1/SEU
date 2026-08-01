@@ -49,7 +49,7 @@ export default function ContactPanel({
               <p className="font-montserrat text-seu-caption-sm text-site-fg-muted mb-0.5">
                 Email
               </p>
-              <p className="font-montserrat font-medium text-seu-caption text-site-fg truncate">
+              <p className="font-montserrat font-medium text-seu-caption text-site-fg break-all">
                 {t('email')}
               </p>
             </div>
