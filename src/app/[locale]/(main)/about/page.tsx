@@ -1,6 +1,5 @@
 import AboutHero from '@/components/about/AboutHero';
 import AboutMission from '@/components/about/AboutMission';
-import AboutTeam from '@/components/about/AboutTeam';
 import AboutHiring from '@/components/about/AboutHiring';
 import LandingPartnersSection from '@/components/landing/LandingPartnersSection';
 import ContactForm from '@/components/ContactForm';
@@ -9,11 +8,10 @@ import ContactPanel from '@/components/ContactPanel';
 export default function AboutPage() {
   return (
     <main>
-      {/* Hero + Mission + Team */}
+      {/* Hero + Mission */}
       <div className="bg-site-bg">
         <AboutHero />
         <AboutMission />
-        <AboutTeam />
       </div>
 
       {/* Hiring */}
