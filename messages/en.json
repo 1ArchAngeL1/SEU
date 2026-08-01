@@ -254,6 +254,8 @@
   },
   "visualSearch": {
     "benefits": "Benefits",
+    "chooseProject": "Choose Project",
+    "noProjects": "No projects available.",
     "chooseBlock": "Choose Block",
     "block": "Block",
     "blocks": "Blocks",

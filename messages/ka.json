@@ -69,7 +69,7 @@
   "status": {
     "planning": "დაგეგმვა",
     "presale": "წინასწარი გაყიდვა",
-    "under_construction": "მშენებლობა",
+    "under_construction": "მიმდინარე",
     "completed": "დასრულებული",
     "sold_out": "გაყიდული",
     "archived": "არქივი",
@@ -254,6 +254,8 @@
   },
   "visualSearch": {
     "benefits": "უპირატესობები",
+    "chooseProject": "აირჩიეთ პროექტი",
+    "noProjects": "პროექტები არ არის ხელმისაწვდომი.",
     "chooseBlock": "აირჩიეთ ბლოკი",
     "block": "ბლოკი",
     "blocks": "ბლოკები",

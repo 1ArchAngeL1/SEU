@@ -21,7 +21,7 @@ const ONGOING_STATUSES: ProjectStatus[] = [
 
 export default function VisualSearchPage() {
   const locale = useLocale() as Locale;
-  const t = useTranslations('landing');
+  const t = useTranslations('visualSearch');
   const tStatus = useTranslations('status');
   const projectsQ = useProjectsList({ isActive: true }, { page: 1, limit: 50 });
 
@@ -34,7 +34,7 @@ export default function VisualSearchPage() {
       {/* Page title */}
       <div className="px-5 lg:px-10 pt-6 lg:pt-8 pb-1 lg:pb-2 max-w-[1920px] mx-auto">
         <h1 className="font-bodoni text-seu-heading lg:text-seu-title text-pale-gray uppercase tracking-wide">
-          Choose Project
+          {t('chooseProject')}
         </h1>
       </div>
 
@@ -46,7 +46,7 @@ export default function VisualSearchPage() {
 
       {!projectsQ.isLoading && projects.length === 0 && (
         <p className="text-secondary-grey font-montserrat text-seu-body py-32 text-center">
-          No projects available.
+          {t('noProjects')}
         </p>
       )}
 
