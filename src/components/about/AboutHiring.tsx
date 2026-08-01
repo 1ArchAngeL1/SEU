@@ -108,15 +108,6 @@ export default function AboutHiring() {
 
           {/* Right - Job Listing */}
           <FadeIn direction="right" delay={200} className="w-full lg:w-1/2 bg-white/60 border border-dark-green/10 rounded-lg p-10">
-            <h3 className="font-[--font-bodoni] font-normal text-seu-heading text-dark-green uppercase mb-2">
-              {t('marketing')}
-            </h3>
-            <p className="font-montserrat font-semibold text-seu-caption-sm text-secondary-grey leading-tight mb-4">
-              {t('marketingDesc1')}
-            </p>
-
-            <hr className="border-dark-green/15 mb-6" />
-
             <div className="space-y-5 font-montserrat font-normal text-seu-caption text-secondary-grey leading-relaxed">
               <p>{t('marketingText1')}</p>
 
