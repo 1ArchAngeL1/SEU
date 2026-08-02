@@ -1,7 +1,17 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { Check, Loader2, Save, Trash2, MapPin } from 'lucide-react';
+import {
+  Check,
+  Loader2,
+  Save,
+  Trash2,
+  MapPin,
+  Copy,
+  ClipboardPaste,
+  Layers,
+  CheckCheck,
+} from 'lucide-react';
 import AdminPageHeader from '@/components/admin/AdminPageHeader';
 import {
   Select,
@@ -67,6 +77,12 @@ export default function FloorPolygonsPage() {
   const [selected, setSelected] = useState<string | null>(null);
   const [savedFlash, setSavedFlash] = useState<string | null>(null);
   const [imgNatural, setImgNatural] = useState<{ w: number; h: number } | null>(null);
+  // Copy buffer: a single polygon copied from a unit, pasteable into any unit.
+  const [copied, setCopied] = useState<PolygonPoint[] | null>(null);
+  const [copiedFrom, setCopiedFrom] = useState('');
+  // Bulk: copy an entire floor's polygons (by unit order) into the current floor.
+  const [copyFromFloorId, setCopyFromFloorId] = useState('');
+  const [savingAll, setSavingAll] = useState(false);
 
   const projects = useAllProjects().data ?? [];
   const buildings = useBuildingsByProject(projectId || undefined).data ?? [];
@@ -86,6 +102,14 @@ export default function FloorPolygonsPage() {
     [unitsQ.data],
   );
   const updateUnit = useUpdateUnit();
+
+  // Units of the floor we're copying FROM (for the bulk floor copy).
+  const copyFromFloor = floors.find((f) => f.id === copyFromFloorId);
+  const srcUnitsQ = useUnitsList(
+    { building: buildingId || undefined, floorNumber: copyFromFloor?.floorNumber },
+    { page: 1, limit: 100 },
+    'typePriority',
+  );
 
   const floorImg = fileUrl(floor?.renderImage) || fileUrl(floor?.floorImageId);
 
@@ -118,6 +142,82 @@ export default function FloorPolygonsPage() {
     await updateUnit.mutateAsync({ id: u.id, input: { polygon: [] } });
     setDrafts((p) => ({ ...p, [u.id]: '' }));
   }
+
+  function copyUnit(u: Unit) {
+    const poly = polyFor(u);
+    if (poly.length < 3) return;
+    setCopied(poly);
+    setCopiedFrom(`#${u.unitNumber}`);
+  }
+  function pasteUnit(u: Unit) {
+    if (copied) setDraft(u.id, polygonToText(copied));
+  }
+
+  // Copy every polygon from another floor into this floor, matched by unit
+  // order (both sorted by number). Fills drafts — review on the plan, then Save.
+  function applyFloorCopy() {
+    const src = [...(srcUnitsQ.data?.items ?? [])].sort(
+      (a, b) => Number(a.unitNumber) - Number(b.unitNumber) || 0,
+    );
+    const next = { ...drafts };
+    const n = Math.min(src.length, units.length);
+    let filled = 0;
+    for (let i = 0; i < n; i++) {
+      if (src[i].polygon?.length) {
+        next[units[i].id] = polygonToText(src[i].polygon);
+        filled++;
+      }
+    }
+    setDrafts(next);
+    return filled;
+  }
+
+  async function saveAll() {
+    const toSave = units.filter(
+      (u) => drafts[u.id] !== undefined && parsePolygon(drafts[u.id]).length >= 3,
+    );
+    if (!toSave.length) return;
+    setSavingAll(true);
+    try {
+      for (const u of toSave) {
+        await updateUnit.mutateAsync({
+          id: u.id,
+          input: { polygon: parsePolygon(drafts[u.id]) },
+        });
+      }
+      setDrafts((prev) => {
+        const n = { ...prev };
+        toSave.forEach((u) => delete n[u.id]);
+        return n;
+      });
+    } finally {
+      setSavingAll(false);
+    }
+  }
+
+  // One-click: copy the chosen floor's polygons onto this floor (matched by
+  // unit order) and save immediately — no draft step.
+  async function copyFloorAndSave() {
+    const src = [...(srcUnitsQ.data?.items ?? [])].sort(
+      (a, b) => Number(a.unitNumber) - Number(b.unitNumber) || 0,
+    );
+    const n = Math.min(src.length, units.length);
+    setSavingAll(true);
+    try {
+      for (let i = 0; i < n; i++) {
+        const poly = src[i].polygon;
+        if (poly && poly.length >= 3) {
+          await updateUnit.mutateAsync({ id: units[i].id, input: { polygon: poly } });
+        }
+      }
+    } finally {
+      setSavingAll(false);
+    }
+  }
+
+  const dirtyCount = units.filter(
+    (u) => drafts[u.id] !== undefined && parsePolygon(drafts[u.id]).length >= 3,
+  ).length;
 
   const projName = (id: string) => {
     const p = projects.find((x) => x.id === id);
@@ -182,6 +282,60 @@ export default function FloorPolygonsPage() {
           Select a project, building and floor to begin.
         </div>
       ) : (
+        <>
+          {/* Toolbar: bulk copy-from-floor + save-all + copy buffer status */}
+          <div className="flex flex-wrap items-center gap-3 mb-4 rounded-xl border border-admin-border-soft bg-admin-card p-3">
+            <Layers className="size-4 text-admin-fg-dim" />
+            <span className="font-montserrat text-seu-caption-sm text-admin-fg-muted">Copy all polygons from</span>
+            <Select value={copyFromFloorId} onValueChange={setCopyFromFloorId}>
+              <SelectTrigger className="w-40"><SelectValue placeholder="another floor" /></SelectTrigger>
+              <SelectContent>
+                {[...floors]
+                  .filter((f) => f.id !== floorId)
+                  .sort((a, b) => a.floorNumber - b.floorNumber)
+                  .map((f) => (
+                    <SelectItem key={f.id} value={f.id}>Floor {f.floorNumber}</SelectItem>
+                  ))}
+              </SelectContent>
+            </Select>
+            <button
+              type="button"
+              onClick={applyFloorCopy}
+              disabled={!copyFromFloorId || srcUnitsQ.isLoading}
+              className="font-montserrat font-medium text-seu-caption-sm text-white bg-dark-green px-4 py-1.5 rounded-lg disabled:opacity-40 hover:bg-dark-green/85 transition-colors"
+            >
+              Load into drafts
+            </button>
+            <button
+              type="button"
+              onClick={copyFloorAndSave}
+              disabled={!copyFromFloorId || srcUnitsQ.isLoading || savingAll}
+              className="flex items-center gap-2 font-montserrat font-medium text-seu-caption-sm text-white bg-primary-green px-4 py-1.5 rounded-lg disabled:opacity-40 hover:bg-primary-green/85 transition-colors"
+            >
+              {savingAll ? <Loader2 className="size-3.5 animate-spin" /> : <CheckCheck className="size-3.5" />}
+              Copy &amp; save
+            </button>
+            <span className="font-montserrat text-seu-caption-sm text-admin-fg-dim">(matched by unit order)</span>
+
+            <button
+              type="button"
+              onClick={saveAll}
+              disabled={savingAll || dirtyCount === 0}
+              className="ml-auto flex items-center gap-2 font-montserrat font-medium text-seu-caption-sm text-white bg-primary-green px-4 py-1.5 rounded-lg disabled:opacity-40 hover:bg-primary-green/85 transition-colors"
+            >
+              {savingAll ? <Loader2 className="size-3.5 animate-spin" /> : <CheckCheck className="size-3.5" />}
+              Save all{dirtyCount ? ` (${dirtyCount})` : ''}
+            </button>
+          </div>
+
+          {copied && (
+            <div className="flex items-center gap-2 mb-4 rounded-lg border border-primary-green/40 bg-primary-green/5 px-3 py-2 font-montserrat text-seu-caption-sm text-admin-fg">
+              <Copy className="size-4 text-primary-green" />
+              Copied polygon from <b>{copiedFrom}</b> ({copied.length} pts). Click <b>Paste</b> on any unit.
+              <button type="button" onClick={() => { setCopied(null); setCopiedFrom(''); }} className="ml-2 text-admin-fg-dim hover:text-red">clear</button>
+            </div>
+          )}
+
         <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-6 items-start">
           {/* Floor image + overlay */}
           <div className="lg:sticky lg:top-4 rounded-2xl border border-admin-border-soft bg-admin-card p-3">
@@ -307,6 +461,24 @@ export default function FloorPolygonsPage() {
                       >
                         <Trash2 className="size-3.5" /> Clear
                       </button>
+                      <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); copyUnit(u); }}
+                        disabled={eff.length < 3}
+                        title="Copy this polygon to the buffer"
+                        className="flex items-center gap-1.5 text-admin-fg-muted hover:text-primary-green font-montserrat text-seu-caption-sm px-2 py-1.5 disabled:opacity-40 transition-colors"
+                      >
+                        <Copy className="size-3.5" /> Copy
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); pasteUnit(u); }}
+                        disabled={!copied}
+                        title="Paste the copied polygon here"
+                        className="flex items-center gap-1.5 text-admin-fg-muted hover:text-primary-green font-montserrat text-seu-caption-sm px-2 py-1.5 disabled:opacity-40 transition-colors"
+                      >
+                        <ClipboardPaste className="size-3.5" /> Paste
+                      </button>
                       <span className="ml-auto font-montserrat text-seu-caption-sm text-admin-fg-dim">
                         {projName(projectId)} · Block {floor && buildings.find(b=>b.id===buildingId)?.block} · Floor {floor?.floorNumber}
                       </span>
@@ -317,6 +489,7 @@ export default function FloorPolygonsPage() {
             )}
           </div>
         </div>
+        </>
       )}
     </div>
   );
