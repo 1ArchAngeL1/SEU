@@ -231,11 +231,9 @@ export default function UnitForm({
       floorNumber: Number(form.floor) || 0,
       type: form.type,
       status: form.status,
-      bedrooms: num(form.bedrooms) ?? undefined,
-      bathrooms: num(form.bathrooms) ?? undefined,
-      livingRooms: num(form.livingRooms) ?? undefined,
-      balconies: num(form.balconies) ?? undefined,
-      terraces: num(form.terraces) ?? undefined,
+      // Room counts (bedrooms/bathrooms/livingRooms/balconies/terraces) are
+      // NOT sent: the backend derives them from the `rooms` array and rejects
+      // them (forbidNonWhitelisted). Sending them 400s the whole update.
       totalSize: Number(form.totalSize) || 0,
       livableArea: num(form.livableArea) ?? undefined,
       balconySize: num(form.balconySize) ?? undefined,

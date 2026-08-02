@@ -342,11 +342,9 @@ export type CreateUnitInput = {
   status?: UnitStatus;
   type: UnitType;
   rooms?: Room[];
-  bedrooms?: number;
-  bathrooms?: number;
-  livingRooms?: number;
-  balconies?: number;
-  terraces?: number;
+  // Note: bedrooms/bathrooms/livingRooms/balconies/terraces are read-only on
+  // the Unit model — the backend derives them from `rooms` and rejects them on
+  // write (forbidNonWhitelisted). They are intentionally omitted here.
   totalSize: number;
   livableArea?: number;
   balconySize?: number;

@@ -153,6 +153,15 @@ export default function ContactForm({
             </span>
           )}
         </div>
+
+        <p
+          className={cn(
+            'mt-4 font-montserrat text-seu-caption-sm leading-relaxed',
+            lightBg ? 'text-dark-green/55' : 'text-site-fg-dim'
+          )}
+        >
+          {t('agreePolicy')}
+        </p>
       </form>
     </div>
   );

@@ -97,6 +97,23 @@ export default function VisualSearchPage() {
                 </span>
               </div>
 
+              {/* Centered CTA — signals the card is clickable (the whole card
+                  links to the project's visual search). Mirrors the landing hero. */}
+              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 pointer-events-none">
+                <span className="font-montserrat font-medium text-seu-caption lg:text-seu-body-sm text-pale-gray tracking-wider uppercase">
+                  {t('view')}
+                </span>
+                <div className="size-16 lg:size-20 rounded-full border border-pale-gray/30 bg-dark-green/50 backdrop-blur flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:border-primary-green/60 group-hover:bg-primary-green/20">
+                  <Image
+                    src="/common/svgs/Group 169.svg"
+                    alt=""
+                    width={32}
+                    height={28}
+                    className="lg:w-9 lg:h-8"
+                  />
+                </div>
+              </div>
+
               {/* Bottom content bar */}
               <div className="absolute bottom-0 left-0 right-0 px-5 lg:px-10 pb-6 lg:pb-10 flex items-end justify-between gap-4">
                 {/* Left — project name */}
