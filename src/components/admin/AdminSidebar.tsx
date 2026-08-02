@@ -13,6 +13,7 @@ import {
   MessageSquare,
   Newspaper,
   PenTool,
+  Shapes,
   Users,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -34,6 +35,7 @@ const navItems = [
   { href: '/admin/contacts', label: 'Contacts', icon: MessageSquare },
   { href: '/admin/resumes', label: 'Resumes', icon: FileText },
   { href: '/admin/polygon-editor', label: 'Polygon Editor', icon: PenTool },
+  { href: '/admin/floor-polygons', label: 'Floor Polygons', icon: Shapes },
   { href: '/admin/users', label: 'Users', icon: Users },
 ];
 
