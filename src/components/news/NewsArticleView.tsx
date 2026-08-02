@@ -3,6 +3,7 @@
 import { ImageIcon } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import FadeIn from '@/components/FadeIn';
+import NewsGallery from './NewsGallery';
 import { fileUrl } from '@/lib/file-url';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import {
@@ -91,23 +92,11 @@ export default function NewsArticleView({ article }: { article: NewsArticle }) {
             </div>
           </FadeIn>
 
-          {/* Image gallery — remaining article images */}
+          {/* Image gallery — click any image to preview */}
           {galleryImages.length > 0 && (
             <FadeIn>
-              <div className="mt-10 lg:mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
-                {galleryImages.map((src, i) => (
-                  <div
-                    key={`${src}-${i}`}
-                    className="relative aspect-[4/3] overflow-hidden rounded-lg bg-secondary-black/10"
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={src}
-                      alt={`${header} — ${i + 2}`}
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                  </div>
-                ))}
+              <div className="mt-12 lg:mt-16 pt-8 border-t border-dark-green/10">
+                <NewsGallery images={galleryImages} title={header} />
               </div>
             </FadeIn>
           )}
