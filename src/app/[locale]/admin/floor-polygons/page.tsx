@@ -63,6 +63,19 @@ function polygonToText(poly?: PolygonPoint[] | null): string {
   return JSON.stringify(poly.map((p) => ({ x: p.x, y: p.y })));
 }
 
+/** Sort numeric apartment numbers first (1,2,…), then non-numeric ones like
+ *  commerce/office units (C1, C2-1) alphabetically — so every unit type shows. */
+function byUnitNumber(a: Unit, b: Unit): number {
+  const na = Number(a.unitNumber);
+  const nb = Number(b.unitNumber);
+  const af = Number.isFinite(na);
+  const bf = Number.isFinite(nb);
+  if (af && bf) return na - nb;
+  if (af) return -1;
+  if (bf) return 1;
+  return String(a.unitNumber).localeCompare(String(b.unitNumber));
+}
+
 const COLORS = [
   '#2ecc71', '#ff6b35', '#3b82f6', '#ec4899', '#f59e0b', '#10b981',
   '#8b5cf6', '#06b6d4', '#ef4444', '#84cc16', '#14b8a6', '#a855f7',
@@ -97,7 +110,7 @@ export default function FloorPolygonsPage() {
   const units = useMemo(
     () =>
       [...(unitsQ.data?.items ?? [])].sort(
-        (a, b) => Number(a.unitNumber) - Number(b.unitNumber) || 0,
+        byUnitNumber,
       ),
     [unitsQ.data],
   );
@@ -157,7 +170,7 @@ export default function FloorPolygonsPage() {
   // order (both sorted by number). Fills drafts — review on the plan, then Save.
   function applyFloorCopy() {
     const src = [...(srcUnitsQ.data?.items ?? [])].sort(
-      (a, b) => Number(a.unitNumber) - Number(b.unitNumber) || 0,
+      byUnitNumber,
     );
     const next = { ...drafts };
     const n = Math.min(src.length, units.length);
@@ -199,7 +212,7 @@ export default function FloorPolygonsPage() {
   // unit order) and save immediately — no draft step.
   async function copyFloorAndSave() {
     const src = [...(srcUnitsQ.data?.items ?? [])].sort(
-      (a, b) => Number(a.unitNumber) - Number(b.unitNumber) || 0,
+      byUnitNumber,
     );
     const n = Math.min(src.length, units.length);
     setSavingAll(true);
