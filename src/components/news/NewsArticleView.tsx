@@ -9,7 +9,6 @@ import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import {
   estimateReadMinutes,
   formatNewsDate,
-  leadSentence,
   toParagraphs,
 } from '@/lib/news-helpers';
 import type { NewsArticle } from '@/model/types/api';
@@ -31,13 +30,17 @@ export default function NewsArticleView({ article }: { article: NewsArticle }) {
 
   const readTime = t('minRead', { minutes: estimateReadMinutes(description) });
   const date = formatNewsDate(article.createdAt, locale);
-  const lead = leadSentence(description);
   const paragraphs = toParagraphs(description);
 
   return (
     <div>
-      {/* Hero */}
-      <div className="relative w-full h-[58dvh] min-h-[420px] lg:h-[72dvh] overflow-hidden">
+      {/* Back control — above the image, not overlaid on it */}
+      <div className="max-w-[1600px] mx-auto px-5 lg:px-10 pt-6 lg:pt-8">
+        <BackButton href="/news" />
+      </div>
+
+      {/* Hero — clean image, no text overlay */}
+      <div className="relative w-full h-[45dvh] min-h-[320px] lg:h-[62dvh] overflow-hidden mt-4 lg:mt-6">
         {heroImage ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -50,59 +53,36 @@ export default function NewsArticleView({ article }: { article: NewsArticle }) {
             <ImageIcon className="w-16 h-16 text-pale-gray/15" />
           </div>
         )}
-
-        {/* Legibility overlays: top for the title, bottom for the lead */}
-        <div className="absolute inset-x-0 top-0 h-2/5 bg-gradient-to-b from-dark-green/85 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-dark-green via-dark-green/45 to-transparent" />
-
-        <div className="relative z-10 h-full max-w-[1600px] mx-auto px-5 lg:px-10 flex flex-col">
-          {/* Back + title + meta */}
-          <div className="pt-8 lg:pt-12">
-            <BackButton href="/news" />
-          </div>
-
-          <div className="mt-6 lg:mt-8 max-w-4xl">
-            <FadeIn direction="left" duration={800}>
-              <h1 className="font-[--font-bodoni] font-normal text-seu-title lg:text-seu-title-xl text-pale-gray leading-tight">
-                {header}
-              </h1>
-              <div className="flex flex-wrap items-center gap-2 mt-5">
-                <span className="px-3 py-1 rounded-sm bg-white font-montserrat font-medium text-seu-caption-sm uppercase tracking-wide text-dark-green">
-                  {readTime}
-                </span>
-                {date && (
-                  <span className="px-3 py-1 rounded-sm bg-white font-montserrat font-medium text-seu-caption-sm uppercase tracking-wide text-dark-green">
-                    {date}
-                  </span>
-                )}
-                {article.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="px-3 py-1 rounded-sm bg-white/15 border border-pale-gray/20 font-montserrat font-medium text-seu-caption-sm uppercase tracking-wide text-pale-gray backdrop-blur"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </FadeIn>
-          </div>
-
-          {/* Lead line near the bottom of the hero */}
-          {lead && (
-            <div className="mt-auto pb-8 lg:pb-12 max-w-3xl">
-              <FadeIn direction="up" duration={800} delay={120}>
-                <p className="font-montserrat font-medium text-seu-body-lg lg:text-seu-heading text-pale-gray leading-snug">
-                  {lead}
-                </p>
-              </FadeIn>
-            </div>
-          )}
-        </div>
       </div>
 
       {/* Body */}
       <div className="bg-pale-gray text-dark-green">
         <div className="max-w-4xl mx-auto px-5 lg:px-10 py-14 lg:py-20">
+          {/* Title + meta (below the image, not overlaid) */}
+          <FadeIn>
+            <h1 className="font-[--font-bodoni] font-normal text-seu-heading lg:text-seu-title text-dark-green leading-tight">
+              {header}
+            </h1>
+            <div className="flex flex-wrap items-center gap-2 mt-4 mb-8">
+              <span className="px-3 py-1 rounded-sm bg-dark-green font-montserrat font-medium text-seu-caption-sm uppercase tracking-wide text-pale-gray">
+                {readTime}
+              </span>
+              {date && (
+                <span className="px-3 py-1 rounded-sm bg-dark-green font-montserrat font-medium text-seu-caption-sm uppercase tracking-wide text-pale-gray">
+                  {date}
+                </span>
+              )}
+              {article.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="px-3 py-1 rounded-sm border border-dark-green/20 font-montserrat font-medium text-seu-caption-sm uppercase tracking-wide text-dark-green/70"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </FadeIn>
+
           <FadeIn>
             <div className="space-y-5 font-montserrat text-seu-body lg:text-seu-body-lg leading-relaxed text-dark-green/90">
               {paragraphs.length > 0 ? (
