@@ -3,7 +3,6 @@
 import { ImageIcon } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import FadeIn from '@/components/FadeIn';
-import BackButton from '@/components/BackButton';
 import { fileUrl } from '@/lib/file-url';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import {
@@ -34,13 +33,8 @@ export default function NewsArticleView({ article }: { article: NewsArticle }) {
 
   return (
     <div>
-      {/* Back control — above the image, not overlaid on it */}
-      <div className="max-w-[1600px] mx-auto px-5 lg:px-10 pt-6 lg:pt-8">
-        <BackButton href="/news" />
-      </div>
-
       {/* Hero — clean image, no text overlay */}
-      <div className="relative w-full h-[45dvh] min-h-[320px] lg:h-[62dvh] overflow-hidden mt-4 lg:mt-6">
+      <div className="relative w-full h-[45dvh] min-h-[320px] lg:h-[62dvh] overflow-hidden">
         {heroImage ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
