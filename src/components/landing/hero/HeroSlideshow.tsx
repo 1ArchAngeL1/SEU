@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { fileUrl } from '@/lib/file-url';
 import { cn } from '@/lib/utils';
@@ -22,6 +23,10 @@ export default function HeroSlideshow({
     <div className="absolute inset-0">
       {gallery.map((src, i) => {
         const url = fileUrl(src);
+        // Legacy external URLs (non-UUID refs) can't go through the Next image
+        // optimizer's domain allowlist — pass them through untouched. The common
+        // case (`/api/files/{uuid}`) is same-origin and gets optimized.
+        const remote = /^https?:\/\//i.test(url);
         const isActive = i === active;
         return (
           <div
@@ -32,12 +37,17 @@ export default function HeroSlideshow({
             )}
             aria-hidden={!isActive}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src={url}
               alt={projectName ? t('heroImageAlt', { name: projectName, n: i + 1 }) : ''}
+              fill
+              // Hero spans the full viewport width.
+              sizes="100vw"
+              // First slide is the LCP element — preload it; the rest load lazily.
+              priority={i === 0}
+              unoptimized={remote}
               className={cn(
-                'absolute inset-0 w-full h-full object-cover transition-transform duration-[8000ms] ease-out',
+                'object-cover transition-transform duration-[8000ms] ease-out',
                 isActive ? 'scale-105' : 'scale-100'
               )}
             />
