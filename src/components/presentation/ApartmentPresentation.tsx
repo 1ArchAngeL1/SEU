@@ -128,7 +128,7 @@ export function ApartmentPresentation({ unit, project, floor }: ApartmentPresent
         {/* ── Title + areas (left) beside the 2D top-view render (right),
              mirroring the desktop presentation. When no 2D asset exists the
              left column simply spans full width, like the blank template. ── */}
-        <div className="mt-6 flex items-start gap-8">
+        <div className="mt-6 flex items-stretch gap-6">
           <div className="flex-1 min-w-0">
             {/* ── Title ── */}
             <h1 className="font-montserrat font-bold text-dark-green text-[1.9rem] leading-tight">
@@ -190,14 +190,15 @@ export function ApartmentPresentation({ unit, project, floor }: ApartmentPresent
             </div>
           </div>
 
-          {/* ── 2D top-view render (furnished, top-down) ── */}
+          {/* ── 2D top-view render (furnished, top-down). Sized to fill the
+               column beside the apartment details, matching their height. ── */}
           {twoDSrc ? (
-            <div className="w-[72mm] shrink-0">
+            <div className="w-[96mm] shrink-0 flex items-center justify-center">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={twoDSrc}
                 alt={`${projectName} — ${t('apartmentNo')} ${unit.unitNumber} — 2D`}
-                className="w-full max-h-[82mm] object-contain object-top"
+                className="w-full h-full max-h-[115mm] object-contain object-center"
               />
             </div>
           ) : (
