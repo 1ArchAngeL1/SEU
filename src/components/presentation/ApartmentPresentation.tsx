@@ -65,10 +65,14 @@ export function ApartmentPresentation({ unit, project, floor }: ApartmentPresent
     ? pickLocalized(project.location?.addressEn, project.location?.addressKa, locale)
     : tc('address');
 
+  // Furnished 2D top-down render of the apartment. Shown top-right beside the
+  // title/areas, mirroring the desktop presentation (`Desktop/პრეზენტაცია.pdf`)
+  // — the same asset the visual-search detail page labels "2D".
+  const twoDSrc = fileUrl(unit.twoDContent);
+
   const floorPlanSrc =
     fileUrl(unit.floorPlanImage) ||
-    fileUrl(unit.mainImage) ||
-    fileUrl(unit.twoDContent);
+    fileUrl(unit.mainImage);
 
   // Prefer showing the whole-floor plan with this apartment's position
   // highlighted (as in visual search) instead of the standalone unit plan.
@@ -121,62 +125,84 @@ export function ApartmentPresentation({ unit, project, floor }: ApartmentPresent
 
         <div className="mt-3 border-t-2 border-dark-green" />
 
-        {/* ── Title ── */}
-        <h1 className="mt-6 font-montserrat font-bold text-dark-green text-[1.9rem] leading-tight">
-          {projectName}
-        </h1>
+        {/* ── Title + areas (left) beside the 2D top-view render (right),
+             mirroring the desktop presentation. When no 2D asset exists the
+             left column simply spans full width, like the blank template. ── */}
+        <div className="mt-6 flex items-start gap-8">
+          <div className="flex-1 min-w-0">
+            {/* ── Title ── */}
+            <h1 className="font-montserrat font-bold text-dark-green text-[1.9rem] leading-tight">
+              {projectName}
+            </h1>
 
-        <h2 className="mt-5 font-montserrat font-bold text-dark-green text-[1.5rem] leading-none">
-          {t('apartmentNo')} {unit.unitNumber}
-        </h2>
+            <h2 className="mt-5 font-montserrat font-bold text-dark-green text-[1.5rem] leading-none">
+              {t('apartmentNo')} {unit.unitNumber}
+            </h2>
 
-        <div className="mt-3 flex items-center gap-3 font-montserrat text-dark-green/70 text-[0.85rem]">
-          <span>{t('roomApartment', { count: roomCount })}</span>
-          <span className="w-px h-4 bg-dark-green/30" />
-          <span>
-            {ts('block')} {unit.block}
-          </span>
-          <span className="w-px h-4 bg-dark-green/30" />
-          <span>
-            {ts('floor')} {unit.floorNumber}
-          </span>
-        </div>
+            <div className="mt-3 flex items-center gap-3 font-montserrat text-dark-green/70 text-[0.85rem]">
+              <span>{t('roomApartment', { count: roomCount })}</span>
+              <span className="w-px h-4 bg-dark-green/30" />
+              <span>
+                {ts('block')} {unit.block}
+              </span>
+              <span className="w-px h-4 bg-dark-green/30" />
+              <span>
+                {ts('floor')} {unit.floorNumber}
+              </span>
+            </div>
 
-        {/* ── Areas ── */}
-        <div className="mt-7 font-montserrat text-dark-green">
-          <div className="flex items-baseline justify-between text-[1.05rem]">
-            <span>{ts('totalSize')}</span>
-            <span className="font-semibold">
-              {unit.totalSize} {m2}
-            </span>
-          </div>
-          <div className="mt-2 border-t border-dark-green/25" />
-
-          <div className="mt-3 space-y-1.5 text-[0.95rem]">
-            {unit.livableArea != null && (
-              <Row label={ts('mainSize')} value={`${unit.livableArea} ${m2}`} />
-            )}
-            {unit.balconySize != null && (
-              <Row label={ts('openSpace')} value={`${unit.balconySize} ${m2}`} />
-            )}
-          </div>
-
-          {rooms.length > 0 && (
-            <>
-              <div className="mt-3 border-t border-dark-green/25" />
-              <div className="mt-3 space-y-1.5 text-[0.95rem]">
-                {rooms.map((r, i) => (
-                  <Row
-                    key={i}
-                    label={
-                      pickLocalized(r.nameEn, r.nameKa, locale) ||
-                      tr(r.type as RoomType)
-                    }
-                    value={`${r.size ?? 0} ${m2}`}
-                  />
-                ))}
+            {/* ── Areas ── */}
+            <div className="mt-7 font-montserrat text-dark-green">
+              <div className="flex items-baseline justify-between text-[1.05rem]">
+                <span>{ts('totalSize')}</span>
+                <span className="font-semibold">
+                  {unit.totalSize} {m2}
+                </span>
               </div>
-            </>
+              <div className="mt-2 border-t border-dark-green/25" />
+
+              <div className="mt-3 space-y-1.5 text-[0.95rem]">
+                {unit.livableArea != null && (
+                  <Row label={ts('mainSize')} value={`${unit.livableArea} ${m2}`} />
+                )}
+                {unit.balconySize != null && (
+                  <Row label={ts('openSpace')} value={`${unit.balconySize} ${m2}`} />
+                )}
+              </div>
+
+              {rooms.length > 0 && (
+                <>
+                  <div className="mt-3 border-t border-dark-green/25" />
+                  <div className="mt-3 space-y-1.5 text-[0.95rem]">
+                    {rooms.map((r, i) => (
+                      <Row
+                        key={i}
+                        label={
+                          pickLocalized(r.nameEn, r.nameKa, locale) ||
+                          tr(r.type as RoomType)
+                        }
+                        value={`${r.size ?? 0} ${m2}`}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* ── 2D top-view render (furnished, top-down) ── */}
+          {twoDSrc ? (
+            <div className="w-[72mm] shrink-0">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={twoDSrc}
+                alt={`${projectName} — ${t('apartmentNo')} ${unit.unitNumber} — 2D`}
+                className="w-full max-h-[82mm] object-contain object-top"
+              />
+            </div>
+          ) : (
+            // PLACEHOLDER: IMAGE - 2D top-view apartment render (unit has no twoDContent)
+            null
           )}
         </div>
 
