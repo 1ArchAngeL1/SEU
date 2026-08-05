@@ -12,7 +12,6 @@ import ProjectSelect from './fields/ProjectSelect';
 import BuildingSelect from './fields/BuildingSelect';
 import RangeInput from './fields/RangeInput';
 import RoomSelector from './fields/RoomSelector';
-import PriceField from './fields/PriceField';
 
 export type SearchFormProps = {
   className?: string;
@@ -52,9 +51,6 @@ export default function SearchForm({
   const [sizeFrom, setSizeFrom] = useState(initialFilter?.minSize != null ? String(initialFilter.minSize) : '');
   const [sizeTo, setSizeTo] = useState(initialFilter?.maxSize != null ? String(initialFilter.maxSize) : '');
   const [selectedRooms, setSelectedRooms] = useState<number[]>(() => deriveInitialRooms(initialFilter));
-  const [currency, setCurrency] = useState<'USD' | 'GEL'>('USD');
-  const [priceFrom, setPriceFrom] = useState(initialFilter?.minPrice != null ? String(initialFilter.minPrice) : '');
-  const [priceTo, setPriceTo] = useState(initialFilter?.maxPrice != null ? String(initialFilter.maxPrice) : '');
   const [validationError, setValidationError] = useState('');
 
   const t = useTranslations('search');
@@ -67,15 +63,9 @@ export default function SearchForm({
 
     const sFrom = toNum(sizeFrom);
     const sTo = toNum(sizeTo);
-    const pFrom = toNum(priceFrom);
-    const pTo = toNum(priceTo);
 
     if (sFrom != null && sTo != null && sFrom > sTo) {
       setValidationError(t('sizeFromError'));
-      return;
-    }
-    if (pFrom != null && pTo != null && pFrom > pTo) {
-      setValidationError(t('priceFromError'));
       return;
     }
 
@@ -84,8 +74,6 @@ export default function SearchForm({
       building: building || undefined,
       minSize: sFrom,
       maxSize: sTo,
-      minPrice: pFrom,
-      maxPrice: pTo,
       status: 'available',
     };
     if (selectedRooms.length === 1) {
@@ -106,9 +94,6 @@ export default function SearchForm({
     setSizeFrom('');
     setSizeTo('');
     setSelectedRooms([]);
-    setCurrency('USD');
-    setPriceFrom('');
-    setPriceTo('');
     setValidationError('');
     onClear?.();
   }
@@ -165,37 +150,29 @@ export default function SearchForm({
         />
       </div>
 
-      {/* Bottom row -- Price + Search/Clear */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-6 items-start">
-        <PriceField
-          currency={currency}
-          onCurrencyChange={setCurrency}
-          from={priceFrom}
-          to={priceTo}
-          onFromChange={setPriceFrom}
-          onToChange={setPriceTo}
-          error={validationError}
-        />
+      {/* Validation error */}
+      {validationError && (
+        <p className="font-montserrat text-seu-caption text-red mb-4">
+          {validationError}
+        </p>
+      )}
 
-        {/* Search + Clear, vertically aligned with the price inputs */}
-        <div className="md:col-span-2 lg:col-span-3 flex items-end h-full">
-          <div className="flex items-center gap-6 pt-7">
-            <Button
-              type="submit"
-              style={{ color: '#ffffff' }}
-              className="bg-black hover:bg-black/90 font-montserrat font-medium text-seu-caption h-10 px-8 rounded-md shadow-none"
-            >
-              {t('searchBtn')}
-            </Button>
-            <button
-              type="button"
-              onClick={handleClear}
-              className="font-montserrat text-seu-caption text-dark-green hover:text-black transition-colors"
-            >
-              {t('clearFilters')}
-            </button>
-          </div>
-        </div>
+      {/* Search + Clear */}
+      <div className="flex items-center gap-6">
+        <Button
+          type="submit"
+          style={{ color: '#ffffff' }}
+          className="bg-black hover:bg-black/90 font-montserrat font-medium text-seu-caption h-10 px-8 rounded-md shadow-none"
+        >
+          {t('searchBtn')}
+        </Button>
+        <button
+          type="button"
+          onClick={handleClear}
+          className="font-montserrat text-seu-caption text-dark-green hover:text-black transition-colors"
+        >
+          {t('clearFilters')}
+        </button>
       </div>
     </form>
   );

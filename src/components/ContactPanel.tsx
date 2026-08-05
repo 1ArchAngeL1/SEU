@@ -40,16 +40,16 @@ export default function ContactPanel({
           {/* Email */}
           <a
             href={`mailto:${t('email')}`}
-            className="group flex items-center gap-4 p-5 hover:bg-site-bg-hover transition-colors"
+            className="group flex items-center gap-3 p-4 hover:bg-site-bg-hover transition-colors"
           >
-            <span className="size-10 shrink-0 rounded-xl bg-primary-green grid place-items-center shadow-sm shadow-primary-green/30 group-hover:scale-110 transition-transform">
+            <span className="size-9 shrink-0 rounded-xl bg-primary-green grid place-items-center shadow-sm shadow-primary-green/30 group-hover:scale-110 transition-transform">
               <Mail className="size-5 text-white" />
             </span>
             <div className="min-w-0">
               <p className="font-montserrat text-seu-caption-sm text-site-fg-muted mb-0.5">
                 Email
               </p>
-              <p className="font-montserrat font-medium text-seu-caption text-site-fg break-all">
+              <p className="font-montserrat font-medium text-[0.7rem] text-site-fg whitespace-nowrap">
                 {t('email')}
               </p>
             </div>
@@ -58,31 +58,31 @@ export default function ContactPanel({
           {/* Phone */}
           <a
             href={`tel:${t('phone').replace(/\s/g, '')}`}
-            className="group flex items-center gap-4 p-5 hover:bg-site-bg-hover transition-colors"
+            className="group flex items-center gap-3 p-4 hover:bg-site-bg-hover transition-colors"
           >
-            <span className="size-10 shrink-0 rounded-xl bg-primary-green grid place-items-center shadow-sm shadow-primary-green/30 group-hover:scale-110 transition-transform">
+            <span className="size-9 shrink-0 rounded-xl bg-primary-green grid place-items-center shadow-sm shadow-primary-green/30 group-hover:scale-110 transition-transform">
               <Phone className="size-5 text-white" />
             </span>
             <div className="min-w-0">
               <p className="font-montserrat text-seu-caption-sm text-site-fg-muted mb-0.5">
                 Phone
               </p>
-              <p className="font-montserrat font-medium text-seu-caption text-site-fg">
+              <p className="font-montserrat font-medium text-[0.7rem] text-site-fg whitespace-nowrap">
                 {t('phone')}
               </p>
             </div>
           </a>
 
           {/* Address */}
-          <div className="flex items-center gap-4 p-5">
-            <span className="size-10 shrink-0 rounded-xl bg-primary-green grid place-items-center shadow-sm shadow-primary-green/30">
+          <div className="flex items-center gap-3 p-4">
+            <span className="size-9 shrink-0 rounded-xl bg-primary-green grid place-items-center shadow-sm shadow-primary-green/30">
               <MapPin className="size-5 text-white" />
             </span>
             <div className="min-w-0">
               <p className="font-montserrat text-seu-caption-sm text-site-fg-muted mb-0.5">
                 Address
               </p>
-              <p className="font-montserrat font-medium text-seu-caption text-site-fg">
+              <p className="font-montserrat font-medium text-[0.7rem] text-site-fg whitespace-nowrap">
                 {t('address')}
               </p>
             </div>

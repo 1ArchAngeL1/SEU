@@ -586,12 +586,9 @@ export default function VisualSearchFloorPage({
 
               {activeTab === 'grid' && (
                 <>
-                  {building && (
+                  {floor && (
                     <h2 className="font-bodoni text-seu-heading text-site-fg-strong mb-6 self-start">
-                      {t('blockAndFloor', {
-                        block: building.block,
-                        floor: floor?.floorNumber ?? '',
-                      })}
+                      {t('floorN', { n: floor.floorNumber })}
                     </h2>
                   )}
                   {units.length === 0 ? (
