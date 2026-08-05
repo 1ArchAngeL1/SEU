@@ -560,16 +560,6 @@ export default function VisualSearchProjectPage({
               })}
             </svg>
 
-            {/* Top-left overlay — back button + project name */}
-            <div className="absolute top-0 left-0 px-10 pt-8 z-10">
-              <BackButton href="/visual-search" variant="gray" />
-              {project && (
-                <h1 className="font-bodoni text-seu-heading text-pale-gray leading-none uppercase mt-4">
-                  {pickLocalized(project.nameEn, project.nameKa, locale)}
-                </h1>
-              )}
-            </div>
-
             {/* Top-right — choose block */}
             <div className="absolute top-0 right-0 px-10 pt-8 z-10">
               <h2 className="font-bodoni text-seu-heading text-pale-gray uppercase tracking-wide">
