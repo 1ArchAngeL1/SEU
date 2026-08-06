@@ -76,3 +76,12 @@ export function useDeleteLandingPartner() {
     onSuccess: () => qc.invalidateQueries({ queryKey: landingPartnersKeys.all }),
   });
 }
+
+export function useReorderLandingPartners() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (orderedIds: string[]) =>
+      landingPartnersService.reorder(orderedIds),
+    onSuccess: () => qc.invalidateQueries({ queryKey: landingPartnersKeys.all }),
+  });
+}

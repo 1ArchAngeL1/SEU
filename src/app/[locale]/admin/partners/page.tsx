@@ -10,9 +10,11 @@ import {
   Mail,
   Phone,
   MapPin,
+  ArrowUpDown,
 } from 'lucide-react';
 import AdminPageHeader from '@/components/admin/AdminPageHeader';
 import PartnerForm from '@/components/admin/forms/PartnerForm';
+import ReorderSheet from '@/components/admin/ReorderSheet';
 import {
   Sheet,
   SheetContent,
@@ -23,15 +25,19 @@ import {
 import { Input } from '@/components/ui/input';
 import {
   usePartnersList,
+  useAllPartners,
   useCreatePartner,
   useUpdatePartner,
   useDeletePartner,
+  useReorderPartners,
 } from '@/hooks/queries/use-partners';
 import { fileUrl } from '@/lib/file-url';
 import type { Partner, CreatePartnerInput } from '@/model/types/api';
 
 const btnPrimary =
   'bg-gradient-to-b from-primary-green to-primary-green/85 text-white font-montserrat font-medium text-seu-caption px-4 py-2 rounded-lg shadow-md shadow-primary-green/25 hover:shadow-lg hover:shadow-primary-green/30 transition-all flex items-center gap-2';
+const btnSecondary =
+  'border border-admin-border-soft bg-admin-input-gradient text-admin-fg font-montserrat font-medium text-seu-caption px-4 py-2 rounded-lg hover:bg-admin-hover transition-colors flex items-center gap-2 disabled:opacity-40 disabled:pointer-events-none';
 const btnPage =
   'px-3 py-1.5 border border-admin-border-soft bg-admin-input-gradient rounded-lg text-seu-caption-sm text-admin-fg disabled:opacity-30 hover:bg-admin-hover transition-colors';
 
@@ -39,12 +45,15 @@ export default function PartnersPage() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [reorderOpen, setReorderOpen] = useState(false);
   const [editing, setEditing] = useState<Partner | null>(null);
 
   const partnersQ = usePartnersList({ page, limit: 12 });
+  const allPartnersQ = useAllPartners();
   const createMut = useCreatePartner();
   const updateMut = useUpdatePartner();
   const deleteMut = useDeletePartner();
+  const reorderMut = useReorderPartners();
 
   const allItems = partnersQ.data?.items ?? [];
   const items = search
@@ -95,10 +104,20 @@ export default function PartnersPage() {
           </span>
         }
         action={
-          <button onClick={openCreate} className={btnPrimary}>
-            <Plus className="size-4" />
-            New Partner
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setReorderOpen(true)}
+              disabled={(allPartnersQ.data?.length ?? 0) < 2}
+              className={btnSecondary}
+            >
+              <ArrowUpDown className="size-4" />
+              Reorder
+            </button>
+            <button onClick={openCreate} className={btnPrimary}>
+              <Plus className="size-4" />
+              New Partner
+            </button>
+          </div>
         }
       />
 
@@ -273,6 +292,16 @@ export default function PartnersPage() {
           </div>
         </SheetContent>
       </Sheet>
+
+      <ReorderSheet
+        open={reorderOpen}
+        onOpenChange={setReorderOpen}
+        items={allPartnersQ.data ?? []}
+        onSave={(ids) => reorderMut.mutateAsync(ids)}
+        saving={reorderMut.isPending}
+        title="Reorder partners"
+        description="Drag rows or use the arrows to set the order partners appear in on the site, then save."
+      />
     </div>
   );
 }

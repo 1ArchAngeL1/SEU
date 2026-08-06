@@ -31,13 +31,16 @@ function toNum(v: string): number | undefined {
 
 function deriveInitialRooms(f?: UnitFilter): number[] {
   if (!f) return [];
-  if (f.bedrooms != null) return [f.bedrooms];
-  if (f.minBedrooms != null && f.maxBedrooms != null) {
-    const rooms: number[] = [];
-    for (let i = f.minBedrooms; i <= f.maxBedrooms; i++) rooms.push(i);
-    return rooms.filter((r) => ROOM_OPTIONS.includes(r));
+  const rooms: number[] = [];
+  if (f.roomCount === 1) rooms.push(0); // studio
+  if (f.bedrooms != null && f.bedrooms > 0) {
+    rooms.push(f.bedrooms);
+  } else if (f.minBedrooms != null && f.maxBedrooms != null) {
+    for (let i = f.minBedrooms; i <= f.maxBedrooms; i++) {
+      if (i > 0) rooms.push(i);
+    }
   }
-  return [];
+  return rooms.filter((r) => ROOM_OPTIONS.includes(r));
 }
 
 export default function SearchForm({
@@ -76,14 +79,21 @@ export default function SearchForm({
       maxSize: sTo,
       status: 'available',
     };
-    if (selectedRooms.length === 1) {
-      filter.bedrooms = selectedRooms[0];
-    } else if (selectedRooms.length > 1) {
-      filter.minBedrooms = Math.min(...selectedRooms);
-      filter.maxBedrooms = Math.max(...selectedRooms);
-    }
-    if (selectedRooms.includes(0)) {
+    // "Studio" is a single-room unit (roomCount === 1), not a 0-bedroom match.
+    // Bedroom-count buttons (1–5) filter on `bedrooms`; when both are picked the
+    // backend OR-s roomCount and bedrooms so the selection matches either.
+    const studio = selectedRooms.includes(0);
+    const beds = selectedRooms.filter((r) => r > 0);
+
+    if (studio) {
+      filter.roomCount = 1;
       filter.type = 'living';
+    }
+    if (beds.length === 1) {
+      filter.bedrooms = beds[0];
+    } else if (beds.length > 1) {
+      filter.minBedrooms = Math.min(...beds);
+      filter.maxBedrooms = Math.max(...beds);
     }
     onSearch?.(filter);
   }

@@ -75,3 +75,11 @@ export function useDeletePartner() {
     onSuccess: () => qc.invalidateQueries({ queryKey: partnersKeys.all }),
   });
 }
+
+export function useReorderPartners() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (orderedIds: string[]) => partnersService.reorder(orderedIds),
+    onSuccess: () => qc.invalidateQueries({ queryKey: partnersKeys.all }),
+  });
+}

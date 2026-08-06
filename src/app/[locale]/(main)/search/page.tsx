@@ -38,6 +38,7 @@ export default function SearchPage() {
     const bedrooms = toNum(searchParams.get('bedrooms'));
     const minBedrooms = toNum(searchParams.get('minBedrooms'));
     const maxBedrooms = toNum(searchParams.get('maxBedrooms'));
+    const roomCount = toNum(searchParams.get('roomCount'));
     const typeParam = searchParams.get('type');
     const buildingParam = searchParams.get('building');
     if (minSize != null) f.minSize = minSize;
@@ -45,6 +46,7 @@ export default function SearchPage() {
     if (bedrooms != null) f.bedrooms = bedrooms;
     if (minBedrooms != null) f.minBedrooms = minBedrooms;
     if (maxBedrooms != null) f.maxBedrooms = maxBedrooms;
+    if (roomCount != null) f.roomCount = roomCount;
     if (typeParam && VALID_UNIT_TYPES.includes(typeParam as UnitType)) {
       f.type = typeParam as UnitType;
     }

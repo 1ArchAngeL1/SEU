@@ -1,9 +1,18 @@
 'use client';
 
 import { useState } from 'react';
-import { Plus, Pencil, Trash2, Search, Handshake, Link2 } from 'lucide-react';
+import {
+  Plus,
+  Pencil,
+  Trash2,
+  Search,
+  Handshake,
+  Link2,
+  ArrowUpDown,
+} from 'lucide-react';
 import AdminPageHeader from '@/components/admin/AdminPageHeader';
 import LandingPartnerForm from '@/components/admin/forms/LandingPartnerForm';
+import ReorderSheet from '@/components/admin/ReorderSheet';
 import {
   Sheet,
   SheetContent,
@@ -14,15 +23,19 @@ import {
 import { Input } from '@/components/ui/input';
 import {
   useLandingPartnersList,
+  useAllLandingPartners,
   useCreateLandingPartner,
   useUpdateLandingPartner,
   useDeleteLandingPartner,
+  useReorderLandingPartners,
 } from '@/hooks/queries/use-landing-partners';
 import { fileUrl } from '@/lib/file-url';
 import type { LandingPartner, CreateLandingPartnerInput } from '@/model/types/api';
 
 const btnPrimary =
   'bg-gradient-to-b from-primary-green to-primary-green/85 text-white font-montserrat font-medium text-seu-caption px-4 py-2 rounded-lg shadow-md shadow-primary-green/25 hover:shadow-lg hover:shadow-primary-green/30 transition-all flex items-center gap-2';
+const btnSecondary =
+  'border border-admin-border-soft bg-admin-input-gradient text-admin-fg font-montserrat font-medium text-seu-caption px-4 py-2 rounded-lg hover:bg-admin-hover transition-colors flex items-center gap-2 disabled:opacity-40 disabled:pointer-events-none';
 const btnPage =
   'px-3 py-1.5 border border-admin-border-soft bg-admin-input-gradient rounded-lg text-seu-caption-sm text-admin-fg disabled:opacity-30 hover:bg-admin-hover transition-colors';
 
@@ -30,12 +43,15 @@ export default function LandingPartnersPage() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [reorderOpen, setReorderOpen] = useState(false);
   const [editing, setEditing] = useState<LandingPartner | null>(null);
 
   const partnersQ = useLandingPartnersList({ page, limit: 12 });
+  const allPartnersQ = useAllLandingPartners();
   const createMut = useCreateLandingPartner();
   const updateMut = useUpdateLandingPartner();
   const deleteMut = useDeleteLandingPartner();
+  const reorderMut = useReorderLandingPartners();
 
   const allItems = partnersQ.data?.items ?? [];
   const items = search
@@ -85,10 +101,20 @@ export default function LandingPartnersPage() {
           </span>
         }
         action={
-          <button onClick={openCreate} className={btnPrimary}>
-            <Plus className="size-4" />
-            New Landing Partner
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setReorderOpen(true)}
+              disabled={(allPartnersQ.data?.length ?? 0) < 2}
+              className={btnSecondary}
+            >
+              <ArrowUpDown className="size-4" />
+              Reorder
+            </button>
+            <button onClick={openCreate} className={btnPrimary}>
+              <Plus className="size-4" />
+              New Landing Partner
+            </button>
+          </div>
         }
       />
 
@@ -256,6 +282,16 @@ export default function LandingPartnersPage() {
           </div>
         </SheetContent>
       </Sheet>
+
+      <ReorderSheet
+        open={reorderOpen}
+        onOpenChange={setReorderOpen}
+        items={allPartnersQ.data ?? []}
+        onSave={(ids) => reorderMut.mutateAsync(ids)}
+        saving={reorderMut.isPending}
+        title="Reorder landing partners"
+        description="Drag rows or use the arrows to set the order logos appear in the landing-page marquee, then save."
+      />
     </div>
   );
 }

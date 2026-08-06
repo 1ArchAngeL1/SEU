@@ -405,6 +405,7 @@ export interface UnitFilter {
   bedrooms?: number;
   minBedrooms?: number;
   maxBedrooms?: number;
+  roomCount?: number;
   floorNumber?: number;
   minFloor?: number;
   maxFloor?: number;
@@ -453,6 +454,8 @@ export interface Partner {
   addressKa?: string;
   facebookLink?: string;
   discountPercentage?: number;
+  /** Manual display order (ascending). Lower shows first. */
+  sortOrder?: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -469,6 +472,7 @@ export type CreatePartnerInput = {
   addressKa?: string;
   facebookLink?: string;
   discountPercentage?: number;
+  sortOrder?: number;
 };
 
 export type UpdatePartnerInput = Partial<CreatePartnerInput>;
@@ -481,6 +485,8 @@ export interface LandingPartner {
   websiteLink?: string;
   descriptionEn?: string;
   descriptionKa?: string;
+  /** Manual display order (ascending). Lower shows first. */
+  sortOrder?: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -492,6 +498,7 @@ export type CreateLandingPartnerInput = {
   websiteLink?: string;
   descriptionEn?: string;
   descriptionKa?: string;
+  sortOrder?: number;
 };
 
 export type UpdateLandingPartnerInput = Partial<CreateLandingPartnerInput>;

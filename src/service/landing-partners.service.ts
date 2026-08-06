@@ -32,9 +32,27 @@ export const landingPartnersService = {
       '/landing-partners/search',
       {
         pagination: { page: 1, limit: 20, ...input.pagination },
-        sort: input.sort ?? [{ field: 'createdAt', direction: 'desc' }],
+        // Manual display order first; fall back to newest for records that
+        // predate `sortOrder` (or share a value).
+        sort: input.sort ?? [
+          { field: 'sortOrder', direction: 'asc' },
+          { field: 'createdAt', direction: 'desc' },
+        ],
         data: input.data ?? {},
       },
+    );
+  },
+
+  /**
+   * Persist a new display order. Assigns `sortOrder = index` to each id in the
+   * given order and PATCHes them all. Requires the backend to whitelist
+   * `sortOrder` on the update DTO.
+   */
+  reorder(orderedIds: string[]): Promise<LandingPartner[]> {
+    return Promise.all(
+      orderedIds.map((id, index) =>
+        landingPartnersService.update(id, { sortOrder: index }),
+      ),
     );
   },
 
