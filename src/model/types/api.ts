@@ -405,7 +405,8 @@ export interface UnitFilter {
   bedrooms?: number;
   minBedrooms?: number;
   maxBedrooms?: number;
-  roomCount?: number;
+  /** Studio apartments — a studio room with zero bedrooms. */
+  studio?: boolean;
   floorNumber?: number;
   minFloor?: number;
   maxFloor?: number;
@@ -554,6 +555,8 @@ export interface NewsArticle {
   descriptionEn: string;
   descriptionKa: string;
   image: string[];
+  /** Optional article video — a file-service UUID (or pass-through URL). */
+  video?: string;
   tags: string[];
   /** Shown as the wide main banner on the news page (at most one article). */
   isMain: boolean;
@@ -567,6 +570,7 @@ export type CreateNewsInput = {
   descriptionEn: string;
   descriptionKa: string;
   image?: string[];
+  video?: string;
   tags?: string[];
   isMain?: boolean;
 };

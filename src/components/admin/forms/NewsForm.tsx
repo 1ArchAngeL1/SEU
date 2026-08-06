@@ -31,6 +31,7 @@ export default function NewsForm({
     descriptionEn: initialData?.descriptionEn ?? '',
     descriptionKa: initialData?.descriptionKa ?? '',
     image: initialData?.image ?? [] as string[],
+    video: initialData?.video ?? '',
     tags: initialData?.tags ?? [] as string[],
     isMain: initialData?.isMain ?? false,
   });
@@ -81,6 +82,7 @@ export default function NewsForm({
         descriptionEn: form.descriptionEn.trim(),
         descriptionKa: form.descriptionKa.trim(),
         ...(form.image.length > 0 && { image: form.image }),
+        ...(form.video.length > 0 && { video: form.video }),
         ...(form.tags.length > 0 && { tags: form.tags }),
         isMain: form.isMain,
       };
@@ -202,6 +204,20 @@ export default function NewsForm({
               ))}
             </div>
           )}
+        </Field>
+      </Section>
+
+      <Section title="Video" cols={1}>
+        <Field
+          label="Article Video"
+          hint="Optional. Shown as a player on the article page."
+        >
+          <FileUpload
+            value={form.video || undefined}
+            onChange={(v) => set('video', v ?? '')}
+            accept="video/*"
+            emptyLabel="Upload video"
+          />
         </Field>
       </Section>
 

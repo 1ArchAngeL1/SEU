@@ -4,6 +4,7 @@ import { ImageIcon } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import FadeIn from '@/components/FadeIn';
 import NewsGallery from './NewsGallery';
+import NewsVideo from './NewsVideo';
 import { fileUrl } from '@/lib/file-url';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import {
@@ -27,6 +28,7 @@ export default function NewsArticleView({ article }: { article: NewsArticle }) {
   const images = article.image.map((id) => fileUrl(id)).filter(Boolean);
   const heroImage = images[0];
   const galleryImages = images.slice(1);
+  const videoUrl = article.video ? fileUrl(article.video) : '';
 
   const readTime = t('minRead', { minutes: estimateReadMinutes(description) });
   const date = formatNewsDate(article.createdAt, locale);
@@ -77,6 +79,14 @@ export default function NewsArticleView({ article }: { article: NewsArticle }) {
               ))}
             </div>
           </FadeIn>
+
+          {videoUrl && (
+            <FadeIn>
+              <div className="mb-10 lg:mb-12">
+                <NewsVideo src={videoUrl} poster={heroImage} title={header} />
+              </div>
+            </FadeIn>
+          )}
 
           <FadeIn>
             <div className="space-y-5 font-montserrat text-seu-body lg:text-seu-body-lg leading-relaxed text-dark-green/90">

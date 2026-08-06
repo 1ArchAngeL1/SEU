@@ -32,7 +32,7 @@ function toNum(v: string): number | undefined {
 function deriveInitialRooms(f?: UnitFilter): number[] {
   if (!f) return [];
   const rooms: number[] = [];
-  if (f.roomCount === 1) rooms.push(0); // studio
+  if (f.studio) rooms.push(0); // studio
   if (f.bedrooms != null && f.bedrooms > 0) {
     rooms.push(f.bedrooms);
   } else if (f.minBedrooms != null && f.maxBedrooms != null) {
@@ -79,14 +79,14 @@ export default function SearchForm({
       maxSize: sTo,
       status: 'available',
     };
-    // "Studio" is a single-room unit (roomCount === 1), not a 0-bedroom match.
-    // Bedroom-count buttons (1–5) filter on `bedrooms`; when both are picked the
-    // backend OR-s roomCount and bedrooms so the selection matches either.
+    // "Studio" = a studio room with zero bedrooms; bedroom-count buttons (1–5)
+    // filter on the number of bedrooms. Both are derived from each unit's room
+    // list on the backend, and OR-ed so a mixed pick matches either.
     const studio = selectedRooms.includes(0);
     const beds = selectedRooms.filter((r) => r > 0);
 
     if (studio) {
-      filter.roomCount = 1;
+      filter.studio = true;
       filter.type = 'living';
     }
     if (beds.length === 1) {

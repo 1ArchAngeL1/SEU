@@ -35,6 +35,7 @@ export default function FileUpload({
   const [dragActive, setDragActive] = useState(false);
 
   const isImage = !accept || accept.startsWith('image');
+  const isVideo = !!accept && accept.startsWith('video');
   const resolvedUrl = value ? fileUrl(value) : '';
 
   async function handleFile(file: File) {
@@ -111,7 +112,9 @@ export default function FileUpload({
               <span className="font-montserrat text-seu-caption-sm text-admin-fg-dim">
                 {accept === 'image/*'
                   ? 'PNG, JPG, WEBP, GIF'
-                  : accept || 'Any file type'}
+                  : isVideo
+                    ? 'MP4, WEBM, MOV'
+                    : accept || 'Any file type'}
               </span>
             </>
           )}
@@ -145,7 +148,15 @@ export default function FileUpload({
           'group shadow-admin'
         )}
       >
-        {isImage && resolvedUrl ? (
+        {isVideo && resolvedUrl ? (
+          // eslint-disable-next-line jsx-a11y/media-has-caption
+          <video
+            src={resolvedUrl}
+            controls
+            preload="metadata"
+            className="w-full aspect-video bg-black object-contain"
+          />
+        ) : isImage && resolvedUrl ? (
           <div className="relative aspect-[16/9] bg-admin-deep">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
