@@ -2,8 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import ApartmentCard from '@/components/search/ApartmentCard';
-import { useUnitsList } from '@/hooks/queries/use-units';
-import { useActiveProjectIds } from '@/hooks/queries/use-projects';
+import { usePublicUnitsList } from '@/hooks/queries/use-units';
 import { visibleUnits } from '@/lib/visibility';
 
 interface SimilarApartmentsProps {
@@ -16,13 +15,13 @@ export function SimilarApartments({
   currentApartmentId,
 }: SimilarApartmentsProps) {
   const t = useTranslations('search');
-  const unitsQ = useUnitsList(
+  // Public list — nothing from a deactivated block or project comes back.
+  const unitsQ = usePublicUnitsList(
     { building: buildingId, status: 'available' },
     { page: 1, limit: 9 }
   );
-  const { ids: activeProjectIds } = useActiveProjectIds();
 
-  const apartments = visibleUnits(unitsQ.data?.items ?? [], activeProjectIds)
+  const apartments = visibleUnits(unitsQ.data?.items ?? [])
     .filter((u) => u.id !== currentApartmentId)
     .slice(0, 8);
 

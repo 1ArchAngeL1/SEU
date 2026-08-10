@@ -14,7 +14,7 @@ import { ApartmentTypesSection } from '@/components/visual-search/ApartmentTypes
 import { ProjectVideoSection } from '@/components/visual-search/ProjectVideoSection';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
-import { isProjectVisible } from '@/lib/visibility';
+import { blockTotals, isProjectVisible } from '@/lib/visibility';
 import type { Building, PolygonPoint } from '@/model/types/api';
 
 /** Convert percentage-based polygon points (0-100) directly to SVG points string. */
@@ -350,6 +350,10 @@ export default function VisualSearchProjectPage({
     (b) => b.polygon && b.polygon.length >= 3
   );
 
+  // The project's own aggregates still count the blocks the admin switched
+  // off, so recount from the blocks actually on show.
+  const totals = buildingsQ.isSuccess ? blockTotals(buildings) : null;
+
   function handleBuildingClick(building: Building) {
     router.push(`/visual-search/${projectId}/${building.id}`);
   }
@@ -645,7 +649,7 @@ export default function VisualSearchProjectPage({
                     </p>
                     <span className="size-1.5 rounded-full bg-secondary-grey/50" />
                     <p className="font-montserrat font-medium text-seu-caption-sm lg:text-seu-body-sm text-pale-gray">
-                      {project.totalBuildings ?? buildings.length}
+                      {totals ? totals.blocks : (project.totalBuildings ?? '—')}
                     </p>
                   </div>
 
@@ -656,7 +660,7 @@ export default function VisualSearchProjectPage({
                     </p>
                     <span className="size-1.5 rounded-full bg-secondary-grey/50" />
                     <p className="font-montserrat font-medium text-seu-caption-sm lg:text-seu-body-sm text-pale-gray">
-                      {project.totalUnits ?? '—'}
+                      {totals?.units ?? project.totalUnits ?? '—'}
                     </p>
                   </div>
                 </div>

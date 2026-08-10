@@ -1,5 +1,6 @@
 'use client';
 
+import { useMemo } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { Loader2 } from 'lucide-react';
@@ -7,9 +8,11 @@ import { Link } from '@/i18n/navigation';
 import ContactForm from '@/components/ContactForm';
 import ContactPanel from '@/components/ContactPanel';
 import { useProjectsList } from '@/hooks/queries/use-projects';
+import { useActiveBuildings } from '@/hooks/queries/use-buildings';
 import { type Locale, pickLocalized } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
-import type { ProjectStatus } from '@/model/types/api';
+import { blockTotals, refId } from '@/lib/visibility';
+import type { Building, ProjectStatus } from '@/model/types/api';
 
 // Only ongoing projects are shown in visual search — finished ones
 // (completed / sold out / archived) are hidden.
@@ -24,6 +27,21 @@ export default function VisualSearchPage() {
   const t = useTranslations('visualSearch');
   const tStatus = useTranslations('status');
   const projectsQ = useProjectsList({ isActive: true }, { page: 1, limit: 50 });
+
+  // The per-project figures below are backend aggregates that still count the
+  // blocks the admin switched off, so recount them from the blocks on show.
+  const buildingsQ = useActiveBuildings();
+  const blocksByProject = useMemo(() => {
+    const map = new Map<string, Building[]>();
+    for (const building of buildingsQ.data ?? []) {
+      const id = refId(building.project);
+      if (!id) continue;
+      const bucket = map.get(id);
+      if (bucket) bucket.push(building);
+      else map.set(id, [building]);
+    }
+    return map;
+  }, [buildingsQ.data]);
 
   const projects = (projectsQ.data?.items ?? []).filter((project) =>
     ONGOING_STATUSES.includes(project.status),
@@ -59,9 +77,12 @@ export default function VisualSearchPage() {
             pickLocalized(project.location?.districtEn, project.location?.districtKa, locale) ||
             pickLocalized(project.location?.cityEn, project.location?.cityKa, locale) ||
             '';
-          const totalUnits = project.totalUnits;
-          const availableUnits = project.availableUnits;
-          const totalBuildings = project.totalBuildings;
+          const totals = buildingsQ.isSuccess
+            ? blockTotals(blocksByProject.get(project.id) ?? [])
+            : null;
+          const totalUnits = totals?.units ?? project.totalUnits;
+          const availableUnits = totals?.available ?? project.availableUnits;
+          const totalBuildings = totals ? totals.blocks : project.totalBuildings;
 
           return (
             <Link

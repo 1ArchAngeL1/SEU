@@ -9,16 +9,17 @@ import ContactForm from '@/components/ContactForm';
 import ContactPanel from '@/components/ContactPanel';
 import { Link, useRouter } from '@/i18n/navigation';
 import {
-  useBuilding,
+  usePublicBuilding,
   useActiveBuildingsByProject,
 } from '@/hooks/queries/use-buildings';
 import { useFloor, useFloorsByBuilding } from '@/hooks/queries/use-floors';
 import { useProject } from '@/hooks/queries/use-projects';
-import { useUnitsList } from '@/hooks/queries/use-units';
+import { usePublicUnitsList } from '@/hooks/queries/use-units';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
 import { cn } from '@/lib/utils';
-import { isProjectVisible, visibleUnits } from '@/lib/visibility';
+import { isBuildingVisible, isProjectVisible, visibleUnits } from '@/lib/visibility';
+import { isNotFoundError } from '@/lib/api-client';
 import type { PolygonPoint, Unit } from '@/model/types/api';
 
 function toSvgPoints(polygon: PolygonPoint[]): string {
@@ -48,7 +49,9 @@ export default function VisualSearchFloorPage({
   const t = useTranslations('visualSearch');
   const router = useRouter();
 
-  const buildingQ = useBuilding(buildingId);
+  // The public read: a block the admin switched off answers 404, taking this
+  // floor and every unit on it with it.
+  const buildingQ = usePublicBuilding(buildingId);
   const floorQ = useFloor(floorId);
   const floorsQ = useFloorsByBuilding(buildingId);
   const projectQ = useProject(projectId);
@@ -67,7 +70,7 @@ export default function VisualSearchFloorPage({
 
   const currentFloorIndex = sortedFloors.findIndex((f) => f.id === floorId);
 
-  const unitsQ = useUnitsList(
+  const unitsQ = usePublicUnitsList(
     { building: buildingId, floorNumber: floor?.floorNumber },
     { page: 1, limit: 100 }
   );
@@ -126,7 +129,8 @@ export default function VisualSearchFloorPage({
   // Hidden when either the block or its project is switched off in the admin
   // panel.
   if (projectQ.isSuccess && !isProjectVisible(project)) notFound();
-  if (buildingQ.isSuccess && building?.isActive === false) notFound();
+  if (isNotFoundError(buildingQ.error)) notFound();
+  if (buildingQ.isSuccess && !isBuildingVisible(building)) notFound();
 
   const location = project?.location;
 

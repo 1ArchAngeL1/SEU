@@ -6,6 +6,7 @@ import {
   keepPreviousData,
 } from '@tanstack/react-query';
 import { buildingsService } from '@/service/buildings.service';
+import { visibleBuildings } from '@/lib/visibility';
 import type {
   Building,
   CreateBuildingInput,
@@ -14,14 +15,19 @@ import type {
   PaginationInput,
 } from '@/model/types/api';
 
+// Public and admin reads of the same record answer differently — the public
+// one hides what the admin panel deactivated — so they must not share a cache
+// entry. Every key carries the scope it was fetched under.
 export const buildingsKeys = {
   all: ['buildings'] as const,
   lists: () => [...buildingsKeys.all, 'list'] as const,
   list: (filter: BuildingFilter, pagination: PaginationInput) =>
     [...buildingsKeys.lists(), { filter, pagination }] as const,
-  byProject: (projectId: string) =>
-    [...buildingsKeys.all, 'byProject', projectId] as const,
-  detail: (id: string) => [...buildingsKeys.all, 'detail', id] as const,
+  active: () => [...buildingsKeys.all, 'active'] as const,
+  byProject: (projectId: string | undefined, visibleOnly = false) =>
+    [...buildingsKeys.all, 'byProject', projectId ?? '', { visibleOnly }] as const,
+  detail: (id: string | undefined, visibleOnly = false) =>
+    [...buildingsKeys.all, 'detail', id ?? '', { visibleOnly }] as const,
 };
 
 export function useBuildingsList(
@@ -37,30 +43,57 @@ export function useBuildingsList(
 
 export function useBuildingsByProject(projectId: string | undefined) {
   return useQuery<Building[]>({
-    queryKey: buildingsKeys.byProject(projectId ?? ''),
+    queryKey: buildingsKeys.byProject(projectId),
     queryFn: () => buildingsService.byProject(projectId as string),
     enabled: Boolean(projectId),
   });
 }
 
 /**
- * Public site: the project's buildings minus the ones the admin deactivated.
- * The project itself is gated by the page, so only the block flag is applied
- * here.
+ * Public site: the project's blocks minus the ones the admin deactivated, and
+ * none at all when the project itself is switched off. The backend applies the
+ * cascade; the client-side filter is a second line of defence.
  */
 export function useActiveBuildingsByProject(projectId: string | undefined) {
-  const query = useBuildingsByProject(projectId);
-  const data = useMemo(
-    () => (query.data ?? []).filter((b) => b.isActive !== false),
-    [query.data]
-  );
+  const query = useQuery<Building[]>({
+    queryKey: buildingsKeys.byProject(projectId, true),
+    queryFn: () =>
+      buildingsService.byProject(projectId as string, { visibleOnly: true }),
+    enabled: Boolean(projectId),
+  });
+  const data = useMemo(() => visibleBuildings(query.data ?? []), [query.data]);
   return { ...query, data };
+}
+
+/**
+ * Public site: every block still on show, across all projects. Used where a
+ * page needs to judge blocks it has not fetched one by one — the search
+ * results and the project cards in visual search.
+ */
+export function useActiveBuildings() {
+  return useQuery<Building[]>({
+    queryKey: buildingsKeys.active(),
+    queryFn: () => buildingsService.getAllActive(),
+    staleTime: 60_000,
+  });
 }
 
 export function useBuilding(id: string | undefined) {
   return useQuery<Building>({
-    queryKey: buildingsKeys.detail(id ?? ''),
+    queryKey: buildingsKeys.detail(id),
     queryFn: () => buildingsService.getById(id as string),
+    enabled: Boolean(id),
+  });
+}
+
+/**
+ * Public site: a deactivated block — or one in a deactivated project — comes
+ * back as a 404, so deep links can `notFound()` on `isError`.
+ */
+export function usePublicBuilding(id: string | undefined) {
+  return useQuery<Building>({
+    queryKey: buildingsKeys.detail(id, true),
+    queryFn: () => buildingsService.getById(id as string, { visibleOnly: true }),
     enabled: Boolean(id),
   });
 }

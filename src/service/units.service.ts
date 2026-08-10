@@ -21,7 +21,13 @@ import type {
   PaginationInput,
 } from '@/model/types/api';
 
-type ListUnitsParams = UnitFilter & PaginationInput & { sort?: string };
+/**
+ * `visibleOnly` is the public-site opt-in: the backend then applies the
+ * "Active" cascade and drops every unit whose block or project the admin
+ * switched off. Admin calls leave it out and keep seeing everything.
+ */
+type ListUnitsParams = UnitFilter &
+  PaginationInput & { sort?: string; visibleOnly?: boolean };
 
 export interface UpdateUnitStatusInput {
   status: UnitStatus;
@@ -36,8 +42,12 @@ export const unitsService = {
     });
   },
 
-  getById(id: string): Promise<Unit> {
-    return apiGet<Unit>(`/units/${id}`);
+  /** With `visibleOnly` a unit hidden by its own, its block's or its project's
+   *  switch answers 404 instead of the record. */
+  getById(id: string, opts: { visibleOnly?: boolean } = {}): Promise<Unit> {
+    return apiGet<Unit>(`/units/${id}`, {
+      params: { visibleOnly: opts.visibleOnly },
+    });
   },
 
   getStatsByProject(projectId: string): Promise<UnitStats> {

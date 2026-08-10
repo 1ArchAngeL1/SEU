@@ -7,13 +7,9 @@ import { Loader2, SearchX } from 'lucide-react';
 import SearchForm from '@/components/search/SearchForm';
 import { ApartmentCardGridView } from '@/components/search/ApartmentCardGridView';
 import { PaginationControl } from '@/components/search/PaginationControl';
-import { useUnitsList } from '@/hooks/queries/use-units';
-import {
-  useActiveProjects,
-  useActiveProjectIds,
-} from '@/hooks/queries/use-projects';
-import { useActiveBuildingsByProject } from '@/hooks/queries/use-buildings';
-import { refId, visibleUnits } from '@/lib/visibility';
+import { usePublicUnitsList } from '@/hooks/queries/use-units';
+import { useActiveProjects } from '@/hooks/queries/use-projects';
+import { visibleUnits } from '@/lib/visibility';
 import type { UnitFilter, UnitType } from '@/model/types/api';
 
 const VALID_UNIT_TYPES: ReadonlyArray<UnitType> = ['living', 'commerce', 'parking', 'storage'];
@@ -85,23 +81,16 @@ function SearchPageContent({ initialFilter }: { initialFilter: UnitFilter }) {
 
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState<UnitFilter>(initialFilter);
-  const { ids: activeProjectIds } = useActiveProjectIds();
-
-  // `unit.building` may arrive as a bare id, which carries no Active flag. When
-  // the search is scoped to one project we know that project's live blocks, so
-  // we can still drop units sitting in a deactivated one. Shares the cache with
-  // the block dropdown in SearchForm.
-  const blocksQ = useActiveBuildingsByProject(filter.project);
-  const activeBlockIds = useMemo(
-    () =>
-      filter.project && blocksQ.isSuccess
-        ? new Set(blocksQ.data.map((b) => b.id))
-        : undefined,
-    [filter.project, blocksQ.isSuccess, blocksQ.data]
-  );
 
   // Apartments (living units) first, then commercial and other unit types.
-  const unitsQ = useUnitsList(filter, { page, limit: ITEMS_PER_PAGE }, 'typePriority');
+  // The public list: units of a deactivated unit, block or project are dropped
+  // by the backend, so the pagination totals match what is on show — including
+  // a hand-typed `?building=` pointing at a block the admin switched off.
+  const unitsQ = usePublicUnitsList(
+    filter,
+    { page, limit: ITEMS_PER_PAGE },
+    'typePriority'
+  );
 
   function handleSearch(next: UnitFilter) {
     setFilter(next);
@@ -118,17 +107,12 @@ function SearchPageContent({ initialFilter }: { initialFilter: UnitFilter }) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // The backend has no "active projects only" filter, so with "any project"
-  // selected the page can come back holding units from a deactivated project,
-  // block or unit — drop those here.
-  const units = useMemo(() => {
-    const list = visibleUnits(unitsQ.data?.items ?? [], activeProjectIds);
-    if (!activeBlockIds) return list;
-    return list.filter((u) => {
-      const id = refId(u.building);
-      return !id || activeBlockIds.has(id);
-    });
-  }, [unitsQ.data, activeProjectIds, activeBlockIds]);
+  // Second line of defence — each unit arrives with its project and block
+  // populated, flags included.
+  const units = useMemo(
+    () => visibleUnits(unitsQ.data?.items ?? []),
+    [unitsQ.data]
+  );
   const totalPages = unitsQ.data?.pagination.totalPages ?? 1;
 
   return (

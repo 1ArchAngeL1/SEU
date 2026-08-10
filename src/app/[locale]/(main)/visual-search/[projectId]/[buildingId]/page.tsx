@@ -8,12 +8,13 @@ import BackButton from '@/components/BackButton';
 import ContactForm from '@/components/ContactForm';
 import ContactPanel from '@/components/ContactPanel';
 import { Link, useRouter } from '@/i18n/navigation';
-import { useBuilding } from '@/hooks/queries/use-buildings';
+import { usePublicBuilding } from '@/hooks/queries/use-buildings';
 import { useFloorsByBuilding } from '@/hooks/queries/use-floors';
 import { useProject } from '@/hooks/queries/use-projects';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
-import { isProjectVisible } from '@/lib/visibility';
+import { isBuildingVisible, isProjectVisible } from '@/lib/visibility';
+import { isNotFoundError } from '@/lib/api-client';
 import type { PolygonPoint } from '@/model/types/api';
 
 function toSvgPoints(polygon: PolygonPoint[]): string {
@@ -36,7 +37,9 @@ export default function VisualSearchBuildingPage({
   const t = useTranslations('visualSearch');
   const router = useRouter();
 
-  const buildingQ = useBuilding(buildingId);
+  // The public read: a block the admin switched off — or one whose project is
+  // switched off — answers 404, taking its floors with it.
+  const buildingQ = usePublicBuilding(buildingId);
   const floorsQ = useFloorsByBuilding(buildingId);
   const projectQ = useProject(projectId);
 
@@ -70,7 +73,8 @@ export default function VisualSearchBuildingPage({
   // Hidden when either the block or its project is switched off in the admin
   // panel — the floors below it go with them.
   if (projectQ.isSuccess && !isProjectVisible(projectQ.data)) notFound();
-  if (buildingQ.isSuccess && building?.isActive === false) notFound();
+  if (isNotFoundError(buildingQ.error)) notFound();
+  if (buildingQ.isSuccess && !isBuildingVisible(building)) notFound();
 
   if (!isLoading && !renderImage) {
     return (

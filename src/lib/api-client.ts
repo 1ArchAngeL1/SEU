@@ -202,6 +202,15 @@ function defaultPagination<T>(items: T[]): PaginationMeta {
   return { page: 1, limit: len || 20, total: len, totalPages: 1 };
 }
 
+/**
+ * A 404 from the API, as opposed to a network blip or a server fault. Public
+ * pages read a deactivated record as missing, so this is what tells a genuine
+ * "gone" apart from an error the visitor should not see as a 404.
+ */
+export function isNotFoundError(error: unknown): boolean {
+  return error instanceof ApiRequestError && error.status === 404;
+}
+
 export async function apiGet<T>(
   path: string,
   options?: Omit<ApiCallOptions, 'body'>
