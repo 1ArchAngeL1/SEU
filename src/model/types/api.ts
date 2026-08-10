@@ -560,6 +560,8 @@ export interface NewsArticle {
   tags: string[];
   /** Shown as the wide main banner on the news page (at most one article). */
   isMain: boolean;
+  /** Manual display order (ascending). Lower shows first. */
+  sortOrder?: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -573,6 +575,7 @@ export type CreateNewsInput = {
   video?: string;
   tags?: string[];
   isMain?: boolean;
+  sortOrder?: number;
 };
 
 export type UpdateNewsInput = Partial<CreateNewsInput>;

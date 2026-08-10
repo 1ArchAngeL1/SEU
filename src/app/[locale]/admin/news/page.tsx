@@ -9,9 +9,11 @@ import {
   Newspaper,
   Tag,
   ImageIcon,
+  ArrowUpDown,
 } from 'lucide-react';
 import AdminPageHeader from '@/components/admin/AdminPageHeader';
 import NewsForm from '@/components/admin/forms/NewsForm';
+import ReorderSheet from '@/components/admin/ReorderSheet';
 import {
   Sheet,
   SheetContent,
@@ -22,15 +24,19 @@ import {
 import { Input } from '@/components/ui/input';
 import {
   useNewsList,
+  useAllNews,
   useCreateNews,
   useUpdateNews,
   useDeleteNews,
+  useReorderNews,
 } from '@/hooks/queries/use-news';
 import { fileUrl } from '@/lib/file-url';
 import type { NewsArticle, CreateNewsInput } from '@/model/types/api';
 
 const btnPrimary =
   'bg-gradient-to-b from-primary-green to-primary-green/85 text-white font-montserrat font-medium text-seu-caption px-4 py-2 rounded-lg shadow-md shadow-primary-green/25 hover:shadow-lg hover:shadow-primary-green/30 transition-all flex items-center gap-2';
+const btnSecondary =
+  'border border-admin-border-soft bg-admin-input-gradient text-admin-fg font-montserrat font-medium text-seu-caption px-4 py-2 rounded-lg hover:bg-admin-hover transition-colors flex items-center gap-2 disabled:opacity-40 disabled:pointer-events-none';
 const btnPage =
   'px-3 py-1.5 border border-admin-border-soft bg-admin-input-gradient rounded-lg text-seu-caption-sm text-admin-fg disabled:opacity-30 hover:bg-admin-hover transition-colors';
 
@@ -38,12 +44,15 @@ export default function AdminNewsPage() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [reorderOpen, setReorderOpen] = useState(false);
   const [editing, setEditing] = useState<NewsArticle | null>(null);
 
   const newsQ = useNewsList({ page, limit: 12 });
+  const allNewsQ = useAllNews();
   const createMut = useCreateNews();
   const updateMut = useUpdateNews();
   const deleteMut = useDeleteNews();
+  const reorderMut = useReorderNews();
 
   const allItems = newsQ.data?.items ?? [];
   const items = search
@@ -103,10 +112,20 @@ export default function AdminNewsPage() {
           </span>
         }
         action={
-          <button onClick={openCreate} className={btnPrimary}>
-            <Plus className="size-4" />
-            New Article
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setReorderOpen(true)}
+              disabled={(allNewsQ.data?.length ?? 0) < 2}
+              className={btnSecondary}
+            >
+              <ArrowUpDown className="size-4" />
+              Reorder
+            </button>
+            <button onClick={openCreate} className={btnPrimary}>
+              <Plus className="size-4" />
+              New Article
+            </button>
+          </div>
         }
       />
 
@@ -274,6 +293,21 @@ export default function AdminNewsPage() {
           </div>
         </SheetContent>
       </Sheet>
+
+      <ReorderSheet
+        open={reorderOpen}
+        onOpenChange={setReorderOpen}
+        items={(allNewsQ.data ?? []).map((n) => ({
+          id: n.id,
+          nameEn: n.headerEn,
+          nameKa: n.headerKa,
+          logoId: n.image?.[0],
+        }))}
+        onSave={(ids) => reorderMut.mutateAsync(ids)}
+        saving={reorderMut.isPending}
+        title="Reorder news"
+        description="Drag rows or use the arrows to set the order articles appear in on the site, then save."
+      />
     </div>
   );
 }

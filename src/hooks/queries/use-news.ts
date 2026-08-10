@@ -75,3 +75,11 @@ export function useDeleteNews() {
     onSuccess: () => qc.invalidateQueries({ queryKey: newsKeys.all }),
   });
 }
+
+export function useReorderNews() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (orderedIds: string[]) => newsService.reorder(orderedIds),
+    onSuccess: () => qc.invalidateQueries({ queryKey: newsKeys.all }),
+  });
+}
