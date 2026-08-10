@@ -1,6 +1,7 @@
 'use client';
 
 import { use, useState, useRef, useCallback, useEffect } from 'react';
+import { notFound } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import { Loader2, ZoomIn, ZoomOut, Maximize, ChevronLeft, ChevronRight } from 'lucide-react';
 import BackButton from '@/components/BackButton';
@@ -8,11 +9,12 @@ import ContactForm from '@/components/ContactForm';
 import ContactPanel from '@/components/ContactPanel';
 import { Link, useRouter } from '@/i18n/navigation';
 import { useProject } from '@/hooks/queries/use-projects';
-import { useBuildingsByProject } from '@/hooks/queries/use-buildings';
+import { useActiveBuildingsByProject } from '@/hooks/queries/use-buildings';
 import { ApartmentTypesSection } from '@/components/visual-search/ApartmentTypesSection';
 import { ProjectVideoSection } from '@/components/visual-search/ProjectVideoSection';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
+import { isProjectVisible } from '@/lib/visibility';
 import type { Building, PolygonPoint } from '@/model/types/api';
 
 /** Convert percentage-based polygon points (0-100) directly to SVG points string. */
@@ -330,10 +332,10 @@ export default function VisualSearchProjectPage({
   const router = useRouter();
 
   const projectQ = useProject(projectId);
-  const buildingsQ = useBuildingsByProject(projectId);
+  const buildingsQ = useActiveBuildingsByProject(projectId);
 
   const project = projectQ.data;
-  const buildings = buildingsQ.data ?? [];
+  const buildings = buildingsQ.data;
   const isLoading = projectQ.isLoading || buildingsQ.isLoading;
 
   const renderImage = fileUrl(project?.renderImage);
@@ -351,6 +353,10 @@ export default function VisualSearchProjectPage({
   function handleBuildingClick(building: Building) {
     router.push(`/visual-search/${projectId}/${building.id}`);
   }
+
+  // A project switched off in the admin panel is gone from the public site,
+  // deep links included.
+  if (!isProjectVisible(project) && projectQ.isSuccess) notFound();
 
   // Fallback: no render image → show grid cards
   if (!isLoading && !renderImage) {

@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
-import { useAllProjects } from '@/hooks/queries/use-projects';
+import { useActiveProjects } from '@/hooks/queries/use-projects';
 import { pickLocalized } from '@/lib/i18n-helpers';
 import type { Project } from '@/model/types/api';
 
@@ -46,7 +46,7 @@ function buildGallery(project: Project | undefined): string[] {
 
 export default function LandingHero() {
   const t = useTranslations('landing');
-  const projectsQ = useAllProjects();
+  const projectsQ = useActiveProjects();
 
   const project = useMemo(
     () => pickHeroProject(projectsQ.data),

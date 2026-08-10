@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import {
   useMutation,
   useQuery,
@@ -40,6 +41,20 @@ export function useBuildingsByProject(projectId: string | undefined) {
     queryFn: () => buildingsService.byProject(projectId as string),
     enabled: Boolean(projectId),
   });
+}
+
+/**
+ * Public site: the project's buildings minus the ones the admin deactivated.
+ * The project itself is gated by the page, so only the block flag is applied
+ * here.
+ */
+export function useActiveBuildingsByProject(projectId: string | undefined) {
+  const query = useBuildingsByProject(projectId);
+  const data = useMemo(
+    () => (query.data ?? []).filter((b) => b.isActive !== false),
+    [query.data]
+  );
+  return { ...query, data };
 }
 
 export function useBuilding(id: string | undefined) {

@@ -1,6 +1,7 @@
 'use client';
 
 import { use, useState, useMemo, useRef, useCallback } from 'react';
+import { notFound } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import { Loader2 } from 'lucide-react';
 import BackButton from '@/components/BackButton';
@@ -9,8 +10,10 @@ import ContactPanel from '@/components/ContactPanel';
 import { Link, useRouter } from '@/i18n/navigation';
 import { useBuilding } from '@/hooks/queries/use-buildings';
 import { useFloorsByBuilding } from '@/hooks/queries/use-floors';
+import { useProject } from '@/hooks/queries/use-projects';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
+import { isProjectVisible } from '@/lib/visibility';
 import type { PolygonPoint } from '@/model/types/api';
 
 function toSvgPoints(polygon: PolygonPoint[]): string {
@@ -35,6 +38,7 @@ export default function VisualSearchBuildingPage({
 
   const buildingQ = useBuilding(buildingId);
   const floorsQ = useFloorsByBuilding(buildingId);
+  const projectQ = useProject(projectId);
 
   const building = buildingQ.data;
   const floors = floorsQ.data ?? [];
@@ -62,6 +66,11 @@ export default function VisualSearchBuildingPage({
   function handleFloorClick(floorId: string) {
     router.push(`/visual-search/${projectId}/${buildingId}/${floorId}`);
   }
+
+  // Hidden when either the block or its project is switched off in the admin
+  // panel — the floors below it go with them.
+  if (projectQ.isSuccess && !isProjectVisible(projectQ.data)) notFound();
+  if (buildingQ.isSuccess && building?.isActive === false) notFound();
 
   if (!isLoading && !renderImage) {
     return (

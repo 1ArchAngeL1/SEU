@@ -41,6 +41,16 @@ This makes placeholders easy to find and replace later via search.
 - This file is the single source of truth for project conventions and user preferences.
 - Update or remove entries when the user corrects previous guidance.
 
+### Public Visibility — the admin "Active" switch
+The `isActive` switch on a **project**, a **building/block** or a **unit** is a kill-switch for the public site: the record and everything under it must disappear — apartments, visual search, deep links, dropdowns, all of it.
+
+The backend stores the flag per record and does **not** cascade it, so the front end does. Rules live in `src/lib/visibility.ts` (`isUnitVisible`, `isBuildingVisible`, `isProjectVisible`, `visibleUnits`, `visibleBuildings`) — a unit is public only when the unit, its building and its project are all active.
+
+- Public pages fetch through `useActiveProjects()` / `useActiveProjectIds()` / `useActiveBuildingsByProject()`, never `useAllProjects()` / `useBuildingsByProject()`.
+- Deep links to a deactivated record call `notFound()`.
+- **Admin screens deliberately bypass all of this** — editors must keep seeing deactivated records.
+- Any new public page that lists or links projects/blocks/units must apply these helpers.
+
 ### Design Spec Interpretation
 - When the user provides CSS layout properties (top, left, width, height), **only use `height`** from layout properties. Ignore top/left/width as those are absolute positioning values from the design tool, not relevant to the responsive layout.
 

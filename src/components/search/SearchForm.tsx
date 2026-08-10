@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useAllProjects } from '@/hooks/queries/use-projects';
-import { useBuildingsByProject } from '@/hooks/queries/use-buildings';
+import { useActiveProjects } from '@/hooks/queries/use-projects';
+import { useActiveBuildingsByProject } from '@/hooks/queries/use-buildings';
 import type { UnitFilter } from '@/model/types/api';
 import { Button } from '@/components/ui/button';
 import ProjectSelect from './fields/ProjectSelect';
@@ -57,8 +57,9 @@ export default function SearchForm({
   const [validationError, setValidationError] = useState('');
 
   const t = useTranslations('search');
-  const projectsQ = useAllProjects();
-  const buildingsQ = useBuildingsByProject(project || undefined);
+  // Deactivated projects and blocks are not offered as filter options.
+  const projectsQ = useActiveProjects();
+  const buildingsQ = useActiveBuildingsByProject(project || undefined);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -109,7 +110,7 @@ export default function SearchForm({
   }
 
   const projects = projectsQ.data ?? [];
-  const buildings = buildingsQ.data ?? [];
+  const buildings = buildingsQ.data;
 
   return (
     <form

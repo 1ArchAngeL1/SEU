@@ -7,8 +7,10 @@ import { Download } from 'lucide-react';
 import { ApartmentPresentation } from '@/components/presentation/ApartmentPresentation';
 import { useUnit } from '@/hooks/queries/use-units';
 import { useProject } from '@/hooks/queries/use-projects';
+import { useBuilding } from '@/hooks/queries/use-buildings';
 import { useFloor } from '@/hooks/queries/use-floors';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
+import { isProjectVisible, isUnitVisible, refId } from '@/lib/visibility';
 
 export default function ApartmentPresentationPage({
   params,
@@ -37,6 +39,10 @@ export default function ApartmentPresentationPage({
     : undefined;
   const floorQ = useFloor(floorId);
 
+  // `unit.building` may be a bare id, which carries no Active flag — fetch the
+  // block so a deactivated one is caught on a direct link too.
+  const buildingQ = useBuilding(refId(unit?.building));
+
   // Give the saved PDF a meaningful filename.
   useEffect(() => {
     if (!unit) return;
@@ -49,7 +55,8 @@ export default function ApartmentPresentationPage({
   if (
     unitQ.isLoading ||
     (projectId && projectQ.isLoading) ||
-    (floorId && floorQ.isLoading)
+    (floorId && floorQ.isLoading) ||
+    buildingQ.isLoading
   ) {
     return (
       <div className="min-h-dvh flex items-center justify-center bg-neutral-200">
@@ -61,6 +68,12 @@ export default function ApartmentPresentationPage({
   }
 
   if (!unit) notFound();
+
+  // Gone from the public site once the unit, its block or its project is
+  // switched off in the admin panel.
+  if (!isUnitVisible(unit)) notFound();
+  if (projectQ.isSuccess && !isProjectVisible(projectQ.data)) notFound();
+  if (buildingQ.isSuccess && buildingQ.data.isActive === false) notFound();
 
   return (
     <div className="presentation-screen min-h-dvh bg-neutral-300 py-8">

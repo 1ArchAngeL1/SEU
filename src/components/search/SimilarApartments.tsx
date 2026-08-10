@@ -3,6 +3,8 @@
 import { useTranslations } from 'next-intl';
 import ApartmentCard from '@/components/search/ApartmentCard';
 import { useUnitsList } from '@/hooks/queries/use-units';
+import { useActiveProjectIds } from '@/hooks/queries/use-projects';
+import { visibleUnits } from '@/lib/visibility';
 
 interface SimilarApartmentsProps {
   buildingId?: string;
@@ -18,8 +20,9 @@ export function SimilarApartments({
     { building: buildingId, status: 'available' },
     { page: 1, limit: 9 }
   );
+  const { ids: activeProjectIds } = useActiveProjectIds();
 
-  const apartments = (unitsQ.data?.items ?? [])
+  const apartments = visibleUnits(unitsQ.data?.items ?? [], activeProjectIds)
     .filter((u) => u.id !== currentApartmentId)
     .slice(0, 8);
 

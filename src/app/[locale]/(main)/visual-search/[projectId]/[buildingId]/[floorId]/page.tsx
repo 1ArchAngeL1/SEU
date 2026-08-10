@@ -1,6 +1,7 @@
 'use client';
 
 import { use, useState, useMemo, useRef, useCallback } from 'react';
+import { notFound } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import { Loader2, ChevronUp, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import BackButton from '@/components/BackButton';
@@ -9,7 +10,7 @@ import ContactPanel from '@/components/ContactPanel';
 import { Link, useRouter } from '@/i18n/navigation';
 import {
   useBuilding,
-  useBuildingsByProject,
+  useActiveBuildingsByProject,
 } from '@/hooks/queries/use-buildings';
 import { useFloor, useFloorsByBuilding } from '@/hooks/queries/use-floors';
 import { useProject } from '@/hooks/queries/use-projects';
@@ -17,6 +18,7 @@ import { useUnitsList } from '@/hooks/queries/use-units';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
 import { cn } from '@/lib/utils';
+import { isProjectVisible, visibleUnits } from '@/lib/visibility';
 import type { PolygonPoint, Unit } from '@/model/types/api';
 
 function toSvgPoints(polygon: PolygonPoint[]): string {
@@ -50,13 +52,13 @@ export default function VisualSearchFloorPage({
   const floorQ = useFloor(floorId);
   const floorsQ = useFloorsByBuilding(buildingId);
   const projectQ = useProject(projectId);
-  const buildingsQ = useBuildingsByProject(projectId);
+  const buildingsQ = useActiveBuildingsByProject(projectId);
 
   const building = buildingQ.data;
   const floor = floorQ.data;
   const allFloors = floorsQ.data ?? [];
   const project = projectQ.data;
-  const allBuildings = buildingsQ.data ?? [];
+  const allBuildings = buildingsQ.data;
 
   const sortedFloors = useMemo(
     () => [...allFloors].sort((a, b) => a.floorNumber - b.floorNumber),
@@ -69,7 +71,12 @@ export default function VisualSearchFloorPage({
     { building: buildingId, floorNumber: floor?.floorNumber },
     { page: 1, limit: 100 }
   );
-  const units = unitsQ.data?.items ?? [];
+  // Deactivated units are dropped; the block and project above them are gated
+  // below, so the whole floor disappears with either of those.
+  const units = useMemo(
+    () => visibleUnits(unitsQ.data?.items ?? []),
+    [unitsQ.data]
+  );
   const isLoading = buildingQ.isLoading || floorQ.isLoading || unitsQ.isLoading;
 
   const renderImage =
@@ -115,6 +122,11 @@ export default function VisualSearchFloorPage({
   function goToBuilding(bId: string) {
     router.push(`/visual-search/${projectId}/${bId}`);
   }
+
+  // Hidden when either the block or its project is switched off in the admin
+  // panel.
+  if (projectQ.isSuccess && !isProjectVisible(project)) notFound();
+  if (buildingQ.isSuccess && building?.isActive === false) notFound();
 
   const location = project?.location;
 

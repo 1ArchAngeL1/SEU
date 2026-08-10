@@ -8,7 +8,12 @@ import SearchForm from '@/components/search/SearchForm';
 import { ApartmentCardGridView } from '@/components/search/ApartmentCardGridView';
 import { PaginationControl } from '@/components/search/PaginationControl';
 import { useUnitsList } from '@/hooks/queries/use-units';
-import { useAllProjects } from '@/hooks/queries/use-projects';
+import {
+  useActiveProjects,
+  useActiveProjectIds,
+} from '@/hooks/queries/use-projects';
+import { useActiveBuildingsByProject } from '@/hooks/queries/use-buildings';
+import { refId, visibleUnits } from '@/lib/visibility';
 import type { UnitFilter, UnitType } from '@/model/types/api';
 
 const VALID_UNIT_TYPES: ReadonlyArray<UnitType> = ['living', 'commerce', 'parking', 'storage'];
@@ -23,13 +28,13 @@ function toNum(v: string | null): number | undefined {
 
 export default function SearchPage() {
   const searchParams = useSearchParams();
-  const projectsQ = useAllProjects();
+  // Only the active projects — a link to a deactivated one must not resolve.
+  const projectsQ = useActiveProjects();
 
   const urlProject = searchParams.get('project');
-  // We can resolve the starting project once the URL pins one, or once the
-  // projects list has settled (so we know the admin-configured default).
-  const projectsSettled = projectsQ.isSuccess || projectsQ.isError;
-  const ready = Boolean(urlProject) || projectsSettled;
+  // The active list has to settle before we can honour `?project=` (it may
+  // point at a deactivated project) or fall back to the admin-set default.
+  const ready = projectsQ.isSuccess || projectsQ.isError;
 
   const initialFilter = useMemo<UnitFilter>(() => {
     const f: UnitFilter = { status: 'available' };
@@ -50,11 +55,13 @@ export default function SearchPage() {
     if (typeParam && VALID_UNIT_TYPES.includes(typeParam as UnitType)) {
       f.type = typeParam as UnitType;
     }
-    if (urlProject) {
+    const activeProjects = projectsQ.data ?? [];
+    if (urlProject && activeProjects.some((p) => p.id === urlProject)) {
       f.project = urlProject;
     } else {
-      // No project in the URL — fall back to the admin-configured default.
-      const defaultProject = (projectsQ.data ?? []).find((p) => p.isDefault);
+      // No project in the URL, or one that has since been deactivated — fall
+      // back to the admin-configured default.
+      const defaultProject = activeProjects.find((p) => p.isDefault);
       if (defaultProject) f.project = defaultProject.id;
     }
     if (buildingParam) f.building = buildingParam;
@@ -78,6 +85,20 @@ function SearchPageContent({ initialFilter }: { initialFilter: UnitFilter }) {
 
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState<UnitFilter>(initialFilter);
+  const { ids: activeProjectIds } = useActiveProjectIds();
+
+  // `unit.building` may arrive as a bare id, which carries no Active flag. When
+  // the search is scoped to one project we know that project's live blocks, so
+  // we can still drop units sitting in a deactivated one. Shares the cache with
+  // the block dropdown in SearchForm.
+  const blocksQ = useActiveBuildingsByProject(filter.project);
+  const activeBlockIds = useMemo(
+    () =>
+      filter.project && blocksQ.isSuccess
+        ? new Set(blocksQ.data.map((b) => b.id))
+        : undefined,
+    [filter.project, blocksQ.isSuccess, blocksQ.data]
+  );
 
   // Apartments (living units) first, then commercial and other unit types.
   const unitsQ = useUnitsList(filter, { page, limit: ITEMS_PER_PAGE }, 'typePriority');
@@ -97,7 +118,17 @@ function SearchPageContent({ initialFilter }: { initialFilter: UnitFilter }) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  const units = unitsQ.data?.items ?? [];
+  // The backend has no "active projects only" filter, so with "any project"
+  // selected the page can come back holding units from a deactivated project,
+  // block or unit — drop those here.
+  const units = useMemo(() => {
+    const list = visibleUnits(unitsQ.data?.items ?? [], activeProjectIds);
+    if (!activeBlockIds) return list;
+    return list.filter((u) => {
+      const id = refId(u.building);
+      return !id || activeBlockIds.has(id);
+    });
+  }, [unitsQ.data, activeProjectIds, activeBlockIds]);
   const totalPages = unitsQ.data?.pagination.totalPages ?? 1;
 
   return (

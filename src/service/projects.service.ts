@@ -39,6 +39,13 @@ export const projectsService = {
       .then((r) => r.items);
   },
 
+  /** Public site: only the projects the admin has left Active. */
+  getAllActive(): Promise<Project[]> {
+    return projectsService
+      .search({ data: { isActive: true }, pagination: { page: 1, limit: 200 } })
+      .then((r) => r.items);
+  },
+
   getById(id: string): Promise<Project> {
     return apiGet<Project>(`/projects/${id}`);
   },
