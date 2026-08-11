@@ -283,7 +283,7 @@ export function ApartmentPresentation({ unit, project, floor }: ApartmentPresent
       <div className="mt-5 bg-dark-green px-[12mm] py-3.5 flex items-center justify-between font-montserrat text-white text-[0.75rem] print-exact">
         <span className="flex items-center gap-2">
           <Phone className="size-3.5 shrink-0" />
-          {tc('phone')}
+          {tc('phone')} · {tc('phone2')}
         </span>
         <span className="flex items-center gap-2">
           <Mail className="size-3.5 shrink-0" />

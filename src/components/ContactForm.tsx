@@ -86,10 +86,10 @@ export default function ContactForm({
     <div className={cn('w-full', className)}>
       {/* Heading */}
       {!hideHeader && (
-        <div className="mb-10">
+        <div className="mb-10 text-left">
           <h2
             className={cn(
-              'font-[--font-bodoni] font-normal text-seu-title lg:text-seu-title-lg leading-none animate-[fadeInUp_0.8s_cubic-bezier(0.16,1,0.3,1)_0.4s_both]',
+              'text-left font-[--font-bodoni] font-normal text-seu-title lg:text-seu-title-lg leading-none animate-[fadeInUp_0.8s_cubic-bezier(0.16,1,0.3,1)_0.4s_both]',
               lightBg ? 'text-dark-green' : 'text-site-fg-strong'
             )}
           >

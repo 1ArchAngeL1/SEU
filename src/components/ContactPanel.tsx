@@ -2,6 +2,7 @@
 
 import { Mail, MapPin, Phone } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { phoneHref } from '@/lib/phone';
 import { useTranslations } from 'next-intl';
 
 export type ContactPanelProps = {
@@ -55,23 +56,27 @@ export default function ContactPanel({
             </div>
           </a>
 
-          {/* Phone */}
-          <a
-            href={`tel:${t('phone').replace(/\s/g, '')}`}
-            className="group flex items-center gap-3 p-4 hover:bg-site-bg-hover transition-colors"
-          >
-            <span className="size-9 shrink-0 rounded-xl bg-primary-green grid place-items-center shadow-sm shadow-primary-green/30 group-hover:scale-110 transition-transform">
+          {/* Phone — two lines, so the cell holds the links rather than being
+              one itself. */}
+          <div className="flex items-center gap-3 p-4">
+            <span className="size-9 shrink-0 rounded-xl bg-primary-green grid place-items-center shadow-sm shadow-primary-green/30">
               <Phone className="size-5 text-white" />
             </span>
             <div className="min-w-0">
               <p className="font-montserrat text-seu-caption-sm text-site-fg-muted mb-0.5">
                 Phone
               </p>
-              <p className="font-montserrat font-medium text-[0.7rem] text-site-fg whitespace-nowrap">
-                {t('phone')}
-              </p>
+              {[t('phone'), t('phone2')].map((number) => (
+                <a
+                  key={number}
+                  href={phoneHref(number)}
+                  className="block font-montserrat font-medium text-[0.7rem] text-site-fg whitespace-nowrap hover:text-primary-green transition-colors"
+                >
+                  {number}
+                </a>
+              ))}
             </div>
-          </a>
+          </div>
 
           {/* Address */}
           <div className="flex items-center gap-3 p-4">
