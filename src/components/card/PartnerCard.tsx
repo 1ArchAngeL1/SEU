@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { Handshake, Mail, Phone, MapPin, ExternalLink, type LucideIcon } from 'lucide-react';
 import { fileUrl } from '@/lib/file-url';
+import { formatPhone, phoneHref } from '@/lib/phone';
 
 interface PartnerCardProps {
   name: string;
@@ -129,7 +130,11 @@ export default function PartnerCard({
               {address && <ContactLine icon={MapPin} text={address} />}
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 min-w-0">
                 {phone && (
-                  <ContactLine icon={Phone} text={phone} href={`tel:${phone}`} />
+                  <ContactLine
+                    icon={Phone}
+                    text={formatPhone(phone)}
+                    href={phoneHref(phone)}
+                  />
                 )}
                 {mail && (
                   <ContactLine icon={Mail} text={mail} href={`mailto:${mail}`} />

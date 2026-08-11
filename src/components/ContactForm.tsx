@@ -20,6 +20,8 @@ export type ContactFormProps = {
   lightBg?: boolean;
   /** Hide the built-in heading (when rendered inside a dialog that has its own title) */
   hideHeader?: boolean;
+  /** Extra classes for the heading wrapper, e.g. `text-right` to right-align the title */
+  headerClassName?: string;
   /** Fired after a successful submission, after the success message renders */
   onSubmitted?: () => void;
 };
@@ -29,6 +31,7 @@ export default function ContactForm({
   variant = 'default',
   lightBg = false,
   hideHeader = false,
+  headerClassName,
   onSubmitted,
 }: ContactFormProps) {
   const t = useTranslations('contact');
@@ -86,7 +89,7 @@ export default function ContactForm({
     <div className={cn('w-full', className)}>
       {/* Heading */}
       {!hideHeader && (
-        <div className="mb-10">
+        <div className={cn('mb-10', headerClassName)}>
           <h2
             className={cn(
               'font-[--font-bodoni] font-normal text-seu-title lg:text-seu-title-lg leading-none animate-[fadeInUp_0.8s_cubic-bezier(0.16,1,0.3,1)_0.4s_both]',
