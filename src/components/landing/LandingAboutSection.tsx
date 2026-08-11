@@ -64,16 +64,9 @@ export default function LandingAboutSection() {
   return (
     <section className="relative bg-site-bg py-16 lg:py-40 site-noise site-glow-center">
       <div className="max-w-[1920px] mx-auto px-5 lg:px-10">
-        {/* Top Row */}
-        <FadeIn className="flex items-start justify-between mb-8 lg:mb-16">
-          {/* Title - Left */}
-          <h2 className="font-bodoni text-seu-heading lg:text-seu-title text-site-fg-strong">
-            {t('aboutCompany')}
-          </h2>
-
-          <div className="hidden lg:block">
-            <SeuGreenlogo />
-          </div>
+        {/* Top Row — company logo (desktop only) */}
+        <FadeIn className="hidden lg:flex items-start justify-end mb-8 lg:mb-16">
+          <SeuGreenlogo />
         </FadeIn>
 
         <div className="relative flex flex-col lg:flex-row items-center justify-between gap-8">
