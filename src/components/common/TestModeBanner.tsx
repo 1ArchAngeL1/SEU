@@ -21,14 +21,8 @@ export default async function TestModeBanner() {
     >
       <div className="flex items-center justify-center gap-2 px-4 py-1.5 text-center">
         <TriangleAlert className="size-4 shrink-0" aria-hidden="true" />
-        <p className="font-montserrat text-seu-caption-sm leading-snug">
-          {/* Case comes from the message, not `uppercase` — Georgian Mkhedruli
-              has no uppercase form, so CSS casing would be a no-op there. */}
-          <span className="font-semibold tracking-[0.1em]">{t('label')}</span>
-          <span className="mx-2 opacity-40" aria-hidden="true">
-            |
-          </span>
-          <span className="font-medium">{t('message')}</span>
+        <p className="font-montserrat font-medium text-seu-caption-sm leading-snug">
+          {t('message')}
         </p>
       </div>
     </div>
