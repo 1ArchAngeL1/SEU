@@ -42,7 +42,7 @@ const ContactPage = () => {
         <div className="relative z-10 h-full flex flex-row flex-1 overflow-hidden">
           <div className="flex-1 flex items-start justify-start pt-16 px-10">
             <FadeIn direction="left" duration={900} className="w-full max-w-3xl">
-              <ContactForm />
+              <ContactForm policyClassName="max-w-sm" />
             </FadeIn>
           </div>
           <div className="flex-1 flex items-end justify-end pb-16 px-10">

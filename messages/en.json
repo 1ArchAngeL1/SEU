@@ -11,6 +11,10 @@
     "playVideo": "Play video",
     "pauseVideo": "Pause video"
   },
+  "testMode": {
+    "label": "TEST MODE",
+    "message": "This website is a test version — content, prices and features are not final and may change."
+  },
   "header": {
     "searchApartment": "Search Apartment",
     "visualSearch": "Visual Search",

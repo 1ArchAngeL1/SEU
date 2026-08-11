@@ -54,6 +54,15 @@ The `isActive` switch on a **project**, a **building/block** or a **unit** is a 
 - **Admin screens deliberately bypass all of this** — editors must keep seeing deactivated records.
 - Backend gap: the floors controller accepts no `visibleOnly` (`/floors/by-building/:id`, `/floors/:id`), and `QueryFloorDto` would 400 on the extra param. Floors are safe only because both pages that show them gate on the block first — keep it that way, or plumb the flag through `FloorsService`, which already supports it.
 
+### Test-Mode Notice
+The public site carries a site-wide "this is a test version" disclaimer until launch.
+
+- Component: `src/components/common/TestModeBanner.tsx` — a slim, **non-dismissible** bar mounted at the top of `src/app/[locale]/(main)/layout.tsx`, above the sticky header so it scrolls away. It is a server component: once switched off it renders nothing and ships no JS.
+- Gate: `src/lib/site-mode.ts` reads `NEXT_PUBLIC_SITE_MODE`. It defaults to `test`, so a missing variable keeps the disclaimer up rather than silently hiding it on an unfinished site. Set `NEXT_PUBLIC_SITE_MODE=live` (and rebuild — `NEXT_PUBLIC_*` is inlined) to remove it.
+- Copy lives in `messages/{en,ka}.json` under `testMode` (`label`, `message`) — never hardcode the text.
+- Admin (`/admin/*`) and `/presentation/*` deliberately do not show it.
+- Georgian has no uppercase form, so banner casing comes from the message string, not `text-transform: uppercase`.
+
 ### Design Spec Interpretation
 - When the user provides CSS layout properties (top, left, width, height), **only use `height`** from layout properties. Ignore top/left/width as those are absolute positioning values from the design tool, not relevant to the responsive layout.
 

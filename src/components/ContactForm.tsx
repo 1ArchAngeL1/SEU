@@ -20,6 +20,8 @@ export type ContactFormProps = {
   lightBg?: boolean;
   /** Hide the built-in heading (when rendered inside a dialog that has its own title) */
   hideHeader?: boolean;
+  /** Extra classes for the privacy-policy note, e.g. `max-w-sm` to keep it off a diagonal background edge */
+  policyClassName?: string;
   /** Fired after a successful submission, after the success message renders */
   onSubmitted?: () => void;
 };
@@ -29,6 +31,7 @@ export default function ContactForm({
   variant = 'default',
   lightBg = false,
   hideHeader = false,
+  policyClassName,
   onSubmitted,
 }: ContactFormProps) {
   const t = useTranslations('contact');
@@ -157,7 +160,8 @@ export default function ContactForm({
         <p
           className={cn(
             'mt-4 font-montserrat text-seu-caption-sm leading-relaxed',
-            lightBg ? 'text-dark-green/55' : 'text-site-fg-dim'
+            lightBg ? 'text-dark-green/55' : 'text-site-fg-dim',
+            policyClassName
           )}
         >
           {t('agreePolicy')}
