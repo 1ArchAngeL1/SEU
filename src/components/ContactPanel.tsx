@@ -11,19 +11,22 @@ export type ContactPanelProps = {
   lightBg?: boolean;
   /** Hide the built-in heading (dash + title) */
   hideHeader?: boolean;
+  /** Extra classes for the heading wrapper, e.g. `text-right` to right-align the title */
+  headerClassName?: string;
 };
 
 export default function ContactPanel({
   className,
   lightBg = false,
   hideHeader = false,
+  headerClassName,
 }: ContactPanelProps) {
   const t = useTranslations('contact');
   return (
     <div className={cn('w-full', className)}>
       {/* Heading */}
       {!hideHeader && (
-        <div className="mb-10">
+        <div className={cn('mb-10', headerClassName)}>
           <h2
             className={cn(
               'font-[--font-bodoni] font-normal text-seu-title lg:text-seu-title-lg leading-none animate-[fadeInUp_0.8s_cubic-bezier(0.16,1,0.3,1)_0.4s_both]',

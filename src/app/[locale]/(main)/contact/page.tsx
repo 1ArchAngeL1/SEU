@@ -21,7 +21,7 @@ const ContactPage = () => {
         {/* Contact info panel */}
         <div className="px-5 pt-6 pb-10">
           <FadeIn direction="up" delay={200} duration={800}>
-            <ContactPanel className="max-w-3xl" />
+            <ContactPanel className="max-w-3xl" headerClassName="text-right" />
           </FadeIn>
         </div>
       </div>
@@ -47,7 +47,7 @@ const ContactPage = () => {
           </div>
           <div className="flex-1 flex items-end justify-end pb-16 px-10">
             <FadeIn direction="right" delay={300} duration={900} className="w-full max-w-3xl">
-              <ContactPanel lightBg />
+              <ContactPanel lightBg headerClassName="text-right" />
             </FadeIn>
           </div>
         </div>
