@@ -2,6 +2,7 @@
 
 import { Link, usePathname } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
+import { cn } from '@/lib/utils';
 
 export default function FooterUpper() {
   const t = useTranslations('footer');
@@ -10,7 +11,8 @@ export default function FooterUpper() {
   const links = [
     { label: t('projects'), href: '#' },
     { label: t('seuCard'), href: '/card' },
-    { label: t('privacyPolicy'), href: '/policy' },
+    // Longest label by far — stacked last on mobile so it doesn't split the list.
+    { label: t('privacyPolicy'), href: '/policy', mobileLast: true },
     { label: t('news'), href: '/news' },
     { label: t('about'), href: '/about' },
   ];
@@ -31,7 +33,10 @@ export default function FooterUpper() {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }
             }}
-            className="font-montserrat font-medium text-seu-body leading-[1.375rem] tracking-[0.169rem] text-site-fg hover:text-site-fg-muted transition-colors"
+            className={cn(
+              'font-montserrat font-medium text-seu-body-sm lg:text-seu-body leading-[1.375rem] tracking-[0.1rem] lg:tracking-[0.169rem] text-site-fg hover:text-site-fg-muted transition-colors',
+              link.mobileLast && 'order-last lg:order-none'
+            )}
           >
             {link.label}
           </Link>
