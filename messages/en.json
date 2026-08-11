@@ -223,7 +223,9 @@
     "loading": "Loading news...",
     "minRead": "{minutes} min read",
     "readThisArticle": "Read this article",
-    "moreNews": "More News"
+    "moreNews": "More News",
+    "videosTitle": "Videos",
+    "visitChannel": "Visit our channel"
   },
   "policy": {
     "title": "PRIVACY POLICY"

@@ -223,7 +223,9 @@
     "loading": "სიახლეები იტვირთება...",
     "minRead": "{minutes} წთ საკითხავი",
     "readThisArticle": "წაიკითხე სტატია",
-    "moreNews": "მეტი სიახლე"
+    "moreNews": "მეტი სიახლე",
+    "videosTitle": "ვიდეოები",
+    "visitChannel": "ეწვიეთ ჩვენს არხს"
   },
   "policy": {
     "title": "კონფიდენციალურობის პოლიტიკა"

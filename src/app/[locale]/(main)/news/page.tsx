@@ -2,6 +2,7 @@
 
 import NewsFeatured from '@/components/news/NewsFeatured';
 import NewsGrid from '@/components/news/NewsGrid';
+import NewsVideoGallery from '@/components/news/NewsVideoGallery';
 import ContactForm from '@/components/ContactForm';
 import ContactPanel from '@/components/ContactPanel';
 import { useAllNews } from '@/hooks/queries/use-news';
@@ -42,6 +43,9 @@ export default function NewsPage() {
           </p>
         </div>
       )}
+
+      {/* Videos from the SEU YouTube channel */}
+      <NewsVideoGallery />
 
       {/* Contact Section */}
       <div className="py-20 lg:py-28 border-t border-site-border">
