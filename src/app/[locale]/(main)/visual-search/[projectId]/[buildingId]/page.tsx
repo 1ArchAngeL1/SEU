@@ -21,10 +21,15 @@ function toSvgPoints(polygon: PolygonPoint[]): string {
   return polygon.map((pt) => `${pt.x},${pt.y}`).join(' ');
 }
 
-function getPolygonCenter(polygon: PolygonPoint[]): { x: number; y: number } {
-  const cx = polygon.reduce((sum, pt) => sum + pt.x, 0) / polygon.length;
-  const cy = polygon.reduce((sum, pt) => sum + pt.y, 0) / polygon.length;
-  return { x: cx, y: cy };
+function getPolygonBounds(polygon: PolygonPoint[]) {
+  const xs = polygon.map((pt) => pt.x);
+  const ys = polygon.map((pt) => pt.y);
+  return {
+    minX: Math.min(...xs),
+    maxX: Math.max(...xs),
+    minY: Math.min(...ys),
+    maxY: Math.max(...ys),
+  };
 }
 
 export default function VisualSearchBuildingPage({
@@ -200,15 +205,26 @@ export default function VisualSearchBuildingPage({
                     })}
                   </svg>
 
-                  {/* Hovered floor tooltip */}
+                  {/* Hovered floor tooltip — parked beside the polygon's right
+                      edge rather than over it, so it never covers the floors the
+                      cursor is travelling towards. */}
                   {hoveredFloor && hoveredFloor.polygon && hoveredFloor.polygon.length >= 3 && (() => {
-                    const center = getPolygonCenter(hoveredFloor.polygon!);
+                    const { minX, maxX, minY, maxY } = getPolygonBounds(hoveredFloor.polygon!);
+                    // Near the right edge of the render there is no room for the
+                    // card, so mirror it to the polygon's left edge instead of
+                    // letting the container's overflow-hidden clip it.
+                    const flip = maxX > 72;
                     return (
                       <div
-                        className="absolute pointer-events-none -translate-x-1/2 -translate-y-full z-10"
-                        style={{ left: `${center.x}%`, top: `${center.y}%` }}
+                        className={`absolute pointer-events-none -translate-y-1/2 z-10 ${flip ? '-translate-x-full' : ''}`}
+                        style={{
+                          left: `${flip ? minX : maxX}%`,
+                          top: `${(minY + maxY) / 2}%`,
+                        }}
                       >
-                        <div className="bg-site-bg/90 backdrop-blur-md border border-success-green/30 rounded-xl px-4 py-2.5 shadow-lg mb-2">
+                        <div
+                          className={`bg-site-bg/90 backdrop-blur-md border border-success-green/30 rounded-xl px-4 py-2.5 shadow-lg ${flip ? 'mr-3' : 'ml-3'}`}
+                        >
                           <p className="font-montserrat font-semibold text-seu-body-sm text-site-fg-strong whitespace-nowrap">
                             {t('floorN', { n: hoveredFloor.floorNumber })}
                           </p>
