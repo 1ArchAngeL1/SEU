@@ -147,8 +147,11 @@ export default function VisualSearchBuildingPage({
 
           {renderImage && (
             <div className="flex flex-col items-center">
+                {/* Sizing wrapper. The tooltip is a sibling of the clipping box
+                    rather than a child, so it can hang past the render's right
+                    edge instead of being cut off by its overflow-hidden. */}
                 <div
-                  className="relative mx-auto rounded-2xl overflow-hidden shadow-[0_0_30px_8px_var(--site-bg)] ring-1 ring-site-border-soft w-full"
+                  className="relative mx-auto w-full"
                   style={{
                     maxHeight: '75vh',
                     maxWidth: imgNatural
@@ -157,6 +160,7 @@ export default function VisualSearchBuildingPage({
                     ...(imgNatural ? { aspectRatio: `${imgNatural.w} / ${imgNatural.h}` } : {}),
                   }}
                 >
+                <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-[0_0_30px_8px_var(--site-bg)] ring-1 ring-site-border-soft">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     ref={imgRef}
@@ -205,36 +209,32 @@ export default function VisualSearchBuildingPage({
                     })}
                   </svg>
 
-                  {/* Hovered floor tooltip — parked beside the polygon's right
-                      edge rather than over it, so it never covers the floors the
-                      cursor is travelling towards. */}
-                  {hoveredFloor && hoveredFloor.polygon && hoveredFloor.polygon.length >= 3 && (() => {
-                    const { minX, maxX, minY, maxY } = getPolygonBounds(hoveredFloor.polygon!);
-                    // Near the right edge of the render there is no room for the
-                    // card, so mirror it to the polygon's left edge instead of
-                    // letting the container's overflow-hidden clip it.
-                    const flip = maxX > 72;
-                    return (
-                      <div
-                        className={`absolute pointer-events-none -translate-y-1/2 z-10 ${flip ? '-translate-x-full' : ''}`}
-                        style={{
-                          left: `${flip ? minX : maxX}%`,
-                          top: `${(minY + maxY) / 2}%`,
-                        }}
-                      >
-                        <div
-                          className={`bg-site-bg/90 backdrop-blur-md border border-success-green/30 rounded-xl px-4 py-2.5 shadow-lg ${flip ? 'mr-3' : 'ml-3'}`}
-                        >
-                          <p className="font-montserrat font-semibold text-seu-body-sm text-site-fg-strong whitespace-nowrap">
-                            {t('floorN', { n: hoveredFloor.floorNumber })}
-                          </p>
-                          <p className="font-montserrat text-seu-caption text-success-green mt-0.5">
-                            {t('clickToExplore')}
-                          </p>
-                        </div>
+                </div>
+
+                {/* Hovered floor tooltip — always parked off the polygon's right
+                    edge, never over it, so it cannot cover the floors the cursor
+                    is travelling towards. */}
+                {hoveredFloor && hoveredFloor.polygon && hoveredFloor.polygon.length >= 3 && (() => {
+                  const { maxX, minY, maxY } = getPolygonBounds(hoveredFloor.polygon!);
+                  return (
+                    <div
+                      className="absolute pointer-events-none -translate-y-1/2 z-50"
+                      style={{
+                        left: `${maxX}%`,
+                        top: `${(minY + maxY) / 2}%`,
+                      }}
+                    >
+                      <div className="ml-3 bg-site-bg/90 backdrop-blur-md border border-success-green/30 rounded-xl px-4 py-2.5 shadow-lg">
+                        <p className="font-montserrat font-semibold text-seu-body-sm text-site-fg-strong whitespace-nowrap">
+                          {t('floorN', { n: hoveredFloor.floorNumber })}
+                        </p>
+                        <p className="font-montserrat text-seu-caption text-success-green mt-0.5 whitespace-nowrap">
+                          {t('clickToExplore')}
+                        </p>
                       </div>
-                    );
-                  })()}
+                    </div>
+                  );
+                })()}
                 </div>
 
             </div>
