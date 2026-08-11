@@ -10,6 +10,7 @@ export function ProjectVideoSection() {
   const [isVisible, setIsVisible] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const startedRef = useRef(false);
 
   // Lazy-load only when the section scrolls into view
   useEffect(() => {
@@ -28,12 +29,33 @@ export function ProjectVideoSection() {
     return () => observer.disconnect();
   }, []);
 
+  // Seek to a frame a couple seconds in once metadata loads, so the box shows a
+  // real still (the "thumbnail") instead of a grey placeholder before play.
+  function showPosterFrame() {
+    const v = videoRef.current;
+    if (v && !startedRef.current) {
+      try {
+        v.currentTime = Math.min(2, (v.duration || 4) / 2);
+      } catch {
+        /* not seekable yet — ignore */
+      }
+    }
+  }
+
   function togglePlay() {
     const v = videoRef.current;
     if (!v) return;
-    if (isPlaying) v.pause();
-    else v.play();
-    setIsPlaying(!isPlaying);
+    if (isPlaying) {
+      v.pause();
+      setIsPlaying(false);
+    } else {
+      if (!startedRef.current) {
+        startedRef.current = true;
+        v.currentTime = 0; // play from the start on the first click
+      }
+      v.play();
+      setIsPlaying(true);
+    }
   }
 
   return (
@@ -50,9 +72,10 @@ export function ProjectVideoSection() {
                 className="w-full h-full object-cover"
                 preload="metadata"
                 playsInline
+                onLoadedMetadata={showPosterFrame}
                 onEnded={() => setIsPlaying(false)}
               >
-                <source src="/video/SEU%20VARKETILI.mp4" type="video/mp4" />
+                <source src="/video/SEU%20VARKETILI.mp4#t=2" type="video/mp4" />
               </video>
             )}
 
