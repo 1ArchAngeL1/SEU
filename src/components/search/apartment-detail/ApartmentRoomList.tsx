@@ -67,13 +67,15 @@ export function ApartmentRoomList({ roomDetails }: ApartmentRoomListProps) {
       {roomDetails.map((room, i) => {
         const label = room.name?.trim() || tRoom(room.type);
         return (
-          <div key={i} className="flex items-center gap-2.5">
+          <div key={i} className="flex items-start gap-2.5">
             <RoomIcon type={room.type} />
-            <div className="flex items-baseline gap-2 min-w-0">
-              <span className="font-montserrat text-seu-caption text-site-fg truncate">
+            {/* Label wraps; size stays pinned to the cell's right edge so the
+                m² values line up in a clean column across the grid. */}
+            <div className="flex items-baseline justify-between gap-2 flex-1 min-w-0">
+              <span className="font-montserrat text-seu-caption text-site-fg leading-snug break-words min-w-0">
                 {label}
               </span>
-              <span className="font-montserrat text-seu-caption text-site-fg-dim">
+              <span className="font-montserrat text-seu-caption text-site-fg-dim whitespace-nowrap flex-none">
                 {room.size} {t('m2')}
               </span>
             </div>

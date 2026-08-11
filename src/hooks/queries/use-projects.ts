@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import {
   useMutation,
   useQuery,
@@ -56,22 +55,6 @@ export function useActiveProjects() {
     queryFn: () => projectsService.getAllActive(),
     staleTime: 60_000,
   });
-}
-
-/**
- * Ids from {@link useActiveProjects} as a set, for the cascade checks in
- * `@/lib/visibility` — units and buildings whose project is only an id need it
- * to tell whether that project is still active.
- */
-export function useActiveProjectIds() {
-  const query = useActiveProjects();
-  // Stays `undefined` until the list arrives — an empty set would read as
-  // "no project is active" and blank every list that consults it.
-  const ids = useMemo(
-    () => (query.data ? new Set(query.data.map((p) => p.id)) : undefined),
-    [query.data]
-  );
-  return { ids, isLoading: query.isLoading, isResolved: query.isSuccess };
 }
 
 export function useProject(id: string | undefined) {

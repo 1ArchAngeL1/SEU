@@ -44,12 +44,15 @@ This makes placeholders easy to find and replace later via search.
 ### Public Visibility — the admin "Active" switch
 The `isActive` switch on a **project**, a **building/block** or a **unit** is a kill-switch for the public site: the record and everything under it must disappear — apartments, visual search, deep links, dropdowns, all of it.
 
-The backend stores the flag per record and does **not** cascade it, so the front end does. Rules live in `src/lib/visibility.ts` (`isUnitVisible`, `isBuildingVisible`, `isProjectVisible`, `visibleUnits`, `visibleBuildings`) — a unit is public only when the unit, its building and its project are all active.
+**The cascade is applied by the backend**, which every public read opts into with `visibleOnly=true`. A unit is public only when the unit, its block and its project are all active.
 
-- Public pages fetch through `useActiveProjects()` / `useActiveProjectIds()` / `useActiveBuildingsByProject()`, never `useAllProjects()` / `useBuildingsByProject()`.
-- Deep links to a deactivated record call `notFound()`.
+- Public pages fetch through the public hooks — `usePublicUnitsList()`, `usePublicUnit()`, `usePublicBuilding()`, `useActiveBuildingsByProject()`, `useActiveBuildings()`, `useActiveProjects()` — never `useUnitsList()` / `useUnit()` / `useBuilding()` / `useBuildingsByProject()` / `useAllProjects()`, which are the admin reads.
+- Public and admin reads of the same record **must not share a react-query cache entry**: the key builders take the `visibleOnly` scope for this reason.
+- Deep links to a deactivated record get a 404 from the API — pages call `notFound()` on `isNotFoundError(query.error)`.
+- `src/lib/visibility.ts` (`isUnitVisible`, `isBuildingVisible`, `isProjectVisible`, `visibleUnits`, `visibleBuildings`) is the **second line of defence**: units and blocks arrive with their `project` / `building` relations populated including `isActive`, so anything that slips through is dropped before it renders. It needs no id sets.
+- Counters (`totalBuildings`, `totalUnits`, `availableUnits`) are backend aggregates that still count deactivated blocks — recount from the blocks on show with `blockTotals()`.
 - **Admin screens deliberately bypass all of this** — editors must keep seeing deactivated records.
-- Any new public page that lists or links projects/blocks/units must apply these helpers.
+- Backend gap: the floors controller accepts no `visibleOnly` (`/floors/by-building/:id`, `/floors/:id`), and `QueryFloorDto` would 400 on the extra param. Floors are safe only because both pages that show them gate on the block first — keep it that way, or plumb the flag through `FloorsService`, which already supports it.
 
 ### Design Spec Interpretation
 - When the user provides CSS layout properties (top, left, width, height), **only use `height`** from layout properties. Ignore top/left/width as those are absolute positioning values from the design tool, not relevant to the responsive layout.

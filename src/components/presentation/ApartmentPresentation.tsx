@@ -300,9 +300,9 @@ export function ApartmentPresentation({ unit, project, floor }: ApartmentPresent
 
 function Row({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-baseline justify-between">
-      <span>{label}</span>
-      <span className="font-semibold">{value}</span>
+    <div className="flex items-baseline justify-between gap-3">
+      <span className="min-w-0 break-words leading-snug">{label}</span>
+      <span className="font-semibold whitespace-nowrap flex-none">{value}</span>
     </div>
   );
 }
