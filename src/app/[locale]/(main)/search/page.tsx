@@ -12,7 +12,9 @@ import { useActiveProjects } from '@/hooks/queries/use-projects';
 import { visibleUnits } from '@/lib/visibility';
 import type { UnitFilter, UnitType } from '@/model/types/api';
 
-const VALID_UNIT_TYPES: ReadonlyArray<UnitType> = ['living', 'commerce', 'parking', 'storage'];
+// 'commerce' is intentionally omitted — commercial units are hidden on the
+// public search for now (no images yet), so a `?type=commerce` URL is ignored.
+const VALID_UNIT_TYPES: ReadonlyArray<UnitType> = ['living', 'parking', 'storage'];
 
 const ITEMS_PER_PAGE = 40;
 
@@ -108,9 +110,14 @@ function SearchPageContent({ initialFilter }: { initialFilter: UnitFilter }) {
   }
 
   // Second line of defence — each unit arrives with its project and block
-  // populated, flags included.
+  // populated, flags included. Commercial units are hidden for now (we don't
+  // have images for them yet); since the list is apartments-first, these only
+  // sit on the tail pages, so dropping them barely affects pagination.
   const units = useMemo(
-    () => visibleUnits(unitsQ.data?.items ?? []),
+    () =>
+      visibleUnits(unitsQ.data?.items ?? []).filter(
+        (u) => u.type !== 'commerce'
+      ),
     [unitsQ.data]
   );
   const totalPages = unitsQ.data?.pagination.totalPages ?? 1;
