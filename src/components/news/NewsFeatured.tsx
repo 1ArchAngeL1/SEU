@@ -1,7 +1,7 @@
 'use client';
 
-import { ImageIcon } from 'lucide-react';
-import { useLocale } from 'next-intl';
+import { ArrowRight, ImageIcon } from 'lucide-react';
+import { useLocale, useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import FadeIn from '@/components/FadeIn';
 import { fileUrl } from '@/lib/file-url';
@@ -14,6 +14,7 @@ interface NewsFeaturedProps {
 
 export default function NewsFeatured({ article }: NewsFeaturedProps) {
   const locale = useLocale() as Locale;
+  const t = useTranslations('news');
   const hasImage = article.image.length > 0;
   const header = pickLocalized(article.headerEn, article.headerKa, locale);
   const imageSrc = hasImage ? fileUrl(article.image[0]) : '';
@@ -40,6 +41,17 @@ export default function NewsFeatured({ article }: NewsFeaturedProps) {
             </div>
           )}
         </Link>
+
+        {/* Read More CTA — primary green button under the featured banner */}
+        <div className="mt-5 lg:mt-6 flex justify-center lg:justify-start">
+          <Link
+            href={`/news/${article.id}`}
+            className="inline-flex items-center gap-2 bg-primary-green text-white font-montserrat font-medium text-seu-body px-10 py-3 rounded-lg hover:bg-primary-green/85 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-green/60"
+          >
+            {t('readMore')}
+            <ArrowRight className="size-4" />
+          </Link>
+        </div>
       </FadeIn>
     </div>
   );
