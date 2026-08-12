@@ -207,10 +207,21 @@ export interface Unit {
   status: UnitStatus;
   type: UnitType;
   rooms?: Room[];
+  /**
+   * @deprecated Stale import leftovers — do not read these. They are absent
+   * from the backend's Unit schema and nothing recomputes them (`syncRooms`
+   * only writes `rooms`), so they keep whatever the original import set,
+   * usually 0, no matter how the layout is later edited. Derive counts from
+   * `rooms` via `@/lib/room-counts` instead.
+   */
   bedrooms?: number;
+  /** @deprecated See `bedrooms` — use `bathroomCount()` from `@/lib/room-counts`. */
   bathrooms?: number;
+  /** @deprecated See `bedrooms` — use `countRoomType()` from `@/lib/room-counts`. */
   livingRooms?: number;
+  /** @deprecated See `bedrooms` — use `countRoomType()` from `@/lib/room-counts`. */
   balconies?: number;
+  /** @deprecated See `bedrooms` — use `countRoomType()` from `@/lib/room-counts`. */
   terraces?: number;
   totalSize: number;
   livableArea?: number;

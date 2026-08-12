@@ -1,10 +1,11 @@
 'use client';
 
-import { use, useState, useMemo, useRef, useCallback } from 'react';
+import { use, useState, useMemo, useCallback, type SyntheticEvent } from 'react';
 import { notFound } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
-import { Loader2, ChevronUp, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronUp, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import BackButton from '@/components/BackButton';
+import SeuLoader from '@/components/common/SeuLoader';
 import ContactForm from '@/components/ContactForm';
 import ContactPanel from '@/components/ContactPanel';
 import { Link, useRouter } from '@/i18n/navigation';
@@ -17,6 +18,7 @@ import { useProject } from '@/hooks/queries/use-projects';
 import { usePublicUnitsList } from '@/hooks/queries/use-units';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
+import { bathroomCount, bedroomCount } from '@/lib/room-counts';
 import { cn } from '@/lib/utils';
 import { isBuildingVisible, isProjectVisible, visibleUnits } from '@/lib/visibility';
 import { isNotFoundError } from '@/lib/api-client';
@@ -90,11 +92,19 @@ export default function VisualSearchFloorPage({
     'floor-plan'
   );
   const [imgNatural, setImgNatural] = useState<{ w: number; h: number } | null>(null);
-  const imgRef = useRef<HTMLImageElement>(null);
+  // The query resolving is not the same as the plan being on screen — the image
+  // still has to download. Unit polygons wait for it rather than landing on a
+  // blank box. Both breakpoints share the flag: same file, so the second <img>
+  // comes from cache.
+  const [imgLoaded, setImgLoaded] = useState(false);
 
-  const handleImgLoad = useCallback(() => {
-    const el = imgRef.current;
-    if (el) setImgNatural({ w: el.naturalWidth, h: el.naturalHeight });
+  // Reads the event target rather than a ref: the mobile and desktop plans are
+  // separate <img> elements, so a single shared ref would only ever point at
+  // whichever mounted last.
+  const handleImgLoad = useCallback((e: SyntheticEvent<HTMLImageElement>) => {
+    const el = e.currentTarget;
+    setImgNatural({ w: el.naturalWidth, h: el.naturalHeight });
+    setImgLoaded(true);
   }, []);
 
   const unitsWithPolygons = units.filter(
@@ -262,7 +272,7 @@ export default function VisualSearchFloorPage({
 
         {isLoading && (
           <div className="flex items-center justify-center py-32">
-            <Loader2 className="size-8 text-primary-green animate-spin" />
+            <SeuLoader size="lg" />
           </div>
         )}
 
@@ -276,21 +286,26 @@ export default function VisualSearchFloorPage({
                     className="relative w-full mx-auto shadow-[0_0_30px_8px_var(--site-bg)]"
                     style={{
                       maxHeight: '70vh',
-                      ...(imgNatural ? { aspectRatio: `${imgNatural.w} / ${imgNatural.h}` } : {}),
+                      ...(imgNatural
+                        ? { aspectRatio: `${imgNatural.w} / ${imgNatural.h}` }
+                        : { minHeight: '50vh' }),
                     }}
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      ref={imgRef}
                       src={renderImage}
                       alt={floor ? t('floorN', { n: floor.floorNumber }) : t('alt.floorPlan')}
-                      className="w-full h-full object-contain block rounded-lg"
+                      className={`w-full h-full object-contain block rounded-lg transition-opacity duration-700 ease-out ${
+                        imgLoaded ? 'opacity-100' : 'opacity-0'
+                      }`}
                       onLoad={handleImgLoad}
                     />
+                    {!imgLoaded && <SeuLoader overlay size="md" />}
+                    {imgLoaded && (
                     <svg
                       viewBox="0 0 100 100"
                       preserveAspectRatio="none"
-                      className="absolute inset-0 w-full h-full"
+                      className="absolute inset-0 w-full h-full animate-polygons-in"
                     >
                       <defs>
                         <filter id="glow-m">
@@ -320,8 +335,9 @@ export default function VisualSearchFloorPage({
                         );
                       })}
                     </svg>
+                    )}
                     {/* Apartment number (+ status) centered on each unit */}
-                    {unitsWithPolygons.map((unit) => {
+                    {imgLoaded && unitsWithPolygons.map((unit) => {
                       const center = getPolygonCenter(unit.polygon!);
                       const isAvailable = unit.status === 'available';
                       const colors = STATUS_COLORS[unit.status] ?? STATUS_COLORS.available;
@@ -396,9 +412,9 @@ export default function VisualSearchFloorPage({
                           </div>
                           <div className="flex items-center gap-3 font-montserrat text-seu-caption-sm">
                             <span className="text-site-fg-muted">{unit.totalSize} m²</span>
-                            {unit.bedrooms !== undefined && (
+                            {bedroomCount(unit) > 0 && (
                               <span className="text-site-fg-dim">
-                                {t('beds', { count: unit.bedrooms })}
+                                {t('beds', { count: bedroomCount(unit) })}
                               </span>
                             )}
                           </div>
@@ -462,22 +478,28 @@ export default function VisualSearchFloorPage({
                       className="relative w-full max-w-3xl mx-auto shadow-[0_0_30px_8px_var(--site-bg)]"
                       style={{
                         maxHeight: '70vh',
-                        ...(imgNatural ? { aspectRatio: `${imgNatural.w} / ${imgNatural.h}` } : {}),
+                        ...(imgNatural
+                          ? { aspectRatio: `${imgNatural.w} / ${imgNatural.h}` }
+                          : { minHeight: '55vh' }),
                       }}
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
-                        ref={imgRef}
                         src={renderImage}
                         alt={floor ? t('floorN', { n: floor.floorNumber }) : t('alt.floorPlan')}
-                        className="w-full h-full object-contain block"
+                        className={`w-full h-full object-contain block transition-opacity duration-700 ease-out ${
+                          imgLoaded ? 'opacity-100' : 'opacity-0'
+                        }`}
                         onLoad={handleImgLoad}
                       />
 
+                      {!imgLoaded && <SeuLoader overlay size="lg" />}
+
+                      {imgLoaded && (
                       <svg
                         viewBox="0 0 100 100"
                         preserveAspectRatio="none"
-                        className="absolute inset-0 w-full h-full"
+                        className="absolute inset-0 w-full h-full animate-polygons-in"
                       >
                         <defs>
                           <filter id="glow">
@@ -509,9 +531,10 @@ export default function VisualSearchFloorPage({
                           );
                         })}
                       </svg>
+                      )}
 
                       {/* Apartment number (+ status) centered on each unit */}
-                      {unitsWithPolygons.map((unit) => {
+                      {imgLoaded && unitsWithPolygons.map((unit) => {
                         const center = getPolygonCenter(unit.polygon!);
                         const isHovered = hoveredId === unit.id;
                         const isAvailable = unit.status === 'available';
@@ -566,14 +589,14 @@ export default function VisualSearchFloorPage({
                                   <span className="text-site-fg-muted">
                                     {u.totalSize} m²
                                   </span>
-                                  {u.bedrooms !== undefined && (
+                                  {bedroomCount(u) > 0 && (
                                     <span className="text-site-fg-dim">
-                                      {t('beds', { count: u.bedrooms })}
+                                      {t('beds', { count: bedroomCount(u) })}
                                     </span>
                                   )}
-                                  {u.bathrooms !== undefined && (
+                                  {bathroomCount(u) > 0 && (
                                     <span className="text-site-fg-dim">
-                                      {t('baths', { count: u.bathrooms })}
+                                      {t('baths', { count: bathroomCount(u) })}
                                     </span>
                                   )}
                                 </div>
@@ -640,9 +663,9 @@ export default function VisualSearchFloorPage({
                               <span className="text-site-fg-muted">
                                 {unit.totalSize} m²
                               </span>
-                              {unit.bedrooms !== undefined && (
+                              {bedroomCount(unit) > 0 && (
                                 <span className="text-site-fg-dim">
-                                  {t('beds', { count: unit.bedrooms })}
+                                  {t('beds', { count: bedroomCount(unit) })}
                                 </span>
                               )}
                             </div>

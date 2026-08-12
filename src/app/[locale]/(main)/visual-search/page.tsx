@@ -3,8 +3,8 @@
 import { useMemo } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
-import { Loader2 } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
+import SeuLoader from '@/components/common/SeuLoader';
 import ContactForm from '@/components/ContactForm';
 import ContactPanel from '@/components/ContactPanel';
 import { useProjectsList } from '@/hooks/queries/use-projects';
@@ -58,7 +58,7 @@ export default function VisualSearchPage() {
 
       {projectsQ.isLoading && (
         <div className="flex items-center justify-center py-32">
-          <Loader2 className="size-8 text-primary-green animate-spin" />
+          <SeuLoader size="lg" />
         </div>
       )}
 

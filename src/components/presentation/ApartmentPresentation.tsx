@@ -7,6 +7,7 @@ import { Phone, Mail, MapPin } from 'lucide-react';
 import type { Project, Unit, RoomType, Floor, PolygonPoint } from '@/model/types/api';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
+import { bedroomCount } from '@/lib/room-counts';
 
 interface ApartmentPresentationProps {
   unit: Unit;
@@ -50,9 +51,9 @@ export function ApartmentPresentation({ unit, project, floor }: ApartmentPresent
     (r): r is NonNullable<typeof r> => r != null && typeof r === 'object'
   );
 
-  const roomCount =
-    unit.bedrooms ??
-    (rooms.filter((r) => r.type === 'bedroom').length || rooms.length);
+  // Never fall back to `unit.bedrooms` — it is a stale import leftover that is
+  // usually 0, and `??` would let that 0 win over the real count.
+  const roomCount = bedroomCount(unit) || rooms.length;
 
   const m2 = ts('m2');
 

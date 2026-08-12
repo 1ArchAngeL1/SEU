@@ -12,6 +12,7 @@ import {
   Sun,
 } from 'lucide-react';
 import type { RoomType } from '@/model/types/api';
+import { normalizeRoomType } from '@/lib/room-counts';
 
 export interface RoomDetail {
   name?: string;
@@ -22,8 +23,7 @@ export interface RoomDetail {
 function RoomIcon({ type }: { type: RoomType }) {
   const cls = 'size-5 text-site-fg-dim flex-shrink-0';
   // Legacy data may still carry the removed 'toilet' type; treat it as bathroom.
-  const normalized: RoomType = (type as string) === 'toilet' ? 'bathroom' : type;
-  switch (normalized) {
+  switch (normalizeRoomType(type)) {
     case 'bedroom':
       return <BedDouble className={cls} />;
     case 'living_room':

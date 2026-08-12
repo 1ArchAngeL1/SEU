@@ -3,8 +3,8 @@
 import { use, useState, useMemo, useRef, useCallback } from 'react';
 import { notFound } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
-import { Loader2 } from 'lucide-react';
 import BackButton from '@/components/BackButton';
+import SeuLoader from '@/components/common/SeuLoader';
 import ContactForm from '@/components/ContactForm';
 import ContactPanel from '@/components/ContactPanel';
 import { Link, useRouter } from '@/i18n/navigation';
@@ -56,10 +56,14 @@ export default function VisualSearchBuildingPage({
 
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [imgNatural, setImgNatural] = useState<{ w: number; h: number } | null>(null);
+  // The query resolving is not the same as the render being on screen — the
+  // image still has to download. Both gates feed the loader so nothing pops in.
+  const [imgLoaded, setImgLoaded] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
   const handleImgLoad = useCallback(() => {
     const el = imgRef.current;
     if (el) setImgNatural({ w: el.naturalWidth, h: el.naturalHeight });
+    setImgLoaded(true);
   }, []);
 
   const sortedFloors = useMemo(
@@ -141,7 +145,7 @@ export default function VisualSearchBuildingPage({
 
           {isLoading && (
             <div className="flex items-center justify-center py-32">
-              <Loader2 className="size-8 text-primary-green animate-spin" />
+              <SeuLoader size="lg" />
             </div>
           )}
 
@@ -157,7 +161,12 @@ export default function VisualSearchBuildingPage({
                     maxWidth: imgNatural
                       ? `min(100%, calc(75vh * ${imgNatural.w} / ${imgNatural.h}))`
                       : '100%',
-                    ...(imgNatural ? { aspectRatio: `${imgNatural.w} / ${imgNatural.h}` } : {}),
+                    // Hold a stable box while the render downloads, so the
+                    // loader does not sit in a collapsed container and the page
+                    // does not jump when the real ratio arrives.
+                    ...(imgNatural
+                      ? { aspectRatio: `${imgNatural.w} / ${imgNatural.h}` }
+                      : { minHeight: '60vh' }),
                   }}
                 >
                 <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-[0_0_30px_8px_var(--site-bg)] ring-1 ring-site-border-soft">
@@ -166,17 +175,24 @@ export default function VisualSearchBuildingPage({
                     ref={imgRef}
                     src={renderImage}
                     alt={building ? pickLocalized(building.nameEn, building.nameKa, locale) : t('alt.buildingRender')}
-                    className="w-full h-full object-contain block"
+                    className={`w-full h-full object-contain block transition-opacity duration-700 ease-out ${
+                      imgLoaded ? 'opacity-100' : 'opacity-0'
+                    }`}
                     onLoad={handleImgLoad}
                   />
 
                   {/* Soft vignette edges */}
                   <div className="site-vignette absolute inset-0 rounded-2xl shadow-[inset_0_0_60px_20px_var(--site-bg)]" />
 
+                  {/* Held until the render is actually decoded — mounting the
+                      polygons here also makes the entrance animation replay. */}
+                  {!imgLoaded && <SeuLoader overlay size="lg" />}
+
+                  {imgLoaded && (
                   <svg
                     viewBox="0 0 100 100"
                     preserveAspectRatio="none"
-                    className="absolute inset-0 w-full h-full"
+                    className="absolute inset-0 w-full h-full animate-polygons-in"
                   >
                     <defs>
                       <filter id="glow-bldg">
@@ -208,7 +224,7 @@ export default function VisualSearchBuildingPage({
                       );
                     })}
                   </svg>
-
+                  )}
                 </div>
 
                 {/* Hovered floor tooltip — always parked off the polygon's right

@@ -3,7 +3,8 @@
 import { use, useState, useRef, useCallback, useEffect } from 'react';
 import { notFound } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
-import { Loader2, ZoomIn, ZoomOut, Maximize, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ZoomIn, ZoomOut, Maximize, ChevronLeft, ChevronRight } from 'lucide-react';
+import SeuLoader from '@/components/common/SeuLoader';
 import BackButton from '@/components/BackButton';
 import ContactForm from '@/components/ContactForm';
 import ContactPanel from '@/components/ContactPanel';
@@ -343,6 +344,11 @@ export default function VisualSearchProjectPage({
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  // The query resolving is not the same as the render being on screen — the
+  // image still has to download. Polygons wait for it so they never sit on a
+  // blank box. Both breakpoints share the flag: it is the same file, so the
+  // second <img> is served from cache.
+  const [imgLoaded, setImgLoaded] = useState(false);
 
   const panZoom = usePanZoom();
 
@@ -395,7 +401,7 @@ export default function VisualSearchProjectPage({
 
       {isLoading && (
         <div className="flex items-center justify-center py-32">
-          <Loader2 className="size-8 text-primary-green animate-spin" />
+          <SeuLoader size="lg" />
         </div>
       )}
 
@@ -418,13 +424,22 @@ export default function VisualSearchProjectPage({
               <img
                 src={renderImage}
                 alt={project ? pickLocalized(project.nameEn, project.nameKa, locale) : t('alt.projectRender')}
-                className="w-full h-auto block"
+                className={`w-full h-auto block transition-opacity duration-700 ease-out ${
+                  imgLoaded ? 'opacity-100' : 'opacity-0'
+                }`}
                 draggable={false}
+                onLoad={() => setImgLoaded(true)}
               />
+              {!imgLoaded && (
+                <div className="absolute inset-0 flex items-center justify-center min-h-[50vh]">
+                  <SeuLoader size="md" />
+                </div>
+              )}
+              {imgLoaded && (
               <svg
                 viewBox="0 0 100 100"
                 preserveAspectRatio="none"
-                className="absolute inset-0 w-full h-full"
+                className="absolute inset-0 w-full h-full animate-polygons-in"
               >
                 <defs>
                   <filter id="glow-mobile">
@@ -462,6 +477,7 @@ export default function VisualSearchProjectPage({
                   );
                 })}
               </svg>
+              )}
             </div>
 
             {/* Zoom controls */}
@@ -524,8 +540,17 @@ export default function VisualSearchProjectPage({
             <img
               src={renderImage}
               alt={project ? pickLocalized(project.nameEn, project.nameKa, locale) : t('alt.projectRender')}
-              className="w-full h-auto block"
+              className={`w-full h-auto block transition-opacity duration-700 ease-out ${
+                imgLoaded ? 'opacity-100' : 'opacity-0'
+              }`}
+              onLoad={() => setImgLoaded(true)}
             />
+
+            {!imgLoaded && (
+              <div className="absolute inset-0 flex items-center justify-center min-h-[60vh]">
+                <SeuLoader size="lg" />
+              </div>
+            )}
 
             {/* Smooth fade edges into dark-green background */}
             <div className="absolute inset-x-0 top-0 h-32 lg:h-40 bg-gradient-to-b from-dark-green via-dark-green/60 to-transparent" />
@@ -534,10 +559,11 @@ export default function VisualSearchProjectPage({
             <div className="absolute inset-y-0 right-0 w-16 lg:w-24 bg-gradient-to-l from-dark-green to-transparent" />
 
             {/* SVG polygon overlays */}
+            {imgLoaded && (
             <svg
               viewBox="0 0 100 100"
               preserveAspectRatio="none"
-              className="absolute inset-0 w-full h-full"
+              className="absolute inset-0 w-full h-full animate-polygons-in"
             >
               <defs>
                 <filter id="glow">
@@ -569,6 +595,7 @@ export default function VisualSearchProjectPage({
                 );
               })}
             </svg>
+            )}
 
             {/* Top-right — choose block */}
             <div className="absolute top-0 right-0 px-10 pt-8 z-10">

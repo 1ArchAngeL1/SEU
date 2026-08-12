@@ -11,6 +11,7 @@ import { usePublicUnit } from '@/hooks/queries/use-units';
 import { unitsService } from '@/service/units.service';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
+import { bedroomCount } from '@/lib/room-counts';
 import { isUnitVisible, refId } from '@/lib/visibility';
 
 export default function ApartmentDetailPage({
@@ -66,7 +67,7 @@ export default function ApartmentDetailPage({
             totalSize: unit.totalSize,
             mainSize: unit.livableArea ?? unit.totalSize,
             openSpace: unit.balconySize ?? 0,
-            rooms: unit.bedrooms ?? 0,
+            rooms: bedroomCount(unit),
             roomDetails: (Array.isArray(unit.rooms) ? unit.rooms : [])
               .filter((r): r is NonNullable<typeof r> => r != null && typeof r === 'object')
               .map((r) => {

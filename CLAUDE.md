@@ -62,6 +62,11 @@ The public site carries a site-wide "this is a test version" disclaimer until la
 - Copy lives in `messages/{en,ka}.json` under `testMode.message` — one short line, never hardcoded in the component.
 - Admin (`/admin/*`) and `/presentation/*` deliberately do not show it.
 
+### Loading States
+- Use `SeuLoader` (`src/components/common/SeuLoader.tsx`) for public-facing waits — the SEU mark over a breathing halo with a sweeping track. Never a bare `Loader2` spinner on public pages. Sizes `sm | md | lg`; `overlay` fills the nearest positioned ancestor and dims behind it. Keyframes live in `globals.css` (`seuBreathe` / `seuHalo` / `seuSweep`, all disabled under `prefers-reduced-motion`).
+- **A resolved query is not a rendered image.** On any page that draws polygons over a render, gate on an `imgLoaded` flag set by the image's own `onLoad`, not just on `isLoading`: fade the image in, hold a `minHeight` on its box beforehand so the loader has somewhere to sit, and mount the polygon `<svg>` only once loaded with `animate-polygons-in`. Mounting rather than toggling opacity is deliberate — it makes the entrance animation replay on every navigation.
+- When one page renders separate mobile and desktop `<img>` elements, read `e.currentTarget` in the load handler rather than a shared `ref`, which would only ever point at whichever mounted last.
+
 ### Design Spec Interpretation
 - When the user provides CSS layout properties (top, left, width, height), **only use `height`** from layout properties. Ignore top/left/width as those are absolute positioning values from the design tool, not relevant to the responsive layout.
 
