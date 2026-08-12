@@ -6,7 +6,6 @@ import { useLocale, useTranslations } from 'next-intl';
 import { ChevronUp, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import BackButton from '@/components/BackButton';
 import SeuLoader from '@/components/common/SeuLoader';
-import FloorUnitPanel from '@/components/visual-search/FloorUnitPanel';
 import ContactForm from '@/components/ContactForm';
 import ContactPanel from '@/components/ContactPanel';
 import { Link, useRouter } from '@/i18n/navigation';
@@ -83,15 +82,6 @@ export default function VisualSearchFloorPage({
     fileUrl(floor?.renderImage) || fileUrl(floor?.floorImageId);
 
   const [hoveredId, setHoveredId] = useState<string | null>(null);
-  // The last unit the cursor visited. Kept after the cursor leaves so the side
-  // panel holds its reading instead of blanking every time the pointer crosses
-  // the gap between two polygons.
-  const [inspectedId, setInspectedId] = useState<string | null>(null);
-
-  const inspectUnit = useCallback((id: string) => {
-    setHoveredId(id);
-    setInspectedId(id);
-  }, []);
   const [activeTab, setActiveTab] = useState<'floor-plan' | 'grid'>(
     'floor-plan'
   );
@@ -115,13 +105,6 @@ export default function VisualSearchFloorPage({
     (u) => u.polygon && u.polygon.length >= 3
   );
 
-  const panelUnit = useMemo(
-    () => units.find((u) => u.id === (hoveredId ?? inspectedId)) ?? null,
-    [units, hoveredId, inspectedId]
-  );
-  const availableCount = units.filter((u) => u.status === 'available').length;
-  // The read-out only makes sense next to a plan the visitor can hover.
-  const showUnitPanel = activeTab === 'floor-plan' && Boolean(renderImage);
 
   // Only sellable apartments open a detail view. Sold units and any
   // non-living unit (commercial, parking, storage) are not clickable.
@@ -528,7 +511,7 @@ export default function VisualSearchFloorPage({
                             <g
                               key={unit.id}
                               className={canOpenUnit(unit) ? 'cursor-pointer' : 'cursor-default'}
-                              onMouseEnter={() => inspectUnit(unit.id)}
+                              onMouseEnter={() => setHoveredId(unit.id)}
                               onMouseLeave={() => setHoveredId(null)}
                               onClick={() => handleUnitClick(unit)}
                             >
@@ -586,8 +569,43 @@ export default function VisualSearchFloorPage({
                         );
                       })}
 
-                      {/* The unit read-out lives in the side panel, never over
-                          the plan — see FloorUnitPanel in the right column. */}
+                      {/* Hovered unit info. Pinned to whichever half of the
+                          plan the unit sits in — top for an upper apartment,
+                          bottom for a lower one — so the card stays near what
+                          you are pointing at instead of always cutting across
+                          the foot of the drawing. */}
+                      {hoveredId &&
+                        (() => {
+                          const u = units.find((x) => x.id === hoveredId);
+                          if (!u?.polygon || u.polygon.length < 3) return null;
+                          // Polygon coordinates are percentages of the plan box,
+                          // so the midpoint is the half it belongs to.
+                          const isUpper = getPolygonCenter(u.polygon).y < 50;
+                          return (
+                            <div
+                              className={cn(
+                                'absolute left-6 right-6 flex justify-center pointer-events-none',
+                                isUpper ? 'top-6' : 'bottom-6'
+                              )}
+                            >
+                              <div className="bg-site-bg/90 backdrop-blur-md border border-success-green/30 rounded-xl px-6 py-4 shadow-lg">
+                                <p className="font-montserrat font-semibold text-seu-body text-site-fg-strong">
+                                  {t('unit')} {u.unitNumber}
+                                </p>
+                                <div className="flex items-center gap-4 font-montserrat text-seu-caption mt-1">
+                                  <span className="text-site-fg-muted">
+                                    {u.totalSize} m²
+                                  </span>
+                                  {bedroomCount(u) > 0 && (
+                                    <span className="text-site-fg-dim">
+                                      {t('beds', { count: bedroomCount(u) })}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })()}
                     </div>
                   ) : (
                     <p className="text-site-fg-muted font-montserrat text-seu-body text-center py-20">
@@ -662,32 +680,9 @@ export default function VisualSearchFloorPage({
               )}
             </div>
 
-            {/* Right rail — apartment read-out above the block switcher. The
-                read-out sits here rather than over the plan so it can stay up
-                permanently without hiding the drawing. */}
-            {(showUnitPanel || allBuildings.length > 1) && (
-            <div
-              className={cn(
-                'shrink-0 flex flex-col gap-8 sticky top-24',
-                // Only the read-out needs the wider rail; the block switcher
-                // alone keeps its original narrow column.
-                showUnitPanel ? 'w-64' : 'w-40'
-              )}
-            >
-              {showUnitPanel && (
-                <FloorUnitPanel
-                  unit={panelUnit}
-                  totalUnits={units.length}
-                  availableUnits={availableCount}
-                  floorNumber={floor?.floorNumber}
-                  block={building?.block}
-                  canOpen={panelUnit ? canOpenUnit(panelUnit) : false}
-                  onOpen={() => panelUnit && handleUnitClick(panelUnit)}
-                />
-              )}
-
-              {allBuildings.length > 1 && (
-              <div>
+            {/* Right column — Blocks sidebar */}
+            {allBuildings.length > 1 && (
+              <div className="shrink-0 w-40">
                 <h3 className="font-bodoni text-seu-body text-site-fg mb-4 text-right">
                   {t('blocks')}
                 </h3>
@@ -711,8 +706,6 @@ export default function VisualSearchFloorPage({
                   })}
                 </div>
               </div>
-              )}
-            </div>
             )}
           </div>
         )}
