@@ -11,7 +11,7 @@ export default function FooterLower() {
       {/* Social Icons */}
       <div className="flex items-center gap-10 lg:gap-18 justify-self-start lg:order-none order-last">
         <a
-          href="https://www.facebook.com/photo/?fbid=545516530942763&set=a.545516477609435"
+          href="https://www.facebook.com/SEUdevelopment"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Facebook"

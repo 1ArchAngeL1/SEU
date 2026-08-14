@@ -71,6 +71,23 @@ export function bedroomCount(unit: HasRooms | null | undefined): number {
   return unit?.bedrooms ?? 0;
 }
 
+/**
+ * A studio is a unit with a studio room and no bedrooms — the same definition
+ * the backend filters on (`buildFilter` in `units.service.ts`).
+ *
+ * Test this before falling back to any room tally: a studio's bedroom count is
+ * legitimately 0, so treating 0 as "unknown" and substituting the total number
+ * of rooms bills a studio as a four-room apartment.
+ */
+export function isStudio(unit: HasRooms | null | undefined): boolean {
+  const rooms = unitRooms(unit);
+  if (rooms.length === 0) return false;
+  return (
+    rooms.some((r) => r.type === 'studio') &&
+    countRoomType(unit, 'bedroom') === 0
+  );
+}
+
 export function bathroomCount(unit: HasRooms | null | undefined): number {
   if (unitRooms(unit).length > 0) return countRoomType(unit, 'bathroom');
   return unit?.bathrooms ?? 0;

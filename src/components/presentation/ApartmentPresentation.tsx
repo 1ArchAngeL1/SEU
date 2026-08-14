@@ -7,7 +7,7 @@ import { Phone, Mail, MapPin } from 'lucide-react';
 import type { Project, Unit, RoomType, Floor, PolygonPoint } from '@/model/types/api';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
-import { bedroomCount } from '@/lib/room-counts';
+import { bedroomCount, isStudio } from '@/lib/room-counts';
 
 interface ApartmentPresentationProps {
   unit: Unit;
@@ -51,9 +51,13 @@ export function ApartmentPresentation({ unit, project, floor }: ApartmentPresent
     (r): r is NonNullable<typeof r> => r != null && typeof r === 'object'
   );
 
-  // Never fall back to `unit.bedrooms` — it is a stale import leftover that is
-  // usually 0, and `??` would let that 0 win over the real count.
-  const roomCount = bedroomCount(unit) || rooms.length;
+  // Never read `unit.bedrooms` directly — it is a stale import leftover that is
+  // usually 0. And never fall back to `rooms.length` when the bedroom count is
+  // 0: a studio has no bedrooms by definition, so the tally would print it as a
+  // four-room apartment. A studio is named, everything else is counted, and a
+  // unit with no room data at all says nothing rather than guessing.
+  const studio = isStudio(unit);
+  const roomCount = bedroomCount(unit);
 
   const m2 = ts('m2');
 
@@ -141,8 +145,16 @@ export function ApartmentPresentation({ unit, project, floor }: ApartmentPresent
             </h2>
 
             <div className="mt-3 flex items-center gap-3 font-montserrat text-dark-green/70 text-[0.85rem]">
-              <span>{t('roomApartment', { count: roomCount })}</span>
-              <span className="w-px h-4 bg-dark-green/30" />
+              {(studio || roomCount > 0) && (
+                <>
+                  <span>
+                    {studio
+                      ? tr('studio')
+                      : t('roomApartment', { count: roomCount })}
+                  </span>
+                  <span className="w-px h-4 bg-dark-green/30" />
+                </>
+              )}
               <span>
                 {ts('block')} {unit.block}
               </span>
