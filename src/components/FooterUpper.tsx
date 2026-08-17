@@ -9,7 +9,7 @@ export default function FooterUpper() {
   const pathname = usePathname();
 
   const links = [
-    { label: t('projects'), href: '#' },
+    { label: t('projects'), href: '/visual-search' },
     { label: t('seuCard'), href: '/card' },
     // Longest label by far — stacked last on mobile so it doesn't split the list.
     { label: t('privacyPolicy'), href: '/policy', mobileLast: true },
