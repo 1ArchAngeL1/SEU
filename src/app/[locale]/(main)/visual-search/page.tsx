@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import SeuLoader from '@/components/common/SeuLoader';
+import ProjectLocationLink from '@/components/visual-search/ProjectLocationLink';
 import ContactForm from '@/components/ContactForm';
 import ContactPanel from '@/components/ContactPanel';
 import { useProjectsList } from '@/hooks/queries/use-projects';
@@ -77,6 +78,13 @@ export default function VisualSearchPage() {
             pickLocalized(project.location?.districtEn, project.location?.districtKa, locale) ||
             pickLocalized(project.location?.cityEn, project.location?.cityKa, locale) ||
             '';
+          // Fuller address for the map dialog's header.
+          const address = [
+            pickLocalized(project.location?.addressEn, project.location?.addressKa, locale),
+            pickLocalized(project.location?.cityEn, project.location?.cityKa, locale),
+          ]
+            .filter(Boolean)
+            .join(' · ');
           const totals = buildingsQ.isSuccess
             ? blockTotals(blocksByProject.get(project.id) ?? [])
             : null;
@@ -151,9 +159,16 @@ export default function VisualSearchPage() {
                       <p className="font-montserrat text-[0.65rem] lg:text-seu-caption-sm text-secondary-grey uppercase tracking-wider mb-0.5">
                         Location
                       </p>
-                      <p className="font-montserrat font-medium text-seu-caption-sm lg:text-seu-caption text-pale-gray uppercase">
+                      {/* Opens the project's Google Maps location, when the
+                          admin has set one — otherwise plain text. */}
+                      <ProjectLocationLink
+                        link={project.googleMapLink}
+                        projectName={name}
+                        address={address}
+                        className="font-montserrat font-medium text-seu-caption-sm lg:text-seu-caption text-pale-gray uppercase"
+                      >
                         {location}
-                      </p>
+                      </ProjectLocationLink>
                     </div>
                   )}
                   {project.minSizeApartment != null && (

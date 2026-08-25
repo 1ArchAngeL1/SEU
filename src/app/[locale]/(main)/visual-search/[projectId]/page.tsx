@@ -13,6 +13,7 @@ import { useProject } from '@/hooks/queries/use-projects';
 import { useActiveBuildingsByProject } from '@/hooks/queries/use-buildings';
 import { ApartmentTypesSection } from '@/components/visual-search/ApartmentTypesSection';
 import { ProjectVideoSection } from '@/components/visual-search/ProjectVideoSection';
+import ProjectLocationLink from '@/components/visual-search/ProjectLocationLink';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
 import { blockTotals, isProjectVisible } from '@/lib/visibility';
@@ -645,12 +646,24 @@ export default function VisualSearchProjectPage({
                       {t('location')}
                     </p>
                     <span className="size-1.5 rounded-full bg-secondary-grey/50" />
-                    <p className="font-montserrat font-medium text-seu-caption-sm lg:text-seu-body-sm text-pale-gray text-center">
+                    {/* Opens the project's Google Maps location, when the admin
+                        has set one — otherwise plain text. */}
+                    <ProjectLocationLink
+                      link={project.googleMapLink}
+                      projectName={pickLocalized(project.nameEn, project.nameKa, locale)}
+                      address={[
+                        pickLocalized(project.location?.addressEn, project.location?.addressKa, locale),
+                        pickLocalized(project.location?.cityEn, project.location?.cityKa, locale),
+                      ]
+                        .filter(Boolean)
+                        .join(' · ')}
+                      className="font-montserrat font-medium text-seu-caption-sm lg:text-seu-body-sm text-pale-gray text-center"
+                    >
                       {pickLocalized(project.location?.districtEn, project.location?.districtKa, locale) ||
                         pickLocalized(project.location?.cityEn, project.location?.cityKa, locale) ||
                         pickLocalized(project.location?.addressEn, project.location?.addressKa, locale) ||
                         '—'}
-                    </p>
+                    </ProjectLocationLink>
                   </div>
 
                   {/* Apartment Sizes */}

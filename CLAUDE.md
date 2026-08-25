@@ -62,6 +62,14 @@ A contact request sent from an apartment page must record **which apartment** it
 - Backend: `Contact.unit` is an optional `ObjectId` ref to `Unit`; all three reads (`findAll`, `findOne`, `updateStatus`) populate it with `unitNumber block floorNumber` plus the project's names, so the admin list labels the row without a second request.
 - Admin (`/admin/contacts`) shows an **Apartment** column — `Project · Block X · Fl. N · #unit`, linking to the public apartment page in a new tab — and the search box matches on that label as well.
 
+### Project Map Location
+The project location shown in visual search is clickable — it opens the Google Maps location an **admin** set on the project (`googleMapLink`, Media section of the project form).
+
+- `src/lib/google-maps.ts` normalises whatever the editor pasted: an `<iframe>` snippet, a `maps/embed?pb=…` URL, a share or `/place/…` link, or plain coordinates. `mapEmbedSrc()` returns a frameable URL (or `null`), `mapOpenHref()` a URL for Google Maps proper. Non-`http(s)` values are always wrapped in a Maps search, never used as an href.
+- `ProjectLocationLink` wraps the location text: **no link set → plain text**, nothing is ever guessed from the project address. Framable link → `ProjectMapDialog` (embedded map + "Open in Google Maps"); a link Google won't frame (short links) → straight to a new tab.
+- It renders a `<button>`, not an `<a>`, and swallows the click — the visual-search cards are wrapped in a card-wide `<Link>` and a nested anchor would break them.
+- Wired into all four location displays of the flow: the project card list, the project info bar, and the floor page's address line (mobile and desktop).
+
 ### Test-Mode Notice
 The public site carries a site-wide "this is a test version" disclaimer until launch.
 

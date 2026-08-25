@@ -8,6 +8,7 @@ import BackButton from '@/components/BackButton';
 import SeuLoader from '@/components/common/SeuLoader';
 import ContactForm from '@/components/ContactForm';
 import ContactPanel from '@/components/ContactPanel';
+import ProjectLocationLink from '@/components/visual-search/ProjectLocationLink';
 import { Link, useRouter } from '@/i18n/navigation';
 import {
   usePublicBuilding,
@@ -138,6 +139,15 @@ export default function VisualSearchFloorPage({
   if (buildingQ.isSuccess && !isBuildingVisible(building)) notFound();
 
   const location = project?.location;
+  // Address as shown under the floor plan — doubles as the map dialog's subtitle.
+  const addressLine = location
+    ? [
+        pickLocalized(location.addressEn, location.addressKa, locale),
+        pickLocalized(location.cityEn, location.cityKa, locale),
+      ]
+        .filter(Boolean)
+        .join(' · ')
+    : '';
 
   return (
     <main className="bg-site-bg">
@@ -365,11 +375,15 @@ export default function VisualSearchFloorPage({
                     {t('noFloorPlan')}
                   </p>
                 )}
-                {(location?.addressEn || location?.addressKa) && (
-                  <p className="font-montserrat text-seu-caption text-site-fg-muted mt-4 tracking-wider text-center">
-                    {pickLocalized(location.addressEn, location.addressKa, locale)}
-                    {(location.cityEn || location.cityKa) &&
-                      ` · ${pickLocalized(location.cityEn, location.cityKa, locale)}`}
+                {addressLine && (
+                  <p className="mt-4 text-center">
+                    <ProjectLocationLink
+                      link={project?.googleMapLink}
+                      projectName={pickLocalized(project?.nameEn, project?.nameKa, locale)}
+                      className="font-montserrat text-seu-caption text-site-fg-muted tracking-wider"
+                    >
+                      {addressLine}
+                    </ProjectLocationLink>
                   </p>
                 )}
               </>
@@ -613,12 +627,16 @@ export default function VisualSearchFloorPage({
                     </p>
                   )}
 
-                  {/* Location text */}
-                  {(location?.addressEn || location?.addressKa) && (
-                    <p className="font-montserrat text-seu-caption text-site-fg-muted mt-6 tracking-wider">
-                      {pickLocalized(location.addressEn, location.addressKa, locale)}
-                      {(location.cityEn || location.cityKa) &&
-                        ` · ${pickLocalized(location.cityEn, location.cityKa, locale)}`}
+                  {/* Location text — opens the project's map when the admin set one */}
+                  {addressLine && (
+                    <p className="mt-6">
+                      <ProjectLocationLink
+                        link={project?.googleMapLink}
+                        projectName={pickLocalized(project?.nameEn, project?.nameKa, locale)}
+                        className="font-montserrat text-seu-caption text-site-fg-muted tracking-wider"
+                      >
+                        {addressLine}
+                      </ProjectLocationLink>
                     </p>
                   )}
                 </>

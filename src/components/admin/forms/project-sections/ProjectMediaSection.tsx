@@ -48,11 +48,14 @@ export default function ProjectMediaSection({ value, update }: Props) {
           placeholder="https://youtube.com/…"
         />
       </Field>
-      <Field label="Google Maps Link" hint="Embed URL for the project location map">
+      <Field
+        label="Google Maps Link"
+        hint="Opened from the project location in visual search — share link, embed URL, pasted <iframe> or plain coordinates. Leave empty to keep the location as plain text."
+      >
         <Input
           value={value.googleMapLink}
           onChange={(e) => update('googleMapLink', e.target.value)}
-          placeholder="https://www.google.com/maps/embed?pb=…"
+          placeholder="https://maps.app.goo.gl/… or 41.7151, 44.8271"
         />
       </Field>
     </div>
