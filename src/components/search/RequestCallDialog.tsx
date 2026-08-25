@@ -9,11 +9,14 @@ import { cn } from '@/lib/utils';
 interface RequestCallDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  /** Apartment the dialog was opened from — travels with the request to the admin panel. */
+  unitId?: string;
 }
 
 export default function RequestCallDialog({
   open,
   onOpenChange,
+  unitId,
 }: RequestCallDialogProps) {
   const t = useTranslations('contact');
 
@@ -60,6 +63,7 @@ export default function RequestCallDialog({
           <ContactForm
             hideHeader
             className="!w-full"
+            unitId={unitId}
             onSubmitted={() => onOpenChange(false)}
           />
         </DialogPrimitive.Content>

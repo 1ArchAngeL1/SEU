@@ -94,7 +94,7 @@ export default function ApartmentDetailPage({
           buildingId={buildingId}
           currentApartmentId={unit.id}
         />
-        <SearchContactForm />
+        <SearchContactForm unitId={unit.id} />
       </div>
     </div>
   );

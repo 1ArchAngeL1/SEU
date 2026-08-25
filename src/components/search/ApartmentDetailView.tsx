@@ -94,7 +94,11 @@ export function ApartmentDetailView({ apartment }: ApartmentDetailViewProps) {
         />
       </div>
 
-      <RequestCallDialog open={requestCallOpen} onOpenChange={setRequestCallOpen} />
+      <RequestCallDialog
+        open={requestCallOpen}
+        onOpenChange={setRequestCallOpen}
+        unitId={String(apartment.id)}
+      />
     </div>
   );
 }

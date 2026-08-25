@@ -10,6 +10,7 @@ import {
   CheckCircle2,
   Circle,
   Clock,
+  Building2,
 } from 'lucide-react';
 import AdminPageHeader from '@/components/admin/AdminPageHeader';
 import { Input } from '@/components/ui/input';
@@ -18,6 +19,8 @@ import {
   useUpdateContactStatus,
 } from '@/hooks/queries/use-contacts';
 import type { Contact, ContactStatus } from '@/model/types/api';
+import { Link } from '@/i18n/navigation';
+import { pickLocalized } from '@/lib/i18n-helpers';
 import { cn } from '@/lib/utils';
 
 const btnPage =
@@ -28,6 +31,32 @@ const statusTabs: { label: string; value: ContactStatus | 'all' }[] = [
   { label: 'Open', value: 'open' },
   { label: 'Closed', value: 'closed' },
 ];
+
+/**
+ * The apartment a request was sent from. Requests submitted on a unit page
+ * carry the unit, populated by the backend; the generic contact and landing
+ * forms carry nothing, and a request whose unit was deleted since keeps only
+ * the bare id.
+ */
+function apartmentOf(contact: Contact): { id: string; label: string } | null {
+  const { unit } = contact;
+  if (!unit) return null;
+  if (typeof unit === 'string') return { id: unit, label: 'Apartment' };
+
+  const project =
+    typeof unit.project === 'string'
+      ? ''
+      : pickLocalized(unit.project?.nameEn, unit.project?.nameKa, 'en');
+
+  const parts = [
+    project,
+    unit.block && `Block ${unit.block}`,
+    unit.floorNumber != null && `Fl. ${unit.floorNumber}`,
+    unit.unitNumber && `#${unit.unitNumber}`,
+  ].filter(Boolean);
+
+  return { id: unit.id, label: parts.join(' · ') || 'Apartment' };
+}
 
 function formatDate(iso: string) {
   const d = new Date(iso);
@@ -59,7 +88,8 @@ export default function ContactsPage() {
         (c) =>
           c.name?.toLowerCase().includes(search.toLowerCase()) ||
           c.phone.includes(search) ||
-          c.email?.toLowerCase().includes(search.toLowerCase())
+          c.email?.toLowerCase().includes(search.toLowerCase()) ||
+          apartmentOf(c)?.label.toLowerCase().includes(search.toLowerCase())
       )
     : allItems;
   const totalPages = contactsQ.data?.pagination.totalPages ?? 1;
@@ -148,7 +178,7 @@ export default function ContactsPage() {
           style={{ animationDelay: '150ms' }}
         >
           {/* Table header */}
-          <div className="hidden sm:grid grid-cols-[1fr_1fr_1fr_8rem_6rem] gap-4 px-5 py-3 bg-admin-deep border-b border-admin-border-soft">
+          <div className="hidden sm:grid grid-cols-[1fr_1fr_1fr_1.2fr_8rem_6rem] gap-4 px-5 py-3 bg-admin-deep border-b border-admin-border-soft">
             <span className="font-montserrat text-seu-caption-sm text-admin-fg-muted uppercase tracking-wider">
               Name
             </span>
@@ -159,6 +189,9 @@ export default function ContactsPage() {
               Email
             </span>
             <span className="font-montserrat text-seu-caption-sm text-admin-fg-muted uppercase tracking-wider">
+              Apartment
+            </span>
+            <span className="font-montserrat text-seu-caption-sm text-admin-fg-muted uppercase tracking-wider">
               Date
             </span>
             <span className="font-montserrat text-seu-caption-sm text-admin-fg-muted uppercase tracking-wider text-center">
@@ -167,81 +200,103 @@ export default function ContactsPage() {
           </div>
 
           {/* Rows */}
-          {items.map((contact, i) => (
-            <div
-              key={contact.id}
-              className={cn(
-                'grid grid-cols-1 sm:grid-cols-[1fr_1fr_1fr_8rem_6rem] gap-2 sm:gap-4 px-5 py-4 border-b border-admin-border-soft last:border-b-0 bg-admin-card-gradient hover:bg-admin-hover transition-all duration-200 admin-slide-left',
-                contact.status === 'closed' && 'opacity-60'
-              )}
-              style={{ animationDelay: `${250 + i * 60}ms` }}
-            >
-              {/* Name */}
-              <div className="flex items-center gap-2.5 min-w-0">
-                <User className="size-4 shrink-0 text-admin-fg-dim" />
-                <span className="font-montserrat text-seu-caption text-admin-fg truncate">
-                  {contact.name?.trim() || '—'}
-                </span>
-              </div>
+          {items.map((contact, i) => {
+            const apartment = apartmentOf(contact);
+            return (
+              <div
+                key={contact.id}
+                className={cn(
+                  'grid grid-cols-1 sm:grid-cols-[1fr_1fr_1fr_1.2fr_8rem_6rem] gap-2 sm:gap-4 px-5 py-4 border-b border-admin-border-soft last:border-b-0 bg-admin-card-gradient hover:bg-admin-hover transition-all duration-200 admin-slide-left',
+                  contact.status === 'closed' && 'opacity-60'
+                )}
+                style={{ animationDelay: `${250 + i * 60}ms` }}
+              >
+                {/* Name */}
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <User className="size-4 shrink-0 text-admin-fg-dim" />
+                  <span className="font-montserrat text-seu-caption text-admin-fg truncate">
+                    {contact.name?.trim() || '—'}
+                  </span>
+                </div>
 
-              {/* Phone */}
-              <div className="flex items-center gap-2.5 min-w-0">
-                <Phone className="size-4 shrink-0 text-admin-fg-dim sm:hidden" />
-                <a
-                  href={`tel:${contact.phone.replace(/\s/g, '')}`}
-                  className="font-montserrat text-seu-caption text-admin-fg hover:text-primary-green transition-colors truncate"
-                >
-                  {contact.phone}
-                </a>
-              </div>
-
-              {/* Email */}
-              <div className="flex items-center gap-2.5 min-w-0">
-                <Mail className="size-4 shrink-0 text-admin-fg-dim sm:hidden" />
-                {contact.email ? (
+                {/* Phone */}
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <Phone className="size-4 shrink-0 text-admin-fg-dim sm:hidden" />
                   <a
-                    href={`mailto:${contact.email}`}
+                    href={`tel:${contact.phone.replace(/\s/g, '')}`}
                     className="font-montserrat text-seu-caption text-admin-fg hover:text-primary-green transition-colors truncate"
                   >
-                    {contact.email}
+                    {contact.phone}
                   </a>
-                ) : (
-                  <span className="font-montserrat text-seu-caption text-admin-fg-dim">
-                    —
-                  </span>
-                )}
-              </div>
+                </div>
 
-              {/* Date */}
-              <div className="flex items-center gap-2 min-w-0">
-                <Clock className="size-3.5 shrink-0 text-admin-fg-dim sm:hidden" />
-                <span className="font-montserrat text-seu-caption-sm text-admin-fg-muted">
-                  {formatDate(contact.createdAt)}
-                </span>
-              </div>
-
-              {/* Status toggle */}
-              <div className="flex items-center justify-center">
-                <button
-                  onClick={() => toggleStatus(contact)}
-                  disabled={statusMut.isPending}
-                  className={cn(
-                    'flex items-center gap-1.5 px-3 py-1 rounded-full font-montserrat text-seu-caption-sm transition-all duration-300 active:scale-95',
-                    contact.status === 'open'
-                      ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/20 hover:shadow-[0_0_12px_rgba(52,211,153,0.15)]'
-                      : 'bg-admin-fg-dim/10 text-admin-fg-muted border border-admin-border-soft hover:bg-admin-hover'
-                  )}
-                >
-                  {contact.status === 'open' ? (
-                    <Circle className="size-3 animate-pulse" />
+                {/* Email */}
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <Mail className="size-4 shrink-0 text-admin-fg-dim sm:hidden" />
+                  {contact.email ? (
+                    <a
+                      href={`mailto:${contact.email}`}
+                      className="font-montserrat text-seu-caption text-admin-fg hover:text-primary-green transition-colors truncate"
+                    >
+                      {contact.email}
+                    </a>
                   ) : (
-                    <CheckCircle2 className="size-3" />
+                    <span className="font-montserrat text-seu-caption text-admin-fg-dim">
+                      —
+                    </span>
                   )}
-                  {contact.status === 'open' ? 'Open' : 'Closed'}
-                </button>
+                </div>
+
+                {/* Apartment the request was sent from */}
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <Building2 className="size-4 shrink-0 text-admin-fg-dim sm:hidden" />
+                  {apartment ? (
+                    <Link
+                      href={`/search/${apartment.id}`}
+                      target="_blank"
+                      title={apartment.label}
+                      className="font-montserrat text-seu-caption text-admin-fg hover:text-primary-green transition-colors truncate"
+                    >
+                      {apartment.label}
+                    </Link>
+                  ) : (
+                    <span className="font-montserrat text-seu-caption text-admin-fg-dim">
+                      —
+                    </span>
+                  )}
+                </div>
+
+                {/* Date */}
+                <div className="flex items-center gap-2 min-w-0">
+                  <Clock className="size-3.5 shrink-0 text-admin-fg-dim sm:hidden" />
+                  <span className="font-montserrat text-seu-caption-sm text-admin-fg-muted">
+                    {formatDate(contact.createdAt)}
+                  </span>
+                </div>
+
+                {/* Status toggle */}
+                <div className="flex items-center justify-center">
+                  <button
+                    onClick={() => toggleStatus(contact)}
+                    disabled={statusMut.isPending}
+                    className={cn(
+                      'flex items-center gap-1.5 px-3 py-1 rounded-full font-montserrat text-seu-caption-sm transition-all duration-300 active:scale-95',
+                      contact.status === 'open'
+                        ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/20 hover:shadow-[0_0_12px_rgba(52,211,153,0.15)]'
+                        : 'bg-admin-fg-dim/10 text-admin-fg-muted border border-admin-border-soft hover:bg-admin-hover'
+                    )}
+                  >
+                    {contact.status === 'open' ? (
+                      <Circle className="size-3 animate-pulse" />
+                    ) : (
+                      <CheckCircle2 className="size-3" />
+                    )}
+                    {contact.status === 'open' ? 'Open' : 'Closed'}
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 

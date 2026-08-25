@@ -8,6 +8,7 @@ import {
   Mail,
   Send,
   AlertCircle,
+  type LucideIcon,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
@@ -22,9 +23,23 @@ export type ContactFormProps = {
   hideHeader?: boolean;
   /** Extra classes for the privacy-policy note, e.g. `max-w-sm` to keep it off a diagonal background edge */
   policyClassName?: string;
+  /**
+   * Apartment the form is rendered under, when there is one. Sent with the
+   * request so the admin panel shows which unit the visitor asked about.
+   */
+  unitId?: string;
   /** Fired after a successful submission, after the success message renders */
   onSubmitted?: () => void;
 };
+
+/**
+ * Digits only, keeping a leading `+` so international numbers still work —
+ * `formatPhone()` reads both that and the bare local form. Everything else the
+ * user types or pastes (letters, spaces, brackets, dashes) is dropped.
+ */
+function sanitizePhone(value: string): string {
+  return (value.startsWith('+') ? '+' : '') + value.replace(/\D/g, '');
+}
 
 export default function ContactForm({
   className,
@@ -32,6 +47,7 @@ export default function ContactForm({
   lightBg = false,
   hideHeader = false,
   policyClassName,
+  unitId,
   onSubmitted,
 }: ContactFormProps) {
   const t = useTranslations('contact');
@@ -50,6 +66,7 @@ export default function ContactForm({
         phone: formData.phone.trim(),
         ...(formData.name.trim() ? { name: formData.name.trim() } : {}),
         ...(formData.email.trim() ? { email: formData.email.trim() } : {}),
+        ...(unitId ? { unit: unitId } : {}),
       });
       setSubmitted(true);
       setFormData({ name: '', phone: '', email: '' });
@@ -63,25 +80,36 @@ export default function ContactForm({
   const inputBase =
     'w-full bg-site-bg-input border border-site-input-border rounded-xl pl-12 pr-6 py-4 font-montserrat font-medium text-seu-body-sm text-site-input-text placeholder-site-fg-dim focus:outline-none focus:border-primary-green/60 site-input-glow transition-all';
 
-  const fields = [
+  type Field = {
+    icon: LucideIcon;
+    type: 'text' | 'tel' | 'email';
+    placeholder: string;
+    key: keyof typeof formData;
+    required?: boolean;
+    /** Rewrites what the user typed before it reaches state. */
+    sanitize?: (value: string) => string;
+  };
+
+  const fields: Field[] = [
     {
       icon: User,
-      type: 'text' as const,
+      type: 'text',
       placeholder: t('namePlaceholder'),
-      key: 'name' as const,
+      key: 'name',
     },
     {
       icon: Phone,
-      type: 'tel' as const,
+      type: 'tel',
       placeholder: t('phonePlaceholder'),
-      key: 'phone' as const,
+      key: 'phone',
       required: true,
+      sanitize: sanitizePhone,
     },
     {
       icon: Mail,
-      type: 'email' as const,
+      type: 'email',
       placeholder: t('emailPlaceholder'),
-      key: 'email' as const,
+      key: 'email',
     },
   ];
 
@@ -120,9 +148,12 @@ export default function ContactForm({
                 type={field.type}
                 placeholder={field.placeholder}
                 value={formData[field.key]}
-                onChange={(e) =>
-                  setFormData({ ...formData, [field.key]: e.target.value })
-                }
+                onChange={(e) => {
+                  const value = field.sanitize
+                    ? field.sanitize(e.target.value)
+                    : e.target.value;
+                  setFormData({ ...formData, [field.key]: value });
+                }}
                 required={field.required}
                 className={inputBase}
               />

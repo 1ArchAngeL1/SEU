@@ -54,6 +54,14 @@ The `isActive` switch on a **project**, a **building/block** or a **unit** is a 
 - **Admin screens deliberately bypass all of this** — editors must keep seeing deactivated records.
 - Backend gap: the floors controller accepts no `visibleOnly` (`/floors/by-building/:id`, `/floors/:id`), and `QueryFloorDto` would 400 on the extra param. Floors are safe only because both pages that show them gate on the block first — keep it that way, or plumb the flag through `FloorsService`, which already supports it.
 
+### Contact Requests — apartment attribution
+A contact request sent from an apartment page must record **which apartment** it came from, so the admin panel can show it.
+
+- `CreateContactInput.unit` carries the unit id. `ContactForm` takes a `unitId` prop and only adds the field when it has one — the generic contact / landing forms keep sending nothing.
+- The unit id is threaded down as: apartment page → `SearchContactForm` and `ApartmentDetailView` → `RequestCallDialog` → `ContactForm`. Any new form rendered under a unit page should pass it too.
+- Backend: `Contact.unit` is an optional `ObjectId` ref to `Unit`; all three reads (`findAll`, `findOne`, `updateStatus`) populate it with `unitNumber block floorNumber` plus the project's names, so the admin list labels the row without a second request.
+- Admin (`/admin/contacts`) shows an **Apartment** column — `Project · Block X · Fl. N · #unit`, linking to the public apartment page in a new tab — and the search box matches on that label as well.
+
 ### Test-Mode Notice
 The public site carries a site-wide "this is a test version" disclaimer until launch.
 

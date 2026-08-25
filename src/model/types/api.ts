@@ -523,6 +523,13 @@ export interface Contact {
   phone: string;
   email?: string | null;
   status: ContactStatus;
+  /**
+   * The apartment the visitor asked about — set only on requests sent from a
+   * unit page (the detail form and its "request a call" dialog). Reads populate
+   * it, so the admin list can label the row; it stays absent on the generic
+   * contact and landing forms.
+   */
+  unit?: string | Unit | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -531,6 +538,8 @@ export type CreateContactInput = {
   name?: string;
   phone: string;
   email?: string;
+  /** Id of the apartment the request was sent from, when there is one. */
+  unit?: string;
 };
 
 export type UpdateContactStatusInput = {
