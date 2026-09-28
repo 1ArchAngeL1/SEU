@@ -62,6 +62,26 @@ A contact request sent from an apartment page must record **which apartment** it
 - Backend: `Contact.unit` is an optional `ObjectId` ref to `Unit`; all three reads (`findAll`, `findOne`, `updateStatus`) populate it with `unitNumber block floorNumber` plus the project's names, so the admin list labels the row without a second request.
 - Admin (`/admin/contacts`) shows an **Apartment** column — `Project · Block X · Fl. N · #unit`, linking to the public apartment page in a new tab — and the search box matches on that label as well.
 
+### Contact Requests — email notification
+Every submitted contact form is also emailed to the sales inbox, on top of being stored for `/admin/contacts`.
+
+- Backend only. `src/mail/mail.service.ts` (SEU-backend) is a thin nodemailer wrapper over one SMTP transport; `src/contacts/contact-notification.template.ts` renders the message and `ContactsService.create()` fires it.
+- The mail carries **the same columns the admin list shows** — Name, Phone, Email, Apartment (`Project · Block X · Fl. N · #unit`, linked to `/en/search/:unitId`), Date, Status — plus a button to the admin screen. Change one, change the other.
+- Sending is **fire-and-forget and never throws**: the request is already saved, so a slow or dead mail server must not fail or delay the visitor's submission. Failures are logged.
+- With `SMTP_HOST` empty the whole thing is dormant — sends become logged no-ops — so a dev box without credentials behaves exactly as before.
+- Env (backend `.env`, documented in `.env.example`): `SMTP_HOST` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASS`, `MAIL_FROM`, `CONTACT_NOTIFY_TO` (comma-separated for several recipients). Optional: `SMTP_SECURE` (port 465 turns it on by itself), `MAIL_TIMEZONE` (default `Asia/Tbilisi`), `PUBLIC_SITE_URL` and `ADMIN_CONTACTS_URL` for the links.
+- `MAIL_FROM` may be **just a display name** — `buildSender()` pairs it with `SMTP_USER` (`"SEU Development" <user@gmail.com>`), since a bare name is not a valid sender. A full address, or `Name <addr>`, is used as written. Gmail only accepts its own mailbox or a verified alias as the From address anyway.
+- `replyTo` is the visitor's email when they left one, so hitting Reply reaches them.
+
+### Contact Requests — the confirmation notice
+After a visitor sends their phone number, the form shows a two-line thank-you that **stays put long enough to read**, never a flash of green.
+
+- Copy: `contact.successTitle` / `contact.successMessage` in `messages/{en,ka}.json` — "მადლობა!" + "თქვენი მოთხოვნა წარმატებით გაიგზავნა. გაყიდვების მენეჯერი მალე დაგიკავშირდებათ." Never hardcode it; `contact.thankYou` is the dialog's *pre*-submit subtitle, not this.
+- It renders as a bordered emerald block below the submit button (`role="status"`, `aria-live="polite"`), not as a label beside it — two lines need the width.
+- Timing lives in two named constants in `ContactForm.tsx`: `SUCCESS_VISIBLE_MS` (12s, how long the notice stays) and `ON_SUBMITTED_DELAY_MS` (9s, how long a self-closing host waits before it closes). The second must stay **below** the first, so the dialog never closes on a notice that has already vanished.
+- Both timers go through `later()`, which registers them for cleanup on unmount — `RequestCallDialog` unmounts the form when it closes, and a bare `setTimeout` would fire into a dead component.
+- Every contact form on the site is this one component, so there is a single place to change: landing, contact, about, news, visual search and the apartment dialog all render `ContactForm`.
+
 ### Project Map Location
 Wherever the public site prints a project's location, the text is clickable — it opens the Google Maps location an **admin** set on the project (`googleMapLink`, Media section of the project form).
 

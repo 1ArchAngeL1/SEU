@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   CheckCircle2,
   User,
@@ -33,6 +33,21 @@ export type ContactFormProps = {
 };
 
 /**
+ * How long the confirmation stays on screen. Deliberately generous: the visitor
+ * has just handed over their phone number and needs time to read that a sales
+ * manager will call — a flash of green tells them nothing.
+ */
+const SUCCESS_VISIBLE_MS = 12_000;
+
+/**
+ * How long a host that closes itself on success (the request-a-call dialog)
+ * waits first, so the confirmation is readable before the dialog disappears.
+ * Long enough to read both lines without hurrying, and still short of the
+ * inline notice above — the dialog is in the way of the page behind it.
+ */
+const ON_SUBMITTED_DELAY_MS = 9_000;
+
+/**
  * Digits only, keeping a leading `+` so international numbers still work —
  * `formatPhone()` reads both that and the bare local form. Everything else the
  * user types or pastes (letters, spaces, brackets, dashes) is dropped.
@@ -56,6 +71,14 @@ export default function ContactForm({
   const [error, setError] = useState('');
   const createContact = useCreateContact();
 
+  // The dialog unmounts this form when it closes, so pending timers have to go
+  // with it — otherwise they fire into a component that is no longer there.
+  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  useEffect(() => () => timers.current.forEach(clearTimeout), []);
+  const later = (fn: () => void, ms: number) => {
+    timers.current.push(setTimeout(fn, ms));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.phone.trim()) return;
@@ -70,8 +93,8 @@ export default function ContactForm({
       });
       setSubmitted(true);
       setFormData({ name: '', phone: '', email: '' });
-      setTimeout(() => setSubmitted(false), 4000);
-      if (onSubmitted) setTimeout(onSubmitted, 1500);
+      later(() => setSubmitted(false), SUCCESS_VISIBLE_MS);
+      if (onSubmitted) later(onSubmitted, ON_SUBMITTED_DELAY_MS);
     } catch {
       setError(t('errorMessage'));
     }
@@ -171,14 +194,40 @@ export default function ContactForm({
               {createContact.isPending ? t('sending') : t('submit')}
               <Send className="size-4" />
             </button>
-
-            {submitted && (
-              <span className="flex items-center gap-2 text-emerald-400 font-montserrat text-seu-caption animate-in fade-in slide-in-from-left-2 duration-300">
-                <CheckCircle2 className="size-5" />
-                {t('thankYou')}
-              </span>
-            )}
           </div>
+
+          {submitted && (
+            <div
+              role="status"
+              aria-live="polite"
+              className="flex items-start gap-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3.5 animate-in fade-in slide-in-from-bottom-2 duration-300"
+            >
+              <CheckCircle2
+                className={cn(
+                  'size-5 shrink-0 mt-0.5',
+                  lightBg ? 'text-emerald-600' : 'text-emerald-400'
+                )}
+              />
+              <div className="flex flex-col gap-1">
+                <span
+                  className={cn(
+                    'font-montserrat font-semibold text-seu-body-sm',
+                    lightBg ? 'text-emerald-700' : 'text-emerald-400'
+                  )}
+                >
+                  {t('successTitle')}
+                </span>
+                <span
+                  className={cn(
+                    'font-montserrat text-seu-caption leading-relaxed',
+                    lightBg ? 'text-dark-green/75' : 'text-site-fg-muted'
+                  )}
+                >
+                  {t('successMessage')}
+                </span>
+              </div>
+            </div>
+          )}
 
           {error && (
             <span className="flex items-center gap-2 text-red font-montserrat text-seu-caption">
