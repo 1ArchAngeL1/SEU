@@ -483,10 +483,17 @@ export default function VisualSearchFloorPage({
         {/* ===== DESKTOP CONTENT ===== */}
         {!isLoading && (
           <div className="hidden lg:flex items-start gap-6">
-            {/* Left column — Block title + Floor selector */}
-            <div className="flex flex-col items-start shrink-0 w-24">
+            {/* Left column — Block title + Floor selector.
+
+                The rail sizes to its title rather than to a fixed width: a
+                hard `w-24` plus `whitespace-nowrap` let "Block N" spill out of
+                the column and land on top of the content beside it — in
+                Georgian ("ბლოკი 9") it printed straight over the grid's
+                floor heading. `min-w` keeps the narrow-title look, `max-w`
+                stops a long block name from eating the plan. */}
+            <div className="flex flex-col items-start shrink-0 min-w-24 max-w-44">
               {building && (
-                <h1 className="font-bodoni text-seu-heading text-site-fg-strong mb-6 whitespace-nowrap">
+                <h1 className="font-bodoni text-seu-heading text-site-fg-strong mb-6 break-words">
                   {t('block')} {building.block}
                 </h1>
               )}
