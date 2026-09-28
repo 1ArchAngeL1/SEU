@@ -488,9 +488,9 @@ export default function VisualSearchFloorPage({
                 The rail sizes to its title rather than to a fixed width: a
                 hard `w-24` plus `whitespace-nowrap` let "Block N" spill out of
                 the column and land on top of the content beside it — in
-                Georgian ("ბლოკი 9") it printed straight over the grid's
-                floor heading. `min-w` keeps the narrow-title look, `max-w`
-                stops a long block name from eating the plan. */}
+                Georgian ("ბლოკი 9") it printed straight over the grid. `min-w`
+                keeps the narrow-title look, `max-w` stops a long block name
+                from eating the plan. */}
             <div className="flex flex-col items-start shrink-0 min-w-24 max-w-44">
               {building && (
                 <h1 className="font-bodoni text-seu-heading text-site-fg-strong mb-6 break-words">
@@ -689,11 +689,6 @@ export default function VisualSearchFloorPage({
 
               {activeTab === 'grid' && (
                 <>
-                  {floor && (
-                    <h2 className="font-bodoni text-seu-heading text-site-fg-strong mb-6 self-start">
-                      {t('floorN', { n: floor.floorNumber })}
-                    </h2>
-                  )}
                   {units.length === 0 ? (
                     <p className="text-site-fg-muted font-montserrat text-seu-body text-center py-20">
                       {t('noUnits')}
