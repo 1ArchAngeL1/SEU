@@ -19,7 +19,7 @@ import { useProject } from '@/hooks/queries/use-projects';
 import { usePublicUnitsList } from '@/hooks/queries/use-units';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
-import { bedroomCount } from '@/lib/room-counts';
+import { bedroomCount, isStudio } from '@/lib/room-counts';
 import { STATUS_COLORS } from '@/lib/unit-status';
 import { cn } from '@/lib/utils';
 import { isBuildingVisible, isProjectVisible, visibleUnits } from '@/lib/visibility';
@@ -463,7 +463,7 @@ export default function VisualSearchFloorPage({
                           </div>
                           <div className="flex items-center gap-3 font-montserrat text-seu-caption-sm">
                             <span className="text-site-fg-muted">{unit.totalSize} m²</span>
-                            {bedroomCount(unit) > 0 && (
+                            {(isStudio(unit) || bedroomCount(unit) > 0) && (
                               <span className="text-site-fg-dim">
                                 {t('beds', { count: bedroomCount(unit) })}
                               </span>
@@ -649,7 +649,7 @@ export default function VisualSearchFloorPage({
                               <span className="text-site-fg-muted">
                                 {hoveredUnit.totalSize} m²
                               </span>
-                              {bedroomCount(hoveredUnit) > 0 && (
+                              {(isStudio(hoveredUnit) || bedroomCount(hoveredUnit) > 0) && (
                                 <span className="text-site-fg-dim">
                                   {t('beds', { count: bedroomCount(hoveredUnit) })}
                                 </span>
@@ -720,7 +720,7 @@ export default function VisualSearchFloorPage({
                               <span className="text-site-fg-muted">
                                 {unit.totalSize} m²
                               </span>
-                              {bedroomCount(unit) > 0 && (
+                              {(isStudio(unit) || bedroomCount(unit) > 0) && (
                                 <span className="text-site-fg-dim">
                                   {t('beds', { count: bedroomCount(unit) })}
                                 </span>

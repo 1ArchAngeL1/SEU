@@ -77,6 +77,7 @@ Hovering an apartment on the floor plan (`visual-search/[projectId]/[buildingId]
 
 - `hoverCardPlacement(polygon)` picks the side from the unit's own polygon: points are percentages of the plan box, so `min(y)` is the room above the unit and `100 - max(y)` the room below — the smaller gap wins. A high apartment gets a card above the plan, a low one below. `x` is the polygon's horizontal midpoint, clamped to `CARD_EDGE_MARGIN` so a unit against the wall still gets a card that fits.
 - The plan `<div>` is wrapped in a `relative` box purely so the card can anchor to `bottom-full` / `top-full` — keep the wrapper if you restructure the plan.
+- The card's second line is `totalSize` + the `visualSearch.beds` message, which already carries a `=0 {Studio}` / `=0 {სტუდიო}` branch. Guard it with `isStudio(unit) || bedroomCount(unit) > 0`, never `bedroomCount(unit) > 0` alone: **a studio's bedroom count is legitimately 0**, so the bare `> 0` test hides the label on exactly the units that need it. The same guard is used on the mobile and desktop grid cards. A unit with no room data at all still shows nothing.
 
 ### Test-Mode Notice
 The public site carries a site-wide "this is a test version" disclaimer until launch.
