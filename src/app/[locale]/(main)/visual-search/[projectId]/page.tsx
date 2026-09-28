@@ -13,7 +13,7 @@ import { useProject } from '@/hooks/queries/use-projects';
 import { useActiveBuildingsByProject } from '@/hooks/queries/use-buildings';
 import { ApartmentTypesSection } from '@/components/visual-search/ApartmentTypesSection';
 import { ProjectVideoSection } from '@/components/visual-search/ProjectVideoSection';
-import ProjectLocationLink from '@/components/visual-search/ProjectLocationLink';
+import ProjectLocationLink from '@/components/common/ProjectLocationLink';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
 import { blockTotals, isProjectVisible } from '@/lib/visibility';
@@ -342,6 +342,14 @@ export default function VisualSearchProjectPage({
 
   const renderImage = fileUrl(project?.renderImage);
 
+  // Fuller address line, shown under the project name in the map dialog.
+  const projectAddress = [
+    pickLocalized(project?.location?.addressEn, project?.location?.addressKa, locale),
+    pickLocalized(project?.location?.cityEn, project?.location?.cityKa, locale),
+  ]
+    .filter(Boolean)
+    .join(' · ');
+
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -377,7 +385,14 @@ export default function VisualSearchProjectPage({
           <BackButton href="/visual-search" className="mb-10" />
           {project && (
             <h1 className="font-bodoni text-seu-title text-pale-gray mb-16">
-              {pickLocalized(project.nameEn, project.nameKa, locale)}
+              <ProjectLocationLink
+                link={project.googleMapLink}
+                projectName={pickLocalized(project.nameEn, project.nameKa, locale)}
+                address={projectAddress}
+                iconClassName="size-7"
+              >
+                {pickLocalized(project.nameEn, project.nameKa, locale)}
+              </ProjectLocationLink>
             </h1>
           )}
           <p className="text-secondary-grey font-montserrat text-seu-body text-center py-32">
@@ -393,9 +408,18 @@ export default function VisualSearchProjectPage({
       {/* Mobile: padded header */}
       <div className="lg:hidden px-5 pt-8 pb-4">
         <BackButton href="/visual-search" className="mb-4" />
+        {/* The name opens the project's Google Maps location, when the admin
+            has set one — otherwise it stays plain text. */}
         {project && (
           <h1 className="font-bodoni text-seu-heading text-pale-gray mb-2">
-            {pickLocalized(project.nameEn, project.nameKa, locale)}
+            <ProjectLocationLink
+              link={project.googleMapLink}
+              projectName={pickLocalized(project.nameEn, project.nameKa, locale)}
+              address={projectAddress}
+              iconClassName="size-5"
+            >
+              {pickLocalized(project.nameEn, project.nameKa, locale)}
+            </ProjectLocationLink>
           </h1>
         )}
       </div>
@@ -651,12 +675,7 @@ export default function VisualSearchProjectPage({
                     <ProjectLocationLink
                       link={project.googleMapLink}
                       projectName={pickLocalized(project.nameEn, project.nameKa, locale)}
-                      address={[
-                        pickLocalized(project.location?.addressEn, project.location?.addressKa, locale),
-                        pickLocalized(project.location?.cityEn, project.location?.cityKa, locale),
-                      ]
-                        .filter(Boolean)
-                        .join(' · ')}
+                      address={projectAddress}
                       className="font-montserrat font-medium text-seu-caption-sm lg:text-seu-body-sm text-pale-gray text-center"
                     >
                       {pickLocalized(project.location?.districtEn, project.location?.districtKa, locale) ||

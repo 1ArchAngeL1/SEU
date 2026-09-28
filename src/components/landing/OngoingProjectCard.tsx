@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
+import ProjectLocationLink from '@/components/common/ProjectLocationLink';
 import { cn } from '@/lib/utils';
 
 export type OngoingProjectCardProps = {
@@ -9,6 +10,10 @@ export type OngoingProjectCardProps = {
   name: string;
   projectId?: string;
   location?: string;
+  /** The project's `googleMapLink` — makes the location text open its map. */
+  mapLink?: string | null;
+  /** Fuller address, shown in the map dialog's header. */
+  address?: string;
   sizeFrom?: number;
   sizeTo?: number;
   image?: string;
@@ -20,6 +25,8 @@ export const OngoingProjectCard = ({
   name,
   projectId,
   location,
+  mapLink,
+  address,
   sizeFrom,
   sizeTo,
   image,
@@ -90,7 +97,16 @@ export const OngoingProjectCard = ({
           {location && (
             <div>
               <span className="text-secondary-grey">{t('locationLabel')} - </span>
-              <span className="text-primary-green">{location}</span>
+              {/* Opens the project's map when the admin set one — the card
+                  itself links to the apartment search, so the click is swallowed. */}
+              <ProjectLocationLink
+                link={mapLink}
+                projectName={name}
+                address={address}
+                className="text-primary-green align-middle"
+              >
+                {location}
+              </ProjectLocationLink>
             </div>
           )}
           {typeof sizeFrom === 'number' && typeof sizeTo === 'number' && (

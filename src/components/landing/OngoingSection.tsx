@@ -45,6 +45,13 @@ export default function OngoingSection() {
                     pickLocalized(project.location?.cityEn, project.location?.cityKa, locale) ||
                     pickLocalized(project.location?.addressEn, project.location?.addressKa, locale)
                   }
+                  mapLink={project.googleMapLink}
+                  address={[
+                    pickLocalized(project.location?.addressEn, project.location?.addressKa, locale),
+                    pickLocalized(project.location?.cityEn, project.location?.cityKa, locale),
+                  ]
+                    .filter(Boolean)
+                    .join(' · ')}
                   image={fileUrl(project.mainImage) || undefined}
                   badge={project.isFeatured ? 'FEATURED' : undefined}
                 />

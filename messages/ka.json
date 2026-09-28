@@ -9,7 +9,10 @@
     "nextImage": "შემდეგი სურათი",
     "imageN": "სურათი {n}",
     "playVideo": "ვიდეოს ჩართვა",
-    "pauseVideo": "ვიდეოს დაპაუზება"
+    "pauseVideo": "ვიდეოს დაპაუზება",
+    "location": "მდებარეობა",
+    "viewOnMap": "რუკაზე ნახვა",
+    "openInGoogleMaps": "გახსნა Google Maps-ში"
   },
   "testMode": {
     "message": "ვებსაიტი მუშაობს სატესტო რეჟიმში"
@@ -272,9 +275,6 @@
     "unit": "ბინა",
     "view": "ნახვა",
     "location": "მდებარეობა",
-    "viewOnMap": "რუკაზე ნახვა",
-    "openInGoogleMaps": "გახსნა Google Maps-ში",
-    "closeMap": "რუკის დახურვა",
     "apartments": "ბინები",
     "apartmentsCount": "{count} ბინა",
     "apartmentSizes": "ბინების ფართი",

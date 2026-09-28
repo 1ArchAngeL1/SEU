@@ -2,6 +2,7 @@
 
 import { ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
+import ProjectLocationLink from '@/components/common/ProjectLocationLink';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { cn } from '@/lib/utils';
 import type { Project } from '@/model/types/api';
@@ -46,11 +47,18 @@ export default function HeroProjectMeta({
 
           <div className="flex items-center gap-2 mt-1 font-montserrat text-seu-caption text-pale-gray/85">
             <MapPin className="size-4 shrink-0" />
-            <span className="truncate">
+            {/* Opens the project's map, when the admin set one — the pin above
+                is already the affordance, so the link draws none of its own. */}
+            <ProjectLocationLink
+              link={project.googleMapLink}
+              projectName={pickLocalized(project.nameEn, project.nameKa, locale)}
+              showIcon={false}
+              className="truncate"
+            >
               {pickLocalized(project.location.addressEn, project.location.addressKa, locale)}
               {(project.location.cityEn || project.location.cityKa) &&
                 ` · ${pickLocalized(project.location.cityEn, project.location.cityKa, locale)}`}
-            </span>
+            </ProjectLocationLink>
           </div>
         </div>
 

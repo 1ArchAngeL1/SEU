@@ -6,6 +6,7 @@ import { useProjectsList } from '@/hooks/queries/use-projects';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
 import FadeIn from '@/components/FadeIn';
+import ProjectLocationLink from '@/components/common/ProjectLocationLink';
 import type { Project } from '@/model/types/api';
 
 function FinishedTile({ project, locale }: { project: Project; locale: Locale }) {
@@ -52,7 +53,20 @@ function FinishedTile({ project, locale }: { project: Project; locale: Locale })
         {location && (
           <p className="mt-1 font-montserrat text-seu-caption-sm lg:text-seu-caption">
             <span className="text-secondary-grey">{t('locationLabel')} - </span>
-            <span className="text-primary-green">{location}</span>
+            {/* Opens the project's map, when the admin set one */}
+            <ProjectLocationLink
+              link={project.googleMapLink}
+              projectName={name}
+              address={[
+                pickLocalized(project.location?.addressEn, project.location?.addressKa, locale),
+                pickLocalized(project.location?.cityEn, project.location?.cityKa, locale),
+              ]
+                .filter(Boolean)
+                .join(' · ')}
+              className="text-primary-green align-middle"
+            >
+              {location}
+            </ProjectLocationLink>
           </p>
         )}
       </div>

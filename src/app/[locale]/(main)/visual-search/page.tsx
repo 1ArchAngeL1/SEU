@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import SeuLoader from '@/components/common/SeuLoader';
-import ProjectLocationLink from '@/components/visual-search/ProjectLocationLink';
+import ProjectLocationLink from '@/components/common/ProjectLocationLink';
 import ContactForm from '@/components/ContactForm';
 import ContactPanel from '@/components/ContactPanel';
 import { useProjectsList } from '@/hooks/queries/use-projects';
@@ -145,10 +145,19 @@ export default function VisualSearchPage() {
 
               {/* Bottom content bar */}
               <div className="absolute bottom-0 left-0 right-0 px-5 lg:px-10 pb-6 lg:pb-10 flex items-end justify-between gap-4">
-                {/* Left — project name */}
+                {/* Left — project name. Clicking it opens the project's
+                    Google Maps location when the admin has set one; without a
+                    link it stays plain text and the card link takes over. */}
                 <div>
                   <h2 className="font-bodoni text-seu-body-lg lg:text-seu-heading-lg text-pale-gray leading-none uppercase">
-                    {name}
+                    <ProjectLocationLink
+                      link={project.googleMapLink}
+                      projectName={name}
+                      address={address}
+                      iconClassName="size-4 lg:size-6"
+                    >
+                      {name}
+                    </ProjectLocationLink>
                   </h2>
                 </div>
 

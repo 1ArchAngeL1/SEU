@@ -15,14 +15,18 @@ interface ProjectLocationLinkProps {
   /** Address line for the dialog header, when the project has one. */
   address?: string;
   className?: string;
+  /** Off where the surrounding markup already draws a pin, as the landing hero does. */
+  showIcon?: boolean;
+  /** Pin sizing — a project title wants a bigger one than a caption line. */
+  iconClassName?: string;
   /** The location text itself. */
   children: ReactNode;
 }
 
 /**
- * The location text in visual search, clickable when the project carries a
- * Google Maps link. Without one it stays plain text, so a project the admin has
- * not given a map to simply reads as before.
+ * A project's location text, clickable when the project carries a Google Maps
+ * link. Without one it stays plain text, so a project the admin has not given a
+ * map to simply reads as before.
  *
  * The map opens in a dialog when Google lets us frame the admin's link, and in
  * a new tab when it does not.
@@ -32,9 +36,11 @@ export default function ProjectLocationLink({
   projectName,
   address,
   className,
+  showIcon = true,
+  iconClassName,
   children,
 }: ProjectLocationLinkProps) {
-  const t = useTranslations('visualSearch');
+  const t = useTranslations('common');
   const [open, setOpen] = useState(false);
   const embedSrc = mapEmbedSrc(link);
   const openHref = mapOpenHref(link);
@@ -63,7 +69,14 @@ export default function ProjectLocationLink({
         )}
       >
         {children}
-        <MapPin className="size-3.5 shrink-0 opacity-60 group-hover/map:opacity-100 transition-opacity" />
+        {showIcon && (
+          <MapPin
+            className={cn(
+              'size-3.5 shrink-0 opacity-60 group-hover/map:opacity-100 transition-opacity',
+              iconClassName
+            )}
+          />
+        )}
       </button>
 
       {embedSrc && (

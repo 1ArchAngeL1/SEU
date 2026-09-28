@@ -8,7 +8,7 @@ import BackButton from '@/components/BackButton';
 import SeuLoader from '@/components/common/SeuLoader';
 import ContactForm from '@/components/ContactForm';
 import ContactPanel from '@/components/ContactPanel';
-import ProjectLocationLink from '@/components/visual-search/ProjectLocationLink';
+import ProjectLocationLink from '@/components/common/ProjectLocationLink';
 import { Link, useRouter } from '@/i18n/navigation';
 import {
   usePublicBuilding,
@@ -34,6 +34,41 @@ function getPolygonCenter(polygon: PolygonPoint[]): { x: number; y: number } {
   const cx = polygon.reduce((sum, pt) => sum + pt.x, 0) / polygon.length;
   const cy = polygon.reduce((sum, pt) => sum + pt.y, 0) / polygon.length;
   return { x: cx, y: cy };
+}
+
+/** How close the hover card may get to the left/right edge of the plan, in plan %. */
+const CARD_EDGE_MARGIN = 18;
+
+/**
+ * Where the hovered apartment's card goes.
+ *
+ * The card always sits **outside** the plan — it would otherwise cover the very
+ * drawing it describes — so the only question is which side of it, and the
+ * unit's own polygon answers that. Polygon points are percentages of the plan
+ * box (`0` = top/left, `100` = bottom/right), so the unit's bounding box gives
+ * the room left above it and below it: whichever gap is smaller is the edge the
+ * apartment sits nearest, and that is where the card goes. An apartment high up
+ * the plan gets a card above the plan, one low down gets it below.
+ *
+ * `x` centres the card on the unit, pulled back from the edges so a unit
+ * against the wall of the plan still gets a card that fits over it.
+ */
+function hoverCardPlacement(polygon: PolygonPoint[]): {
+  side: 'top' | 'bottom';
+  x: number;
+} {
+  const ys = polygon.map((pt) => pt.y);
+  const xs = polygon.map((pt) => pt.x);
+  const gapAbove = Math.min(...ys);
+  const gapBelow = 100 - Math.max(...ys);
+
+  return {
+    side: gapAbove <= gapBelow ? 'top' : 'bottom',
+    x: Math.min(
+      100 - CARD_EDGE_MARGIN,
+      Math.max(CARD_EDGE_MARGIN, (Math.min(...xs) + Math.max(...xs)) / 2)
+    ),
+  };
 }
 
 export default function VisualSearchFloorPage({
@@ -106,6 +141,13 @@ export default function VisualSearchFloorPage({
     (u) => u.polygon && u.polygon.length >= 3
   );
 
+  // The hovered apartment and where its card belongs — see `hoverCardPlacement`.
+  const hoveredUnit = hoveredId
+    ? unitsWithPolygons.find((u) => u.id === hoveredId)
+    : undefined;
+  const hoverPlacement = hoveredUnit
+    ? hoverCardPlacement(hoveredUnit.polygon!)
+    : null;
 
   // Only sellable apartments open a detail view. Sold units and any
   // non-living unit (commercial, parking, storage) are not clickable.
@@ -483,143 +525,139 @@ export default function VisualSearchFloorPage({
               {activeTab === 'floor-plan' && (
                 <>
                   {renderImage ? (
-                    <div
-                      className="relative w-full max-w-3xl mx-auto shadow-[0_0_30px_8px_var(--site-bg)]"
-                      style={{
-                        maxHeight: '70vh',
-                        ...(imgNatural
-                          ? { aspectRatio: `${imgNatural.w} / ${imgNatural.h}` }
-                          : { minHeight: '55vh' }),
-                      }}
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={renderImage}
-                        alt={floor ? t('floorN', { n: floor.floorNumber }) : t('alt.floorPlan')}
-                        className={`w-full h-full object-contain block transition-opacity duration-700 ease-out ${
-                          imgLoaded ? 'opacity-100' : 'opacity-0'
-                        }`}
-                        onLoad={handleImgLoad}
-                      />
-
-                      {!imgLoaded && <SeuLoader overlay size="lg" />}
-
-                      {imgLoaded && (
-                      <svg
-                        viewBox="0 0 100 100"
-                        preserveAspectRatio="none"
-                        className="absolute inset-0 w-full h-full animate-polygons-in"
+                    // Anchors the hover card just outside the plan box below.
+                    <div className="relative w-full max-w-3xl mx-auto">
+                      <div
+                        className="relative w-full shadow-[0_0_30px_8px_var(--site-bg)]"
+                        style={{
+                          maxHeight: '70vh',
+                          ...(imgNatural
+                            ? { aspectRatio: `${imgNatural.w} / ${imgNatural.h}` }
+                            : { minHeight: '55vh' }),
+                        }}
                       >
-                        <defs>
-                          <filter id="glow">
-                            <feGaussianBlur stdDeviation="0.4" result="blur" />
-                            <feMerge>
-                              <feMergeNode in="blur" />
-                              <feMergeNode in="SourceGraphic" />
-                            </feMerge>
-                          </filter>
-                        </defs>
-                        {unitsWithPolygons.map((unit) => {
-                          const isHovered = hoveredId === unit.id;
-                          return (
-                            <g
-                              key={unit.id}
-                              className={canOpenUnit(unit) ? 'cursor-pointer' : 'cursor-default'}
-                              onMouseEnter={() => setHoveredId(unit.id)}
-                              onMouseLeave={() => setHoveredId(null)}
-                              onClick={() => handleUnitClick(unit)}
-                            >
-                              <polygon
-                                points={toSvgPoints(unit.polygon!)}
-                                fill={isHovered ? 'rgba(46,204,113,0.5)' : 'rgba(13,20,29,0.45)'}
-                                stroke="none"
-                                filter={isHovered ? 'url(#glow)' : undefined}
-                                className="transition-all duration-500 ease-out"
-                              />
-                            </g>
-                          );
-                        })}
-                      </svg>
-                      )}
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={renderImage}
+                          alt={floor ? t('floorN', { n: floor.floorNumber }) : t('alt.floorPlan')}
+                          className={`w-full h-full object-contain block transition-opacity duration-700 ease-out ${
+                            imgLoaded ? 'opacity-100' : 'opacity-0'
+                          }`}
+                          onLoad={handleImgLoad}
+                        />
 
-                      {/* Apartment number (+ status) centered on each unit */}
-                      {imgLoaded && unitsWithPolygons.map((unit) => {
-                        const center = getPolygonCenter(unit.polygon!);
-                        const isHovered = hoveredId === unit.id;
-                        const isAvailable = unit.status === 'available';
-                        const colors =
-                          STATUS_COLORS[unit.status] ?? STATUS_COLORS.available;
-                        return (
-                          <div
-                            key={`label-${unit.id}`}
-                            className="absolute pointer-events-none -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-1.5"
-                            style={{
-                              left: `${center.x}%`,
-                              top: `${center.y}%`,
-                            }}
-                          >
-                            <span
-                              className={cn(
-                                'font-bodoni leading-none tracking-wide transition-all duration-500 ease-out flex items-center justify-center h-14 min-w-14 px-3 rounded-full border backdrop-blur-md shadow-[0_4px_12px_rgba(0,0,0,0.5)]',
-                                isHovered
-                                  ? 'text-seu-heading-lg text-white scale-105 bg-primary-green/40 border-white/50'
-                                  : 'text-seu-heading text-pale-gray bg-dark-green/65 border-pale-gray/25'
-                              )}
-                            >
-                              {unit.unitNumber}
-                            </span>
-                            {!isAvailable && (
-                              <span
-                                className={cn(
-                                  'rounded-full px-2.5 py-0.5 font-montserrat text-[0.6rem] font-medium uppercase tracking-wider shadow-sm',
-                                  colors.bg,
-                                  colors.text
-                                )}
+                        {!imgLoaded && <SeuLoader overlay size="lg" />}
+
+                        {imgLoaded && (
+                        <svg
+                          viewBox="0 0 100 100"
+                          preserveAspectRatio="none"
+                          className="absolute inset-0 w-full h-full animate-polygons-in"
+                        >
+                          <defs>
+                            <filter id="glow">
+                              <feGaussianBlur stdDeviation="0.4" result="blur" />
+                              <feMerge>
+                                <feMergeNode in="blur" />
+                                <feMergeNode in="SourceGraphic" />
+                              </feMerge>
+                            </filter>
+                          </defs>
+                          {unitsWithPolygons.map((unit) => {
+                            const isHovered = hoveredId === unit.id;
+                            return (
+                              <g
+                                key={unit.id}
+                                className={canOpenUnit(unit) ? 'cursor-pointer' : 'cursor-default'}
+                                onMouseEnter={() => setHoveredId(unit.id)}
+                                onMouseLeave={() => setHoveredId(null)}
+                                onClick={() => handleUnitClick(unit)}
                               >
-                                {t(`status.${unit.status}`)}
-                              </span>
-                            )}
-                          </div>
-                        );
-                      })}
+                                <polygon
+                                  points={toSvgPoints(unit.polygon!)}
+                                  fill={isHovered ? 'rgba(46,204,113,0.5)' : 'rgba(13,20,29,0.45)'}
+                                  stroke="none"
+                                  filter={isHovered ? 'url(#glow)' : undefined}
+                                  className="transition-all duration-500 ease-out"
+                                />
+                              </g>
+                            );
+                          })}
+                        </svg>
+                        )}
 
-                      {/* Hovered unit info. Pinned to whichever half of the
-                          plan the unit sits in — top for an upper apartment,
-                          bottom for a lower one — so the card stays near what
-                          you are pointing at instead of always cutting across
-                          the foot of the drawing. */}
-                      {hoveredId &&
-                        (() => {
-                          const u = units.find((x) => x.id === hoveredId);
-                          if (!u?.polygon || u.polygon.length < 3) return null;
-                          // Polygon coordinates are percentages of the plan box,
-                          // so the midpoint is the half it belongs to.
-                          const isUpper = getPolygonCenter(u.polygon).y < 50;
+                        {/* Apartment number (+ status) centered on each unit */}
+                        {imgLoaded && unitsWithPolygons.map((unit) => {
+                          const center = getPolygonCenter(unit.polygon!);
+                          const isHovered = hoveredId === unit.id;
+                          const isAvailable = unit.status === 'available';
+                          const colors =
+                            STATUS_COLORS[unit.status] ?? STATUS_COLORS.available;
                           return (
                             <div
-                              className={cn(
-                                'absolute left-6 right-6 flex justify-center pointer-events-none',
-                                isUpper ? 'top-6' : 'bottom-6'
-                              )}
+                              key={`label-${unit.id}`}
+                              className="absolute pointer-events-none -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-1.5"
+                              style={{
+                                left: `${center.x}%`,
+                                top: `${center.y}%`,
+                              }}
                             >
-                              <div className="bg-site-bg/90 backdrop-blur-md border border-success-green/30 rounded-xl px-6 py-4 shadow-lg">
-                                <p className="font-montserrat font-semibold text-seu-body text-site-fg-strong">
-                                  {t('unit')} {u.unitNumber}
-                                </p>
-                                <div className="flex items-center gap-4 font-montserrat text-seu-caption mt-1">
-                                  <span className="text-site-fg-muted">
-                                    {u.totalSize} m²
-                                  </span>
-                                  {bedroomCount(u) > 0 && (
-                                    <span className="text-site-fg-dim">
-                                      {t('beds', { count: bedroomCount(u) })}
-                                    </span>
+                              <span
+                                className={cn(
+                                  'font-bodoni leading-none tracking-wide transition-all duration-500 ease-out flex items-center justify-center h-14 min-w-14 px-3 rounded-full border backdrop-blur-md shadow-[0_4px_12px_rgba(0,0,0,0.5)]',
+                                  isHovered
+                                    ? 'text-seu-heading-lg text-white scale-105 bg-primary-green/40 border-white/50'
+                                    : 'text-seu-heading text-pale-gray bg-dark-green/65 border-pale-gray/25'
+                                )}
+                              >
+                                {unit.unitNumber}
+                              </span>
+                              {!isAvailable && (
+                                <span
+                                  className={cn(
+                                    'rounded-full px-2.5 py-0.5 font-montserrat text-[0.6rem] font-medium uppercase tracking-wider shadow-sm',
+                                    colors.bg,
+                                    colors.text
                                   )}
-                                </div>
-                              </div>
+                                >
+                                  {t(`status.${unit.status}`)}
+                                </span>
+                              )}
                             </div>
                           );
-                        })()}
+                        })}
+                      </div>
+
+                      {/* Hovered apartment's card — always outside the plan, on
+                          the side the unit sits nearest and centred on it, so it
+                          never covers the drawing it describes. */}
+                      {hoveredUnit && hoverPlacement && (
+                        <div
+                          className={cn(
+                            'absolute z-30 -translate-x-1/2 pointer-events-none',
+                            hoverPlacement.side === 'top'
+                              ? 'bottom-full mb-3'
+                              : 'top-full mt-3'
+                          )}
+                          style={{ left: `${hoverPlacement.x}%` }}
+                        >
+                          <div className="bg-site-bg/90 backdrop-blur-md border border-success-green/30 rounded-xl px-6 py-4 shadow-lg whitespace-nowrap">
+                            <p className="font-montserrat font-semibold text-seu-body text-site-fg-strong">
+                              {t('unit')} {hoveredUnit.unitNumber}
+                            </p>
+                            <div className="flex items-center gap-4 font-montserrat text-seu-caption mt-1">
+                              <span className="text-site-fg-muted">
+                                {hoveredUnit.totalSize} m²
+                              </span>
+                              {bedroomCount(hoveredUnit) > 0 && (
+                                <span className="text-site-fg-dim">
+                                  {t('beds', { count: bedroomCount(hoveredUnit) })}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   ) : (
                     <p className="text-site-fg-muted font-montserrat text-seu-body text-center py-20">

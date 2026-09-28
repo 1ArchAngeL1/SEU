@@ -63,12 +63,20 @@ A contact request sent from an apartment page must record **which apartment** it
 - Admin (`/admin/contacts`) shows an **Apartment** column — `Project · Block X · Fl. N · #unit`, linking to the public apartment page in a new tab — and the search box matches on that label as well.
 
 ### Project Map Location
-The project location shown in visual search is clickable — it opens the Google Maps location an **admin** set on the project (`googleMapLink`, Media section of the project form).
+Wherever the public site prints a project's location, the text is clickable — it opens the Google Maps location an **admin** set on the project (`googleMapLink`, Media section of the project form).
 
 - `src/lib/google-maps.ts` normalises whatever the editor pasted: an `<iframe>` snippet, a `maps/embed?pb=…` URL, a share or `/place/…` link, or plain coordinates. `mapEmbedSrc()` returns a frameable URL (or `null`), `mapOpenHref()` a URL for Google Maps proper. Non-`http(s)` values are always wrapped in a Maps search, never used as an href.
-- `ProjectLocationLink` wraps the location text: **no link set → plain text**, nothing is ever guessed from the project address. Framable link → `ProjectMapDialog` (embedded map + "Open in Google Maps"); a link Google won't frame (short links) → straight to a new tab.
-- It renders a `<button>`, not an `<a>`, and swallows the click — the visual-search cards are wrapped in a card-wide `<Link>` and a nested anchor would break them.
-- Wired into all four location displays of the flow: the project card list, the project info bar, and the floor page's address line (mobile and desktop).
+- `src/components/common/ProjectLocationLink.tsx` wraps the location text: **no link set → plain text**, nothing is ever guessed from the project address. Framable link → `ProjectMapDialog` (embedded map + "Open in Google Maps"); a link Google won't frame (short links) → straight to a new tab. `showIcon={false}` where the surrounding markup already draws a pin.
+- It renders a `<button>`, not an `<a>`, and swallows the click — several of these sit inside a card-wide `<Link>`, and a nested anchor would break the card.
+- Copy lives in the **`common`** namespace (`location`, `viewOnMap`, `openInGoogleMaps`), not `visualSearch` — the component is shared.
+- Wired into every location display: visual search (project card list, project info bar, floor address line — mobile and desktop) and the landing page (hero meta, ongoing project card, finished tile). New project previews should use it too.
+- It also wraps the **project name** in visual search — the card title on `/visual-search` and the `<h1>` on `/visual-search/[projectId]` (mobile header and the no-render fallback). Keep the `<h1>`/`<h2>` and put the link inside it, so the heading semantics survive. `iconClassName` sizes the pin up for heading text (`size-3.5` is the caption default).
+
+### Floor Plan Hover Card
+Hovering an apartment on the floor plan (`visual-search/[projectId]/[buildingId]/[floorId]`) shows its card **outside** the plan box, never over the drawing.
+
+- `hoverCardPlacement(polygon)` picks the side from the unit's own polygon: points are percentages of the plan box, so `min(y)` is the room above the unit and `100 - max(y)` the room below — the smaller gap wins. A high apartment gets a card above the plan, a low one below. `x` is the polygon's horizontal midpoint, clamped to `CARD_EDGE_MARGIN` so a unit against the wall still gets a card that fits.
+- The plan `<div>` is wrapped in a `relative` box purely so the card can anchor to `bottom-full` / `top-full` — keep the wrapper if you restructure the plan.
 
 ### Test-Mode Notice
 The public site carries a site-wide "this is a test version" disclaimer until launch.

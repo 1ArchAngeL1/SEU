@@ -29,7 +29,7 @@ export default function ProjectMapDialog({
   title,
   subtitle,
 }: ProjectMapDialogProps) {
-  const t = useTranslations('visualSearch');
+  const t = useTranslations('common');
   const embedSrc = mapEmbedSrc(link);
   const openHref = mapOpenHref(link);
 
@@ -49,7 +49,7 @@ export default function ProjectMapDialog({
         >
           <DialogPrimitive.Close
             className="absolute top-4 right-4 size-9 rounded-full bg-site-bg-hover/80 border border-site-border-soft grid place-items-center text-site-fg-muted hover:text-site-fg hover:border-site-border transition-colors"
-            aria-label={t('closeMap')}
+            aria-label={t('close')}
           >
             <X className="size-4" />
           </DialogPrimitive.Close>
