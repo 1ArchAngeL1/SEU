@@ -34,11 +34,6 @@ export default function HeroProjectMeta({
             <span className="px-3 py-1 rounded-full bg-pale-gray/10 border border-pale-gray/20 backdrop-blur font-montserrat text-[0.7rem] uppercase tracking-wider text-pale-gray/85">
               {t(project.status as any)}
             </span>
-            {project.isFeatured && (
-              <span className="px-3 py-1 rounded-full bg-primary-green/20 border border-primary-green/40 backdrop-blur font-montserrat text-[0.7rem] uppercase tracking-wider text-pale-gray">
-                {t('featured')}
-              </span>
-            )}
           </div>
 
           <h1 className="font-[--font-bodoni] text-seu-title-xl text-white leading-none uppercase">

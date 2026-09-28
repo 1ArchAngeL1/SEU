@@ -53,7 +53,6 @@ export default function OngoingSection() {
                     .filter(Boolean)
                     .join(' · ')}
                   image={fileUrl(project.mainImage) || undefined}
-                  badge={project.isFeatured ? 'FEATURED' : undefined}
                 />
               </Link>
             </FadeIn>

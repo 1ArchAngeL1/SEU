@@ -36,15 +36,6 @@ function FinishedTile({ project, locale }: { project: Project; locale: Locale })
       {/* Legibility overlay — very slight */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
 
-      {/* Featured badge */}
-      {project.isFeatured && (
-        <div className="absolute top-3 right-3 lg:top-4 lg:right-4">
-          <span className="px-2.5 py-0.5 lg:px-3 lg:py-1 bg-primary-green text-white text-seu-caption-sm font-montserrat font-medium rounded">
-            FEATURED
-          </span>
-        </div>
-      )}
-
       {/* Name + location */}
       <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-5 lg:p-6">
         <h3 className="font-bodoni text-seu-body sm:text-seu-subheading lg:text-seu-heading text-white leading-tight line-clamp-2">

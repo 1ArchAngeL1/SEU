@@ -54,6 +54,14 @@ The `isActive` switch on a **project**, a **building/block** or a **unit** is a 
 - **Admin screens deliberately bypass all of this** — editors must keep seeing deactivated records.
 - Backend gap: the floors controller accepts no `visibleOnly` (`/floors/by-building/:id`, `/floors/:id`), and `QueryFloorDto` would 400 on the extra param. Floors are safe only because both pages that show them gate on the block first — keep it that way, or plumb the flag through `FloorsService`, which already supports it.
 
+### Featured projects — no public badge
+`isFeatured` is an **editorial flag, not a label**. The public site must never print it — no "გამორჩეული" / "FEATURED" pill on a hero, card or tile.
+
+- Its one public job is picking which project the landing hero shows (`LandingHero.tsx` — first active, non-archived, featured project, else the first visible one).
+- Admin screens still badge it (`/admin`, `/admin/projects`, `ProjectCard`, `ProjectDetailClient`, the project picker rail) — editors need to see which project is flagged.
+- `OngoingProjectCard` keeps a generic `badge` prop, deliberately unwired: it is a slot for some future label, not for this flag.
+- There is no `status.featured` message any more. Don't re-add one — `status.*` is for the project's real status (planning → archived).
+
 ### Contact Requests — apartment attribution
 A contact request sent from an apartment page must record **which apartment** it came from, so the admin panel can show it.
 
@@ -72,6 +80,9 @@ Every submitted contact form is also emailed to the sales inbox, on top of being
 - Env (backend `.env`, documented in `.env.example`): `SMTP_HOST` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASS`, `MAIL_FROM`, `CONTACT_NOTIFY_TO` (comma-separated for several recipients). Optional: `SMTP_SECURE` (port 465 turns it on by itself), `MAIL_TIMEZONE` (default `Asia/Tbilisi`), `PUBLIC_SITE_URL` and `ADMIN_CONTACTS_URL` for the links.
 - `MAIL_FROM` may be **just a display name** — `buildSender()` pairs it with `SMTP_USER` (`"SEU Development" <user@gmail.com>`), since a bare name is not a valid sender. A full address, or `Name <addr>`, is used as written. Gmail only accepts its own mailbox or a verified alias as the From address anyway.
 - `replyTo` is the visitor's email when they left one, so hitting Reply reaches them.
+- **Env names have aliases on purpose.** `SMTP_PASS` also answers to `SMTP_PASSWORD`, and `CONTACT_NOTIFY_TO` to `CONTACT_NOTIFICATION_TO` / `MAIL_TO` — an older server `.env` must not silently disable mail after a rename. A name mismatch is invisible: a missing password looks like a bare Gmail `535`, and a missing recipient is dropped with only a log line.
+- The backend serves **compiled `dist/`** in production, so a mail change needs `npm run build` and a process restart before it exists on the server. The boot log says which state you are in: `SMTP ready, sending as …` / `SMTP connection failed: …` / `SMTP_HOST is not set …`. Check it first when mail goes missing.
+- `PUBLIC_SITE_URL` is what makes the apartment and admin links appear in the mail; without it the message still sends, just with no links.
 
 ### Contact Requests — the confirmation notice
 After a visitor sends their phone number, the form shows a two-line thank-you that **stays put long enough to read**, never a flash of green.
