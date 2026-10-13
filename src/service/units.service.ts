@@ -35,10 +35,25 @@ export interface UpdateUnitStatusInput {
   saleRecord?: UnitSaleRecord;
 }
 
+/**
+ * Array filters travel as one comma-separated query param (`?bedroomCounts=1,4`,
+ * `?types=living,parking`). Left to `String(value)` an array would stringify to
+ * the same thing by accident; doing it here keeps it deliberate, and drops an
+ * empty array instead of sending a blank param.
+ */
+function csv(values?: readonly (string | number)[]): string | undefined {
+  return values && values.length ? values.join(',') : undefined;
+}
+
 export const unitsService = {
   list(params: ListUnitsParams = {}): Promise<PaginatedResult<Unit>> {
+    const { bedroomCounts, types, ...rest } = params;
     return apiGetPaginated<Unit>('/units', {
-      params: params as Record<string, string | number | boolean | undefined | null>,
+      params: {
+        ...(rest as Record<string, string | number | boolean | undefined | null>),
+        bedroomCounts: csv(bedroomCounts),
+        types: csv(types),
+      },
     });
   },
 

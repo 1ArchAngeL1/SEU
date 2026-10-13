@@ -22,25 +22,43 @@ export type SearchFormProps = {
 
 const ROOM_OPTIONS = [0, 1, 2, 3, 4, 5];
 
+/**
+ * A size input as a number, or `undefined` for "not set".
+ *
+ * Clamped at zero: `<input type="number" min={0}>` does not stop a typed `-5`,
+ * and the backend rejects a negative `minSize`/`maxSize` with a 400 — which the
+ * results area would show as "no apartments match your filters".
+ */
 function toNum(v: string): number | undefined {
   const t = v.trim();
   if (!t) return undefined;
   const n = Number(t);
-  return Number.isFinite(n) ? n : undefined;
+  return Number.isFinite(n) ? Math.max(0, n) : undefined;
 }
 
+/**
+ * Re-select the room buttons a filter already describes, so a `?bedrooms=…`
+ * link (or a back/forward step) lands on a form that shows what is applied.
+ *
+ * `bedroomCounts` is the exact set the form itself sends and is read first;
+ * `minBedrooms`/`maxBedrooms` are only still honoured for older links.
+ */
 function deriveInitialRooms(f?: UnitFilter): number[] {
   if (!f) return [];
   const rooms: number[] = [];
   if (f.studio) rooms.push(0); // studio
-  if (f.bedrooms != null && f.bedrooms > 0) {
+  if (f.bedroomCounts?.length) {
+    rooms.push(...f.bedroomCounts.filter((n) => n > 0));
+  } else if (f.bedrooms != null && f.bedrooms > 0) {
     rooms.push(f.bedrooms);
-  } else if (f.minBedrooms != null && f.maxBedrooms != null) {
-    for (let i = f.minBedrooms; i <= f.maxBedrooms; i++) {
-      if (i > 0) rooms.push(i);
-    }
+  } else if (f.minBedrooms != null || f.maxBedrooms != null) {
+    const from = Math.max(f.minBedrooms ?? 1, 1);
+    const to = f.maxBedrooms ?? Math.max(...ROOM_OPTIONS);
+    for (let i = from; i <= to; i++) rooms.push(i);
   }
-  return rooms.filter((r) => ROOM_OPTIONS.includes(r));
+  return [...new Set(rooms)]
+    .filter((r) => ROOM_OPTIONS.includes(r))
+    .sort((a, b) => a - b);
 }
 
 export default function SearchForm({
@@ -49,6 +67,8 @@ export default function SearchForm({
   onSearch,
   onClear,
 }: SearchFormProps) {
+  // Read once on purpose: the page remounts this form (`key` on the URL) when
+  // the filter arrives from outside, so there is nothing to sync afterwards.
   const [project, setProject] = useState(initialFilter?.project ?? '');
   const [building, setBuilding] = useState(initialFilter?.building ?? '');
   const [sizeFrom, setSizeFrom] = useState(initialFilter?.minSize != null ? String(initialFilter.minSize) : '');
@@ -84,17 +104,18 @@ export default function SearchForm({
     // filter on the number of bedrooms. Both are derived from each unit's room
     // list on the backend, and OR-ed so a mixed pick matches either.
     const studio = selectedRooms.includes(0);
-    const beds = selectedRooms.filter((r) => r > 0);
+    const beds = selectedRooms.filter((r) => r > 0).sort((a, b) => a - b);
 
     if (studio) {
       filter.studio = true;
       filter.type = 'living';
     }
+    // The exact set, never a min/max range: picking 1 and 4 must not also
+    // return the 2- and 3-bedroom units — 101 of them, on the current data.
     if (beds.length === 1) {
       filter.bedrooms = beds[0];
     } else if (beds.length > 1) {
-      filter.minBedrooms = Math.min(...beds);
-      filter.maxBedrooms = Math.max(...beds);
+      filter.bedroomCounts = beds;
     }
     onSearch?.(filter);
   }

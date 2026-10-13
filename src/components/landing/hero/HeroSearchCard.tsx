@@ -17,17 +17,30 @@ export default function HeroSearchCard() {
 
   function handleSearch() {
     const params = new URLSearchParams();
-    if (sizeFrom.trim()) params.set('minSize', sizeFrom.trim());
-    if (sizeTo.trim()) params.set('maxSize', sizeTo.trim());
-    if (selectedRooms.length === 1) {
-      params.set('bedrooms', String(selectedRooms[0]));
-    } else if (selectedRooms.length > 1) {
-      params.set('minBedrooms', String(Math.min(...selectedRooms)));
-      params.set('maxBedrooms', String(Math.max(...selectedRooms)));
-    }
+    // Clamped at zero — the backend rejects a negative size with a 400, and
+    // `<input type="number" min={0}>` does not stop a typed `-5`.
+    const size = (v: string): string | null => {
+      const n = Number(v.trim());
+      return v.trim() && Number.isFinite(n) ? String(Math.max(0, n)) : null;
+    };
+    const from = size(sizeFrom);
+    const to = size(sizeTo);
+    if (from) params.set('minSize', from);
+    if (to) params.set('maxSize', to);
+
+    // The studio button is its own filter — a studio is a studio room with
+    // zero bedrooms, which `bedrooms=0` does not say: that also matches every
+    // unit whose layout was imported without rooms.
     if (selectedRooms.includes(0)) {
+      params.set('studio', 'true');
       params.set('type', 'living');
     }
+    // The remaining buttons go over as the exact set they are. A min/max pair
+    // would widen a pick of 1 and 4 into "1 through 4" and bring back the 2-
+    // and 3-bedroom apartments as well.
+    const beds = selectedRooms.filter((n) => n > 0).sort((a, b) => a - b);
+    if (beds.length) params.set('bedrooms', beds.join(','));
+
     const qs = params.toString();
     router.push(qs ? `/search?${qs}` : '/search');
   }

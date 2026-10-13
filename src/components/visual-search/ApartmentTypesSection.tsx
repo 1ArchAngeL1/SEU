@@ -16,8 +16,14 @@ function formatSize(from: number, to: number, unit: string): string {
 function searchHref(projectId: string, t: ApartmentType): string {
   const params = new URLSearchParams();
   params.set('project', projectId);
-  params.set('bedrooms', String(t.bedrooms));
-  if (t.bedrooms === 0) params.set('type', 'living');
+  // A zero-bedroom type is the studio, and that is its own filter: `bedrooms=0`
+  // would also match every unit whose layout was imported without rooms.
+  if (t.bedrooms === 0) {
+    params.set('studio', 'true');
+    params.set('type', 'living');
+  } else {
+    params.set('bedrooms', String(t.bedrooms));
+  }
   return `/search?${params.toString()}`;
 }
 

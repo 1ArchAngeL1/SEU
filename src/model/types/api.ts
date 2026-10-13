@@ -412,10 +412,24 @@ export interface UnitFilter {
   block?: string;
   status?: UnitStatus;
   type?: UnitType;
+  /**
+   * Unit types to include, sent as a comma-separated list. ANDed with `type`.
+   * The public search uses it to leave commercial units out on the server, so
+   * the pagination totals match the grid.
+   */
+  types?: UnitType[];
   furnishingStatus?: FurnishingStatus;
   bedrooms?: number;
   minBedrooms?: number;
   maxBedrooms?: number;
+  /**
+   * Exact bedroom counts — `[1, 4]` means "1 bedroom or 4 bedrooms".
+   *
+   * A multi-select cannot be sent as `minBedrooms`/`maxBedrooms`: picking 1
+   * and 4 would become "1 through 4" and drag in every 2- and 3-bedroom unit.
+   * Takes precedence over `bedrooms` and the min/max pair on the backend.
+   */
+  bedroomCounts?: number[];
   /** Studio apartments — a studio room with zero bedrooms. */
   studio?: boolean;
   floorNumber?: number;
