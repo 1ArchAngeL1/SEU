@@ -15,6 +15,18 @@ import { bedroomCount } from '@/lib/room-counts';
 import { isUnitVisible, refId } from '@/lib/visibility';
 import { trackViewItem } from '@/lib/analytics/events';
 
+/**
+ * "Open space" is the balcony and the terrace together — the two are one
+ * figure to a buyer, and a unit commonly carries only one of them. A missing
+ * side counts as 0 rather than blanking the stat, and the sum is rounded
+ * because adding two decimal sizes otherwise prints float noise (e.g.
+ * 12.3 + 5.4 => 17.700000000000003).
+ */
+function openSpaceSize(unit: { balconySize?: number; terraceSize?: number }) {
+  const total = (unit.balconySize ?? 0) + (unit.terraceSize ?? 0);
+  return Math.round(total * 100) / 100;
+}
+
 export default function ApartmentDetailPage({
   params,
 }: {
@@ -71,7 +83,7 @@ export default function ApartmentDetailPage({
             apartmentNumber: unit.unitNumber,
             totalSize: unit.totalSize,
             mainSize: unit.livableArea ?? unit.totalSize,
-            openSpace: unit.balconySize ?? 0,
+            openSpace: openSpaceSize(unit),
             rooms: bedroomCount(unit),
             roomDetails: (Array.isArray(unit.rooms) ? unit.rooms : [])
               .filter((r): r is NonNullable<typeof r> => r != null && typeof r === 'object')
