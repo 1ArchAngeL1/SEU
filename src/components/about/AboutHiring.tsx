@@ -6,6 +6,7 @@ import FadeIn from '@/components/FadeIn';
 import { useTranslations } from 'next-intl';
 import { filesService } from '@/service/files.service';
 import { useCreateResume } from '@/hooks/queries/use-resumes';
+import { trackSubmitApplication } from '@/lib/analytics/events';
 
 export default function AboutHiring() {
   const t = useTranslations('about');
@@ -40,6 +41,7 @@ export default function AboutHiring() {
         fileName: uploaded.originalName,
         position: t('marketing'),
       });
+      trackSubmitApplication(t('marketing'));
       setSubmitted(true);
       setTimeout(() => setSubmitted(false), 5000);
     } catch {

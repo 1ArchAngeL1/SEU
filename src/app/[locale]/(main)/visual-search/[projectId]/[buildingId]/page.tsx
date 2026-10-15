@@ -15,6 +15,7 @@ import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
 import { isBuildingVisible, isProjectVisible } from '@/lib/visibility';
 import { isNotFoundError } from '@/lib/api-client';
+import { trackSelectFloor } from '@/lib/analytics/events';
 import type { PolygonPoint } from '@/model/types/api';
 
 function toSvgPoints(polygon: PolygonPoint[]): string {
@@ -76,6 +77,8 @@ export default function VisualSearchBuildingPage({
   );
 
   function handleFloorClick(floorId: string) {
+    const floor = floors.find((f) => f.id === floorId);
+    if (floor) trackSelectFloor(floor, { projectId, buildingId });
     router.push(`/visual-search/${projectId}/${buildingId}/${floorId}`);
   }
 
@@ -261,7 +264,7 @@ export default function VisualSearchBuildingPage({
       {/* Contact section */}
       <div className="bg-site-bg px-5 lg:px-10 py-12 lg:py-20">
         <div className="max-w-[1920px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
-          <ContactForm className="max-w-2xl" />
+          <ContactForm className="max-w-2xl" source="visual_search_building" />
           <ContactPanel className="max-w-2xl lg:justify-self-end" />
         </div>
       </div>

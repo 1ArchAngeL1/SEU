@@ -8,12 +8,21 @@ import { Link } from '@/i18n/navigation';
 import { pickLocalized } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
 import { Card } from '@/components/ui/card';
+import { type ItemList, trackSelectItem } from '@/lib/analytics/events';
 import { Badge } from '@/components/ui/badge';
 import type { Unit, UnitStatus } from '@/model/types/api';
 
 export type ApartmentCardProps = {
   className?: string;
   data: Unit;
+  /**
+   * The list this card belongs to. Sent with the click so GA4 can attribute
+   * the apartment view back to the grid, rail or floor plan it came from —
+   * without it `select_item` cannot be joined to its `view_item_list`.
+   */
+  list?: ItemList;
+  /** Position in that list, 0-based. */
+  index?: number;
   onClick?: () => void;
 };
 
@@ -29,6 +38,8 @@ function statusBadgeClass(s: UnitStatus): string {
 export default function ApartmentCard({
   className,
   data,
+  list,
+  index,
   onClick,
 }: ApartmentCardProps) {
   const t = useTranslations('search');
@@ -46,7 +57,10 @@ export default function ApartmentCard({
   return (
     <Link
       href={`/search/${data.id}`}
-      onClick={onClick}
+      onClick={() => {
+        if (list) trackSelectItem(data, list, index);
+        onClick?.();
+      }}
       className="group block focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-green/50 rounded-2xl"
     >
       <Card

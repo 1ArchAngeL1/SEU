@@ -1,9 +1,11 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import ApartmentCard from '@/components/search/ApartmentCard';
 import { usePublicUnitsList } from '@/hooks/queries/use-units';
 import { visibleUnits } from '@/lib/visibility';
+import { LIST, trackViewItemList } from '@/lib/analytics/events';
 
 interface SimilarApartmentsProps {
   buildingId?: string;
@@ -25,6 +27,12 @@ export function SimilarApartments({
     .filter((u) => u.id !== currentApartmentId)
     .slice(0, 8);
 
+  const ids = apartments.map((a) => a.id).join(',');
+  useEffect(() => {
+    if (apartments.length > 0) trackViewItemList(apartments, LIST.similar);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ids]);
+
   if (!buildingId || apartments.length === 0) return null;
 
   return (
@@ -34,9 +42,9 @@ export function SimilarApartments({
       </h2>
 
       <div className="flex gap-6 overflow-x-auto pb-4 hide-scrollbar">
-        {apartments.map((apartment) => (
+        {apartments.map((apartment, i) => (
           <div key={apartment.id} className="shrink-0 w-64 lg:w-80">
-            <ApartmentCard data={apartment} />
+            <ApartmentCard data={apartment} list={LIST.similar} index={i} />
           </div>
         ))}
       </div>

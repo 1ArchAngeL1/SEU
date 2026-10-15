@@ -7,6 +7,7 @@ import FadeIn from '@/components/FadeIn';
 import { fileUrl } from '@/lib/file-url';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { estimateReadMinutes } from '@/lib/news-helpers';
+import { trackSelectNewsArticle } from '@/lib/analytics/events';
 import type { NewsArticle } from '@/model/types/api';
 
 interface NewsCardProps {
@@ -30,6 +31,7 @@ export default function NewsCard({ article, locale, index = 0 }: NewsCardProps) 
     <FadeIn delay={(index % 4) * 70} duration={500} className="h-full">
       <Link
         href={`/news/${article.id}`}
+        onClick={() => trackSelectNewsArticle(article.id, header, index)}
         className="group flex h-full flex-col rounded-lg border border-site-border-strong bg-pale-gray/[0.06] cursor-pointer hover-lift pt-2.5 px-2.5 pb-3.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-green/60"
       >
         {/* Title */}

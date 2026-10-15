@@ -1,6 +1,13 @@
 'use client';
 
-import { use, useState, useMemo, useCallback, type SyntheticEvent } from 'react';
+import {
+  use,
+  useState,
+  useMemo,
+  useCallback,
+  useEffect,
+  type SyntheticEvent,
+} from 'react';
 import { notFound } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import { ChevronUp, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -23,6 +30,7 @@ import { bedroomCount, isStudio } from '@/lib/room-counts';
 import { STATUS_COLORS } from '@/lib/unit-status';
 import { cn } from '@/lib/utils';
 import { isBuildingVisible, isProjectVisible, visibleUnits } from '@/lib/visibility';
+import { LIST, trackSelectItem, trackViewItemList } from '@/lib/analytics/events';
 import { isNotFoundError } from '@/lib/api-client';
 import type { PolygonPoint, Unit } from '@/model/types/api';
 
@@ -141,6 +149,19 @@ export default function VisualSearchFloorPage({
     (u) => u.polygon && u.polygon.length >= 3
   );
 
+  // The apartments of this floor, as one impression. Fired per floor rather
+  // than per tab: the plan and the grid show the same units.
+  const unitIds = units.map((u) => u.id).join(',');
+  useEffect(() => {
+    trackViewItemList(units, LIST.visualSearchFloor, {
+      project_id: projectId,
+      building_id: buildingId,
+      floor_id: floorId,
+      floor_number: floor?.floorNumber,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [unitIds, floorId]);
+
   // The hovered apartment and where its card belongs — see `hoverCardPlacement`.
   const hoveredUnit = hoveredId
     ? unitsWithPolygons.find((u) => u.id === hoveredId)
@@ -157,6 +178,11 @@ export default function VisualSearchFloorPage({
 
   function handleUnitClick(unit: Unit) {
     if (!canOpenUnit(unit)) return;
+    trackSelectItem(
+      unit,
+      LIST.visualSearchFloor,
+      units.findIndex((u) => u.id === unit.id)
+    );
     router.push(`/search/${unit.id}`);
   }
 
@@ -772,7 +798,7 @@ export default function VisualSearchFloorPage({
       {/* Contact section */}
       <div className="bg-site-bg px-5 lg:px-10 py-12 lg:py-20">
         <div className="max-w-[1920px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
-          <ContactForm className="max-w-2xl" />
+          <ContactForm className="max-w-2xl" source="visual_search_floor" />
           <ContactPanel className="max-w-2xl lg:justify-self-end" />
         </div>
       </div>

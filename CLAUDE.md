@@ -131,6 +131,23 @@ The public site carries a site-wide "this is a test version" disclaimer until la
 - Copy lives in `messages/{en,ka}.json` under `testMode.message` — one short line, never hardcoded in the component.
 - Admin (`/admin/*`) and `/presentation/*` deliberately do not show it.
 
+### Analytics — Google Analytics 4
+Every public page reports to GA4. The full taxonomy, the parameters, and the
+one-time GA4 setup are in **`docs/analytics.md`** — read it before touching
+anything below.
+
+- Code lives in `src/lib/analytics/` (`config` → `gtag` → `items` → `events`) and `src/components/analytics/`. **Components never call `gtag` directly** — they call a named helper from `events.ts`. GA4 registers custom dimensions by parameter name, so a second spelling is a second, half-empty dimension.
+- Nothing is loaded or sent without `NEXT_PUBLIC_GA_MEASUREMENT_ID`. A dev box or preview deploy therefore never reaches the production property. `NEXT_PUBLIC_GA_DEBUG=true` logs every event to the console — which works with no measurement id at all, so the taxonomy can be checked before the property exists.
+- `<GoogleAnalytics />` is mounted in `(main)/layout.tsx` **only**. Admin and `/presentation/*` are staff tools; counting the sales team's own sessions would wreck every engagement figure. Do not move it to the root layout.
+- Page views are manual (`send_page_view: false` + `PageViewTracker`): after the first load this is a single-page app, and gtag's automatic view would only ever count the landing page.
+- **`source` is a required prop on `ContactForm`.** It becomes `lead_source` on `generate_lead`, the site's conversion. A new form anywhere must declare where it sits, the same way a form under a unit must pass `unitId`.
+- An apartment is described **twice** on unit events — once inside `items[]`, once as flat `unit_*` parameters. Item-scoped dimensions cannot be used on non-ecommerce events like `generate_lead`, so this is the documented GA4 workaround, not duplication by accident.
+- **Names sent to GA are always the English ones** (`nameEn`). The visitor's language is already its own `locale` dimension; a localized name would split one project into two unrelated rows in every report.
+- **No total price is reported.** `price.amount` is not reliably a total on the live data (same reason the price filter is unwired), so only `price.pricePerSqm` goes over and `generate_lead`'s `value` comes from the configured `NEXT_PUBLIC_GA_LEAD_VALUE`. Fix the data before wiring a price in.
+- `rooms_label` has a `studio` branch for the usual reason: a studio's bedroom count is legitimately 0, which is also what a unit imported without rooms reports. Never collapse the two.
+- Personal data never leaves the backend. A lead reports *that* a name/email was filled in, never the values.
+- The hero's quick filter fires `hero_search`, not `search` — it navigates to `/search?…` where the real `search` fires, and one name for both would double-count.
+
 ### Loading States
 - Use `SeuLoader` (`src/components/common/SeuLoader.tsx`) for public-facing waits — the SEU mark over a breathing halo with a sweeping track. Never a bare `Loader2` spinner on public pages. Sizes `sm | md | lg`; `overlay` fills the nearest positioned ancestor and dims behind it. Keyframes live in `globals.css` (`seuBreathe` / `seuHalo` / `seuSweep`, all disabled under `prefers-reduced-motion`).
 - **A resolved query is not a rendered image.** On any page that draws polygons over a render, gate on an `imgLoaded` flag set by the image's own `onLoad`, not just on `isLoading`: fade the image in, hold a `minHeight` on its box beforehand so the loader has somewhere to sit, and mount the polygon `<svg>` only once loaded with `animate-polygons-in`. Mounting rather than toggling opacity is deliberate — it makes the entrance animation replay on every navigation.

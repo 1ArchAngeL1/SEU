@@ -17,6 +17,7 @@ import ProjectLocationLink from '@/components/common/ProjectLocationLink';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
 import { blockTotals, isProjectVisible } from '@/lib/visibility';
+import { trackSelectBuilding } from '@/lib/analytics/events';
 import type { Building, PolygonPoint } from '@/model/types/api';
 
 /** Convert percentage-based polygon points (0-100) directly to SVG points string. */
@@ -369,7 +370,10 @@ export default function VisualSearchProjectPage({
   // off, so recount from the blocks actually on show.
   const totals = buildingsQ.isSuccess ? blockTotals(buildings) : null;
 
+  // Every route into a block — both polygon layers and the mobile "view"
+  // button — goes through here, so one event covers them all.
   function handleBuildingClick(building: Building) {
+    trackSelectBuilding(building, project);
     router.push(`/visual-search/${projectId}/${building.id}`);
   }
 
@@ -749,7 +753,7 @@ export default function VisualSearchProjectPage({
       {/* Contact section */}
       <div className="bg-dark-green px-5 lg:px-10 py-12 lg:py-20">
         <div className="max-w-[1920px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
-          <ContactForm className="max-w-2xl" />
+          <ContactForm className="max-w-2xl" source="visual_search_project" />
           <ContactPanel className="max-w-2xl lg:justify-self-end" />
         </div>
       </div>

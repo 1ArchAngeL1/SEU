@@ -14,6 +14,8 @@ import { ApartmentFloorPlan } from './apartment-detail/ApartmentFloorPlan';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import RequestCallDialog from './RequestCallDialog';
+import { trackRequestCallOpen } from '@/lib/analytics/events';
+import type { Unit } from '@/model/types/api';
 
 interface Apartment {
   id: string | number;
@@ -35,9 +37,15 @@ interface Apartment {
 
 interface ApartmentDetailViewProps {
   apartment: Apartment;
+  /**
+   * The unit as it came from the API. Only analytics reads it — the rendered
+   * fields all come from `apartment` — so that an intent event carries the
+   * project, block, size and layout rather than a bare id.
+   */
+  unit?: Unit;
 }
 
-export function ApartmentDetailView({ apartment }: ApartmentDetailViewProps) {
+export function ApartmentDetailView({ apartment, unit }: ApartmentDetailViewProps) {
   const t = useTranslations('search');
   const [requestCallOpen, setRequestCallOpen] = useState(false);
 
@@ -68,7 +76,10 @@ export function ApartmentDetailView({ apartment }: ApartmentDetailViewProps) {
           <Button
             type="button"
             size="lg"
-            onClick={() => setRequestCallOpen(true)}
+            onClick={() => {
+              trackRequestCallOpen(unit, 'apartment_page');
+              setRequestCallOpen(true);
+            }}
             className="bg-primary-green hover:bg-primary-green/90 text-white font-montserrat font-medium text-seu-body px-10 h-12 rounded-lg shadow-sm shadow-primary-green/20 mb-8"
           >
             {t('requestCall')}
@@ -87,6 +98,7 @@ export function ApartmentDetailView({ apartment }: ApartmentDetailViewProps) {
 
         {/* ── Right: Floor Plan Card ── */}
         <ApartmentFloorPlan
+          unitId={String(apartment.id)}
           floorPlanImages={apartment.floorPlanImages}
           apartmentNumber={apartment.apartmentNumber}
           complex={apartment.complex}

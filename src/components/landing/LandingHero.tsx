@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { useActiveProjects } from '@/hooks/queries/use-projects';
 import { pickLocalized } from '@/lib/i18n-helpers';
+import { trackSelectProject } from '@/lib/analytics/events';
 import type { Project } from '@/model/types/api';
 
 import HeroSlideshow from './hero/HeroSlideshow';
@@ -118,6 +119,7 @@ export default function LandingHero() {
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none animate-[fadeInUp_0.9s_cubic-bezier(0.16,1,0.3,1)_0.5s_both]">
             <Link
               href={`/visual-search/${project.id}`}
+              onClick={() => trackSelectProject(project, 'landing')}
               className="pointer-events-auto flex flex-col items-center gap-3 group"
             >
               <span className="font-montserrat font-medium text-seu-caption lg:text-seu-body-sm text-pale-gray tracking-wider uppercase">

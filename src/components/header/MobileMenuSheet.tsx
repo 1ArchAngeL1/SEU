@@ -12,6 +12,7 @@ import {
   SheetClose,
   SheetTitle,
 } from '@/components/ui/sheet';
+import { trackContactClick } from '@/lib/analytics/events';
 
 interface MobileMenuSheetProps {
   open: boolean;
@@ -129,6 +130,7 @@ export function MobileMenuSheet({
             </p>
             <a
               href="tel:+995555000000"
+              onClick={() => trackContactClick('phone', 'mobile_menu')}
               className="font-montserrat text-seu-body-sm text-site-fg hover:text-primary-green transition-colors"
             >
               +995 555 000 000

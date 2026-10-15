@@ -13,6 +13,7 @@ import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
 import { bedroomCount } from '@/lib/room-counts';
 import { isUnitVisible, refId } from '@/lib/visibility';
+import { trackViewItem } from '@/lib/analytics/events';
 
 export default function ApartmentDetailPage({
   params,
@@ -36,7 +37,10 @@ export default function ApartmentDetailPage({
 
   useEffect(() => {
     if (!id || !unit || hidden) return;
+    // Two counters, deliberately: the backend one drives the admin panel's
+    // per-unit view count, GA4's drives the funnel reports.
     unitsService.trackView(id).catch(() => {});
+    trackViewItem(unit);
   }, [id, unit, hidden]);
 
   if (unitQ.isLoading) {
@@ -58,6 +62,7 @@ export default function ApartmentDetailPage({
     <div className="bg-site-bg min-h-screen py-10">
       <div className="flex flex-col mx-auto">
         <ApartmentDetailView
+          unit={unit}
           apartment={{
             id: unit.id,
             complex: projectObj ? pickLocalized(projectObj.nameEn, projectObj.nameKa, locale) : '',

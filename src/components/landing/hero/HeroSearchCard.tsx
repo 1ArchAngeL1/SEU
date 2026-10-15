@@ -5,6 +5,8 @@ import { RotateCcw, Search } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
+import { trackClearFilters, trackHeroSearch } from '@/lib/analytics/events';
+import type { UnitFilter } from '@/model/types/api';
 
 const ROOM_OPTIONS = [0, 1, 2, 3, 4];
 
@@ -41,11 +43,24 @@ export default function HeroSearchCard() {
     const beds = selectedRooms.filter((n) => n > 0).sort((a, b) => a - b);
     if (beds.length) params.set('bedrooms', beds.join(','));
 
+    // Reported as its own event — the `search` on the results page is the one
+    // that counts, and sending both under one name would double every hero
+    // search.
+    const reported: UnitFilter = {
+      ...(from ? { minSize: Number(from) } : {}),
+      ...(to ? { maxSize: Number(to) } : {}),
+      ...(selectedRooms.includes(0) ? { studio: true, type: 'living' as const } : {}),
+      ...(beds.length === 1 ? { bedrooms: beds[0] } : {}),
+      ...(beds.length > 1 ? { bedroomCounts: beds } : {}),
+    };
+    trackHeroSearch(reported);
+
     const qs = params.toString();
     router.push(qs ? `/search?${qs}` : '/search');
   }
 
   function handleClear() {
+    trackClearFilters('hero');
     setSizeFrom('');
     setSizeTo('');
     setSelectedRooms([]);

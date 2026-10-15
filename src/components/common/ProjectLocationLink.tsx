@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import ProjectMapDialog from './ProjectMapDialog';
 import { mapEmbedSrc, mapOpenHref } from '@/lib/google-maps';
 import { cn } from '@/lib/utils';
+import { trackViewMap } from '@/lib/analytics/events';
 
 interface ProjectLocationLinkProps {
   /** Raw `googleMapLink` from the project — the admin sets it, nothing is guessed. */
@@ -60,8 +61,13 @@ export default function ProjectLocationLink({
           e.stopPropagation();
           // A link Google will not let us frame (a short link, typically) is
           // no use in a dialog — hand it straight to Google Maps.
-          if (embedSrc) setOpen(true);
-          else window.open(openHref, '_blank', 'noopener,noreferrer');
+          if (embedSrc) {
+            trackViewMap(projectName, 'dialog');
+            setOpen(true);
+          } else {
+            trackViewMap(projectName, 'external');
+            window.open(openHref, '_blank', 'noopener,noreferrer');
+          }
         }}
         className={cn(
           'group/map inline-flex items-center gap-1.5 cursor-pointer hover:text-primary-green transition-colors',

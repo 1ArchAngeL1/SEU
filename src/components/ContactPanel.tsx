@@ -4,9 +4,16 @@ import { Mail, MapPin, Phone } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { phoneHref } from '@/lib/phone';
 import { useTranslations } from 'next-intl';
+import { trackContactClick } from '@/lib/analytics/events';
 
 export type ContactPanelProps = {
   className?: string;
+  /**
+   * Where this panel sits, reported with a phone or email tap. A visitor who
+   * dials instead of filling the form is still a lead — just one the site
+   * never sees finish, so the tap is the only trace of it.
+   */
+  placement?: string;
   /** Use on pale-gray backgrounds so headings are dark */
   lightBg?: boolean;
   /** Hide the built-in heading (dash + title) */
@@ -17,6 +24,7 @@ export type ContactPanelProps = {
 
 export default function ContactPanel({
   className,
+  placement = 'contact_panel',
   lightBg = false,
   hideHeader = false,
   headerClassName,
@@ -44,6 +52,7 @@ export default function ContactPanel({
           {/* Email */}
           <a
             href={`mailto:${t('email')}`}
+            onClick={() => trackContactClick('email', placement)}
             className="group flex items-center gap-3 p-4 hover:bg-site-bg-hover transition-colors"
           >
             <span className="size-9 shrink-0 rounded-xl bg-primary-green grid place-items-center shadow-sm shadow-primary-green/30 group-hover:scale-110 transition-transform">
@@ -73,6 +82,7 @@ export default function ContactPanel({
                 <a
                   key={number}
                   href={phoneHref(number)}
+                  onClick={() => trackContactClick('phone', placement)}
                   className="block font-montserrat font-medium text-[0.7rem] text-site-fg whitespace-nowrap hover:text-primary-green transition-colors"
                 >
                   {number}

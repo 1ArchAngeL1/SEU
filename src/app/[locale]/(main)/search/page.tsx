@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { Loader2, SearchX } from 'lucide-react';
@@ -10,6 +10,12 @@ import { PaginationControl } from '@/components/search/PaginationControl';
 import { usePublicUnitsList } from '@/hooks/queries/use-units';
 import { useActiveProjects } from '@/hooks/queries/use-projects';
 import { visibleUnits } from '@/lib/visibility';
+import {
+  trackClearFilters,
+  trackResultsPage,
+  trackSearch,
+  trackSearchResults,
+} from '@/lib/analytics/events';
 import type { UnitFilter, UnitType } from '@/model/types/api';
 
 // 'commerce' is intentionally omitted — commercial units are hidden on the
@@ -116,6 +122,11 @@ function SearchPageContent({ initialFilter }: { initialFilter: UnitFilter }) {
 
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState<UnitFilter>(initialFilter);
+  // The page is remounted on every URL change, so the first filter it sees
+  // arrived in the address bar (a hero search, a shared link, a back step) and
+  // every later one came from the form.
+  const firstFilter = useRef(true);
+  const projectsQ = useActiveProjects();
 
   // Apartments (living units) first, then parking and storage.
   // The public list: units of a deactivated unit, block or project are dropped
@@ -134,17 +145,29 @@ function SearchPageContent({ initialFilter }: { initialFilter: UnitFilter }) {
     'typePriority'
   );
 
+  // Every applied filter is a search, however it arrived.
+  useEffect(() => {
+    const projectName = projectsQ.data?.find((p) => p.id === filter.project)?.nameEn;
+    trackSearch(filter, {
+      source: firstFilter.current ? 'url' : 'search_form',
+      projectName,
+    });
+    firstFilter.current = false;
+  }, [filter, projectsQ.data]);
+
   function handleSearch(next: UnitFilter) {
     setFilter(next);
     setPage(1);
   }
 
   function handleClear() {
+    trackClearFilters('search_form');
     setFilter({ status: 'available' });
     setPage(1);
   }
 
   function handlePageChange(p: number) {
+    trackResultsPage(p, totalPages);
     setPage(p);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -160,6 +183,15 @@ function SearchPageContent({ initialFilter }: { initialFilter: UnitFilter }) {
     [unitsQ.data]
   );
   const totalPages = unitsQ.data?.pagination.totalPages ?? 1;
+
+  // What the filter actually returned — an empty result is the interesting
+  // one, so it is reported rather than skipped.
+  const resultIds = units.map((u) => u.id).join(',');
+  useEffect(() => {
+    if (!unitsQ.isSuccess) return;
+    trackSearchResults(units.length, page, totalPages);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [unitsQ.isSuccess, resultIds, page]);
 
   return (
     <div className="min-h-screen">

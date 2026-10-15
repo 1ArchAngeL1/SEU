@@ -4,10 +4,13 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { FileText } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { trackViewFloorPlan } from '@/lib/analytics/events';
 
 type ViewMode = '3D' | '2D' | 'Plan';
 
 interface ApartmentFloorPlanProps {
+  /** For analytics — which apartment's plan is being flipped through. */
+  unitId?: string;
   floorPlanImages: {
     plan: string | null;
     twoD: string | null;
@@ -49,6 +52,7 @@ function CompassRose() {
 }
 
 export function ApartmentFloorPlan({
+  unitId,
   floorPlanImages,
   apartmentNumber,
   complex,
@@ -81,7 +85,11 @@ export function ApartmentFloorPlan({
               <button
                 key={mode}
                 type="button"
-                onClick={() => setViewMode(mode)}
+                onClick={() => {
+                  // Only a real switch — re-clicking the open tab is not a view.
+                  if (mode !== viewMode) trackViewFloorPlan(unitId ?? '', mode);
+                  setViewMode(mode);
+                }}
                 className={cn(
                   'px-4 lg:px-6 h-9 rounded-lg font-montserrat text-seu-caption lg:text-seu-body-sm transition-colors border',
                   active

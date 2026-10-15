@@ -13,6 +13,13 @@ import {
 import { cn } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
 import { useCreateContact } from '@/hooks/queries/use-contacts';
+import { usePublicUnit } from '@/hooks/queries/use-units';
+import {
+  type LeadSource,
+  trackGenerateLead,
+  trackLeadError,
+  trackLeadFormStart,
+} from '@/lib/analytics/events';
 
 export type ContactFormProps = {
   className?: string;
@@ -28,6 +35,13 @@ export type ContactFormProps = {
    * request so the admin panel shows which unit the visitor asked about.
    */
   unitId?: string;
+  /**
+   * Where on the site this form sits. Travels with every analytics event the
+   * form fires, so a lead off an apartment page is told apart from a "call me"
+   * on the landing page. Required on purpose — an unlabelled lead is a hole in
+   * the conversion report.
+   */
+  source: LeadSource;
   /** Fired after a successful submission, after the success message renders */
   onSubmitted?: () => void;
 };
@@ -63,6 +77,7 @@ export default function ContactForm({
   hideHeader = false,
   policyClassName,
   unitId,
+  source,
   onSubmitted,
 }: ContactFormProps) {
   const t = useTranslations('contact');
@@ -70,6 +85,16 @@ export default function ContactForm({
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
   const createContact = useCreateContact();
+  // The apartment this form sits under, when there is one, so a lead reports
+  // the project, block, floor and layout it came from rather than a bare id.
+  // Read from the cache rather than taken as a prop: the apartment page has
+  // already fetched it under exactly this key, so there is no second request
+  // and no caller has to thread the whole unit down. Disabled without a
+  // `unitId`, which is every form outside an apartment page.
+  const unitQ = usePublicUnit(unitId);
+  // One `lead_form_start` per mounted form: the ratio of starts to leads is
+  // the form's abandonment rate, and a per-keystroke event would flatten it.
+  const startTracked = useRef(false);
 
   // The dialog unmounts this form when it closes, so pending timers have to go
   // with it — otherwise they fire into a component that is no longer there.
@@ -91,11 +116,21 @@ export default function ContactForm({
         ...(formData.email.trim() ? { email: formData.email.trim() } : {}),
         ...(unitId ? { unit: unitId } : {}),
       });
+      trackGenerateLead({
+        source,
+        unit: unitQ.data,
+        unitId,
+        hasName: Boolean(formData.name.trim()),
+        hasEmail: Boolean(formData.email.trim()),
+      });
       setSubmitted(true);
       setFormData({ name: '', phone: '', email: '' });
       later(() => setSubmitted(false), SUCCESS_VISIBLE_MS);
       if (onSubmitted) later(onSubmitted, ON_SUBMITTED_DELAY_MS);
     } catch {
+      // A rejected request is a lost lead, and invisible in the reports
+      // otherwise — the visitor simply never appears as a conversion.
+      trackLeadError(source, unitId);
       setError(t('errorMessage'));
     }
   };
@@ -175,6 +210,10 @@ export default function ContactForm({
                   const value = field.sanitize
                     ? field.sanitize(e.target.value)
                     : e.target.value;
+                  if (!startTracked.current) {
+                    startTracked.current = true;
+                    trackLeadFormStart(source, unitId);
+                  }
                   setFormData({ ...formData, [field.key]: value });
                 }}
                 required={field.required}

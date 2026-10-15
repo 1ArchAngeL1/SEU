@@ -6,6 +6,7 @@ import { Link } from '@/i18n/navigation';
 import FadeIn from '@/components/FadeIn';
 import { fileUrl } from '@/lib/file-url';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
+import { trackSelectNewsArticle } from '@/lib/analytics/events';
 import type { NewsArticle } from '@/model/types/api';
 
 interface NewsFeaturedProps {
@@ -25,7 +26,11 @@ export default function NewsFeatured({ article }: NewsFeaturedProps) {
         <div className="group relative w-full h-[46dvh] min-h-[320px] lg:h-[58dvh] overflow-hidden rounded-xl border border-site-border-soft">
           {/* Clickable image fills the banner. Anchored to the top so the top is
               never cropped; only the bottom is trimmed to fill the banner. */}
-          <Link href={`/news/${article.id}`} className="absolute inset-0 block">
+          <Link
+            href={`/news/${article.id}`}
+            onClick={() => trackSelectNewsArticle(article.id, header)}
+            className="absolute inset-0 block"
+          >
             {hasImage ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
@@ -47,6 +52,7 @@ export default function NewsFeatured({ article }: NewsFeaturedProps) {
           <div className="pointer-events-none absolute inset-x-0 bottom-6 lg:bottom-10 flex justify-center">
             <Link
               href={`/news/${article.id}`}
+              onClick={() => trackSelectNewsArticle(article.id, header)}
               className="pointer-events-auto inline-flex items-center gap-2 bg-primary-green text-white font-montserrat font-medium text-seu-body px-10 py-3 rounded-lg shadow-lg shadow-black/25 hover:bg-primary-green/90 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
             >
               {t('readMore')}

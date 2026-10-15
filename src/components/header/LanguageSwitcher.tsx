@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useRouter, usePathname } from '@/i18n/navigation';
+import { trackLanguageSwitch } from '@/lib/analytics/events';
 
 export const LanguageSwitcher = () => {
   const locale = useLocale();
@@ -18,6 +19,7 @@ export const LanguageSwitcher = () => {
 
   const handleSwitch = (newLocale: 'en' | 'ka') => {
     if (newLocale === locale) return;
+    trackLanguageSwitch(locale, newLocale);
     setActiveLocale(newLocale); // optimistic: slide the pill immediately
     // Stay on the current page, just swap the locale. `pathname` from
     // next-intl is already locale-stripped, so this preserves the route.
