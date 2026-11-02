@@ -3,6 +3,7 @@ import FooterUpperWrapper from '@/components/FooterUpperWrapper';
 import FooterLower from '@/components/FooterLower';
 import TestModeBanner from '@/components/common/TestModeBanner';
 import GoogleAnalytics from '@/components/analytics/GoogleAnalytics';
+import FacebookPixel from '@/components/analytics/FacebookPixel';
 import React from 'react';
 
 export default function MainLayout({
@@ -15,6 +16,7 @@ export default function MainLayout({
       {/* Public pages only — admin and presentation routes are staff tools and
           must not be counted as site traffic. */}
       <GoogleAnalytics />
+      <FacebookPixel />
       {/* Sits above the sticky header so it scrolls away instead of eating
           viewport height on every page. */}
       <TestModeBanner />

@@ -148,6 +148,15 @@ anything below.
 - Personal data never leaves the backend. A lead reports *that* a name/email was filled in, never the values.
 - The hero's quick filter fires `hero_search`, not `search` — it navigates to `/search?…` where the real `search` fires, and one name for both would double-count.
 
+### Analytics — Meta (Facebook) Pixel
+The public site also reports to the Meta pixel. Details in **`docs/facebook-pixel.md`**.
+
+- **The pixel id is hardcoded** — `FB_PIXEL_ID` in `src/lib/analytics/fb-pixel.ts` (`1722060141425387`). Deliberately not an env var, unlike GA4: there is one pixel and it must fire on a plain production build with no configuration. `NEXT_PUBLIC_FB_PIXEL_DISABLED=true` is the opt-out for a dev box or preview deploy.
+- Meta's inline `<script>` snippet is **transcribed into `loadFbPixel()`** rather than injected as markup. That is what keeps the order right: the `fbq` shim exists before `fbevents.js` is requested, and `init` is the first command in the queue, so a `track` fired during hydration can never be processed before it. The function is idempotent — every entry point may call it.
+- Page views are manual (`FacebookPixelTracker`), for the same reason GA4's are: after the first load this is a single-page app, so the snippet's one-shot `PageView` would only ever count the landing page. One view per distinct URL, locale prefix included.
+- `<FacebookPixel />` is mounted in `(main)/layout.tsx` **only** — never admin or `/presentation/*`. It also renders Meta's `<noscript>` pixel.
+- Components call `fbTrack()` / `fbPageView()`, never `window.fbq` — the same rule as `gtag`.
+
 ### Loading States
 - Use `SeuLoader` (`src/components/common/SeuLoader.tsx`) for public-facing waits — the SEU mark over a breathing halo with a sweeping track. Never a bare `Loader2` spinner on public pages. Sizes `sm | md | lg`; `overlay` fills the nearest positioned ancestor and dims behind it. Keyframes live in `globals.css` (`seuBreathe` / `seuHalo` / `seuSweep`, all disabled under `prefers-reduced-motion`).
 - **A resolved query is not a rendered image.** On any page that draws polygons over a render, gate on an `imgLoaded` flag set by the image's own `onLoad`, not just on `isLoading`: fade the image in, hold a `minHeight` on its box beforehand so the loader has somewhere to sit, and mount the polygon `<svg>` only once loaded with `animate-polygons-in`. Mounting rather than toggling opacity is deliberate — it makes the entrance animation replay on every navigation.
