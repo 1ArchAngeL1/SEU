@@ -6,7 +6,8 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { useActiveProjects } from '@/hooks/queries/use-projects';
 import { pickLocalized } from '@/lib/i18n-helpers';
-import { trackSelectProject } from '@/lib/analytics/events';
+import { trackHeroSlide, trackSelectProject } from '@/lib/analytics/events';
+import { useProjectView } from '@/lib/analytics/use-project-view';
 import type { Project } from '@/model/types/api';
 
 import HeroSlideshow from './hero/HeroSlideshow';
@@ -58,6 +59,10 @@ export default function LandingHero() {
   const [rawActive, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
 
+  // The hero is the project's biggest impression on the site, and the one
+  // analytics event the landing page cannot derive from a click.
+  useProjectView(project, 'landing_hero');
+
   // Derived: clamp to a valid index when the gallery changes.
   const active =
     gallery.length === 0
@@ -73,14 +78,30 @@ export default function LandingHero() {
     return () => window.clearInterval(id);
   }, [paused, gallery.length]);
 
+  // Only the deliberate moves are reported — the 6.5s auto-cycle would fire on
+  // an idle tab forever and bury every other event on the page.
+  function report(index: number, method: 'arrow' | 'dot') {
+    trackHeroSlide({
+      index,
+      total: gallery.length,
+      method,
+      projectName: project?.nameEn || undefined,
+    });
+  }
+
   function go(delta: number) {
     if (gallery.length === 0) return;
     setPaused(true);
-    setActive((i) => (i + delta + gallery.length) % gallery.length);
+    // Computed from the clamped `active` rather than inside the updater —
+    // React calls an updater twice in development, which would double-count.
+    const next = (active + delta + gallery.length) % gallery.length;
+    report(next, 'arrow');
+    setActive(next);
   }
 
   function pick(i: number) {
     setPaused(true);
+    report(i, 'dot');
     setActive(i);
   }
 

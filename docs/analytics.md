@@ -9,6 +9,13 @@ directly — they call a named helper from `events.ts`, so a parameter is spelle
 the same way everywhere. GA4 registers custom dimensions **by parameter name**;
 a second spelling is a second, half-empty dimension.
 
+**`events.ts` reports to two platforms.** Each helper fires one `gaEvent(…)`
+and one call into `fb-events.ts`, the Meta pixel's spelling of the same event —
+so a new call site covers both, and the taxonomies cannot drift apart. The Meta
+mapping, and what to configure in Events Manager, is in
+[`facebook-pixel.md`](./facebook-pixel.md). Either platform switches itself off
+on its own; the call sites never know which one is listening.
+
 ---
 
 ## 1. Turning it on
@@ -44,8 +51,8 @@ page_view
    ├── view_item_list ──────► select_item ──────────► view_item
    │   (grid / rail / floor)   (card clicked)         (apartment page)
    │                                                      │
-   └── select_project ──► select_building ──► select_floor ┘
-       (visual search)                                     │
+   └── view_project ──► select_project ──► select_building ──► select_floor ┘
+       (hero / project)  (visual search)                   │
                                                            ▼
                                   view_floor_plan · view_map · request_call_open
                                                            │
@@ -80,6 +87,7 @@ Lists (`item_list_id`): `search_results`, `similar_apartments`,
 | `view_search_results` | Results come back for that filter | `results_count`, `results_page`, `results_total_pages`, `results_empty` |
 | `results_pagination` | A different page of results | `results_page`, `results_total_pages` |
 | `clear_filters` | Every filter reset | `search_source` |
+| `select_apartment_type` | A layout tile on a project page ("studio", "2 bedrooms") is clicked — it links into `/search` pre-filtered | `rooms_label`, `project_id`, `project_name` |
 
 `hero_search` is its own name on purpose: the hero navigates to `/search?…`,
 where the filter is applied and fires the real `search`. One name for both
@@ -89,7 +97,8 @@ would count every hero search twice.
 
 | Event | Fired when | Key parameters |
 |---|---|---|
-| `select_project` | A project is entered, from `/visual-search` or the landing hero | `project_id`, `project_name`, `project_status`, `select_source` |
+| `view_project` | A project is **shown** — the landing hero, or its own visual-search page. One event per project, not per render | `project_id`, `project_name`, `project_status`, `project_placement` (`landing_hero` \| `visual_search_project`) |
+| `select_project` | A project is entered, from `/visual-search`, the landing hero, or an "ongoing" card on the landing page | `project_id`, `project_name`, `project_status`, `select_source` |
 | `select_building` | A block is entered (any polygon layer or the mobile "view" button) | `building_id`, `building_name`, `block`, `building_status`, `project_*` |
 | `select_floor` | A floor is entered | `floor_id`, `floor_number`, `floor_total_units`, `floor_available_units` |
 
@@ -102,6 +111,18 @@ would count every hero search twice.
 | `view_news_article` | A news article page is opened | `article_id`, `article_title` |
 | `select_news_article` | A news card is clicked | `article_id`, `article_title`, `index` |
 | `language_switch` | The EN/KA pill is used | `language_from`, `language_to` |
+| `video_start` / `video_pause` / `video_complete` | The company video on the landing page, or the project video on a project page | `video_title`, `video_provider` (`self_hosted`), `video_placement`, `video_current_time`, `video_duration`, `video_percent` |
+| `hero_slide` | The landing hero's slideshow is moved **by hand** — the 6.5s auto-cycle is never reported | `slide_index`, `slide_total`, `slide_method` (`arrow` \| `dot`), `project_name` |
+| `cta_click` | A navigating call to action: the header's "Contact us", the landing page's "Contact" button | `cta_id`, `cta_placement`, `cta_destination` |
+| `partner_click` | A partner logo is clicked — an outbound click off the site | `partner_name`, `partner_placement`, `outbound_url` |
+| `social_click` | A footer social profile is opened | `social_network`, `social_placement` |
+
+`cta_id` is a stable, hand-written English id. The visible label is localized,
+and grouping a report by the label would split one button into two rows.
+
+`video_start` / `video_complete` are GA4's own recommended names, so they line
+up with the ones enhanced measurement produces for embedded YouTube;
+`video_pause` is a custom name in the same family.
 
 ### Leads — the part the sales team reads
 
@@ -191,8 +212,14 @@ size_m2          bedrooms         rooms_label      is_studio
 furnishing       price_per_sqm    locale           lead_source
 contact_method   contact_placement  view_mode      map_mode
 search_source    search_term      filter_rooms     filter_project_name
-results_count    article_title
+results_count    article_title    select_source    project_placement
+cta_id           cta_placement    partner_name     social_network
+video_title      video_placement  slide_method
 ```
+
+The first block is the original 30 and is worth registering first; the last
+three rows are the engagement events added later and only start collecting
+from the day they are created.
 
 **Item-scoped** (scope: Item):
 
@@ -208,9 +235,11 @@ project_id   building_id   floor_number   size_m2   bedrooms   price_per_sqm
 ### 5.3 Enable enhanced measurement
 
 Admin → Data streams → Web → Enhanced measurement. It covers scroll depth,
-outbound clicks (the footer's Facebook / Instagram / YouTube links), file
-downloads and embedded YouTube video engagement — none of which the code above
-has to duplicate. Leave **site search off**: `/search` is a structured filter,
+outbound clicks, file downloads and embedded YouTube video engagement. Leave it
+on: `social_click` and `partner_click` sit alongside its generic `click` event
+rather than replacing it — they name the network or the partner, which a bare
+outbound URL does not, and the site's own videos are `<video>` elements that
+enhanced measurement cannot see at all. Leave **site search off**: `/search` is a structured filter,
 not a keyword box, and the `search` event already carries it properly.
 
 ### 5.4 Suggested reports
@@ -225,6 +254,8 @@ not a keyword box, and the `search` event already carries it properly.
 | Are filters returning nothing? | `view_search_results` where `results_empty = true`, by `search_term` |
 | Do people call instead of writing? | `contact_click` by `contact_placement` |
 | Which floors get attention? | `select_floor` by `floor_number` |
+| Which development is the hero earning attention for? | `view_project` by `project_name` × `project_placement` |
+| Does anyone watch the video? | `video_start` vs `video_complete` by `video_placement` |
 
 ---
 

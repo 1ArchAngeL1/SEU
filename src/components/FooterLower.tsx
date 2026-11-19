@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { Instagram } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { trackSocialClick } from '@/lib/analytics/events';
 
 export default function FooterLower() {
   const t = useTranslations('footer');
@@ -15,6 +16,7 @@ export default function FooterLower() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Facebook"
+          onClick={() => trackSocialClick('facebook', 'footer')}
           className="hover:opacity-80 transition-opacity"
         >
           <Image
@@ -31,6 +33,7 @@ export default function FooterLower() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Instagram"
+          onClick={() => trackSocialClick('instagram', 'footer')}
           className="hover:opacity-80 transition-opacity text-secondary-grey"
         >
           <span className="flex items-center justify-center w-8 h-8 lg:w-12 lg:h-12">
@@ -42,6 +45,7 @@ export default function FooterLower() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="YouTube"
+          onClick={() => trackSocialClick('youtube', 'footer')}
           className="hover:opacity-80 transition-opacity"
         >
           <Image

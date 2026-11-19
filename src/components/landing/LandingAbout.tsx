@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import FadeIn from '@/components/FadeIn';
+import { trackCtaClick } from '@/lib/analytics/events';
 
 export default function LandingAbout() {
   const t = useTranslations('landing');
@@ -25,6 +26,13 @@ export default function LandingAbout() {
 
             <Link
               href="/contact"
+              onClick={() =>
+                trackCtaClick({
+                  id: 'landing_about_contact',
+                  placement: 'landing_about',
+                  destination: '/contact',
+                })
+              }
               className="inline-block mt-10 bg-primary-green text-white font-montserrat font-medium text-seu-body px-16 py-3 rounded-lg hover:bg-primary-green/85 transition-colors"
             >
               {t('contact')}

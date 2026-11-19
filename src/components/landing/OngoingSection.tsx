@@ -7,6 +7,7 @@ import { useProjectsList } from '@/hooks/queries/use-projects';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
 import FadeIn from '@/components/FadeIn';
+import { trackSelectProject } from '@/lib/analytics/events';
 
 export default function OngoingSection() {
   const t = useTranslations('landing');
@@ -36,6 +37,9 @@ export default function OngoingSection() {
               {/* Ongoing projects link to their apartments, filtered by project */}
               <Link
                 href={`/search?project=${project.id}`}
+                // Same event the visual search fires: the visitor picked this
+                // project, whichever door they walked through.
+                onClick={() => trackSelectProject(project, 'landing')}
                 className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-green/50 rounded-2xl"
               >
                 <OngoingProjectCard

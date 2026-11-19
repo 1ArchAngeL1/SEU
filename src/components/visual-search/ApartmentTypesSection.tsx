@@ -6,6 +6,7 @@ import { Link } from '@/i18n/navigation';
 import { useApartmentTypesByProject } from '@/hooks/queries/use-apartment-types';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
+import { trackSelectApartmentType } from '@/lib/analytics/events';
 import type { ApartmentType } from '@/model/types/api';
 
 function formatSize(from: number, to: number, unit: string): string {
@@ -27,11 +28,21 @@ function searchHref(projectId: string, t: ApartmentType): string {
   return `/search?${params.toString()}`;
 }
 
-interface ApartmentTypesSectionProps {
-  projectId: string;
+/**
+ * The layout as analytics reports it — the same `rooms_label` vocabulary the
+ * unit events use, so "studio" means the same thing in every report.
+ */
+function roomsLabelOf(t: ApartmentType): string {
+  return t.bedrooms === 0 ? 'studio' : String(t.bedrooms);
 }
 
-export function ApartmentTypesSection({ projectId }: ApartmentTypesSectionProps) {
+interface ApartmentTypesSectionProps {
+  projectId: string;
+  /** English project name, for the analytics event only. */
+  projectName?: string;
+}
+
+export function ApartmentTypesSection({ projectId, projectName }: ApartmentTypesSectionProps) {
   const locale = useLocale() as Locale;
   const tSearch = useTranslations('search');
   const { data, isLoading } = useApartmentTypesByProject(projectId);
@@ -64,6 +75,15 @@ export function ApartmentTypesSection({ projectId }: ApartmentTypesSectionProps)
               <li key={type.id}>
                 <Link
                   href={href}
+                  // Pre-filtered entry into `/search`, where the `search` event
+                  // then describes the filter in full.
+                  onClick={() =>
+                    trackSelectApartmentType({
+                      type: roomsLabelOf(type),
+                      projectId,
+                      projectName,
+                    })
+                  }
                   className="group grid grid-cols-[auto_1fr_auto] sm:grid-cols-[auto_1fr_1fr_auto] items-center gap-4 sm:gap-8 py-4 sm:py-5"
                 >
                   <div className="size-16 sm:size-20 rounded-md bg-secondary-black/50 border border-pale-gray/10 overflow-hidden flex items-center justify-center shrink-0">

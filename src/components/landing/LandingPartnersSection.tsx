@@ -4,6 +4,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { Handshake } from 'lucide-react';
 import FadeIn from '@/components/FadeIn';
 import { useAllLandingPartners } from '@/hooks/queries/use-landing-partners';
+import { trackPartnerClick } from '@/lib/analytics/events';
 import { fileUrl } from '@/lib/file-url';
 import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import type { LandingPartner } from '@/model/types/api';
@@ -47,6 +48,15 @@ function PartnerTile({
       href={partner.websiteLink}
       target="_blank"
       rel="noreferrer"
+      // The partner's own name, not the localized one, so the two copies of
+      // the marquee and the two locales report as a single row.
+      onClick={() =>
+        trackPartnerClick({
+          name: partner.nameEn || name,
+          placement: 'landing',
+          url: partner.websiteLink ?? undefined,
+        })
+      }
       aria-label={name}
       aria-hidden={duplicate || undefined}
       tabIndex={duplicate ? -1 : undefined}

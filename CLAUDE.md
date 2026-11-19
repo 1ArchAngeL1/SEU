@@ -137,6 +137,7 @@ one-time GA4 setup are in **`docs/analytics.md`** — read it before touching
 anything below.
 
 - Code lives in `src/lib/analytics/` (`config` → `gtag` → `items` → `events`) and `src/components/analytics/`. **Components never call `gtag` directly** — they call a named helper from `events.ts`. GA4 registers custom dimensions by parameter name, so a second spelling is a second, half-empty dimension.
+- **`events.ts` is the single taxonomy for both platforms**: every helper fires one `gaEvent()` *and* one `fb*()` from `fb-events.ts`. Add a call site once and GA4 and Meta both get it; never instrument a component for one platform only.
 - Nothing is loaded or sent without `NEXT_PUBLIC_GA_MEASUREMENT_ID`. A dev box or preview deploy therefore never reaches the production property. `NEXT_PUBLIC_GA_DEBUG=true` logs every event to the console — which works with no measurement id at all, so the taxonomy can be checked before the property exists.
 - `<GoogleAnalytics />` is mounted in `(main)/layout.tsx` **only**. Admin and `/presentation/*` are staff tools; counting the sales team's own sessions would wreck every engagement figure. Do not move it to the root layout.
 - Page views are manual (`send_page_view: false` + `PageViewTracker`): after the first load this is a single-page app, and gtag's automatic view would only ever count the landing page.
@@ -149,13 +150,18 @@ anything below.
 - The hero's quick filter fires `hero_search`, not `search` — it navigates to `/search?…` where the real `search` fires, and one name for both would double-count.
 
 ### Analytics — Meta (Facebook) Pixel
-The public site also reports to the Meta pixel. Details in **`docs/facebook-pixel.md`**.
+The public site also reports to the Meta pixel, **the same events GA4 gets**. Details in **`docs/facebook-pixel.md`**.
 
+- The taxonomy lives in `src/lib/analytics/fb-events.ts`, one function per event in `events.ts`, which is its only caller. A standard Meta name (`ViewContent`, `Search`, `Lead`, `Contact`, `FindLocation`, `SubmitApplication`) wherever Meta has one — those need no setup to be a conversion or an audience; everything else is a PascalCase `fbTrackCustom` name.
+- **`Lead` is the conversion**, fired from `generate_lead` with the same `NEXT_PUBLIC_GA_LEAD_VALUE`. One lead is worth one number whoever is asking.
+- Parameters use the **GA4 spelling** (`project_name`, `rooms_label`, `lead_source`, `size_m2`) except for Meta's own `content_*` / `search_string` / `value` / `currency` / `num_items`. They come out of the same `unitParams()`, so a Meta breakdown and a GA4 report name the same thing.
+- Apartments are `ViewContent` with `content_type: 'home_listing'`; **a project is `ViewProject`, never a second `ViewContent`** — mixing them would dilute the apartment-viewer retargeting audience with everyone who loaded the home page.
 - **The pixel id is hardcoded** — `FB_PIXEL_ID` in `src/lib/analytics/fb-pixel.ts` (`1722060141425387`). Deliberately not an env var, unlike GA4: there is one pixel and it must fire on a plain production build with no configuration. `NEXT_PUBLIC_FB_PIXEL_DISABLED=true` is the opt-out for a dev box or preview deploy.
 - Meta's inline `<script>` snippet is **transcribed into `loadFbPixel()`** rather than injected as markup. That is what keeps the order right: the `fbq` shim exists before `fbevents.js` is requested, and `init` is the first command in the queue, so a `track` fired during hydration can never be processed before it. The function is idempotent — every entry point may call it.
 - Page views are manual (`FacebookPixelTracker`), for the same reason GA4's are: after the first load this is a single-page app, so the snippet's one-shot `PageView` would only ever count the landing page. One view per distinct URL, locale prefix included.
 - `<FacebookPixel />` is mounted in `(main)/layout.tsx` **only** — never admin or `/presentation/*`. It also renders Meta's `<noscript>` pixel.
-- Components call `fbTrack()` / `fbPageView()`, never `window.fbq` — the same rule as `gtag`.
+- Components call neither — they call `events.ts`. Inside the analytics layer, `fbTrack()` / `fbTrackCustom()` / `fbPageView()` are the only way in; never `window.fbq`, the same rule as `gtag`.
+- The landing page, the hero and the site chrome are instrumented too: `view_project` (hero + project page, via the `useProjectView` hook so it is one event per project, not per render), `hero_slide` (manual moves only — the auto-cycle would fire forever on an idle tab), `video_start`/`pause`/`complete`, `cta_click`, `partner_click`, `social_click` and `select_apartment_type`.
 
 ### Loading States
 - Use `SeuLoader` (`src/components/common/SeuLoader.tsx`) for public-facing waits — the SEU mark over a breathing halo with a sweeping track. Never a bare `Loader2` spinner on public pages. Sizes `sm | md | lg`; `overlay` fills the nearest positioned ancestor and dims behind it. Keyframes live in `globals.css` (`seuBreathe` / `seuHalo` / `seuSweep`, all disabled under `prefers-reduced-motion`).

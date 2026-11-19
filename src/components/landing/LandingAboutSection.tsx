@@ -5,6 +5,7 @@ import { Pause, Play } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import FadeIn from '@/components/FadeIn';
 import OrbitalRings from '@/components/landing/about/OrbitalRings';
+import { trackVideo } from '@/lib/analytics/events';
 import { SeuGreenlogo } from '../common/SeuGreenlogo';
 
 export default function LandingAboutSection() {
@@ -45,12 +46,21 @@ export default function LandingAboutSection() {
     }
   };
 
+  const VIDEO_TITLE = 'SEU Varketili';
+  const VIDEO_PLACEMENT = 'landing_about';
+
   const togglePlay = () => {
     const v = videoRef.current;
     if (!v) return;
     if (isPlaying) {
       v.pause();
       setIsPlaying(false);
+      trackVideo('pause', {
+        title: VIDEO_TITLE,
+        placement: VIDEO_PLACEMENT,
+        currentTime: v.currentTime,
+        duration: v.duration,
+      });
     } else {
       if (!startedRef.current) {
         startedRef.current = true;
@@ -58,6 +68,12 @@ export default function LandingAboutSection() {
       }
       v.play();
       setIsPlaying(true);
+      trackVideo('start', {
+        title: VIDEO_TITLE,
+        placement: VIDEO_PLACEMENT,
+        currentTime: v.currentTime,
+        duration: v.duration,
+      });
     }
   };
 
@@ -94,7 +110,15 @@ export default function LandingAboutSection() {
                   preload="metadata"
                   playsInline
                   onLoadedMetadata={showPosterFrame}
-                  onEnded={() => setIsPlaying(false)}
+                  onEnded={(e) => {
+                    setIsPlaying(false);
+                    trackVideo('complete', {
+                      title: VIDEO_TITLE,
+                      placement: VIDEO_PLACEMENT,
+                      currentTime: e.currentTarget.duration,
+                      duration: e.currentTarget.duration,
+                    });
+                  }}
                 >
                   <source src="/video/SEU%20VARKETILI.mp4#t=2" type="video/mp4" />
                 </video>

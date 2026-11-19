@@ -120,6 +120,26 @@ export function fbTrack(name: string, params?: Record<string, unknown>): void {
 }
 
 /**
+ * Fire a **custom** Meta event — a name of our own, for the steps of the
+ * funnel Meta has no standard event for (a block entered, a floor plan
+ * opened, a partner logo clicked).
+ *
+ * Separate from `fbTrack` because `fbq` takes a different command for it:
+ * `trackCustom` instead of `track`. A custom name needs no setup to be
+ * collected, but it has to be picked by hand in Events Manager before it can
+ * drive a conversion or an audience — which is why anything with a standard
+ * equivalent uses `fbTrack` instead.
+ */
+export function fbTrackCustom(name: string, params?: Record<string, unknown>): void {
+  const w = win();
+  if (!w || !fbPixelEnabled) return;
+  loadFbPixel();
+  const payload = params ? clean(params) : undefined;
+  debugLog(`trackCustom: ${name}`, payload ?? {});
+  w.fbq?.('trackCustom', name, payload);
+}
+
+/**
  * A page view. Sent by hand on every route change: after the first load this
  * is a single-page app, so the snippet's one-shot `PageView` would only ever
  * count the landing page. The pixel reads the URL off `document.location`

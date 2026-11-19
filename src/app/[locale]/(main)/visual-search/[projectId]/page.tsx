@@ -18,6 +18,7 @@ import { pickLocalized, type Locale } from '@/lib/i18n-helpers';
 import { fileUrl } from '@/lib/file-url';
 import { blockTotals, isProjectVisible } from '@/lib/visibility';
 import { trackSelectBuilding } from '@/lib/analytics/events';
+import { useProjectView } from '@/lib/analytics/use-project-view';
 import type { Building, PolygonPoint } from '@/model/types/api';
 
 /** Convert percentage-based polygon points (0-100) directly to SVG points string. */
@@ -369,6 +370,10 @@ export default function VisualSearchProjectPage({
   // The project's own aggregates still count the blocks the admin switched
   // off, so recount from the blocks actually on show.
   const totals = buildingsQ.isSuccess ? blockTotals(buildings) : null;
+
+  // The project's own impression — one event per project visited, not one per
+  // re-render of the render image.
+  useProjectView(project, 'visual_search_project');
 
   // Every route into a block — both polygon layers and the mobile "view"
   // button — goes through here, so one event covers them all.
@@ -745,7 +750,7 @@ export default function VisualSearchProjectPage({
       )}
 
       {/* Apartment Types section */}
-      <ApartmentTypesSection projectId={projectId} />
+      <ApartmentTypesSection projectId={projectId} projectName={project?.nameEn || undefined} />
 
       {/* SEU video */}
       <ProjectVideoSection />

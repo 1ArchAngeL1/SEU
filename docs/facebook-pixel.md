@@ -2,10 +2,16 @@
 
 What the public site sends to Meta, and why it is wired the way it is.
 
-Code lives in `src/lib/analytics/fb-pixel.ts` and
-`src/components/analytics/FacebookPixel{,Tracker}.tsx`. Components call a
-named helper (`fbPageView()`, `fbTrack()`), never `window.fbq` — the same rule
-that keeps the GA4 parameter names consistent (see `analytics.md`).
+Code lives in `src/lib/analytics/fb-pixel.ts` (the transport),
+`src/lib/analytics/fb-events.ts` (the taxonomy) and
+`src/components/analytics/FacebookPixel{,Tracker}.tsx`.
+
+**Components never call either of those.** They call a named helper from
+`src/lib/analytics/events.ts`, which reports to GA4 *and* Meta in one go — one
+`gaEvent(…)` plus one `fb*(…)`. That is the whole reason the pixel's coverage
+matches GA4's: there is a single set of call sites, so the two taxonomies
+cannot drift apart. Read `analytics.md` alongside this file; the events are the
+same events.
 
 ---
 
@@ -37,18 +43,86 @@ constant — and the copy of it in `CLAUDE.md`.
 
 ## 2. What is sent
 
-| Event | When |
-|---|---|
-| `PageView` | Every route the visitor lands on, including client-side navigations. One hit per distinct URL, locale prefix included (`/ka/search?bedrooms=2`). |
+Every event in `events.ts` has a Meta counterpart — no exceptions, so there is
+nothing to remember when adding a call site. **Bold** names are Meta standard
+events: Events Manager understands them with no setup, and they can be a
+conversion, an audience or an ad-optimisation target straight away. The rest
+are `trackCustom` names in PascalCase, which are collected immediately but have
+to be picked by hand in Events Manager before they can be used (see §4).
 
-That is the whole taxonomy today. The pixel's standard events (`Lead`,
-`Contact`, `ViewContent`, `Search`) are not wired yet; `fbTrack(name, params)`
-is the entry point when they are, and the natural places are the ones GA4
-already instruments — `ContactForm`'s successful submit for `Lead`, the
-apartment page for `ViewContent`.
+### The conversions
+
+| Meta event | GA4 event | Fired when |
+|---|---|---|
+| **`Lead`** ★ | `generate_lead` | A contact request is **accepted by the backend**. Carries `value` / `currency` from `NEXT_PUBLIC_GA_LEAD_VALUE`, plus `lead_source` and the apartment it came from. |
+| **`Contact`** | `contact_click` | A phone number or email address is tapped instead of the form (`contact_method`, `contact_placement`). |
+| **`SubmitApplication`** | `submit_application` | A CV is sent from the careers block. |
+| `LeadFormStart` | `lead_form_start` | The visitor types into a contact form, once per form. The audience worth having: *started the form and never sent it*. |
+| `RequestCallOpen` | `request_call_open` | The call-back dialog is opened from an apartment. |
+| `LeadError` | `lead_error` | A submitted form was rejected — a lost lead, invisible otherwise. |
+
+### Inventory and search
+
+| Meta event | GA4 event | Fired when |
+|---|---|---|
+| **`ViewContent`** | `view_item` | An apartment page is opened. `content_type: 'home_listing'`, `content_ids: [unitId]` — the retargeting audience the site is built on. |
+| **`Search`** | `search` | A filter is applied, from the form or from the URL. `search_string` is the same readable summary GA4 sends as `search_term`. |
+| **`FindLocation`** | `view_map` | A project's location is opened, in the dialog or on Google Maps. |
+| `ViewApartmentList` | `view_item_list` | A set of apartments is rendered (grid, similar rail, floor). Up to 30 `content_ids`, with the real count in `num_items`. |
+| `SelectApartment` | `select_item` | An apartment card or floor-plan polygon is clicked. |
+| `HeroSearch` | `hero_search` | The landing hero's quick filter is submitted. |
+| `SearchResults` | `view_search_results` | Results come back (`results_count`, `results_empty`). |
+| `ResultsPagination` / `ClearFilters` | `results_pagination` / `clear_filters` | A different page of results / every filter reset. |
+| `SelectApartmentType` | `select_apartment_type` | A layout tile on a project page ("studio", "2 bedrooms") is clicked. |
+
+### Projects, content and chrome
+
+| Meta event | GA4 event | Fired when |
+|---|---|---|
+| `ViewProject` | `view_project` | A project is shown — the landing hero, or its visual-search page. |
+| `SelectProject` / `SelectBuilding` / `SelectFloor` | same names | The visual-search funnel, one step each. `SelectProject` also fires from the landing hero and the "ongoing" cards. |
+| `ViewFloorPlan` | `view_floor_plan` | The 2D / 3D / Plan switch on an apartment page. |
+| `ViewNewsArticle` / `SelectNewsArticle` | same names | A news article is opened / a news card is clicked. |
+| `VideoPlay` / `VideoPause` / `VideoComplete` | `video_start` / `video_pause` / `video_complete` | The company video on the landing page, and the project video on a project page. |
+| `PartnerClick` | `partner_click` | A partner logo is clicked — an outbound click off the site. |
+| `SocialClick` | `social_click` | A footer social profile is opened. |
+| `CtaClick` | `cta_click` | A navigating call to action: the header's "Contact us", the landing page's "Contact" button. |
+| `HeroSlide` | `hero_slide` | The hero slideshow is moved **by hand**. The 6.5s auto-cycle is never reported — it would fire forever on an idle tab. |
+| `LanguageSwitch` | `language_switch` | The EN/KA pill is used. |
+| **`PageView`** | `page_view` | Every route the visitor lands on, client-side navigations included. One hit per distinct URL, locale prefix included (`/ka/search?bedrooms=2`). |
+
+### On the landing page specifically
+
+The pixel's base code has always covered the landing page — it is mounted in
+`(main)/layout.tsx`, which wraps it. What the landing page now also sends:
+`ViewProject` for the hero project, `HeroSearch` and `ClearFilters` from the
+quick filter, `SelectProject` from the hero's visual-search button and from
+every "ongoing" card, `VideoPlay` / `VideoPause` / `VideoComplete` for the
+company video, `PartnerClick`, `SocialClick`, `CtaClick`, `LeadFormStart` and
+**`Lead`** from the contact form at the bottom, and `Contact` from the phone
+and email in the panel beside it.
+
+### Parameter naming
+
+Meta's own fields use Meta's spelling (`content_type`, `content_ids`,
+`content_name`, `content_category`, `search_string`, `value`, `currency`,
+`num_items`). **Everything else uses the GA4 spelling** — `project_name`,
+`rooms_label`, `lead_source`, `size_m2`, `unit_status` — and comes out of the
+same `unitParams()` in `items.ts` that feeds GA4. A Meta breakdown and a GA4
+report therefore name the same thing, and `rooms_label` keeps its `studio`
+branch for the usual reason: a studio's bedroom count is legitimately 0, which
+is also what a unit imported without rooms reports.
+
+Projects are deliberately **not** a second `ViewContent`. Mixing them in would
+dilute the apartment-viewer audience with everyone who ever loaded the home
+page, so a project impression is `ViewProject`.
 
 **Personal data never goes to Meta.** No name, phone or email, the same rule
-GA4 follows: a lead may report *that* a field was filled in, never its value.
+GA4 follows: a lead reports *that* a field was filled in
+(`lead_has_name`, `lead_has_email`), never its value. No total price is sent
+either — `price.amount` on the live data is not reliably a total (see
+`CLAUDE.md`), so only `price_per_sqm` travels, and `Lead`'s value is the
+configured constant.
 
 ---
 
@@ -82,3 +156,39 @@ Two details in there are load-bearing:
 
 The `<noscript>` image stays in the server-rendered markup, so a visitor with
 JavaScript off still produces one hit per page.
+
+---
+
+## 4. One-time setup inside Events Manager
+
+Hits arrive whatever you do here; these steps are what turn them into usable
+conversions and audiences.
+
+1. **Events Manager → Data sources → the pixel → Overview.** With
+   `NEXT_PUBLIC_FB_PIXEL_DEBUG=true` locally, or Meta's *Test events* tab, every
+   event above should appear within a minute of being fired.
+2. **Aggregated Event Measurement** (Events Manager → Aggregated event
+   measurement → Configure web events). iOS traffic only counts the **8**
+   events configured here, in priority order. Suggested order:
+   `Lead`, `Contact`, `SubmitApplication`, `ViewContent`, `RequestCallOpen`,
+   `LeadFormStart`, `Search`, `SelectApartment`.
+3. **Custom conversions** (Events Manager → Custom conversions) for the cuts
+   the sales team actually buys against — e.g. `Lead` where
+   `lead_source = apartment_page` ("enquired about a specific apartment")
+   versus `lead_source = landing` ("asked for a call back").
+4. **Audiences** (Ads Manager → Audiences → Custom audience → Website):
+   - `ViewContent` in the last 30 days, excluding `Lead` — looked at
+     apartments, never enquired. The main retargeting pool.
+   - `LeadFormStart` excluding `Lead` — abandoned the form; the warmest pool
+     on the site.
+   - `ViewProject` by `project_name` — one audience per development.
+5. **A catalogue is optional.** `ViewContent` already sends
+   `content_type: 'home_listing'` with the unit id, so uploading a home-listing
+   catalogue later turns the existing hits into dynamic ads with no code
+   change — the ids line up with the admin panel's.
+6. **Domain verification** (Business settings → Brand safety → Domains) if the
+   ads account will ever optimise for these events from a shared domain.
+
+`Lead`'s `value` needs `NEXT_PUBLIC_GA_LEAD_VALUE` set at build time — the same
+variable GA4 uses, since one lead is worth one number whoever is asking. With
+it unset, `Lead` is sent with no value and Meta reports a count.
