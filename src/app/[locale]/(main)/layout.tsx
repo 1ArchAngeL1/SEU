@@ -20,7 +20,7 @@ export default function MainLayout({
       <FacebookPixel />
       {/* Sits above the sticky header so it scrolls away instead of eating
           viewport height on every page. */}
-      <TestModeBanner />
+      {/*<TestModeBanner />*/}
       <SeuHeader />
       <div className="flex-1 flex flex-col">{children}</div>
       <FooterUpperWrapper />
