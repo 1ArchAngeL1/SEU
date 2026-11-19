@@ -262,18 +262,26 @@ not a keyword box, and the `search` event already carries it properly.
 ## 6. Privacy
 
 Consent Mode v2 defaults are declared before the library loads
-(`GoogleAnalytics.tsx`): **analytics storage granted, every advertising signal
-denied** — the site runs no ad platforms and asks for no advertising consent.
-IP anonymisation is unconditional in GA4.
+(`GoogleAnalytics.tsx`): **every advertising signal denied** — the site runs no
+ad platforms and asks for no advertising consent — and **analytics storage
+taken from the cookie notice**. IP anonymisation is unconditional in GA4.
+
+The notice is `src/components/common/CookieConsent.tsx`; the decision lives in
+the `seu_cookie_consent` cookie (`src/lib/cookie-consent.ts`). The bootstrap
+script reads that cookie **inline and synchronously**, so a returning visitor
+who accepted is granted before gtag loads rather than one hit later. Until the
+notice is answered `analytics_storage` is `denied`: GA4 still receives
+cookieless, modelled pings — that is what Consent Mode is — but writes no
+analytics cookie and can identify no returning visitor. Accepting calls
+`gaSetConsent({ analytics: true })` and gtag backfills what it buffered.
 
 No personal data is ever sent: a lead reports *that* a name and an email were
 filled in (`lead_has_name`, `lead_has_email`), never their values. The phone
 number, name and email live only in the backend and the admin panel.
 
-If a cookie banner is added later, call `gaSetConsent({ analytics, ads })` from
-`src/lib/analytics/gtag.ts` when the visitor chooses — gtag backfills the hits
-it buffered in the meantime. The banner itself is the only missing piece; the
-plumbing is already there.
+`gaSetConsent({ analytics, ads })` in `src/lib/analytics/gtag.ts` is the only
+way to change a visitor's mind. `ads` is wired but unused — there is no
+advertising consent to ask for while the site runs no ad platforms.
 
 ---
 

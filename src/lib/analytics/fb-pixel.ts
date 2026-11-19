@@ -12,6 +12,8 @@
  * on a dev box or a preview deploy to keep that traffic out of the pixel.
  */
 
+import { hasAnalyticsConsent } from '@/lib/cookie-consent';
+
 /** Meta Events Manager → Data sources → the pixel's id. */
 export const FB_PIXEL_ID = '1722060141425387';
 
@@ -59,6 +61,11 @@ function clean(params: Record<string, unknown>): Record<string, unknown> {
  * pixel id. Idempotent — a second call is a no-op — so every entry point below
  * can call it without caring who got there first.
  *
+ * **Nothing happens without cookie consent.** Meta has no equivalent of GA4's
+ * Consent Mode, so the gate is the install itself: until the visitor accepts,
+ * `window.fbq` never exists and every `fbTrack` below quietly does nothing.
+ * `<CookieConsent>` calls this on accept.
+ *
  * This is Meta's documented snippet, transcribed rather than injected as an
  * inline `<script>`, which is what keeps the order right: the shim exists
  * before the library is requested, and `init` is the first command in the
@@ -67,6 +74,7 @@ function clean(params: Record<string, unknown>): Record<string, unknown> {
 export function loadFbPixel(): void {
   const w = win();
   if (!w || !fbPixelEnabled) return;
+  if (!hasAnalyticsConsent()) return;
   // Already bootstrapped, by us or by anything else on the page.
   if (w.fbq) return;
 

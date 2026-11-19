@@ -17,6 +17,13 @@
   "testMode": {
     "message": "The website is running in test mode"
   },
+  "cookies": {
+    "title": "Cookies",
+    "message": "We use cookies to analyse site traffic and improve how the site works. You can decline without losing access to anything.",
+    "accept": "Accept",
+    "decline": "Decline",
+    "learnMore": "Privacy policy"
+  },
   "header": {
     "searchApartment": "Search Apartment",
     "visualSearch": "Visual Search",

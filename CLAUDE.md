@@ -131,6 +131,17 @@ The public site carries a site-wide "this is a test version" disclaimer until la
 - Copy lives in `messages/{en,ka}.json` under `testMode.message` — one short line, never hardcoded in the component.
 - Admin (`/admin/*`) and `/presentation/*` deliberately do not show it.
 
+### Cookie Consent
+The public site asks before it tracks, and the answer is what switches tracking on.
+
+- Notice: `src/components/common/CookieConsent.tsx` — a bottom bar with **Accept** and **Decline**, mounted in `src/app/[locale]/(main)/layout.tsx` only. No granular categories: there is one purpose (analytics) and one decision.
+- Store: `src/lib/cookie-consent.ts` — the `seu_cookie_consent` cookie (`granted` / `denied`, 180 days, `SameSite=Lax`). **A cookie, not `localStorage`**, because the GA bootstrap is an inline script and a cookie is the only store it can read synchronously. An unset cookie means *not asked yet*, which is not `denied` — the notice has to come back for it.
+- The cookie **is** the component's state: it reads through `useSyncExternalStore(subscribeCookieConsent, …)` and `writeCookieConsent()` notifies, so there is no local copy to desync. The server snapshot is `false` so the notice is never baked into the static HTML.
+- **GA4 is gated by Consent Mode**, not by withholding the script: `GoogleAnalytics.tsx` reads the cookie inline and picks the `analytics_storage` default from it (granted → granted, anything else → denied), so a returning visitor is granted before gtag loads. Accepting calls `gaSetConsent({ analytics: true })` and gtag backfills. Denied still means cookieless modelled pings — that is Consent Mode working, not a leak.
+- **The Meta pixel is gated by never installing it**: `loadFbPixel()` returns early without consent, so `window.fbq` does not exist and every `fbTrack` is a silent no-op. On accept the banner installs it and fires the `PageView` the tracker already marked as sent. Meta's `<noscript>` pixel stays ungated on purpose — a visitor with no JavaScript cannot be shown the notice.
+- Copy lives in `messages/{en,ka}.json` under `cookies.*` and links to `/policy`. Never hardcode it.
+- Admin and `/presentation/*` show no notice and carry no analytics to consent to.
+
 ### Analytics — Google Analytics 4
 Every public page reports to GA4. The full taxonomy, the parameters, and the
 one-time GA4 setup are in **`docs/analytics.md`** — read it before touching
@@ -138,6 +149,7 @@ anything below.
 
 - Code lives in `src/lib/analytics/` (`config` → `gtag` → `items` → `events`) and `src/components/analytics/`. **Components never call `gtag` directly** — they call a named helper from `events.ts`. GA4 registers custom dimensions by parameter name, so a second spelling is a second, half-empty dimension.
 - **`events.ts` is the single taxonomy for both platforms**: every helper fires one `gaEvent()` *and* one `fb*()` from `fb-events.ts`. Add a call site once and GA4 and Meta both get it; never instrument a component for one platform only.
+- Analytics storage waits on the cookie notice — see **Cookie Consent** above; the advertising signals are denied unconditionally.
 - Nothing is loaded or sent without `NEXT_PUBLIC_GA_MEASUREMENT_ID`. A dev box or preview deploy therefore never reaches the production property. `NEXT_PUBLIC_GA_DEBUG=true` logs every event to the console — which works with no measurement id at all, so the taxonomy can be checked before the property exists.
 - `<GoogleAnalytics />` is mounted in `(main)/layout.tsx` **only**. Admin and `/presentation/*` are staff tools; counting the sales team's own sessions would wreck every engagement figure. Do not move it to the root layout.
 - Page views are manual (`send_page_view: false` + `PageViewTracker`): after the first load this is a single-page app, and gtag's automatic view would only ever count the landing page.
@@ -156,6 +168,7 @@ The public site also reports to the Meta pixel, **the same events GA4 gets**. De
 - **`Lead` is the conversion**, fired from `generate_lead` with the same `NEXT_PUBLIC_GA_LEAD_VALUE`. One lead is worth one number whoever is asking.
 - Parameters use the **GA4 spelling** (`project_name`, `rooms_label`, `lead_source`, `size_m2`) except for Meta's own `content_*` / `search_string` / `value` / `currency` / `num_items`. They come out of the same `unitParams()`, so a Meta breakdown and a GA4 report name the same thing.
 - Apartments are `ViewContent` with `content_type: 'home_listing'`; **a project is `ViewProject`, never a second `ViewContent`** — mixing them would dilute the apartment-viewer retargeting audience with everyone who loaded the home page.
+- **No hit before consent**: `loadFbPixel()` refuses to install without `seu_cookie_consent=granted`, which makes every `fbTrack` a no-op. See **Cookie Consent** above.
 - **The pixel id is hardcoded** — `FB_PIXEL_ID` in `src/lib/analytics/fb-pixel.ts` (`1722060141425387`). Deliberately not an env var, unlike GA4: there is one pixel and it must fire on a plain production build with no configuration. `NEXT_PUBLIC_FB_PIXEL_DISABLED=true` is the opt-out for a dev box or preview deploy.
 - Meta's inline `<script>` snippet is **transcribed into `loadFbPixel()`** rather than injected as markup. That is what keeps the order right: the `fbq` shim exists before `fbevents.js` is requested, and `init` is the first command in the queue, so a `track` fired during hydration can never be processed before it. The function is idempotent — every entry point may call it.
 - Page views are manual (`FacebookPixelTracker`), for the same reason GA4's are: after the first load this is a single-page app, so the snippet's one-shot `PageView` would only ever count the landing page. One view per distinct URL, locale prefix included.

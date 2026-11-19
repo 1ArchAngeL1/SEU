@@ -36,6 +36,16 @@ a restart.
 staff tools; counting the sales team's own sessions would wreck every audience
 and conversion figure built on the pixel.
 
+**Cookie consent is a hard gate.** Meta has no equivalent of GA4's Consent
+Mode, so the gate is the install itself: `loadFbPixel()` returns early unless
+`seu_cookie_consent=granted`, which means `window.fbq` never exists and every
+`fbTrack` call below quietly does nothing — no script, no hits. Accepting the
+notice (`src/components/common/CookieConsent.tsx`) installs the pixel and sends
+the `PageView` it slept through; events fired before that are lost, which is
+the point. The `<noscript>` pixel is the one exception — it is for visitors with
+no JavaScript, who can neither be shown the notice nor record an answer, and it
+loads no script and writes no first-party cookie.
+
 To replace the pixel (a new Meta account, a second brand), change the one
 constant — and the copy of it in `CLAUDE.md`.
 
